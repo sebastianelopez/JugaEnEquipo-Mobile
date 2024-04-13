@@ -20,7 +20,8 @@ class InputDecorations {
         borderSide: BorderSide(color: AppTheme.primary, width: 2),
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      contentPadding: const EdgeInsets.only(left: 30, bottom: 20, top: 20, right: 10),
+      contentPadding:
+          const EdgeInsets.only(left: 30, bottom: 15, top: 10, right: 15),
       hintFadeDuration: const Duration(milliseconds: 300),
       hintText: hintText,
       hintStyle: TextStyle(color: hintTextColor ?? Colors.white),
