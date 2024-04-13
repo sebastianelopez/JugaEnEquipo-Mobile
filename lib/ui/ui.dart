@@ -1,0 +1,1 @@
+export 'package:jugaenequipo/ui/input_decorations.dart';
