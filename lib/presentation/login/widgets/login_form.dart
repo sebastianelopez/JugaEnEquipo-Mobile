@@ -1,57 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jugaenequipo/providers/providers.dart';
+import 'package:jugaenequipo/presentation/login/business_logic/login_form_provider.dart';
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginForm extends StatelessWidget {
+  const LoginForm({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: AuthBackground(
-            child: SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 400,
-          ),
-          CardContainer(
-            backgroundColor: Colors.transparent,
-            child: Column(
-              children: [
-                ChangeNotifierProvider(
-                  create: (_) => LoginFormProvider(),
-                  child: _LoginForm(),
-                ),
-              ],
-            ),
-          ),
-          TextButton(
-            child: const Text('Crear una nueva cuenta',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white70)),
-            onPressed: () {
-              //hide keyboard
-              FocusScope.of(context).unfocus();
-              Navigator.pushNamed(context, 'register');
-            },
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-        ],
-      ),
-    )));
-  }
-}
-
-class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginForm = Provider.of<LoginFormProvider>(context);
@@ -82,7 +38,7 @@ class _LoginForm extends StatelessWidget {
                   : 'Email is required',
             ),
             const SizedBox(
-              height: 15,
+              height: 30,
             ),
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -130,7 +86,7 @@ class _LoginForm extends StatelessWidget {
                       },
                 child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 12),
                   child: Text(
                     'Log in',
                     style: GoogleFonts.openSans(

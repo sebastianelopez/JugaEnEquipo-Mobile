@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/providers/providers.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:jugaenequipo/presentation/register/business_logic/register_form_provider.dart';
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
 import 'package:jugaenequipo/widgets/widgets.dart';
@@ -19,7 +20,7 @@ class RegisterScreen extends StatelessWidget {
             height: 250,
           ),
           CardContainer(
-            backgroundColor: Colors.white.withOpacity(0.3),
+            backgroundColor: Colors.transparent,
             child: Column(
               children: [
                 ChangeNotifierProvider(
@@ -29,11 +30,8 @@ class RegisterScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 50,
-          ),
           TextButton(
-            child: const Text('¿Ya tenes cuenta?',
+            child: const Text('¿Ya tienes cuenta? Inicia Sesion',
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -58,71 +56,98 @@ class _RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final registerForm = Provider.of<RegisterFormProvider>(context);
 
+    final user = registerForm.user;
+    final email = registerForm.email;
+    final password = registerForm.password;
+    final password2 = registerForm.password2;
+
+    final isLoading = registerForm.isLoading;
+
     return Form(
         key: registerForm.formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
             TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: user,
+              style: const TextStyle(color: Colors.white),
               autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'user123',
-                  hintTextColor: Colors.white60,
-                  labelText: 'User',
-                  labelTextColor: Colors.white60,
-                  prefixIcon: Icons.alternate_email_rounded),
-              onChanged: (value) => registerForm.email = value,
-              validator: (value) =>
-                  value != null ? Validators.isEmail(value: value) : '',
+                hintText: 'User',
+                hintTextColor: Colors.white,
+                labelTextColor: Colors.white,
+              ),
+              onTapOutside: (event) =>
+                  FocusManager.instance.primaryFocus?.unfocus(),
+              onChanged: (value) => user.text = value,
+              validator: (value) => value != null
+                  ? Validators.isEmail(value: value)
+                  : 'Email is required',
             ),
             const SizedBox(
               height: 30,
             ),
             TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: email,
+              style: const TextStyle(color: Colors.white),
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'user@gmail.com',
-                  hintTextColor: Colors.white60,
-                  labelText: 'Email',
-                  labelTextColor: Colors.white60,
-                  prefixIcon: Icons.alternate_email_rounded),
-              onChanged: (value) => registerForm.email = value,
-              validator: (value) =>
-                  value != null ? Validators.isEmail(value: value) : '',
+                hintText: 'Email',
+                hintTextColor: Colors.white,
+                labelTextColor: Colors.white,
+              ),
+              onTapOutside: (event) =>
+                  FocusManager.instance.primaryFocus?.unfocus(),
+              onChanged: (value) => email.text = value,
+              validator: (value) => value != null
+                  ? Validators.isEmail(value: value)
+                  : 'Email is required',
             ),
             const SizedBox(
               height: 30,
             ),
             TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: password,
+              style: const TextStyle(color: Colors.white),
               autocorrect: false,
               obscureText: true,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.visiblePassword,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: '*******',
-                  hintTextColor: Colors.white60,
-                  labelText: 'Password',
-                  labelTextColor: Colors.white60,
-                  prefixIcon: Icons.lock_outlined),
-              onChanged: (value) => registerForm.password = value,
+                hintText: 'Password',
+                hintTextColor: Colors.white,
+                labelTextColor: Colors.white,
+              ),
+              onTapOutside: (event) =>
+                  FocusManager.instance.primaryFocus?.unfocus(),
+              onChanged: (value) => password.text = value,
               validator: (value) {
                 return (value != null && value.length >= 6)
                     ? null
                     : 'The password must be at least six characters.';
               },
             ),
+            const SizedBox(
+              height: 30,
+            ),
             TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: password2,
+              style: const TextStyle(color: Colors.white),
               autocorrect: false,
               obscureText: true,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.visiblePassword,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: '*******',
-                  hintTextColor: Colors.white60,
-                  labelText: 'Repeat password',
-                  labelTextColor: Colors.white60,
-                  prefixIcon: Icons.lock_outlined),
-              onChanged: (value) => registerForm.password = value,
+                hintText: 'Repeat password',
+                hintTextColor: Colors.white,
+                labelTextColor: Colors.white,
+              ),
+              onTapOutside: (event) =>
+                  FocusManager.instance.primaryFocus?.unfocus(),
+              onChanged: (value) => password2.text = value,
               validator: (value) {
                 return (value != null && value.length >= 6)
                     ? null
@@ -130,7 +155,7 @@ class _RegisterForm extends StatelessWidget {
               },
             ),
             const SizedBox(
-              height: 30,
+              height: 25,
             ),
             MaterialButton(
                 shape: RoundedRectangleBorder(
@@ -138,7 +163,7 @@ class _RegisterForm extends StatelessWidget {
                 disabledColor: Colors.grey,
                 elevation: 0,
                 color: const Color(0xFFD72323),
-                onPressed: registerForm.isLoading
+                onPressed: isLoading
                     ? null
                     : () {
                         //hide keyboard
@@ -150,14 +175,18 @@ class _RegisterForm extends StatelessWidget {
                         Future.delayed(const Duration(seconds: 2));
 
                         registerForm.isLoading = false;
-                        Navigator.pushNamed(context, 'login');
+                        Navigator.pushReplacementNamed(context, 'home');
                       },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   child: Text(
-                    registerForm.isLoading ? 'Wait...' : 'Sign in',
-                    style: const TextStyle(color: Colors.white70),
+                    'Log in',
+                    style: GoogleFonts.openSans(
+                        textStyle: const TextStyle(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16.0)),
                   ),
                 ))
           ],
