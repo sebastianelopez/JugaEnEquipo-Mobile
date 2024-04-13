@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const Color primary = Color(0xFFD72323);
+  static const Color primary = Color(0xFFA91F27);
 
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     primaryColor: primary,
@@ -25,20 +25,6 @@ class AppTheme {
             elevation: 0)),
     inputDecorationTheme: const InputDecorationTheme(
       floatingLabelStyle: TextStyle(color: primary),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primary),
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10), topRight: Radius.circular(10)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primary),
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10), topRight: Radius.circular(10)),
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10), topRight: Radius.circular(10)),
-      ),
     ),
 
     textTheme: GoogleFonts.openSansTextTheme(),
