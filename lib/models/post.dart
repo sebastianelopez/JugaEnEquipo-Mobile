@@ -5,7 +5,7 @@ class Post {
   final String postDate;
   final String? copy;
   final String? image;
-  int likes = 0;
+  final List<User> peopleWhoLikeIt;
   final List<Comment> comments;
 
   Post(
@@ -13,6 +13,6 @@ class Post {
       required this.postDate,
       this.copy,
       this.image,
-      required this.likes,
+      required this.peopleWhoLikeIt,
       required this.comments});
 }
