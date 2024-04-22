@@ -18,11 +18,9 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
       _selectedIndex = index;
     });
     if (mainNavigationOptions[index].route != "notifications") {
-      print('a');
-      Navigator.pushReplacementNamed(
-          context, mainNavigationOptions[index].route);
+      Navigator.pushReplacementNamed( 
+          context, mainNavigationOptions[index].route,);
     } else {
-      print('b');
       FocusScope.of(context).unfocus();
       Navigator.pushNamed(context, mainNavigationOptions[index].route);
     }
