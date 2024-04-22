@@ -1,33 +1,114 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/models/post.dart';
+import 'package:jugaenequipo/utils/utils.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key});
+  final Post post;
+
+  const PostCard({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Card(
+        margin: const EdgeInsets.only(top: 8.0, left: 10.0, right: 10.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const ListTile(
-              leading: Icon(Icons.album),
-              title: Text('The Enchanted Nightingale'),
-              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+            ListTile(
+              leading: const Icon(Icons.album),
+              title: Text(post.user.name),
+              subtitle: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (post.user.team != null)
+                      Text(
+                        post.user.team!.name,
+                      ),
+                    Text(
+                      getTimeElapsed(DateTime.parse(post.postDate)),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              children: <Widget>[
+                if (post.copy != null)
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      post.copy!,
+                    ),
+                  ),
+                const SizedBox(height: 8),
+                const Image(
+                  image: NetworkImage(
+                      'https://static.wikia.nocookie.net/onepiece/images/a/af/Monkey_D._Luffy_Anime_Dos_A%C3%B1os_Despu%C3%A9s_Infobox.png/revision/latest?cb=20200616015904&path-prefix=es'),
+                  fit: BoxFit.contain,
+                  width: 200,
+                  height: 300,
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+            if (post.peopleWhoLikeIt.isNotEmpty || post.comments.isNotEmpty)
+              ElevatedButton(
+                style: const ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.transparent),
+                    foregroundColor: MaterialStatePropertyAll(Colors.grey)),
+                onPressed: () {
+                  // Add your button action here
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.favorite,
+                          size: 15.0,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
+                        Text(post.peopleWhoLikeIt.length.toString()),
+                      ],
+                    ),
+                    Text(post.comments.isNotEmpty
+                        ? "${post.comments.length} comentarios"
+                        : ''),
+                  ],
+                ),
+              ),
+            Divider(
+              color: Colors.grey[300],
+              height: 5,
+              indent: 10,
+              endIndent: 10,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                TextButton(
-                  child: const Text('BUY TICKETS'),
-                  onPressed: () {},
+                IconButton(
+                  color: Colors.grey,
+                  icon: const Icon(Icons.favorite),
+                  onPressed: () {
+                    // Handle the message icon press here.
+                  },
                 ),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text('LISTEN'),
-                  onPressed: () {/* ... */},
+                IconButton(
+                  color: Colors.grey,
+                  icon: const Icon(Icons.message),
+                  onPressed: () {
+                    // Handle the message icon press here.
+                  },
                 ),
-                const SizedBox(width: 8),
               ],
             ),
           ],

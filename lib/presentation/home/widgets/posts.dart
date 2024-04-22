@@ -22,7 +22,9 @@ class Posts extends StatelessWidget {
             controller: homeScreen.scrollController,
             itemCount: homeScreen.postsmocks.length,
             itemBuilder: (BuildContext context, int index) {
-              return PostCard();
+              return PostCard(
+                post: homeScreen.postsmocks[index],
+              );
             },
           ),
         ),
