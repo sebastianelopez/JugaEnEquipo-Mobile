@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jugaenequipo/presentation/login/business_logic/login_form_provider.dart';
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatelessWidget {
@@ -26,7 +27,7 @@ class LoginForm extends StatelessWidget {
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
-                hintText: 'User',
+                hintText: AppLocalizations.of(context)!.loginUserHintText,
                 hintTextColor: Colors.white,
                 labelTextColor: Colors.white,
               ),
@@ -34,8 +35,8 @@ class LoginForm extends StatelessWidget {
                   FocusManager.instance.primaryFocus?.unfocus(),
               onChanged: (value) => email.text = value,
               validator: (value) => value != null
-                  ? Validators.isEmail(value: value)
-                  : 'Email is required',
+                  ? Validators.isEmail(value: value, context: context)
+                  : AppLocalizations.of(context)!.loginUserRequiredValidation,
             ),
             const SizedBox(
               height: 30,
@@ -48,7 +49,7 @@ class LoginForm extends StatelessWidget {
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
-                hintText: 'Password',
+                hintText: AppLocalizations.of(context)!.loginPasswordHintText,
                 hintTextColor: Colors.white,
                 labelTextColor: Colors.white,
               ),
@@ -58,7 +59,7 @@ class LoginForm extends StatelessWidget {
               validator: (value) {
                 return (value != null && value.length >= 6)
                     ? null
-                    : 'The password must be at least six characters.';
+                    : AppLocalizations.of(context)!.loginPasswordValidation;
               },
             ),
             const SizedBox(
@@ -88,7 +89,7 @@ class LoginForm extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 80, vertical: 12),
                   child: Text(
-                    'Log in',
+                    AppLocalizations.of(context)!.loginButton,
                     style: GoogleFonts.openSans(
                         textStyle: const TextStyle(
                             color: Colors.white70,

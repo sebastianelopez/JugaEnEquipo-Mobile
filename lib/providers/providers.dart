@@ -1,0 +1,1 @@
+export 'package:jugaenequipo/providers/internalization_provider.dart';

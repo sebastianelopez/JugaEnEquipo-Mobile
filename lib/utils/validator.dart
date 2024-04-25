@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Validators {
   static String? isEmail({
     required String value,
+    required BuildContext context,
   }) {
     String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -10,6 +13,6 @@ class Validators {
 
     return regExp.hasMatch(value)
         ? null
-        : "The entered value doesn't look like an email.";
+        : AppLocalizations.of(context)!.loginUserValidation;
   }
 }

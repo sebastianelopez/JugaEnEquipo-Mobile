@@ -1,0 +1,10 @@
+{
+  "loginButton": "Ingresar",
+  "loginCreateAccountButton": "Crear una nueva cuenta",
+  "loginUserHintText": "Usuario",
+  "loginPasswordHintText": "Contraseña",
+  "loginPasswordValidation": "La contraseña debe contener al menos seis caracteres",
+  "loginUserValidation": "El valor ingresado no parece un correo electrónico",
+  "loginUserRequiredValidation": "El email es obligatorio",
+  "navSearchInputLabel": "Buscar"
+}

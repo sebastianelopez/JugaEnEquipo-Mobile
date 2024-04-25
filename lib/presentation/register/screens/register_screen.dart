@@ -82,7 +82,7 @@ class _RegisterForm extends StatelessWidget {
                   FocusManager.instance.primaryFocus?.unfocus(),
               onChanged: (value) => user.text = value,
               validator: (value) => value != null
-                  ? Validators.isEmail(value: value)
+                  ? Validators.isEmail(value: value, context: context)
                   : 'Email is required',
             ),
             const SizedBox(
@@ -103,7 +103,7 @@ class _RegisterForm extends StatelessWidget {
                   FocusManager.instance.primaryFocus?.unfocus(),
               onChanged: (value) => email.text = value,
               validator: (value) => value != null
-                  ? Validators.isEmail(value: value)
+                  ? Validators.isEmail(value: value, context: context)
                   : 'Email is required',
             ),
             const SizedBox(

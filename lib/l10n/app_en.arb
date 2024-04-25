@@ -1,0 +1,10 @@
+{
+  "loginButton": "Log in",
+  "loginCreateAccountButton": "Create a new account",
+  "loginUserHintText": "User",
+  "loginPasswordHintText": "Password",
+  "loginPasswordValidation": "The password must be at least six characters",
+  "loginUserValidation": "The entered value doesn't look like an email",
+  "loginUserRequiredValidation": "Email is required",
+  "navSearchInputLabel": "Search" 
+}
