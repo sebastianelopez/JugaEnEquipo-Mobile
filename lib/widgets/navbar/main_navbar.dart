@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainNavbar extends StatelessWidget {
   const MainNavbar({super.key});
@@ -9,13 +10,18 @@ class MainNavbar extends StatelessWidget {
     return AppBar(
       backgroundColor: AppTheme.primary,
       leadingWidth: 60.0,
-      leading: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: const CircleAvatar(
-          backgroundImage: AssetImage(
-              'assets/login.png'), // Replace with your profile image path
-          radius: 16,
-          backgroundColor: Colors.white,
+      leading: GestureDetector(
+        onTap: () {
+          Scaffold.of(context).openDrawer();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: const CircleAvatar(
+            backgroundImage: AssetImage(
+                'assets/login.png'), // Replace with your profile image path
+            radius: 16,
+            backgroundColor: Colors.white,
+          ),
         ),
       ),
       shadowColor: Colors.black,
@@ -32,13 +38,13 @@ class MainNavbar extends StatelessWidget {
                 ),
               ),
               child: TextField(
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                  hintText: 'Search',
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+                  hintText: AppLocalizations.of(context)!.navSearchInputLabel,
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                 ),
                 onChanged: (value) {
                   // Handle the search input changes here.

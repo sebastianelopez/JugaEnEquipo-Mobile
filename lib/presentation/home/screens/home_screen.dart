@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(60),
         child: MainNavbar(),
       ),
+      drawer: const DrawerNav(),
       body: ChangeNotifierProvider(
         create: (context) => HomeScreenProvider(),
         child: const Posts(),
