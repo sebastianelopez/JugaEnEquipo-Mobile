@@ -1,3 +1,6 @@
+export 'package:jugaenequipo/models/notification.dart';
+export 'package:jugaenequipo/models/chat_message.dart';
+export 'package:jugaenequipo/models/chat_user.dart';
 export 'package:jugaenequipo/models/comment.dart';
 export 'package:jugaenequipo/models/post.dart';
 export 'package:jugaenequipo/models/team.dart';
