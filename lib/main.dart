@@ -33,8 +33,12 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: AppRoutes.onGenerateRoute,
           theme: AppTheme.lightTheme,
           locale: internalization.currentlanguage,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
+          supportedLocales: const [
+            Locale('en', 'US'),
+            Locale('es', 'AR'),
+            Locale('pt', 'BR'),
+          ],
+          localizationsDelegates: AppLocalizations.localizationsDelegates,          
         );
       });
 }

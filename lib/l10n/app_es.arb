@@ -6,5 +6,62 @@
   "loginPasswordValidation": "La contraseña debe contener al menos seis caracteres",
   "loginUserValidation": "El valor ingresado no parece un correo electrónico",
   "loginUserRequiredValidation": "El email es obligatorio",
-  "navSearchInputLabel": "Buscar"
+  "navSearchInputLabel": "Buscar",
+  "timePrefixText": "Hace ",
+  "timeYearSuffixText": "año",
+  "timeYearsSuffixText": "años",
+  "timeMonthSuffixText": "mes",
+  "timeMonthsSuffixText": "meses",
+  "timeWeekSuffixText": "semana",
+  "timeWeeksSuffixText": "semanas",
+  "timeDaySuffixText": "día",
+  "timeDaysSuffixText": "días",
+  "timeHourSuffixText": "hora",
+  "timeHoursSuffixText": "horas",
+  "timeMinuteSuffixText": "minuto",
+  "timeMinutesSuffixText": "minutos",
+  "timeSecondSuffixText": "segundo",
+  "timeSecondsSuffixText": "segundos",
+  "drawerlanguageLabel": "Idioma",
+  "drawerProfileLabel": "Perfil",
+  "profilePageLabel": "Perfil",
+  "profileFollowButtonLabel": "Seguir",
+  "profileMessagesButtonLabel": "Mensajes",
+  "profileFollowingButtonLabel": "Siguiendo",
+  "profileFollowersButtonLabel": "Seguidores",
+  "profilePrizesButtonLabel": "Premios",
+  "messagesPageLabel": "Mensajes",
+  "notificationsPageLabel": "Notificaciones",
+  "notificationPostLiked": "A <b>{name}</b> le gustó tu publicacion.",
+  "@notificationPostLiked": {
+    "description": "Notification about a user who liked a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationInviteToTeam":"<b>{name}</b> te ha invitado a formar parte de su equipo <b>{team}</b>.",
+  "@notificationInviteToTeam": {
+    "description": "Notification about a user who invited you to join his team",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "team": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationApplicationAccepted":"<b>{team}</b> ha aceptado tu postulacion para el puesto de {role} en Overwatch. Ahora eres miembro del equipo profesional.",
+  "@notificationApplicationAccepted": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      },
+      "team": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -6,5 +6,61 @@
   "loginPasswordValidation": "A senha deve ter pelo menos seis caracteres",
   "loginUserValidation": "O valor inserido não se parece com um e-mail",
   "loginUserRequiredValidation": "O e-mail é obrigatório",
-  "navSearchInputLabel": "Busca"
+  "navSearchInputLabel": "Busca",
+  "timePrefixText": "",
+  "timeYearSuffixText": "ano atras",
+  "timeYearsSuffixText": "anos atras",
+  "timeMonthSuffixText": "mes atras",
+  "timeMonthsSuffixText": "meses atras",
+  "timeWeekSuffixText": "semana atras",
+  "timeWeeksSuffixText": "semanas atras",
+  "timeDaySuffixText": "dia atras",
+  "timeDaysSuffixText": "dias atras",
+  "timeHourSuffixText": "hora atras",
+  "timeHoursSuffixText": "horas atras",
+  "timeMinuteSuffixText": "minuto atras",
+  "timeMinutesSuffixText": "minutos atras",
+  "timeSecondSuffixText": "segundo atras",
+  "timeSecondsSuffixText": "segundos atras",
+  "drawerlanguageLabel": "Linguagem",
+  "drawerProfileLabel": "Perfil",
+  "profileFollowButtonLabel": "Seguir",
+  "profileMessagesButtonLabel": "Mensagens",
+  "profileFollowingButtonLabel": "Seguindo",
+  "profileFollowersButtonLabel": "Seguidores",
+  "profilePrizesButtonLabel": "Prêmios",
+  "messagesPageLabel": "Mensagens",
+  "notificationsPageLabel": "Notificações",
+  "notificationPostLiked": "<b>{name}</b> gostou do seu post.",
+  "@notificationPostLiked": {
+    "description": "Notification about a user who liked a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationInviteToTeam":"<b>{name}</b> convidou você para fazer parte de sua equipe <b>{team}</b>.",
+  "@notificationInviteToTeam": {
+    "description": "Notification about a user who invited you to join his team",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "team": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationApplicationAccepted":"<b>{team}</b> aceitou sua inscrição para a posição de {role} em Overwatch. Você agora é membro da equipe profissional.",
+  "@notificationApplicationAccepted": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      },
+      "team": {
+        "type": "String"
+      }
+    }
+  }
 }
