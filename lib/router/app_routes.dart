@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/presentation/chat/screens/chat_screen.dart';
+import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
+import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/presentation/screens.dart';
 
 class AppRoutes {
@@ -29,9 +32,32 @@ class AppRoutes {
     MainNavigationOption(
         route: 'teams', screen: const TeamsScreen(), icon: Icons.add_circle),
     MainNavigationOption(
-        route: 'tournaments', screen: const TournamentsScreen(), icon: Icons.emoji_events),
+        route: 'tournaments',
+        screen: const TournamentsScreen(),
+        icon: Icons.emoji_events),
     MainNavigationOption(
-        route: 'notifications', screen: const NotificationsScreen(), icon: Icons.notifications)
+        route: 'notifications',
+        screen: const NotificationsScreen(),
+        icon: Icons.notifications)
+  ];
+
+  static List<MenuOption> getDrawerOptions([BuildContext? context]) {
+    return [
+      MenuOption(
+          route: 'profile',
+          name: context != null
+              ? AppLocalizations.of(context)!.drawerProfileLabel
+              : '',
+          screen: const ProfileScreen()),
+    ];
+  }
+
+  static final otherRoutes = <MenuOption>[
+    MenuOption(
+        route: 'messages',
+        name: 'Messages Screen',
+        screen: const MessagesScreen()),
+    MenuOption(route: 'chat', name: 'Chat Screen', screen: const ChatScreen()),
   ];
 
   static Map<String, Widget Function(BuildContext)> getAppRoutes() {
@@ -44,6 +70,14 @@ class AppRoutes {
     }
 
     for (final option in mainNavigationOptions) {
+      appRoutes.addAll({option.route: (BuildContext context) => option.screen});
+    }
+
+    for (final option in getDrawerOptions()) {
+      appRoutes.addAll({option.route: (BuildContext context) => option.screen});
+    }
+
+    for (final option in otherRoutes) {
       appRoutes.addAll({option.route: (BuildContext context) => option.screen});
     }
 
