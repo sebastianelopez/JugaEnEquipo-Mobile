@@ -11,7 +11,9 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
-        margin: const EdgeInsets.only(top: 8.0, left: 10.0, right: 10.0),
+        margin: const EdgeInsets.only(
+          top: 8.0,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -28,7 +30,7 @@ class PostCard extends StatelessWidget {
                         post.user.team!.name,
                       ),
                     Text(
-                      getTimeElapsed(DateTime.parse(post.postDate)),
+                      formatTimeElapsed(DateTime.parse(post.postDate), context),
                       textAlign: TextAlign.left,
                     ),
                   ],
@@ -45,12 +47,11 @@ class PostCard extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 8),
-                const Image(
+                const FadeInImage(
+                  placeholder: AssetImage('assets/placeholder.png'),
                   image: NetworkImage(
                       'https://static.wikia.nocookie.net/onepiece/images/a/af/Monkey_D._Luffy_Anime_Dos_A%C3%B1os_Despu%C3%A9s_Infobox.png/revision/latest?cb=20200616015904&path-prefix=es'),
-                  fit: BoxFit.contain,
-                  width: 200,
-                  height: 300,
+                  fit: BoxFit.cover,
                 ),
                 const SizedBox(height: 8),
               ],
