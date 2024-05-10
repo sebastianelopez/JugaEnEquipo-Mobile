@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/widgets/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
+import 'package:jugaenequipo/router/app_routes.dart';
 
 class DrawerNav extends StatelessWidget {
   const DrawerNav({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final internalization = Provider.of<InternalizationProvider>(context);
+    final drawerOptions = AppRoutes.getDrawerOptions(context).toList();
 
     return Drawer(
       child: ListView(
@@ -42,36 +42,26 @@ class DrawerNav extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
-            title: const Text('Perfil'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
+          ...drawerOptions.map((option) {
+            return ListTile(
+              title: Text(option.name,
+                  style: const TextStyle(fontWeight: FontWeight.w900)),
+              onTap: () {
+                //hide keyboard
+                FocusScope.of(context).unfocus();
+                Navigator.pushNamed(context, option.route);
+              },
+            );
+          }),
+          Row(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(right: 30.0, left: 15.0),
+                  child: Text(AppLocalizations.of(context)!.drawerlanguageLabel,
+                      style: const TextStyle(fontWeight: FontWeight.w900))),
+              const LanguageDropdown(showLabel: true),
+            ],
           ),
-          DropdownButton(
-            value: internalization.currentlanguage.languageCode,
-            icon: const Icon(Icons.arrow_downward),
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
-            ),
-            onChanged: (_) {},
-            items: AppLocalizations.supportedLocales.map((Locale locale) {
-              return DropdownMenuItem(
-                value: locale.languageCode,
-                onTap: () {
-                  final internalization = Provider.of<InternalizationProvider>(
-                      context,
-                      listen: false);
-                  internalization.setLanguage(locale);
-                },
-                child: Center(child: Text(locale.languageCode)),
-              );
-            }).toList(),
-          )
         ],
       ),
     );
