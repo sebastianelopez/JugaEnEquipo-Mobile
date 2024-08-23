@@ -29,8 +29,7 @@ class AppRoutes {
         route: 'teams',
         screen: const TeamsScreen(),
         icon: Icons.supervisor_account),
-    MainNavigationOption(
-        route: 'teams', screen: const TeamsScreen(), icon: Icons.add_circle),
+    MainNavigationOption(route: 'createPost', icon: Icons.add_circle),
     MainNavigationOption(
         route: 'tournaments',
         screen: const TournamentsScreen(),
@@ -70,7 +69,9 @@ class AppRoutes {
     }
 
     for (final option in mainNavigationOptions) {
-      appRoutes.addAll({option.route: (BuildContext context) => option.screen});
+      appRoutes.addAll({
+        option.route: (BuildContext context) => option.screen ?? Container()
+      });
     }
 
     for (final option in getDrawerOptions()) {
