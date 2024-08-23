@@ -4,11 +4,8 @@ class MainNavigationOption {
   final String route;
   final IconData icon;
   final String? name;
-  final Widget screen;
+  final Widget? screen;
 
   MainNavigationOption(
-      {required this.route,
-      required this.icon,
-      this.name,
-      required this.screen});
+      {required this.route, required this.icon, this.name, this.screen});
 }
