@@ -45,7 +45,7 @@ class MessagesListItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            user.name,
+                            user.userName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             softWrap: false,

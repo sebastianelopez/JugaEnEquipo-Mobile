@@ -1,10 +1,20 @@
 import 'package:jugaenequipo/models/models.dart';
 
 class User {
-  final String name;
+  final String id;
+  final String firstName;
+  final String lastName;
+  final String userName;
   final Team? team;
-  final String mail;
+  final String email;
   final String? profileImage;
 
-  User({required this.name, this.team, required this.mail, this.profileImage});
+  User(
+      {required this.id,
+      required this.firstName,
+      required this.lastName,
+      required this.userName,
+      this.team,
+      required this.email,
+      this.profileImage});
 }
