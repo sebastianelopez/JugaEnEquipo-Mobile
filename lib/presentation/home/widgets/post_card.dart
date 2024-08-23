@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/models/post.dart';
+import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
+import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_screen.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 
 class PostCard extends StatelessWidget {
@@ -18,8 +20,13 @@ class PostCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: const Icon(Icons.album),
-              title: Text(post.user.name),
+              leading: const CircleAvatar(
+                backgroundImage: NetworkImage(
+                    'https://elcomercio.pe/resizer/xvcflv5nZ6qztMCIojBYfROeCmo=/1200x800/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/J5TZJL65YBB2JN5TCPZBJVNJTQ.webp'),
+                maxRadius: 25,
+              ),
+              title: Text(post.user.userName,
+                  style: const TextStyle(fontWeight: FontWeight.w900)),
               subtitle: SizedBox(
                 width: double.infinity,
                 child: Column(
@@ -28,11 +35,13 @@ class PostCard extends StatelessWidget {
                     if (post.user.team != null)
                       Text(
                         post.user.team!.name,
+                        style: const TextStyle(fontSize: 13),
                       ),
                     Text(
-                      formatTimeElapsed(DateTime.parse(post.postDate), context),
-                      textAlign: TextAlign.left,
-                    ),
+                        formatTimeElapsed(
+                            DateTime.parse(post.postDate), context),
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 13)),
                   ],
                 ),
               ),
@@ -40,23 +49,19 @@ class PostCard extends StatelessWidget {
             Column(
               children: <Widget>[
                 if (post.copy != null)
-                  SizedBox(
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
                     width: double.infinity,
                     child: Text(
                       post.copy!,
                     ),
                   ),
                 const SizedBox(height: 8),
-                const FadeInImage(
-                  placeholder: AssetImage('assets/placeholder.png'),
-                  image: NetworkImage(
-                      'https://static.wikia.nocookie.net/onepiece/images/a/af/Monkey_D._Luffy_Anime_Dos_A%C3%B1os_Despu%C3%A9s_Infobox.png/revision/latest?cb=20200616015904&path-prefix=es'),
-                  fit: BoxFit.cover,
-                ),
+                if (post.images!.isNotEmpty) ImageGrid(images: post.images!),
                 const SizedBox(height: 8),
               ],
             ),
-            if (post.peopleWhoLikeIt.isNotEmpty || post.comments.isNotEmpty)
+            if (post.likes > 0 || post.comments > 0)
               ElevatedButton(
                 style: const ButtonStyle(
                     backgroundColor:
@@ -78,12 +83,24 @@ class PostCard extends StatelessWidget {
                         const SizedBox(
                           width: 5.0,
                         ),
-                        Text(post.peopleWhoLikeIt.length.toString()),
+                        Text(post.likes.toString()),
                       ],
                     ),
-                    Text(post.comments.isNotEmpty
-                        ? "${post.comments.length} comentarios"
-                        : ''),
+                    TextButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          builder: (BuildContext context) {
+                            return const Comments();
+                          },
+                        );
+                      },
+                      child: Text(post.comments > 0
+                          ? "${post.comments} comentarios"
+                          : ''),
+                    ),
                   ],
                 ),
               ),
