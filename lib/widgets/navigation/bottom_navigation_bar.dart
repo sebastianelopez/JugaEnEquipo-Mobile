@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
+import 'package:jugaenequipo/widgets/create_post.dart';
 
 class BottomNavigationBarCustom extends StatefulWidget {
   const BottomNavigationBarCustom({Key? key}) : super(key: key);
@@ -17,12 +18,23 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
     setState(() {
       _selectedIndex = index;
     });
-    if (mainNavigationOptions[index].route != "notifications") {
-      Navigator.pushReplacementNamed( 
-          context, mainNavigationOptions[index].route,);
-    } else {
+    if (mainNavigationOptions[index].route == "notifications") {
       FocusScope.of(context).unfocus();
       Navigator.pushNamed(context, mainNavigationOptions[index].route);
+    } else if (mainNavigationOptions[index].route == "createPost") {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        builder: (BuildContext context) {
+          return const CreatePost();
+        },
+      );
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        mainNavigationOptions[index].route,
+      );
     }
   }
 
