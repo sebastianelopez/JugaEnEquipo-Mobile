@@ -1,3 +1,5 @@
+export 'package:jugaenequipo/models/game.dart';
+export 'package:jugaenequipo/models/tournament.dart';
 export 'package:jugaenequipo/models/notification.dart';
 export 'package:jugaenequipo/models/chat_message.dart';
 export 'package:jugaenequipo/models/chat_user.dart';
