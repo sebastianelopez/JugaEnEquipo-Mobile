@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jugaenequipo/datasources/user/login.dart';
 import 'package:jugaenequipo/presentation/login/business_logic/login_form_provider.dart';
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
@@ -73,17 +74,22 @@ class LoginForm extends StatelessWidget {
                 color: const Color(0xFFD72323),
                 onPressed: isLoading
                     ? null
-                    : () {
+                    : () async {
                         //hide keyboard
                         FocusScope.of(context).unfocus();
 
                         if (!loginForm.isValidForm()) return;
                         loginForm.isLoading = true;
 
-                        Future.delayed(const Duration(seconds: 2));
+                        var wasLoginSuccesfull =
+                            await login(email.text, password.text);
+
+                        if (wasLoginSuccesfull) {
+                          loginForm.isLoading = false;
+                          Navigator.pushReplacementNamed(context, 'home');
+                        }
 
                         loginForm.isLoading = false;
-                        Navigator.pushReplacementNamed(context, 'home');
                       },
                 child: Container(
                   padding:
