@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:jugaenequipo/datasources/refresh_token_interceptor.dart';
 
 enum DioMethod { post, get, put, delete }
 
@@ -23,11 +22,14 @@ class APIService {
       BaseOptions(
         baseUrl: baseUrl,
         contentType: contentType ?? Headers.formUrlEncodedContentType,
+        responseType: ResponseType.json,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer $token', // if needed
+         // HttpHeaders.authorizationHeader: 'Bearer $token', // if needed
         },
       ),
     );
+
+    dio.interceptors.add(RefreshTokenInterceptor());
 
     switch (method) {
       case DioMethod.post:
