@@ -8,7 +8,7 @@ Future<void> createUser(String firstName, String lastName, String userName,
   try {
     var id = uuid.v4();
     final response = await APIService.instance.request(
-      '/users', // enter the endpoint for required API call
+      '/api/user', // enter the endpoint for required API call
       DioMethod.post,
       param: {
         "id": id,

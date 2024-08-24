@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jugaenequipo/datasources/user/create_user.dart';
 import 'package:jugaenequipo/presentation/register/business_logic/register_form_provider.dart';
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
@@ -56,10 +57,12 @@ class _RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final registerForm = Provider.of<RegisterFormProvider>(context);
 
-    final user = registerForm.user;
+    final firstName = registerForm.firstName;
+    final lastName = registerForm.lastName;
+    final userName = registerForm.user;
     final email = registerForm.email;
     final password = registerForm.password;
-    final password2 = registerForm.password2;
+    final confirmationPassword = registerForm.confirmationPassword;
 
     final isLoading = registerForm.isLoading;
 
@@ -69,7 +72,53 @@ class _RegisterForm extends StatelessWidget {
           children: [
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: user,
+              controller: firstName,
+              style: const TextStyle(color: Colors.white),
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              decoration: InputDecorations.authInputDecoration(
+                hintText: 'First Name',
+                hintTextColor: Colors.white,
+                labelTextColor: Colors.white,
+              ),
+              onTapOutside: (event) =>
+                  FocusManager.instance.primaryFocus?.unfocus(),
+              onChanged: (value) => firstName.text = value,
+              validator: (value) {
+                return (value != null && value.length > 2)
+                    ? null
+                    : 'Enter a valid name.';
+              },
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: lastName,
+              style: const TextStyle(color: Colors.white),
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              decoration: InputDecorations.authInputDecoration(
+                hintText: 'Last Name',
+                hintTextColor: Colors.white,
+                labelTextColor: Colors.white,
+              ),
+              onTapOutside: (event) =>
+                  FocusManager.instance.primaryFocus?.unfocus(),
+              onChanged: (value) => lastName.text = value,
+              validator: (value) {
+                return (value != null && value.isNotEmpty)
+                    ? null
+                    : 'Last name is required';
+              },
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: userName,
               style: const TextStyle(color: Colors.white),
               autocorrect: false,
               keyboardType: TextInputType.text,
@@ -80,10 +129,12 @@ class _RegisterForm extends StatelessWidget {
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
-              onChanged: (value) => user.text = value,
-              validator: (value) => value != null
-                  ? Validators.isEmail(value: value, context: context)
-                  : 'Email is required',
+              onChanged: (value) => userName.text = value,
+              validator: (value) {
+                return (value != null && value.length > 2)
+                    ? null
+                    : 'User name should have at least 3 characters';
+              },
             ),
             const SizedBox(
               height: 30,
@@ -135,7 +186,7 @@ class _RegisterForm extends StatelessWidget {
             ),
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: password2,
+              controller: confirmationPassword,
               style: const TextStyle(color: Colors.white),
               autocorrect: false,
               obscureText: true,
@@ -147,7 +198,7 @@ class _RegisterForm extends StatelessWidget {
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
-              onChanged: (value) => password2.text = value,
+              onChanged: (value) => confirmationPassword.text = value,
               validator: (value) {
                 return (value != null && value.length >= 6)
                     ? null
@@ -177,18 +228,22 @@ class _RegisterForm extends StatelessWidget {
                         registerForm.isLoading = false;
                         Navigator.pushReplacementNamed(context, 'home');
                       },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                  child: Text(
-                    'Log in',
-                    style: GoogleFonts.openSans(
-                        textStyle: const TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 16.0)),
+                
+                  
+                  child: TextButton(
+                    onPressed: () {
+                      createUser(firstName.text, lastName.text, userName.text, email.text, password.text, confirmationPassword.text);
+                    },
+                    
+                    child: Text('Register',
+                        style: GoogleFonts.openSans(
+                            textStyle: const TextStyle(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16.0,
+                        ))),
                   ),
-                ))
+                )
           ],
         ));
   }
