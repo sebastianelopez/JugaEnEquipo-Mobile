@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/models/models.dart';
 import 'package:jugaenequipo/presentation/chat/screens/chat_screen.dart';
 import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/presentation/screens.dart';
+import 'package:jugaenequipo/presentation/splash/screens/splash_screen.dart';
 
 class AppRoutes {
-  static const initialRoute = 'login';
+  static const initialRoute = 'splash';
 
   static final menuOptions = <MenuOption>[
     MenuOption(
@@ -57,6 +59,7 @@ class AppRoutes {
         name: 'Messages Screen',
         screen: const MessagesScreen()),
     MenuOption(route: 'chat', name: 'Chat Screen', screen: const ChatScreen()),
+    MenuOption(route: 'splash', name: 'Splash Screen', screen: const SplashScreen()),
   ];
 
   static Map<String, Widget Function(BuildContext)> getAppRoutes() {
@@ -86,6 +89,6 @@ class AppRoutes {
   }
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    return MaterialPageRoute(builder: (context) => const LoginScreen());
+    return MaterialPageRoute(builder: (context) => const SplashScreen());
   }
 }
