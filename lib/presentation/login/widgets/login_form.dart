@@ -75,22 +75,9 @@ class LoginForm extends StatelessWidget {
                 color: const Color(0xFFD72323),
                 onPressed: isLoading
                     ? null
-                    : () async {
-                        //hide keyboard
-                        FocusScope.of(context).unfocus();
-
-                        if (!loginForm.isValidForm()) return;
-                        loginForm.isLoading = true;
-
-                        var wasLoginSuccesfull =
-                            await login(email.text, password.text);
-
-                        if (wasLoginSuccesfull) {
-                          loginForm.isLoading = false;
-                          Navigator.pushReplacementNamed(context, 'home');
-                        }
-
-                        loginForm.isLoading = false;
+                    : () {
+                        loginForm.handleLogin(
+                            context, email.text, password.text);
                       },
                 child: Container(
                   padding:
