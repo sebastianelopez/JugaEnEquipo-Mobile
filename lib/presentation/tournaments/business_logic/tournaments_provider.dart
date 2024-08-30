@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
 class TournamentsProvider extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -10,21 +10,21 @@ class TournamentsProvider extends ChangeNotifier {
 
   bool isLoading = false;
 
-  List<Tournament> tournamentsMocks = [
-    Tournament(
+  List<TournamentModel> tournamentsMocks = [
+    TournamentModel(
       title: 'Overwatch deathmatch',
-      game: Game(name: 'Overwatch', image: ''),
+      game: GameModel(name: 'Overwatch', image: ''),
       isOfficial: true,
       registeredPlayers: [
-        User(
+        UserModel(
             id: "asda54498",
             firstName: "Carlos",
             lastName: "Sanchez",
             userName: "Cahez",
             email: "",
             profileImage: "",
-            team: Team(name: "KruSports", members: [])),
-        User(
+            team: TeamModel(name: "KruSports", members: [])),
+        UserModel(
           id: "asda54498",
           firstName: "Pepe",
           lastName: "Perez",
@@ -34,20 +34,20 @@ class TournamentsProvider extends ChangeNotifier {
         )
       ],
     ),
-    Tournament(
+    TournamentModel(
       title: 'CS PVP',
-      game: Game(name: 'Counter Strike', image: ''),
+      game: GameModel(name: 'Counter Strike', image: ''),
       isOfficial: true,
       registeredPlayers: [
-        User(
+        UserModel(
             id: "asda54498",
             firstName: "Carlos",
             lastName: "Sanchez",
             userName: "Cahez",
             email: "",
             profileImage: "",
-            team: Team(name: "KruSports", members: [])),
-        User(
+            team: TeamModel(name: "KruSports", members: [])),
+        UserModel(
           id: "asda54498",
           firstName: "Pepe",
           lastName: "Perez",
@@ -55,15 +55,15 @@ class TournamentsProvider extends ChangeNotifier {
           email: "",
           profileImage: "",
         ),
-        User(
+        UserModel(
             id: "asda54498",
             firstName: "Carlos",
             lastName: "Sanchez",
             userName: "Cahez",
             email: "",
             profileImage: "",
-            team: Team(name: "KruSports", members: [])),
-        User(
+            team: TeamModel(name: "KruSports", members: [])),
+        UserModel(
           id: "asda54498",
           firstName: "Pepe",
           lastName: "Perez",

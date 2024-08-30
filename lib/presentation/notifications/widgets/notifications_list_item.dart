@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class NotificationsListItem extends StatelessWidget {
-  final User user;
+  final UserModel user;
   final String notificationContent;
   final String date;
   final bool isNotificationRead;

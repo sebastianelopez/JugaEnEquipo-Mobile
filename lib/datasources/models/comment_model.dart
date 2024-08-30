@@ -1,14 +1,14 @@
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
-class Comment {
-  final User user;
+class CommentModel {
+  final UserModel user;
   final String? copy;
   final String? image;
   final String createdAt;
   final String updatedAt;
   final String deletedAt;
 
-  Comment({
+  CommentModel({
     required this.user,
     this.copy,
     this.image,

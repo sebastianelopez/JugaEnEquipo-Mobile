@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
 class HomeScreenProvider extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -10,16 +10,16 @@ class HomeScreenProvider extends ChangeNotifier {
 
   bool isLoading = false;
 
-  List<Post> postsmocks = [
-    Post(
-        user: User(
+  List<PostModel> postsmocks = [
+    PostModel(
+        user: UserModel(
             id: "asdasdsad",
             userName: "CarlosKret",
             firstName: "Carlos",
             lastName: "Sanchez",
             email: "",
             profileImage: "",
-            team: Team(name: "KruSports", members: [])),
+            team: TeamModel(name: "KruSports", members: [])),
         copy: "Acabo de llegar a diamond en Overwatch!",
         images: [
           "https://elcomercio.pe/resizer/gBmn3MDLU8MJ5lfROXomXggJZeg=/1200x675/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/J5TZJL65YBB2JN5TCPZBJVNJTQ.webp"
@@ -28,8 +28,8 @@ class HomeScreenProvider extends ChangeNotifier {
         likes: 20,
         comments: 2,
         shares: 2),
-    Post(
-        user: User(
+    PostModel(
+        user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
           firstName: "Pepe",
@@ -46,8 +46,8 @@ class HomeScreenProvider extends ChangeNotifier {
         likes: 12,
         comments: 2,
         shares: 3),
-    Post(
-        user: User(
+    PostModel(
+        user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
           firstName: "Pepe",
@@ -65,8 +65,8 @@ class HomeScreenProvider extends ChangeNotifier {
         likes: 12,
         comments: 2,
         shares: 3),
-    Post(
-        user: User(
+    PostModel(
+        user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
           firstName: "Pepe",
@@ -85,8 +85,8 @@ class HomeScreenProvider extends ChangeNotifier {
         likes: 12,
         comments: 2,
         shares: 3),
-    Post(
-        user: User(
+    PostModel(
+        user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
           firstName: "Pepe",
@@ -106,8 +106,8 @@ class HomeScreenProvider extends ChangeNotifier {
         likes: 12,
         comments: 2,
         shares: 3),
-    Post(
-        user: User(
+    PostModel(
+        user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
           firstName: "Pepe",

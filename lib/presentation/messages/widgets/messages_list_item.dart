@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 
 class MessagesListItem extends StatelessWidget {
-  final User user;
+  final UserModel user;
   final String messageText;
   final String time;
   final bool isMessageRead;

@@ -1,12 +1,12 @@
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
-class NotificationItem {
-  final User user;
+class NotificationModel {
+  final UserModel user;
   final String notificationContent;
   final bool isNotificationRead;
   final String date;
 
-  NotificationItem(
+  NotificationModel(
       {required this.user,
       required this.notificationContent,
       required this.isNotificationRead,

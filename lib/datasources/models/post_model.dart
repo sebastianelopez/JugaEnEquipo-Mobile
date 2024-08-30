@@ -1,7 +1,7 @@
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
-class Post {
-  final User user;
+class PostModel {
+  final UserModel user;
   final String postDate;
   final String? copy;
   final List<String>? images;
@@ -9,7 +9,7 @@ class Post {
   final int shares;
   final int comments;
 
-  Post({
+  PostModel({
     required this.user,
     required this.postDate,
     this.copy,

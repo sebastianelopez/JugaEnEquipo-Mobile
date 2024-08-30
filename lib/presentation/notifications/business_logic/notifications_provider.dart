@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationsProvider extends ChangeNotifier {
-  List<NotificationItem> getMockNotifications([BuildContext? context]) {
+  List<NotificationModel> getMockNotifications([BuildContext? context]) {
     return [
-      NotificationItem(
-          user: User(
+      NotificationModel(
+          user: UserModel(
               id: "asda89498",
               firstName: "Lautaro",
               lastName: "Rivadeneria",
@@ -18,8 +18,8 @@ class NotificationsProvider extends ChangeNotifier {
               AppLocalizations.of(context!)!.notificationPostLiked('Lautaro'),
           isNotificationRead: false,
           date: "2024-05-04 15:00:04Z"),
-      NotificationItem(
-          user: User(
+      NotificationModel(
+          user: UserModel(
               id: "as55sd498",
               firstName: "Alejandro",
               lastName: "Minetti",
@@ -31,8 +31,8 @@ class NotificationsProvider extends ChangeNotifier {
               .notificationInviteToTeam("Ale", "Bosteros"),
           isNotificationRead: true,
           date: "2024-04-21 19:18:04Z"),
-      NotificationItem(
-          user: User(
+      NotificationModel(
+          user: UserModel(
               id: "a345sd498",
               firstName: "Kru",
               lastName: "Sports",
@@ -47,5 +47,5 @@ class NotificationsProvider extends ChangeNotifier {
     ];
   }
 
-  List<NotificationItem> notificationMocks = [];
+  List<NotificationModel> notificationMocks = [];
 }

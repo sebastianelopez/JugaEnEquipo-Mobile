@@ -1,12 +1,12 @@
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
-class ChatUser {
-  User user;
+class ChatUserModel {
+  UserModel user;
   String messageText;
   String time;
   bool isMessageRead;
 
-  ChatUser(
+  ChatUserModel(
       {required this.user,
       required this.messageText,
       required this.time,

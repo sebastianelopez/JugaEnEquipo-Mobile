@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart' show IconData, Widget;
 
-class MenuOption {
+class MenuOptionModel {
   final String route;
   final IconData? icon;
   final String name;
   final Widget screen;
 
-  MenuOption({
+  MenuOptionModel({
       required this.route,
       this.icon,
       required this.name,

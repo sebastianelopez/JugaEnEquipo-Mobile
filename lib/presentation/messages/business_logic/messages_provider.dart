@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
 class MessagesProvider extends ChangeNotifier {
-  List<ChatUser> chatsMocks = [
-    ChatUser(
-        user: User(
+  List<ChatUserModel> chatsMocks = [
+    ChatUserModel(
+        user: UserModel(
             id: "asdasd98",
             firstName: "Lautaro",
             lastName: "Rivadeneira",
@@ -15,8 +15,8 @@ class MessagesProvider extends ChangeNotifier {
         messageText: "extraño tu pene",
         isMessageRead: false,
         time: "2024-05-04 15:00:04Z"),
-    ChatUser(
-        user: User(
+    ChatUserModel(
+        user: UserModel(
             id: "asda5sd498",
             firstName: "Alejandro",
             lastName: "Minetti",
@@ -27,8 +27,8 @@ class MessagesProvider extends ChangeNotifier {
         messageText: "me pasas tu skincare?",
         isMessageRead: false,
         time: "2024-04-21 19:18:04Z"),
-    ChatUser(
-        user: User(
+    ChatUserModel(
+        user: UserModel(
             id: "asda5sd128",
             firstName: "Matias",
             lastName: "Racing",

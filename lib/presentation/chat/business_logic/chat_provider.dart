@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/models.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 
 class ChatProvider extends ChangeNotifier {
-  List<ChatMessage> messages = [
-    ChatMessage(
+  List<ChatMessageModel> messages = [
+    ChatMessageModel(
         messageContent: "cuando nos vemos de nuevo?", messageType: "receiver"),
-    ChatMessage(messageContent: "te extraño", messageType: "receiver"),
-    ChatMessage(
+    ChatMessageModel(messageContent: "te extraño", messageType: "receiver"),
+    ChatMessageModel(
         messageContent: "esta semana ando a mil", messageType: "sender"),
-    ChatMessage(messageContent: "dale man, por favor", messageType: "receiver"),
-    ChatMessage(
+    ChatMessageModel(messageContent: "dale man, por favor", messageType: "receiver"),
+    ChatMessageModel(
         messageContent: "tengo que trabajar, chabon", messageType: "sender"),
-    ChatMessage(messageContent: "es que no entendes", messageType: "receiver"),
-    ChatMessage(
+    ChatMessageModel(messageContent: "es que no entendes", messageType: "receiver"),
+    ChatMessageModel(
         messageContent: "lo que pasa es que...", messageType: "receiver"),
-    ChatMessage(messageContent: "??", messageType: "sender"),
-    ChatMessage(messageContent: "extraño....", messageType: "receiver"),
-    ChatMessage(messageContent: "...", messageType: "sender"),
-    ChatMessage(messageContent: "extraño tu pene", messageType: "receiver"),
+    ChatMessageModel(messageContent: "??", messageType: "sender"),
+    ChatMessageModel(messageContent: "extraño....", messageType: "receiver"),
+    ChatMessageModel(messageContent: "...", messageType: "sender"),
+    ChatMessageModel(messageContent: "extraño tu pene", messageType: "receiver"),
   ];
 }

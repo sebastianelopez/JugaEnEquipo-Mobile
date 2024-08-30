@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/models/post.dart';
+import 'package:jugaenequipo/datasources/models/post_model.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_screen.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 
 class PostCard extends StatelessWidget {
-  final Post post;
+  final PostModel post;
 
   const PostCard({super.key, required this.post});
 
