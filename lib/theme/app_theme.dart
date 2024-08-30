@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color primary = Color(0xFFA91F27);
+  static const Color black = Color(0xff070d23);
 
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     primaryColor: primary,
