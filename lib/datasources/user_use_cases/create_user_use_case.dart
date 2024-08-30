@@ -1,4 +1,5 @@
 import 'package:jugaenequipo/datasources/api_service.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = const Uuid();
