@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
             Locale('es', 'AR'),
             Locale('pt', 'BR'),
           ],
-          localizationsDelegates: AppLocalizations.localizationsDelegates,          
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
         );
       });
 }
