@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
-import 'package:jugaenequipo/widgets/create_post.dart';
+import 'package:jugaenequipo/global_widgets/create_post.dart';
 
 class BottomNavigationBarCustom extends StatefulWidget {
   const BottomNavigationBarCustom({Key? key}) : super(key: key);

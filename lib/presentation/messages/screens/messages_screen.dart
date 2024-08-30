@@ -4,7 +4,7 @@ import 'package:jugaenequipo/presentation/messages/widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 
 class MessagesScreen extends StatelessWidget {
   const MessagesScreen({Key? key}) : super(key: key);

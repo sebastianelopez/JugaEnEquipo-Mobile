@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/tournaments/business_logic/tournaments_provider.dart';
 import 'package:jugaenequipo/presentation/tournaments/widgets/tournaments_table.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class TournamentsScreen extends StatelessWidget {

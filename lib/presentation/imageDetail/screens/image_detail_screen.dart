@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 
 class ImageDetailScreen extends StatelessWidget {
   final List<String> imageUrls;
@@ -21,7 +21,6 @@ class ImageDetailScreen extends StatelessWidget {
         ),
       ),
       body: CarouselSlider(
-        
         items: imageUrls.map((imageUrl) {
           return Builder(
             builder: (context) => Hero(
@@ -34,13 +33,12 @@ class ImageDetailScreen extends StatelessWidget {
           );
         }).toList(),
         options: CarouselOptions(
-          height: MediaQuery.of(context).size.height, 
-          viewportFraction: 1.0, 
-          enableInfiniteScroll: false,
-          autoPlay: false, 
-          scrollDirection: Axis.horizontal,
-          initialPage: currentIndex
-        ),
+            height: MediaQuery.of(context).size.height,
+            viewportFraction: 1.0,
+            enableInfiniteScroll: false,
+            autoPlay: false,
+            scrollDirection: Axis.horizontal,
+            initialPage: currentIndex),
       ),
     );
   }

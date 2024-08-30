@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/login/business_logic/login_form_provider.dart';
 import 'package:jugaenequipo/presentation/login/widgets/login_form.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {

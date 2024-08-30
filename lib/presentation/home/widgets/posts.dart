@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class Posts extends StatelessWidget {

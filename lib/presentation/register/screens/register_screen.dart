@@ -4,7 +4,7 @@ import 'package:jugaenequipo/datasources/user_use_cases/create_user_use_case.dar
 import 'package:jugaenequipo/presentation/register/business_logic/register_form_provider.dart';
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/widgets/widgets.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 
 class TeamsScreen extends StatelessWidget {
   const TeamsScreen({super.key});
