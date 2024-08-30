@@ -26,6 +26,7 @@ class LoginForm extends StatelessWidget {
               controller: email,
               style: const TextStyle(color: Colors.white),
               autocorrect: false,
+              enableSuggestions: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                 hintText: AppLocalizations.of(context)!.loginUserHintText,
