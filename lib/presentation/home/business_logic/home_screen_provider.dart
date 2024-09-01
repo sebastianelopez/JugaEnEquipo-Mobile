@@ -13,13 +13,13 @@ class HomeScreenProvider extends ChangeNotifier {
   List<PostModel> postsmocks = [
     PostModel(
         user: UserModel(
-            id: "asdasdsad",
-            userName: "CarlosKret",
-            firstName: "Carlos",
-            lastName: "Sanchez",
-            email: "",
-            profileImage: "",
-            team: TeamModel(name: "KruSports", members: [])),
+          id: "asdasdsad",
+          userName: "CarlosKret",
+          firstName: "Carlos",
+          lastName: "Sanchez",
+          email: "",
+          profileImage: "",
+        ),
         copy: "Acabo de llegar a diamond en Overwatch!",
         images: [
           "https://elcomercio.pe/resizer/gBmn3MDLU8MJ5lfROXomXggJZeg=/1200x675/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/J5TZJL65YBB2JN5TCPZBJVNJTQ.webp"

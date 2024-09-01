@@ -1,11 +1,9 @@
-import 'package:jugaenequipo/datasources/models/models.dart';
-
 class UserModel {
   final String id;
   final String firstName;
   final String lastName;
   final String userName;
-  final TeamModel? team;
+  final String? teamId;
   final String email;
   final String? profileImage;
 
@@ -14,7 +12,7 @@ class UserModel {
       required this.firstName,
       required this.lastName,
       required this.userName,
-      this.team,
+      this.teamId,
       required this.email,
       this.profileImage});
 
@@ -25,6 +23,7 @@ class UserModel {
         lastName: json['lastName'] as String,
         userName: json['userName'] as String,
         email: json['email'] as String,
+        teamId: json['teamId'] as String,
         profileImage: (json['profileImage'] ?? '') as String);
   }
 
@@ -35,6 +34,7 @@ class UserModel {
       'lastName': lastName,
       'userName': userName,
       'email': email,
+      'teamId': teamId,
       'profileImage': profileImage
     };
   }

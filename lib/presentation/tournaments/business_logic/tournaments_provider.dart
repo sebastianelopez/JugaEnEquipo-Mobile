@@ -12,65 +12,25 @@ class TournamentsProvider extends ChangeNotifier {
 
   List<TournamentModel> tournamentsMocks = [
     TournamentModel(
+      id: "asdas353",
       title: 'Overwatch deathmatch',
       game: GameModel(name: 'Overwatch', image: ''),
       isOfficial: true,
-      registeredPlayers: [
-        UserModel(
-            id: "asda54498",
-            firstName: "Carlos",
-            lastName: "Sanchez",
-            userName: "Cahez",
-            email: "",
-            profileImage: "",
-            team: TeamModel(name: "KruSports", members: [])),
-        UserModel(
-          id: "asda54498",
-          firstName: "Pepe",
-          lastName: "Perez",
-          userName: "repez",
-          email: "",
-          profileImage: "",
-        )
+      registeredPlayersIds: [
+        "asda54498",
+        "asda544998",
       ],
     ),
     TournamentModel(
+      id: "asdas343",
       title: 'CS PVP',
       game: GameModel(name: 'Counter Strike', image: ''),
       isOfficial: true,
-      registeredPlayers: [
-        UserModel(
-            id: "asda54498",
-            firstName: "Carlos",
-            lastName: "Sanchez",
-            userName: "Cahez",
-            email: "",
-            profileImage: "",
-            team: TeamModel(name: "KruSports", members: [])),
-        UserModel(
-          id: "asda54498",
-          firstName: "Pepe",
-          lastName: "Perez",
-          userName: "repez",
-          email: "",
-          profileImage: "",
-        ),
-        UserModel(
-            id: "asda54498",
-            firstName: "Carlos",
-            lastName: "Sanchez",
-            userName: "Cahez",
-            email: "",
-            profileImage: "",
-            team: TeamModel(name: "KruSports", members: [])),
-        UserModel(
-          id: "asda54498",
-          firstName: "Pepe",
-          lastName: "Perez",
-          userName: "repez",
-          email: "",
-          profileImage: "",
-        )
+      registeredPlayersIds: [
+        "asda4544968",
+        "asdau54498",
+        "asda5t4498",
+        "asda54p498",
       ],
     )
   ];

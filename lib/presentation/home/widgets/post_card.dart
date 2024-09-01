@@ -32,16 +32,17 @@ class PostCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (post.user.team != null)
-                      Text(
+                    if (post.user.teamId != null)
+                      // TODO: getTeamById()
+                      /*  Text(
                         post.user.team!.name,
                         style: const TextStyle(fontSize: 13),
-                      ),
-                    Text(
-                        formatTimeElapsed(
-                            DateTime.parse(post.postDate), context),
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(fontSize: 13)),
+                      ), */
+                      Text(
+                          formatTimeElapsed(
+                              DateTime.parse(post.postDate), context),
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(fontSize: 13)),
                   ],
                 ),
               ),

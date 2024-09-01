@@ -61,7 +61,7 @@ class TournamentsTable extends StatelessWidget {
                 ),
               ),
               DataCell(
-                  Text(tournament.registeredPlayers?.length.toString() ?? '0')),
+                  Text(tournament.registeredPlayersIds?.length.toString() ?? '0')),
             ],
           );
         }).toList(),
