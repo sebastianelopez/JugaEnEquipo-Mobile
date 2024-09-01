@@ -6,6 +6,7 @@ class NotificationsProvider extends ChangeNotifier {
   List<NotificationModel> getMockNotifications([BuildContext? context]) {
     return [
       NotificationModel(
+          id: 'op23343',
           user: UserModel(
               id: "asda89498",
               firstName: "Lautaro",
@@ -19,6 +20,7 @@ class NotificationsProvider extends ChangeNotifier {
           isNotificationRead: false,
           date: "2024-05-04 15:00:04Z"),
       NotificationModel(
+          id: 'op233243',
           user: UserModel(
               id: "as55sd498",
               firstName: "Alejandro",
@@ -32,6 +34,7 @@ class NotificationsProvider extends ChangeNotifier {
           isNotificationRead: true,
           date: "2024-04-21 19:18:04Z"),
       NotificationModel(
+          id: 'op2a3343',
           user: UserModel(
               id: "a345sd498",
               firstName: "Kru",
