@@ -14,7 +14,7 @@ class TournamentsProvider extends ChangeNotifier {
     TournamentModel(
       id: "asdas353",
       title: 'Overwatch deathmatch',
-      game: GameModel(name: 'Overwatch', image: ''),
+      game: GameModel(id: '1223', name: 'Overwatch', image: ''),
       isOfficial: true,
       registeredPlayersIds: [
         "asda54498",
@@ -24,7 +24,7 @@ class TournamentsProvider extends ChangeNotifier {
     TournamentModel(
       id: "asdas343",
       title: 'CS PVP',
-      game: GameModel(name: 'Counter Strike', image: ''),
+      game: GameModel(id: '123', name: 'Counter Strike', image: ''),
       isOfficial: true,
       registeredPlayersIds: [
         "asda4544968",
