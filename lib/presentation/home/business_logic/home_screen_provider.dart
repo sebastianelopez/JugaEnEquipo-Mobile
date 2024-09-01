@@ -12,6 +12,7 @@ class HomeScreenProvider extends ChangeNotifier {
 
   List<PostModel> postsmocks = [
     PostModel(
+        id: 'asd873738',
         user: UserModel(
           id: "asdasdsad",
           userName: "CarlosKret",
@@ -29,6 +30,7 @@ class HomeScreenProvider extends ChangeNotifier {
         comments: 2,
         shares: 2),
     PostModel(
+        id: 'asd844738',
         user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
@@ -47,6 +49,7 @@ class HomeScreenProvider extends ChangeNotifier {
         comments: 2,
         shares: 3),
     PostModel(
+        id: 'asd843738',
         user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
@@ -66,6 +69,7 @@ class HomeScreenProvider extends ChangeNotifier {
         comments: 2,
         shares: 3),
     PostModel(
+        id: 'asd8437384',
         user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
@@ -86,6 +90,7 @@ class HomeScreenProvider extends ChangeNotifier {
         comments: 2,
         shares: 3),
     PostModel(
+        id: 'asd8437338',
         user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
@@ -107,6 +112,7 @@ class HomeScreenProvider extends ChangeNotifier {
         comments: 2,
         shares: 3),
     PostModel(
+        id: 'asd843e738',
         user: UserModel(
           id: "asdasdsad12",
           userName: "ski",
