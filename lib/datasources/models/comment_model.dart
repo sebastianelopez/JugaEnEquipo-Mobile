@@ -1,6 +1,7 @@
 import 'package:jugaenequipo/datasources/models/models.dart';
 
 class CommentModel {
+  final String id;
   final UserModel user;
   final String? copy;
   final String? image;
@@ -9,6 +10,7 @@ class CommentModel {
   final String deletedAt;
 
   CommentModel({
+    required this.id,
     required this.user,
     this.copy,
     this.image,
@@ -16,4 +18,27 @@ class CommentModel {
     required this.updatedAt,
     required this.deletedAt,
   });
+
+  factory CommentModel.fromJson(Map<String, dynamic> json) {
+    return CommentModel(
+        id: json['id'] as String,
+        user: json['user'] as UserModel,
+        copy: json['copy'] as String,
+        image: json['image'] as String,
+        createdAt: json['createdAt'] as String,
+        updatedAt: json['updatedAt'] as String,
+        deletedAt: json['deletedAt'] as String);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user': user,
+      'copy': copy,
+      'image': image,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'deletedAt': deletedAt
+    };
+  }
 }
