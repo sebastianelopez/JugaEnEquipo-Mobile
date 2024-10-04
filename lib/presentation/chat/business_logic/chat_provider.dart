@@ -4,19 +4,26 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 class ChatProvider extends ChangeNotifier {
   List<ChatMessageModel> messages = [
     ChatMessageModel(
-        messageContent: "cuando nos vemos de nuevo?", messageType: "receiver"),
-    ChatMessageModel(messageContent: "te extraño", messageType: "receiver"),
+        messageContent: "Hola, ¿cómo estás?", messageType: "receiver"),
     ChatMessageModel(
-        messageContent: "esta semana ando a mil", messageType: "sender"),
-    ChatMessageModel(messageContent: "dale man, por favor", messageType: "receiver"),
+        messageContent: "Hola, estoy bien, ¿y tú?", messageType: "sender"),
     ChatMessageModel(
-        messageContent: "tengo que trabajar, chabon", messageType: "sender"),
-    ChatMessageModel(messageContent: "es que no entendes", messageType: "receiver"),
+        messageContent: "También estoy bien, gracias.", messageType: "receiver"),
     ChatMessageModel(
-        messageContent: "lo que pasa es que...", messageType: "receiver"),
-    ChatMessageModel(messageContent: "??", messageType: "sender"),
-    ChatMessageModel(messageContent: "extraño....", messageType: "receiver"),
-    ChatMessageModel(messageContent: "...", messageType: "sender"),
-    ChatMessageModel(messageContent: "extraño tu pene", messageType: "receiver"),
+        messageContent: "¿Qué has estado haciendo últimamente?", messageType: "sender"),
+    ChatMessageModel(
+        messageContent: "He estado trabajando en un nuevo proyecto.", messageType: "receiver"),
+    ChatMessageModel(
+        messageContent: "¡Qué interesante! Cuéntame más.", messageType: "sender"),
+    ChatMessageModel(
+        messageContent: "Es un proyecto de desarrollo de software.", messageType: "receiver"),
+    ChatMessageModel(
+        messageContent: "Suena genial. ¿Necesitas ayuda?", messageType: "sender"),
+    ChatMessageModel(
+        messageContent: "Sí, cualquier ayuda sería apreciada.", messageType: "receiver"),
+    ChatMessageModel(
+        messageContent: "Perfecto, ¿cuándo podemos empezar?", messageType: "sender"),
+    ChatMessageModel(
+        messageContent: "Podemos empezar mañana mismo.", messageType: "receiver"),
   ];
 }
