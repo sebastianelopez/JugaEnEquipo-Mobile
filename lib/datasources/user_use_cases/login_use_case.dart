@@ -15,12 +15,12 @@ Future<LoginResult> login(String email, String password) async {
     switch (response.statusCode) {
       case 200:
         // Success: Process the response data
-        print('API call successful: ${response.data}');
+        print('API call successful: ${response.data['data']['token']}');
 
         const storage = FlutterSecureStorage();
-        await storage.write(key: 'access_token', value: response.data['token']);
+        await storage.write(key: 'access_token', value: response.data['data']['token']);
         await storage.write(
-            key: 'refresh_token', value: response.data['refreshToken']);  
+            key: 'refresh_token', value: response.data['data']['refreshToken']);  
 
         return LoginResult.success;
       case 401:
