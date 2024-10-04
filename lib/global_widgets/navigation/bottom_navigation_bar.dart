@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
 import 'package:jugaenequipo/global_widgets/create_post.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomNavigationBarCustom extends StatefulWidget {
   const BottomNavigationBarCustom({Key? key}) : super(key: key);
@@ -24,6 +25,10 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
     } else if (mainNavigationOptions[index].route == "createPost") {
       showModalBottomSheet(
         context: context,
+        constraints: BoxConstraints(
+          maxHeight: 600.h,
+          maxWidth: 1200,
+        ),
         isScrollControlled: true,
         useSafeArea: true,
         builder: (BuildContext context) {
@@ -31,9 +36,14 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
         },
       );
     } else {
-      Navigator.pushReplacementNamed(
+      Navigator.pushReplacement(
         context,
-        mainNavigationOptions[index].route,
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) =>
+              mainNavigationOptions[index].screen!,
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
       );
     }
   }
@@ -50,6 +60,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
       items: mainNavigationOptions.map((option) {
         return BottomNavigationBarItem(
           icon: Icon(
+            size: 24.h,
             option.icon,
             color: const Color.fromARGB(255, 1, 15, 36),
           ),
