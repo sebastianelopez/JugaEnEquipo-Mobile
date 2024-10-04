@@ -2,7 +2,7 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 
 class CommentModel {
   final String id;
-  final UserModel user;
+  final String userId;
   final String? copy;
   final String? image;
   final String createdAt;
@@ -11,7 +11,7 @@ class CommentModel {
 
   CommentModel({
     required this.id,
-    required this.user,
+    required this.userId,
     this.copy,
     this.image,
     required this.createdAt,
@@ -22,7 +22,7 @@ class CommentModel {
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
         id: json['id'] as String,
-        user: json['user'] as UserModel,
+        userId: json['userId'] as String,
         copy: json['copy'] as String,
         image: json['image'] as String,
         createdAt: json['createdAt'] as String,
@@ -33,7 +33,7 @@ class CommentModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'user': user,
+      'userId': userId,
       'copy': copy,
       'image': image,
       'createdAt': createdAt,
