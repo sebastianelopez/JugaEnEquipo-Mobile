@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/notifications/business_logic/notifications_provider.dart';
 import 'package:jugaenequipo/presentation/notifications/widgets/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsList extends StatelessWidget {
@@ -17,7 +18,7 @@ class NotificationsList extends StatelessWidget {
     return ListView.builder(
       itemCount: notificationMocks.length,
       shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 16),
+      padding: EdgeInsets.only(top: 16.h),
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return NotificationsListItem(

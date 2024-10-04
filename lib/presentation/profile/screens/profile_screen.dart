@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
+
     return Scaffold(
         backgroundColor: AppTheme.primary,
-        appBar: PreferredSize(
-            preferredSize: const Size(double.infinity, 40),
-            child: BackAppBar(
-              label: AppLocalizations.of(context)!.profilePageLabel,
-            )),
+        appBar: BackAppBar(
+          label: AppLocalizations.of(context)!.profilePageLabel,
+        ),
         body: SingleChildScrollView(
           child: Expanded(
             child: Container(
               width: double.infinity,
               color: AppTheme.primary,
-              padding: const EdgeInsets.only(top: 30),
+              padding: EdgeInsets.only(top: 50.h),
               child: Stack(
                 clipBehavior: Clip.none,
                 alignment: Alignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(top: 80),
+                    padding: EdgeInsets.only(top: 80.h),
                     width: double.infinity,
                     decoration: const BoxDecoration(
                         color: Colors.white,
@@ -35,17 +38,17 @@ class ProfileScreen extends StatelessWidget {
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30))),
                     child: Column(children: [
-                      const Text(
-                        "Sebastian Lopez",
+                      Text(
+                        '${user!.firstName} ${user.lastName}',
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w900),
+                            fontSize: 18.h, fontWeight: FontWeight.w900),
                       ),
-                      const Text(
-                        "@sel.tsx",
-                        style: TextStyle(color: Colors.grey),
+                      Text(
+                        '@${user.userName}',
+                        style: TextStyle(color: Colors.grey, fontSize: 14.h),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 15),
+                        margin: EdgeInsets.only(top: 15.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -63,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 15, bottom: 15),
+                        margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -94,9 +97,9 @@ class ProfileScreen extends StatelessWidget {
                       Container(child: const StatsTable())
                     ]),
                   ),
-                  const Positioned(
-                    top: -40,
-                    child: ProfileAvatar(),
+                  Positioned(
+                    top: -40.h,
+                    child: const ProfileAvatar(),
                   )
                 ],
               ),
@@ -105,5 +108,3 @@ class ProfileScreen extends StatelessWidget {
         ));
   }
 }
-
-

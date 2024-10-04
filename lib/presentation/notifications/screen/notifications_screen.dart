@@ -12,12 +12,10 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size(double.infinity, 50),
-          child: BackAppBar(
-            label: AppLocalizations.of(context)!.notificationsPageLabel,
-            backgroundColor: AppTheme.primary,
-          )),
+      appBar: BackAppBar(
+        label: AppLocalizations.of(context)!.notificationsPageLabel,
+        backgroundColor: AppTheme.primary,
+      ),
       body: ChangeNotifierProvider(
         create: (context) => NotificationsProvider(),
         child: const SingleChildScrollView(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationsListItem extends StatelessWidget {
   final UserModel user;
@@ -26,7 +27,7 @@ class NotificationsListItem extends StatelessWidget {
       },
       child: Container(
         padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+            EdgeInsets.only(left: 16.h, right: 16.h, top: 10.h, bottom: 10.h),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -35,7 +36,7 @@ class NotificationsListItem extends StatelessWidget {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundImage: NetworkImage(user.profileImage!),
-                    maxRadius: 20,
+                    maxRadius: 20.h,
                   ),
                   Expanded(
                     child: Column(
@@ -46,7 +47,12 @@ class NotificationsListItem extends StatelessWidget {
                           style: {
                             'b': Style(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade900),
+                                color: Colors.grey.shade900,
+                                fontSize: FontSize(13.h)),
+                            'body': Style(
+                              color: Colors.grey.shade700,
+                              fontSize: FontSize(13.h),
+                            ),
                           },
                         ),
                       ],
@@ -58,7 +64,7 @@ class NotificationsListItem extends StatelessWidget {
             Text(
               formatTimeElapsed(DateTime.parse(date), context),
               style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.h,
                   fontWeight:
                       isNotificationRead ? FontWeight.bold : FontWeight.normal),
             ),

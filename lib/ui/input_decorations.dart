@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InputDecorations {
   static InputDecoration authInputDecoration(
@@ -21,10 +22,10 @@ class InputDecorations {
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       contentPadding:
-          const EdgeInsets.only(left: 30, bottom: 15, top: 10, right: 15),
+          EdgeInsets.only(left: 30.h, bottom: 15.h, top: 10.h, right: 15.h),
       hintFadeDuration: const Duration(milliseconds: 300),
       hintText: hintText,
-      hintStyle: TextStyle(color: hintTextColor ?? Colors.white),
+      hintStyle: TextStyle(color: hintTextColor ?? Colors.white, fontSize: 16.h),
       labelText: labelText,
       labelStyle: TextStyle(color: labelTextColor ?? Colors.white),
       prefixIcon: prefixIcon != null

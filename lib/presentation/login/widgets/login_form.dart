@@ -5,6 +5,7 @@ import 'package:jugaenequipo/presentation/login/business_logic/login_form_provid
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatelessWidget {
@@ -24,7 +25,7 @@ class LoginForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: email,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white, fontSize: 16.h),
               autocorrect: false,
               enableSuggestions: true,
               keyboardType: TextInputType.emailAddress,
@@ -32,6 +33,7 @@ class LoginForm extends StatelessWidget {
                 hintText: AppLocalizations.of(context)!.loginUserHintText,
                 hintTextColor: Colors.white,
                 labelTextColor: Colors.white,
+                
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -40,13 +42,13 @@ class LoginForm extends StatelessWidget {
                   ? Validators.isEmail(value: value, context: context)
                   : AppLocalizations.of(context)!.loginUserRequiredValidation,
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: 30.h,
             ),
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: password,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white, fontSize: 16.h),
               autocorrect: false,
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
@@ -64,8 +66,8 @@ class LoginForm extends StatelessWidget {
                     : AppLocalizations.of(context)!.loginPasswordValidation;
               },
             ),
-            const SizedBox(
-              height: 25,
+            SizedBox(
+              height: 25.w,
             ),
             MaterialButton(
                 shape: RoundedRectangleBorder(
@@ -81,14 +83,14 @@ class LoginForm extends StatelessWidget {
                       },
                 child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 80, vertical: 12),
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
                   child: Text(
                     AppLocalizations.of(context)!.loginButton,
                     style: GoogleFonts.openSans(
-                        textStyle: const TextStyle(
+                        textStyle:  TextStyle(
                             color: Colors.white70,
                             fontWeight: FontWeight.w900,
-                            fontSize: 16.0)),
+                            fontSize: 16.0.h)),
                   ),
                 ))
           ],

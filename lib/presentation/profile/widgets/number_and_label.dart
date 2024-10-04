@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NumberAndLabel extends StatelessWidget {
   final int number;
@@ -27,12 +28,16 @@ class NumberAndLabel extends StatelessWidget {
         child: Column(
           children: [
             Text(number.toString(),
-                style: const TextStyle(
-                    fontWeight: FontWeight.w900, color: AppTheme.primary)),
+                style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    color: AppTheme.primary,
+                    fontSize: 14.h)),
             Text(
               label,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w400, color: AppTheme.primary),
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: AppTheme.primary,
+                  fontSize: 13.h),
             )
           ],
         ),

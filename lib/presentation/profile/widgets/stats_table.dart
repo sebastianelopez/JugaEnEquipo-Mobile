@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StatsTable extends StatelessWidget {
   const StatsTable({super.key});
@@ -8,12 +9,12 @@ class StatsTable extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
-        columns: const <DataColumn>[
+        columns: <DataColumn>[
           DataColumn(
             label: Expanded(
               child: Text(
                 'Game',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5.h),
               ),
             ),
           ),
@@ -21,7 +22,7 @@ class StatsTable extends StatelessWidget {
             label: Expanded(
               child: Text(
                 'User name',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5.h),
               ),
             ),
           ),
@@ -29,7 +30,7 @@ class StatsTable extends StatelessWidget {
             label: Expanded(
               child: Text(
                 'Rank',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5.h),
               ),
             ),
           ),
@@ -37,7 +38,7 @@ class StatsTable extends StatelessWidget {
             label: Expanded(
               child: Text(
                 'DPS',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5.h),
               ),
             ),
           ),
@@ -45,7 +46,7 @@ class StatsTable extends StatelessWidget {
             label: Expanded(
               child: Text(
                 'Tank',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5.h),
               ),
             ),
           ),
@@ -53,48 +54,51 @@ class StatsTable extends StatelessWidget {
             label: Expanded(
               child: Text(
                 'Support',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5.h),
               ),
             ),
           ),
         ],
-        rows: const <DataRow>[
+        rows: <DataRow>[
           DataRow(
             cells: <DataCell>[
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/overwatchLogo.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/overwatchLogo.png'),
                 ),
               ),
-              DataCell(Text('Barry')),
+              DataCell(Text(
+                'Barry',
+                style: TextStyle(fontSize: 13.h),
+              )),
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/overwatchDiamond.png'),
-                ),
-              ),
-              DataCell(
-                Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/overwatchDiamond.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/overwatchDiamond.png'),
                 ),
               ),
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/overwatchDiamond.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/overwatchDiamond.png'),
                 ),
               ),
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/overwatchDiamond.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/overwatchDiamond.png'),
+                ),
+              ),
+              DataCell(
+                Image(
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/overwatchDiamond.png'),
                 ),
               ),
             ],
@@ -103,38 +107,38 @@ class StatsTable extends StatelessWidget {
             cells: <DataCell>[
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/cSLogo.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/cSLogo.png'),
                 ),
               ),
-              DataCell(Text('BarryAllen')),
+              DataCell(Text('BarryAllen', style: TextStyle(fontSize: 13.h))),
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/cSRank.png'),
-                ),
-              ),
-              DataCell(
-                Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/cSRank.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/cSRank.png'),
                 ),
               ),
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/cSRank.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/cSRank.png'),
                 ),
               ),
               DataCell(
                 Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/cSRank.png'),
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/cSRank.png'),
+                ),
+              ),
+              DataCell(
+                Image(
+                  height: 20.h,
+                  width: 20.h,
+                  image: const AssetImage('assets/cSRank.png'),
                 ),
               ),
             ],

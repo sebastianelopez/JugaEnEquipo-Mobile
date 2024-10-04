@@ -12,12 +12,10 @@ class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size(double.infinity, 50),
-          child: BackAppBar(
-            label: AppLocalizations.of(context)!.messagesPageLabel,
-            backgroundColor: AppTheme.primary,
-          )),
+      appBar: BackAppBar(
+        label: AppLocalizations.of(context)!.messagesPageLabel,
+        backgroundColor: AppTheme.primary,
+      ),
       body: ChangeNotifierProvider(
         create: (context) => MessagesProvider(),
         child: const SingleChildScrollView(
