@@ -60,13 +60,15 @@ class AppRoutes {
         route: 'messages',
         name: 'Messages Screen',
         screen: const MessagesScreen()),
-    MenuOptionModel(route: 'chat', name: 'Chat Screen', screen: const ChatScreen()),
+    MenuOptionModel(
+        route: 'chat', name: 'Chat Screen', screen: const ChatScreen()),
   ];
 
   static Map<String, Widget Function(BuildContext)> getAppRoutes() {
     Map<String, Widget Function(BuildContext)> appRoutes = {};
 
-    appRoutes.addAll({'splash': (BuildContext context) => const SplashScreen()});
+    appRoutes
+        .addAll({'splash': (BuildContext context) => const SplashScreen()});
 
     for (final option in menuOptions) {
       appRoutes.addAll({option.route: (BuildContext context) => option.screen});
