@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreenProvider extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -7,8 +9,83 @@ class HomeScreenProvider extends ChangeNotifier {
   HomeScreenProvider() {
     initData();
   }
+  late FocusNode focusNode;
 
   bool isLoading = false;
+  bool _hasFocus = false;
+
+  bool get hasFocus => _hasFocus;
+
+   void setFocus(bool hasFocus) {
+    _hasFocus = hasFocus;
+    notifyListeners();
+  }
+
+  List<CommentModel> commentsMocks = [
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Excelente!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Merecidisimo!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: '1502689a-5483-421a-b836-0d08b3ba2731',
+        copy: "Gracias!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Excelente!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Merecidisimo!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Excelente!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Merecidisimo!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Excelente!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+    CommentModel(
+        id: 'asd873738',
+        userId: 'asdasdsadds',
+        copy: "Merecidisimo!",
+        createdAt: "2024-05-04 15:00:04Z",
+        updatedAt: "2024-05-04 15:00:04Z",
+        deletedAt: ""),
+  ];
 
   List<PostModel> postsmocks = [
     PostModel(
@@ -145,6 +222,7 @@ class HomeScreenProvider extends ChangeNotifier {
       }
     });
     isLoading = false;
+
     notifyListeners();
   }
 
@@ -182,4 +260,30 @@ class HomeScreenProvider extends ChangeNotifier {
     imageIds.addAll([1, 2, 3, 4, 5].map((e) => lastId + e));
     setState(() {}); */
   }
+
+  Future<dynamic> openCommentsModal(BuildContext context,
+      {bool? autofocus = false}) {
+    return showModalBottomSheet(
+      enableDrag: true,
+      context: context,
+      constraints: const BoxConstraints(
+        maxWidth: 1200,
+      ),
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        return ChangeNotifierProvider(
+          create: (context) => HomeScreenProvider(),
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Comments(
+              autofocus: autofocus ?? false,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 }
