@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DrawerNav extends StatelessWidget {
   const DrawerNav({super.key});
@@ -10,58 +13,87 @@ class DrawerNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final drawerOptions = AppRoutes.getDrawerOptions(context).toList();
+    final user = Provider.of<UserProvider>(context).user;
 
     return Drawer(
+      width: 280.w,
       child: ListView(
-        // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: AppTheme.primary,
-              image: DecorationImage(
-                image: NetworkImage(
-                  "https://static.wikia.nocookie.net/onepiece/images/a/af/Monkey_D._Luffy_Anime_Dos_A%C3%B1os_Despu%C3%A9s_Infobox.png/revision/latest?cb=20200616015904&path-prefix=es",
+          SizedBox(
+            height: 250.h,
+            child: DrawerHeader(
+              decoration: const BoxDecoration(
+                color: AppTheme.primary,
+                image: DecorationImage(
+                  image: NetworkImage(
+                    "https://static.wikia.nocookie.net/onepiece/images/a/af/Monkey_D._Luffy_Anime_Dos_A%C3%B1os_Despu%C3%A9s_Infobox.png/revision/latest?cb=20200616015904&path-prefix=es",
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 8.0.h,
+                    left: 4.0.w,
+                    child: Text(
+                      user!.firstName,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w900),
+                    ),
+                  )
+                ],
               ),
             ),
-            child: Stack(
-              children: [
-                Positioned(
-                  bottom: 8.0,
-                  left: 4.0,
-                  child: Text(
-                    "Usuario",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w900),
-                  ),
-                )
-              ],
-            ),
           ),
-          ...drawerOptions.map((option) {
-            return ListTile(
-              title: Text(option.name,
-                  style: const TextStyle(fontWeight: FontWeight.w900)),
-              onTap: () {
-                //hide keyboard
-                FocusScope.of(context).unfocus();
-                Navigator.pushNamed(context, option.route);
-              },
-            );
-          }),
-          Row(
+          Column(
             children: [
-              Container(
-                  margin: const EdgeInsets.only(right: 30.0, left: 15.0),
-                  child: Text(AppLocalizations.of(context)!.drawerlanguageLabel,
-                      style: const TextStyle(fontWeight: FontWeight.w900))),
-              const LanguageDropdown(showLabel: true),
+              ...drawerOptions.map((option) {
+                return ListTile(
+                  title: Text(option.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900, fontSize: 15.sp)),
+                  onTap: () {
+                    // Hide keyboard
+                    FocusScope.of(context).unfocus();
+                    Navigator.pushNamed(context, option.route);
+                  },
+                );
+              }),
+              Row(
+                children: [
+                  Container(
+                      margin: EdgeInsets.only(right: 30.0.w, left: 15.0.h),
+                      child: Text(
+                          AppLocalizations.of(context)!.drawerlanguageLabel,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 15.sp))),
+                  const LanguageDropdown(showLabel: true),
+                ],
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
             ],
           ),
+          TextButton.icon(
+            style: ButtonStyle(
+              alignment: Alignment.centerLeft,
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+            ),
+            iconAlignment: IconAlignment.start,
+            onPressed: () {},
+            icon: Icon(Icons.logout, size: 30.sp),
+            label: Text(AppLocalizations.of(context)!.drawerLogoutLabel,
+                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w900)),
+          )
         ],
       ),
     );
