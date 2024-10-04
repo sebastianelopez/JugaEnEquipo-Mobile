@@ -1,14 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/login_use_case.dart';
+import 'package:jugaenequipo/providers/providers.dart';
+import 'package:provider/provider.dart';
 
 class LoginFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController email = TextEditingController(text: 'lopezsebastian.emanuel@gmail.com');
+  TextEditingController password = TextEditingController(text: '123456');
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  var storage = const FlutterSecureStorage();
 
   set isLoading(bool value) {
     _isLoading = value;
@@ -26,17 +33,50 @@ class LoginFormProvider extends ChangeNotifier {
     FocusScope.of(context).unfocus();
     if (!isValidForm()) return;
     isLoading = true;
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     final result = await login(email, password);
 
     switch (result) {
       case LoginResult.success:
+        var token = await storage.read(key: 'access_token');
+        print('token:  $token');
+        if (token == null) {
+          isLoading = false;
+          return;
+        }
+
+        // Split the token into its three parts
+        final parts = token.split('.');
+        if (parts.length != 3) {
+          throw FormatException('Invalid token');
+        }
+
+        // Decode the second part (payload)
+        final payload = parts[1];
+        final normalized = base64.normalize(payload);
+        final decodedBytes = base64.decode(normalized);
+        final decodedString = utf8.decode(decodedBytes);
+
+        // Extract the user ID from the decoded payload
+        final payloadMap = json.decode(decodedString);
+        final decodedId = payloadMap['id'];
+
+        if (decodedId == null) {
+          throw FormatException('ID not found in token payload');
+        }
+
+        var user = await getUserById(decodedId);
+        print(user);
+        if (user == null) {
+          throw Exception('User not found');
+        }
+        userProvider.setUser(user!);
+        print(user);
         isLoading = false;
         Navigator.pushReplacementNamed(context, 'home');
         break;
       case LoginResult.unauthorized:
         isLoading = false;
-        // Show a custom error message to the user (e.g., "Invalid email or password")
-        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -57,8 +97,6 @@ class LoginFormProvider extends ChangeNotifier {
         break;
       case LoginResult.error:
         isLoading = false;
-        // Show a generic error message to the user (optional: retry button)
-        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
