@@ -32,7 +32,7 @@ class ChatMessagesList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   color: (chatProvider.messages[index].messageType == "receiver"
                       ? Colors.grey.shade200
-                      : Colors.blue[200]),
+                      : Colors.red[200]),
                 ),
                 padding: const EdgeInsets.all(16),
                 child: Text(
