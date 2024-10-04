@@ -24,6 +24,7 @@
   "timeSecondsSuffixText": "segundos",
   "drawerlanguageLabel": "Idioma",
   "drawerProfileLabel": "Perfil",
+  "drawerLogoutLabel": "Cerrar sesion",
   "profilePageLabel": "Perfil",
   "profileFollowButtonLabel": "Seguir",
   "profileMessagesButtonLabel": "Mensajes",
@@ -31,6 +32,7 @@
   "profileFollowersButtonLabel": "Seguidores",
   "profilePrizesButtonLabel": "Premios",
   "messagesPageLabel": "Mensajes",
+  "commentsModalLabel": "Comentarios",
   "notificationsPageLabel": "Notificaciones",
   "notificationPostLiked": "A <b>{name}</b> le gustó tu publicacion.",
   "@notificationPostLiked": {
