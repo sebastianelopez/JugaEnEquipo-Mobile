@@ -14,11 +14,8 @@ class ImageDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: const PreferredSize(
-        preferredSize: Size(double.infinity, 40),
-        child: BackAppBar(
-          label: "",
-        ),
+      appBar: BackAppBar(
+        label: "",
       ),
       body: CarouselSlider(
         items: imageUrls.map((imageUrl) {

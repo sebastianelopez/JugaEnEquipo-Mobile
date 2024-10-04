@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreatePost extends StatelessWidget {
   const CreatePost({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.transparent,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 8.h),
         child: Column(
           children: <Widget>[
             Row(
@@ -22,22 +23,26 @@ class CreatePost extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(Icons.close),
+                      icon: Icon(Icons.close, size: 22.h),
                     ),
-                    const Text('Create post'),
+                    Text(
+                      'Create post',
+                      style: TextStyle(fontSize: 13.h),
+                    ),
                   ],
                 ),
                 TextButton(
                   onPressed: () {},
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(AppTheme.primary),
-                    padding: MaterialStatePropertyAll(
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        const WidgetStatePropertyAll(AppTheme.primary),
+                    padding: WidgetStatePropertyAll(
+                      EdgeInsets.symmetric(horizontal: 20.h, vertical: 8.h),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Post",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white, fontSize: 13.h),
                   ),
                 ),
               ],
@@ -62,7 +67,7 @@ class CreatePost extends StatelessWidget {
                 border: Border(
                   top: BorderSide(
                     color: Colors.grey[300]!,
-                    width: 1.0,
+                    width: 1.0.h,
                   ),
                 ),
               ),
@@ -72,10 +77,16 @@ class CreatePost extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   shape: const BeveledRectangleBorder(),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.image),
-                    Text("Foto / Video"),
+                    Icon(
+                      Icons.image,
+                      size: 24.h,
+                    ),
+                    Text(
+                      "Foto / Video",
+                      style: TextStyle(fontSize: 14.h),
+                    ),
                   ],
                 ),
               ),

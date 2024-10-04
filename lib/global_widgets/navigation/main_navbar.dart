@@ -1,68 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class MainNavbar extends StatelessWidget {
+double _toolbarHeight = 50.0.h;
+
+class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
   const MainNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: _toolbarHeight,
+      centerTitle: true,
+      title: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.0.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0.h),
+          ),
+        ),
+        child: TextField(
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 10.0.h),
+              hintText: AppLocalizations.of(context)!.navSearchInputLabel,
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              prefixIcon: const Icon(Icons.search),
+              labelStyle: TextStyle()),
+          onChanged: (value) {
+            // Handle the search input changes here.
+          },
+        ),
+      ),
       backgroundColor: AppTheme.primary,
-      leadingWidth: 60.0,
+      leadingWidth: 50.0.h,
       leading: GestureDetector(
         onTap: () {
           Scaffold.of(context).openDrawer();
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: const CircleAvatar(
-            backgroundImage: AssetImage(
+          padding: EdgeInsets.symmetric(vertical: 7.0),
+          child: CircleAvatar(
+            backgroundImage: const AssetImage(
                 'assets/login.png'), // Replace with your profile image path
-            radius: 16,
+            radius: 16.w,
             backgroundColor: Colors.white,
           ),
         ),
       ),
       shadowColor: Colors.black,
       actions: [
-        Row(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.7,
-              margin: const EdgeInsets.symmetric(vertical: 10.0),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
-                  hintText: AppLocalizations.of(context)!.navSearchInputLabel,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search),
-                ),
-                onChanged: (value) {
-                  // Handle the search input changes here.
-                },
-              ),
-            ),
-            IconButton(
-              color: Colors.white,
-              icon: const Icon(Icons.message),
-              onPressed: () {
-                //hide keyboard
-                FocusScope.of(context).unfocus();
-                Navigator.pushNamed(context, 'messages');
-              },
-            ),
-          ],
+        IconButton(
+          color: Colors.white,
+          icon: const Icon(Icons.message),
+          iconSize: 30.h,
+          onPressed: () {
+            //hide keyboard
+            FocusScope.of(context).unfocus();
+            Navigator.pushNamed(context, 'messages');
+          },
         ),
       ],
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(_toolbarHeight);
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/post_model.dart';
+import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class PostCard extends StatelessWidget {
   final PostModel post;
@@ -11,38 +14,46 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeProvider = Provider.of<HomeScreenProvider>(context);
     return Center(
       child: Card(
-        margin: const EdgeInsets.only(
-          top: 8.0,
+        margin: EdgeInsets.only(
+          top: 8.0.w,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://elcomercio.pe/resizer/xvcflv5nZ6qztMCIojBYfROeCmo=/1200x800/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/J5TZJL65YBB2JN5TCPZBJVNJTQ.webp'),
-                maxRadius: 25,
+              leading: SizedBox(
+                height: 50.h,
+                width: 50.h,
+                child: CircleAvatar(
+                  maxRadius: 15.h,
+                  backgroundImage: const NetworkImage(
+                    'https://elcomercio.pe/resizer/xvcflv5nZ6qztMCIojBYfROeCmo=/1200x800/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/J5TZJL65YBB2JN5TCPZBJVNJTQ.webp',
+                  ),
+                ),
               ),
               title: Text(post.user.userName,
-                  style: const TextStyle(fontWeight: FontWeight.w900)),
+                  style:
+                      TextStyle(fontWeight: FontWeight.w900, fontSize: 15.h)),
               subtitle: SizedBox(
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (post.user.teamId != null)
-                      // TODO: getTeamById()
-                      /*  Text(
+                    // TODO: getTeamById()
+                    /*  
+                      if (post.user.teamId != null)
+                      Text(
                         post.user.team!.name,
                         style: const TextStyle(fontSize: 13),
                       ), */
-                      Text(
-                          formatTimeElapsed(
-                              DateTime.parse(post.postDate), context),
-                          textAlign: TextAlign.left,
-                          style: const TextStyle(fontSize: 13)),
+                    Text(
+                        formatTimeElapsed(
+                            DateTime.parse(post.postDate), context),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 13.h)),
                   ],
                 ),
               ),
@@ -55,6 +66,7 @@ class PostCard extends StatelessWidget {
                     width: double.infinity,
                     child: Text(
                       post.copy!,
+                      style: TextStyle(fontSize: 13.h),
                     ),
                   ),
                 const SizedBox(height: 8),
@@ -65,9 +77,8 @@ class PostCard extends StatelessWidget {
             if (post.likes > 0 || post.comments > 0)
               ElevatedButton(
                 style: const ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(Colors.transparent),
-                    foregroundColor: MaterialStatePropertyAll(Colors.grey)),
+                    backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+                    foregroundColor: WidgetStatePropertyAll(Colors.grey)),
                 onPressed: () {
                   // Add your button action here
                 },
@@ -76,31 +87,28 @@ class PostCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.favorite,
-                          size: 15.0,
+                          size: 15.0.h,
                           color: Colors.red,
                         ),
                         const SizedBox(
                           width: 5.0,
                         ),
-                        Text(post.likes.toString()),
+                        Text(
+                          post.likes.toString(),
+                          style: TextStyle(fontSize: 14.h),
+                        ),
                       ],
                     ),
                     TextButton(
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          useSafeArea: true,
-                          builder: (BuildContext context) {
-                            return const Comments();
-                          },
-                        );
+                        homeProvider.openCommentsModal(context);
                       },
-                      child: Text(post.comments > 0
-                          ? "${post.comments} comentarios"
-                          : ''),
+                      child: Text(
+                        post.comments > 0 ? "${post.comments} comentarios" : '',
+                        style: TextStyle(fontSize: 14.h),
+                      ),
                     ),
                   ],
                 ),
@@ -117,6 +125,7 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   color: Colors.grey,
                   icon: const Icon(Icons.favorite),
+                  iconSize: 24.h,
                   onPressed: () {
                     // Handle the message icon press here.
                   },
@@ -124,8 +133,9 @@ class PostCard extends StatelessWidget {
                 IconButton(
                   color: Colors.grey,
                   icon: const Icon(Icons.message),
+                  iconSize: 24.h,
                   onPressed: () {
-                    // Handle the message icon press here.
+                    homeProvider.openCommentsModal(context, autofocus: true);
                   },
                 ),
               ],

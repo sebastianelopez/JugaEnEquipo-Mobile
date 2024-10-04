@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/home/widgets/posts.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,10 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: MainNavbar(),
-      ),
+      appBar: const MainNavbar(),
       drawer: const DrawerNav(),
       body: ChangeNotifierProvider(
         create: (context) => HomeScreenProvider(),

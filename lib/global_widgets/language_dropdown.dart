@@ -3,6 +3,7 @@ import 'package:jugaenequipo/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LanguageDropdown extends StatelessWidget {
   final bool showLabel;
@@ -18,10 +19,10 @@ class LanguageDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final internalization = Provider.of<InternalizationProvider>(context);
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0.h),
       alignment: alignment,
       child: DropdownMenu(
-        width: 85.0,
+        width: 80.0.h,
         initialSelection: AppLocalizations.supportedLocales[1],
         textStyle: const TextStyle(
           color: Colors.red,
@@ -40,8 +41,8 @@ class LanguageDropdown extends StatelessWidget {
               borderRadius: 8,
             ),
             style: const ButtonStyle(
-              foregroundColor: MaterialStatePropertyAll(Colors.red),
-              textStyle: MaterialStatePropertyAll(
+              foregroundColor: WidgetStatePropertyAll(Colors.red),
+              textStyle: WidgetStatePropertyAll(
                 TextStyle(
                   fontWeight: FontWeight.w900,
                 ),
@@ -56,10 +57,11 @@ class LanguageDropdown extends StatelessWidget {
         },
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.red, width: 1.0),
+            borderSide: BorderSide(color: Colors.red, width: 1.0.w),
             borderRadius: BorderRadius.circular(8.0),
           ),
-          contentPadding: const EdgeInsets.only(left: 9.0),
+          contentPadding:
+              EdgeInsets.only(left: 9.0.w, top: 8.0.w, bottom: 8.0.w),
         ),
       ),
     );

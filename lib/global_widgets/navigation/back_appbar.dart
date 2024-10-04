@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BackAppBar extends StatelessWidget {
+double _toolbarHeight = 50.0.h;
+
+class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? label;
   final Color? backgroundColor;
 
@@ -9,6 +12,7 @@ class BackAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: _toolbarHeight,
       elevation: 0.0,
       bottomOpacity: 0.0,
       scrolledUnderElevation: 0,
@@ -26,4 +30,7 @@ class BackAppBar extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(_toolbarHeight);
 }

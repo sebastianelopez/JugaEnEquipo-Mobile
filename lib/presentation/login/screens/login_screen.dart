@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/login/business_logic/login_form_provider.dart';
 import 'package:jugaenequipo/presentation/login/widgets/login_form.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -14,8 +15,8 @@ class LoginScreen extends StatelessWidget {
             child: SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(
-            height: 400,
+          SizedBox(
+            height: 400.h,
           ),
           CardContainer(
             backgroundColor: Colors.transparent,
@@ -29,9 +30,9 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           TextButton(
-            child: const Text('Crear una nueva cuenta',
+            child: Text('Crear una nueva cuenta',
                 style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 14.h,
                     fontWeight: FontWeight.bold,
                     color: Colors.white70)),
             onPressed: () {
@@ -40,8 +41,8 @@ class LoginScreen extends StatelessWidget {
               Navigator.pushNamed(context, 'register');
             },
           ),
-          const SizedBox(
-            height: 40,
+          SizedBox(
+            height: 40.h,
           ),
           const LanguageDropdown(
             showLabel: true,
