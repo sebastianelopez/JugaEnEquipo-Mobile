@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
@@ -12,7 +13,14 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -25,20 +33,25 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         final internalization = Provider.of<InternalizationProvider>(context);
 
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Juga en Equipo',
-          initialRoute: AppRoutes.initialRoute,
-          routes: AppRoutes.getAppRoutes(),
-          onGenerateRoute: AppRoutes.onGenerateRoute,
-          theme: AppTheme.lightTheme,
-          locale: internalization.currentlanguage,
-          supportedLocales: const [
-            Locale('en', 'US'),
-            Locale('es', 'AR'),
-            Locale('pt', 'BR'),
-          ],
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+        return ScreenUtilInit(
+          designSize: const Size(375, 812),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Juga en Equipo',
+            initialRoute: AppRoutes.initialRoute,
+            routes: AppRoutes.getAppRoutes(),
+            onGenerateRoute: AppRoutes.onGenerateRoute,
+            theme: AppTheme.lightTheme,
+            locale: internalization.currentlanguage,
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('es', 'AR'),
+              Locale('pt', 'BR'),
+            ],
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+          ),
         );
       });
 }
