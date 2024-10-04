@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,12 +16,13 @@ class _SplashScreenState extends State<SplashScreen> {
   var storage = const FlutterSecureStorage();
 
   getToken() async {
-    token = storage.read(key: 'access_token');
+    token = await storage.read(key: 'access_token');
+    print(token);
   }
 
   @override
   void initState() {
-    getToken();
+    //getToken();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(seconds: 3));
@@ -45,18 +47,18 @@ class _SplashScreenState extends State<SplashScreen> {
           children: <Widget>[
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.only(bottom: 50),
+              margin: EdgeInsets.only(bottom: 50.h),
               child: LoadingAnimationWidget.flickr(
                 leftDotColor: AppTheme.primary,
                 rightDotColor: AppTheme.black,
-                size: 200,
+                size: 200.h,
               ),
             ),
-            const Text(
+            Text(
               "Juga en Equipo",
               style: TextStyle(
                   color: Colors.blueGrey,
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w900),
             )
           ],
