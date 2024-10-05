@@ -1,3 +1,4 @@
+export 'package:jugaenequipo/global_widgets/photo_or_video_button.dart';
 export 'package:jugaenequipo/global_widgets/navigation/back_appbar.dart';
 export 'package:jugaenequipo/global_widgets/language_dropdown.dart';
 export 'package:jugaenequipo/global_widgets/drawer_nav.dart';
