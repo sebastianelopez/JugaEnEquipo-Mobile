@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 
 class CreatePost extends StatelessWidget {
   const CreatePost({super.key});
@@ -40,16 +41,13 @@ class CreatePost extends StatelessWidget {
                       EdgeInsets.symmetric(horizontal: 20.h, vertical: 8.h),
                     ),
                   ),
-                  child: Text(
-                    "Post",
-                    style: TextStyle(color: Colors.white, fontSize: 13.h),
-                  ),
+                  child: Text('Post',
+                      style: TextStyle(fontSize: 13.h, color: Colors.white)),
                 ),
               ],
             ),
             Expanded(
               child: TextFormField(
-                autofocus: true,
                 autocorrect: false,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
@@ -62,35 +60,7 @@ class CreatePost extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.grey[300]!,
-                    width: 1.0.h,
-                  ),
-                ),
-              ),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shape: const BeveledRectangleBorder(),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.image,
-                      size: 24.h,
-                    ),
-                    Text(
-                      "Foto / Video",
-                      style: TextStyle(fontSize: 14.h),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            const PhotoOrVideoButton(),
           ],
         ),
       ),
