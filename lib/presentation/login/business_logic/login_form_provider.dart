@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 class LoginFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  TextEditingController email = TextEditingController(text: 'lopezsebastian.emanuel@gmail.com');
+  TextEditingController email =
+      TextEditingController(text: 'lopezsebastian.emanuel@gmail.com');
   TextEditingController password = TextEditingController(text: '123456');
 
   bool _isLoading = false;
@@ -39,16 +40,16 @@ class LoginFormProvider extends ChangeNotifier {
     switch (result) {
       case LoginResult.success:
         var token = await storage.read(key: 'access_token');
-        print('token:  $token');
+
         if (token == null) {
           isLoading = false;
-          return;
+          throw const FormatException('Token is null');
         }
 
         // Split the token into its three parts
         final parts = token.split('.');
         if (parts.length != 3) {
-          throw FormatException('Invalid token');
+          throw const FormatException('Invalid token');
         }
 
         // Decode the second part (payload)
@@ -62,18 +63,18 @@ class LoginFormProvider extends ChangeNotifier {
         final decodedId = payloadMap['id'];
 
         if (decodedId == null) {
-          throw FormatException('ID not found in token payload');
+          throw const FormatException('ID not found in token payload');
         }
 
         var user = await getUserById(decodedId);
-        print(user);
+
         if (user == null) {
           throw Exception('User not found');
         }
         userProvider.setUser(user!);
-        print(user);
+
         isLoading = false;
-        Navigator.pushReplacementNamed(context, 'home');
+        Navigator.pushReplacementNamed(context, 'tabs');
         break;
       case LoginResult.unauthorized:
         isLoading = false;
