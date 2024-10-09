@@ -7,6 +7,7 @@ import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart'
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/presentation/screens.dart';
 import 'package:jugaenequipo/presentation/splash/screens/splash_screen.dart';
+import 'package:jugaenequipo/presentation/tabs/screens/tabs_screen.dart';
 
 class AppRoutes {
   static const initialRoute = 'splash';
@@ -28,15 +29,13 @@ class AppRoutes {
 
   static final mainNavigationOptions = <MainNavigationOptionModel>[
     MainNavigationOptionModel(
-        route: 'home', screen: const HomeScreen(), icon: Icons.home),
+        route: 'home', icon: Icons.home),
     MainNavigationOptionModel(
         route: 'teams',
-        screen: const TeamsScreen(),
         icon: Icons.supervisor_account),
     MainNavigationOptionModel(route: 'createPost', icon: Icons.add_circle),
     MainNavigationOptionModel(
         route: 'tournaments',
-        screen: const TournamentsScreen(),
         icon: Icons.emoji_events),
     MainNavigationOptionModel(
         route: 'notifications',
@@ -56,6 +55,10 @@ class AppRoutes {
   }
 
   static final otherRoutes = <MenuOptionModel>[
+    MenuOptionModel(
+        route: 'tabs',
+        name: 'tabs screen',
+        screen: TabsScreen()),
     MenuOptionModel(
         route: 'messages',
         name: 'Messages Screen',
