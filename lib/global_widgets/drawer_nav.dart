@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
@@ -14,6 +15,7 @@ class DrawerNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final drawerOptions = AppRoutes.getDrawerOptions(context).toList();
     final user = Provider.of<UserProvider>(context).user;
+    final storage = const FlutterSecureStorage();
 
     return Drawer(
       width: 280.w,
@@ -89,7 +91,11 @@ class DrawerNav extends StatelessWidget {
               ),
             ),
             iconAlignment: IconAlignment.start,
-            onPressed: () {},
+            onPressed: () async {
+                  await storage.delete(key: 'access_token');
+                  Navigator.pushReplacementNamed(context, 'login');
+                  return;
+            },
             icon: Icon(Icons.logout, size: 30.sp),
             label: Text(AppLocalizations.of(context)!.drawerLogoutLabel,
                 style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w900)),
