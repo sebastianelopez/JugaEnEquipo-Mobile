@@ -5,19 +5,26 @@ import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: const MainNavbar(),
-      drawer: const DrawerNav(),
       body: ChangeNotifierProvider(
         create: (context) => HomeScreenProvider(),
         child: const Posts(),
       ),
-      bottomNavigationBar: const BottomNavigationBarCustom(),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
