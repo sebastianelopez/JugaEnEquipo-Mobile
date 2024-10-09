@@ -34,7 +34,7 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
               ),
-              title: Text(post.user.userName,
+              title: Text(post.user?.userName ?? 'user',
                   style:
                       TextStyle(fontWeight: FontWeight.w900, fontSize: 15.h)),
               subtitle: SizedBox(
@@ -51,7 +51,7 @@ class PostCard extends StatelessWidget {
                       ), */
                     Text(
                         formatTimeElapsed(
-                            DateTime.parse(post.postDate), context),
+                            DateTime.parse(post.createdAt), context),
                         textAlign: TextAlign.left,
                         style: TextStyle(fontSize: 13.h)),
                   ],
@@ -70,11 +70,11 @@ class PostCard extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 8),
-                if (post.images!.isNotEmpty) ImageGrid(images: post.images!),
+                if (post.images != null) ImageGrid(images: post.images!),
                 const SizedBox(height: 8),
               ],
             ),
-            if (post.likes > 0 || post.comments > 0)
+            if (post.likes != null || post.comments != null)
               ElevatedButton(
                 style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.transparent),
@@ -85,31 +85,35 @@ class PostCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.favorite,
-                          size: 15.0.h,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(
-                          width: 5.0,
-                        ),
-                        Text(
-                          post.likes.toString(),
+                    if (post.likes! > 0)
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.favorite,
+                            size: 15.0.h,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Text(
+                            post.likes.toString(),
+                            style: TextStyle(fontSize: 14.h),
+                          ),
+                        ],
+                      ),
+                    if (post.comments! > 0)
+                      TextButton(
+                        onPressed: () {
+                          homeProvider.openCommentsModal(context);
+                        },
+                        child: Text(
+                          post.comments! > 0
+                              ? "${post.comments} comentarios"
+                              : '',
                           style: TextStyle(fontSize: 14.h),
                         ),
-                      ],
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        homeProvider.openCommentsModal(context);
-                      },
-                      child: Text(
-                        post.comments > 0 ? "${post.comments} comentarios" : '',
-                        style: TextStyle(fontSize: 14.h),
                       ),
-                    ),
                   ],
                 ),
               ),

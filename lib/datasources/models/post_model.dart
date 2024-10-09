@@ -2,47 +2,56 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 
 class PostModel {
   final String id;
-  final UserModel user;
-  final String postDate;
+  final UserModel? user;
   final String? copy;
   final List<String>? images;
-  final int likes;
-  final int shares;
-  final int comments;
+  final int? likes;
+  final int? shares;
+  final int? comments;
+  final String createdAt;
+  final String? updatedAt;
+  final String? deletedAt;
 
   PostModel({
     required this.id,
-    required this.user,
-    required this.postDate,
+    this.user,
     this.copy,
     this.images,
-    required this.likes,
-    required this.comments,
-    required this.shares,
+    this.likes,
+    this.comments,
+    this.shares,
+    required this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-        id: json['id'] as String,
-        user: json['user'] as UserModel,
-        postDate: json['postDate'] as String,
-        copy: json['copy'] as String,
-        images: json['images'] as List<String>,
-        likes: json['likes'] as int,
-        shares: json['shares'] as int,
-        comments: json['comments'] as int);
+      id: json['id'] as String,
+      user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
+      copy: json['body'] as String?,
+      images: json['images'] != null ? List<String>.from(json['images']) : null,
+      likes: json['likes'] as int?,
+      shares: json['shares'] as int?,
+      comments: json['comments'] as int?,
+      createdAt: json['createdAt'] as String,
+      updatedAt: json['updatedAt'] as String?,
+      deletedAt: json['deletedAt'] as String?,
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'user': user,
-      'postDate': postDate,
+      'user': user?.toJson(),
       'copy': copy,
       'images': images,
       'likes': likes,
       'shares': shares,
-      'comments': comments
+      'comments': comments,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'deletedAt': deletedAt
     };
   }
 }
