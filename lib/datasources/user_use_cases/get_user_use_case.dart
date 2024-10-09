@@ -1,12 +1,18 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 
 Future<UserModel?> getUserById(String id) async {
   try {
+    final storage = FlutterSecureStorage();
+    final accessToken = await storage.read(key: 'access_token');
     final response = await APIService.instance.request(
       '/api/user/$id',
       DioMethod.get,
       contentType: 'application/json',
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
     );
 
     // Manejar la respuesta
