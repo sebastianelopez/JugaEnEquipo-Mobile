@@ -1,13 +1,15 @@
-import 'package:dio/dio.dart' as dio;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'
+    as flutter_storage;
+import 'package:jugaenequipo/datasources/api_service.dart';
 
-class RefreshTokenInterceptor extends dio.Interceptor {
-  final storage = const FlutterSecureStorage();
-  final _dio = dio.Dio();
+class RefreshTokenInterceptor extends Interceptor {
+  final storage = const flutter_storage.FlutterSecureStorage();
+  final Dio dio;
   List<Map<dynamic, dynamic>> failedRequests = [];
   bool isRefreshing = false;
 
-  RefreshTokenInterceptor();
+  RefreshTokenInterceptor(this.dio);
 
   Future<String?> getRefreshToken() async {
     return await storage.read(key: 'refresh_token');
@@ -24,9 +26,13 @@ class RefreshTokenInterceptor extends dio.Interceptor {
     isRefreshing = true;
 
     try {
-      final response = await _dio.post(
-        '/api/refresh-token',
-        data: {'refreshToken': refreshToken},
+      final response = await APIService.instance.request(
+        '/api/refresh-token', // enter the endpoint for required API call
+        DioMethod.post,
+        param: {
+          'refreshToken': refreshToken,
+        },
+        contentType: 'application/json',
       );
 
       if (response.statusCode == 200) {
@@ -46,7 +52,7 @@ class RefreshTokenInterceptor extends dio.Interceptor {
   }
 
   @override
-  void onError(dio.DioError err, dio.ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     final oldRefreshToken = await getRefreshToken();
 
     if (err.response?.statusCode == 401 && oldRefreshToken != null) {
@@ -83,9 +89,9 @@ class RefreshTokenInterceptor extends dio.Interceptor {
   }
 
   Future<void> retryRequests(
-      String token, dio.ErrorInterceptorHandler handler) async {
+      String token, ErrorInterceptorHandler handler) async {
     for (final request in failedRequests) {
-      final options = dio.Options(
+      final options = Options(
         method: request['method'],
         headers: {
           ...request['headers'],
@@ -94,7 +100,7 @@ class RefreshTokenInterceptor extends dio.Interceptor {
       );
 
       try {
-        final response = await _dio.request(
+        final response = await dio.request(
           request['url'],
           options: options,
           data: request['data'],
@@ -102,7 +108,7 @@ class RefreshTokenInterceptor extends dio.Interceptor {
 
         handler.resolve(response);
       } catch (e) {
-        handler.reject(dio.DioError(
+        handler.reject(DioException(
           requestOptions: request['requestOptions'],
           error: e,
         ));
