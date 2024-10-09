@@ -22,12 +22,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    //getToken();
+    getToken();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(seconds: 3));
       if (token != null) {
-        if (mounted) await Navigator.of(context).pushReplacementNamed('home');
+        if (mounted) await Navigator.of(context).pushReplacementNamed('tabs');
       } else {
         if (mounted) await Navigator.of(context).pushReplacementNamed('login');
       }
