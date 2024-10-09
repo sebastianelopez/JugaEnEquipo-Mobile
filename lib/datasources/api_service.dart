@@ -17,19 +17,18 @@ class APIService {
     Map<String, dynamic>? param,
     String? contentType,
     formData,
+    Map<String, String>? headers,
   }) async {
     final dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
         contentType: contentType ?? Headers.formUrlEncodedContentType,
         responseType: ResponseType.json,
-        headers: {
-         // HttpHeaders.authorizationHeader: 'Bearer $token', // if needed
-        },
+        headers: headers,
       ),
     );
 
-    dio.interceptors.add(RefreshTokenInterceptor());
+    dio.interceptors.add(RefreshTokenInterceptor(dio));
 
     switch (method) {
       case DioMethod.post:
