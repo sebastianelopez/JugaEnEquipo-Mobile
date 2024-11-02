@@ -6,6 +6,7 @@ import 'package:jugaenequipo/presentation/chat/screens/chat_screen.dart';
 import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/presentation/screens.dart';
+import 'package:jugaenequipo/presentation/settings/screens/settings_screen.dart';
 import 'package:jugaenequipo/presentation/splash/screens/splash_screen.dart';
 import 'package:jugaenequipo/presentation/tabs/screens/tabs_screen.dart';
 
@@ -51,6 +52,12 @@ class AppRoutes {
               ? AppLocalizations.of(context)!.drawerProfileLabel
               : '',
           screen: const ProfileScreen()),
+          MenuOptionModel(
+          route: 'settings',
+          name: context != null
+              ? AppLocalizations.of(context)!.drawerSettingsLabel
+              : '',
+          screen: const SettingsScreen()),
     ];
   }
 

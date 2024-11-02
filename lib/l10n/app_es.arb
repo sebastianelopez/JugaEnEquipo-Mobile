@@ -24,6 +24,7 @@
   "timeSecondsSuffixText": "segundos",
   "drawerlanguageLabel": "Idioma",
   "drawerProfileLabel": "Perfil",
+  "drawerSettingsLabel": "Configuracion",
   "drawerLogoutLabel": "Cerrar sesion",
   "profilePageLabel": "Perfil",
   "profileFollowButtonLabel": "Seguir",
