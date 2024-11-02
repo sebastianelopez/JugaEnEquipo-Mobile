@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
+import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).user;
+    UserModel? user = Provider.of<UserProvider>(context).user;
 
     return Scaffold(
         backgroundColor: AppTheme.primary,
@@ -32,9 +34,11 @@ class ProfileScreen extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 80.h),
                     width: double.infinity,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                        color: Preferences.isDarkmode
+                            ? Colors.grey[900]
+                            : Colors.white,
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30))),
                     child: Column(children: [
@@ -94,12 +98,14 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(child: const StatsTable())
+                      Container(child: const StatsTable()),
                     ]),
                   ),
                   Positioned(
                     top: -40.h,
-                    child: const ProfileAvatar(),
+                    child: ProfileAvatar(
+                      profileImage: user.profileImage!,
+                    ),
                   )
                 ],
               ),

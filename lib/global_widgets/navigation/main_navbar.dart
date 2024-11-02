@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 double _toolbarHeight = 50.0.h;
 
@@ -10,6 +13,7 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserModel? user = Provider.of<UserProvider>(context).user;
     return AppBar(
       toolbarHeight: _toolbarHeight,
       centerTitle: true,
@@ -44,8 +48,8 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 7.0),
           child: CircleAvatar(
-            backgroundImage: const AssetImage(
-                'assets/login.png'), // Replace with your profile image path
+            backgroundImage: NetworkImage(
+                user?.profileImage ?? 'https://via.placeholder.com/150'),
             radius: 16.w,
             backgroundColor: Colors.white,
           ),

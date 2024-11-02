@@ -1,33 +1,47 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/providers/providers.dart';
+import 'package:provider/provider.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  const ProfileAvatar({
-    super.key,
-  });
+  final String profileImage;
+
+  const ProfileAvatar({super.key, required this.profileImage});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.white,
-          width: 2.h,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2.h,
-            blurRadius: 5.h,
-            offset: const Offset(0, 3),
+    final imageProvider = Provider.of<ImagePickerProvider>(context);
+    UserModel? user = Provider.of<UserProvider>(context).user;
+
+    return GestureDetector(
+      onTap: () async {
+        if(user != null) {
+          await imageProvider.showOptions(context,
+            imageType: ImageType.imageProfile, userId: user.id);
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.white,
+            width: 2.h,
           ),
-        ],
-      ),
-      child: CircleAvatar(
-        maxRadius: 46.h,
-        backgroundImage: NetworkImage(
-            'https://media.licdn.com/dms/image/C4D03AQGcZkggqz819A/profile-displayphoto-shrink_800_800/0/1644242637439?e=1720051200&v=beta&t=2Ii4NCmuDrsPSXvO7IJJ_zk7qaHK-jOoOr5y9BtYb5g'),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2.h,
+              blurRadius: 5.h,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: CircleAvatar(
+          maxRadius: 46.h,
+          backgroundImage: NetworkImage(profileImage),
+        ),
       ),
     );
   }
