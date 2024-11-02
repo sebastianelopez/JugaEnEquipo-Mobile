@@ -20,6 +20,7 @@ class RefreshTokenInterceptor extends Interceptor {
 
     if (refreshToken == null || isRefreshing) {
       // No refresh token or already refreshing, handle error
+      print('No refresh token or already refreshing');
       return;
     }
 
@@ -37,9 +38,11 @@ class RefreshTokenInterceptor extends Interceptor {
 
       if (response.statusCode == 200) {
         final newAccessToken = response.data['token'];
+        print('token refreshed successfully');
         await storage.write(key: 'access_token', value: newAccessToken);
       } else {
         // Refresh token failed, handle error (e.g., logout)
+        print('Refresh token failed');
         await storage.deleteAll();
         throw Exception('Refresh token failed');
       }
