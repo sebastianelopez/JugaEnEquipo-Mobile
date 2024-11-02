@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/get_posts_by_user_use_case.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
+import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenProvider extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
-
+  BuildContext context;
+  late UserModel? user;
   var posts = <PostModel>[];
 
-  HomeScreenProvider() {
+  HomeScreenProvider({required this.context}) {
+    user = Provider.of<UserProvider>(context, listen: false).user;
     initData();
   }
   late FocusNode focusNode;
@@ -105,7 +108,6 @@ class HomeScreenProvider extends ChangeNotifier {
   }
 
   Future<void> onRefresh() async {
-    await Future.delayed(const Duration(seconds: 2));
     await fetchData();
   }
 
@@ -115,20 +117,19 @@ class HomeScreenProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
+      if(user == null) return;
       final fetchedPosts =
-          await getPostsByUserId('1502689a-5483-421a-b836-0d08b3ba2731');
+          await getPostsByUserId(user!.id);
       if (fetchedPosts != null) {
         posts = fetchedPosts;
         notifyListeners();
       }
-
     } catch (e) {
       print('Error fetching posts: $e');
     } finally {
       isLoading = false;
       notifyListeners();
     }
-    await Future.delayed(const Duration(seconds: 3));
 
     add5();
 
@@ -160,7 +161,7 @@ class HomeScreenProvider extends ChangeNotifier {
       useSafeArea: true,
       builder: (BuildContext context) {
         return ChangeNotifierProvider(
-          create: (context) => HomeScreenProvider(),
+          create: (context) => HomeScreenProvider(context: context),
           child: Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
