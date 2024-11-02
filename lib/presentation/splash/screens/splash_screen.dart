@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
+import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/utils/utils.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -17,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getToken() async {
     token = await storage.read(key: 'access_token');
-    print(token);
+    print('hay token: $token');
   }
 
   @override
@@ -27,7 +31,21 @@ class _SplashScreenState extends State<SplashScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(seconds: 3));
       if (token != null) {
-        if (mounted) await Navigator.of(context).pushReplacementNamed('tabs');
+        if (mounted) {
+          final userProvider =
+              Provider.of<UserProvider>(context, listen: false);
+          final decodedId = decodeUserIdByToken(token);
+          print(decodedId);
+          var user = await getUserById(decodedId);
+          print(user);
+          if (user == null) {
+            print('User not found');
+            await Navigator.of(context).pushReplacementNamed('login');
+            return;
+          }
+          userProvider.setUser(user!);
+          await Navigator.of(context).pushReplacementNamed('tabs');
+        }
       } else {
         if (mounted) await Navigator.of(context).pushReplacementNamed('login');
       }
