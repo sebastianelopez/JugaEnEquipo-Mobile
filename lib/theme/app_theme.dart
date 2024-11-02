@@ -5,36 +5,43 @@ class AppTheme {
   static const Color primary = Color(0xFFA91F27);
   static const Color black = Color(0xff070d23);
 
-  static final ThemeData lightTheme = ThemeData.light().copyWith(
-    primaryColor: primary,
+  static ThemeData baseTheme(ThemeData theme) {
+    return theme.copyWith(
+      primaryColor: primary,
+      appBarTheme: const AppBarTheme(color: primary, elevation: 0),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: primary, elevation: 5),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFD72323),
+              shape: const StadiumBorder(),
+              elevation: 0)),
+      inputDecorationTheme: const InputDecorationTheme(
+        floatingLabelStyle: TextStyle(color: primary),
+      ),
+    );
+  }
 
-    //AppBar Theme
-    appBarTheme: const AppBarTheme(color: primary, elevation: 0),
+  static final ThemeData lightTheme = baseTheme(ThemeData.light()).copyWith(
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(foregroundColor: primary),
     ),
-
-    //FloatingButtons
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: primary, elevation: 5),
-
-    //ElevatedButtons
-    elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFD72323),
-            shape: const StadiumBorder(),
-            elevation: 0)),
-    inputDecorationTheme: const InputDecorationTheme(
-      floatingLabelStyle: TextStyle(color: primary),
+    textTheme: GoogleFonts.openSansTextTheme(
+      ThemeData.light().textTheme,
     ),
-
-    textTheme: GoogleFonts.openSansTextTheme(),
   );
 
-  static final ThemeData darkTheme = ThemeData.dark().copyWith(
-      primaryColor: primary,
-
-      //AppBar Theme
-      appBarTheme: const AppBarTheme(color: primary, elevation: 0),
-      scaffoldBackgroundColor: Colors.black);
+  static final ThemeData darkTheme = baseTheme(ThemeData.dark()).copyWith(
+    scaffoldBackgroundColor: Colors.black,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: black,
+      selectedItemColor: primary,
+      unselectedItemColor: Colors.white,
+      selectedIconTheme: IconThemeData(color: primary),
+      unselectedIconTheme: IconThemeData(color: Colors.white),
+    ),
+    textTheme: GoogleFonts.openSansTextTheme(
+      ThemeData.dark().textTheme,
+    ),
+  );
 }

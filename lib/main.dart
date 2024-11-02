@@ -3,12 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/providers/providers.dart';
+import 'package:jugaenequipo/providers/theme_provider.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:jugaenequipo/share_preferences/preferences.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Preferences.init(); // Initialize Preferences
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -16,8 +19,11 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+            create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode)),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
+        ChangeNotifierProvider(create: (_) => ImagePickerProvider())
       ],
       child: const MyApp(),
     ),
@@ -40,11 +46,14 @@ class MyApp extends StatelessWidget {
           splitScreenMode: true,
           builder: (context, child) => MaterialApp(
             debugShowCheckedModeBanner: false,
+            theme: Provider.of<ThemeProvider>(context).currentTheme ==
+                    ThemeData.dark()
+                ? AppTheme.darkTheme
+                : AppTheme.lightTheme,
             title: 'Juga en Equipo',
             initialRoute: AppRoutes.initialRoute,
             routes: AppRoutes.getAppRoutes(),
             onGenerateRoute: AppRoutes.onGenerateRoute,
-            theme: AppTheme.lightTheme,
             locale: internalization.currentlanguage,
             supportedLocales: const [
               Locale('en', 'US'),

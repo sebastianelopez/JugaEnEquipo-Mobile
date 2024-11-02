@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,10 +48,14 @@ class NotificationsListItem extends StatelessWidget {
                           style: {
                             'b': Style(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey.shade900,
+                                color: Preferences.isDarkmode
+                                    ? Colors.grey.shade100
+                                    : Colors.grey.shade900,
                                 fontSize: FontSize(13.h)),
                             'body': Style(
-                              color: Colors.grey.shade700,
+                              color: Preferences.isDarkmode
+                                  ? Colors.grey.shade300
+                                  : Colors.grey.shade700,
                               fontSize: FontSize(13.h),
                             ),
                           },

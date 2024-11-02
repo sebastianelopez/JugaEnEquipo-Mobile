@@ -34,7 +34,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
           isScrollControlled: true,
           useSafeArea: true,
           builder: (BuildContext context) {
-            return const CreatePost();
+            return CreatePost();
           },
         );
       } else {
@@ -54,9 +54,6 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
           icon: Icon(
             size: 24.h,
             option.icon,
-            color: mainNavigationOptions[navigation.currentPage] == option
-                ? AppTheme.primary
-                : const Color.fromARGB(255, 1, 15, 36),
           ),
           label: '',
         );
