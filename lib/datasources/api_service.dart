@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:jugaenequipo/datasources/refresh_token_interceptor.dart';
 
 enum DioMethod { post, get, put, delete }
+enum Result { success, unauthorized, error }
 
 class APIService {
   APIService._singleton();

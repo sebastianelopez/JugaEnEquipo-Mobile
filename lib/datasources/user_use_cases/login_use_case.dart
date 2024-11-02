@@ -1,12 +1,11 @@
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-enum LoginResult { success, unauthorized, error }
 
-Future<LoginResult> login(String email, String password) async {
+Future<Result> login(String email, String password) async {
   try {
     final response = await APIService.instance.request(
-      '/api/login', // Enter the endpoint for required API call
+      '/api/login', 
       DioMethod.post,
       param: {"email": email, "password": password},
       contentType: 'application/json',
@@ -22,19 +21,19 @@ Future<LoginResult> login(String email, String password) async {
         await storage.write(
             key: 'refresh_token', value: await response.data['data']['refreshToken']);  
 
-        return LoginResult.success;
+        return Result.success;
       case 401:
         // Unauthorized: Return custom error message
-        return LoginResult.unauthorized;
+        return Result.unauthorized;
       default:
         // Handle other errors (consider adding specific error handling for common cases)
         print('API call failed with status code: ${response.statusCode}');
         print('Error: ${response.statusMessage}');
-        return LoginResult.error;
+        return Result.error;
     }
   } catch (e) {
     // Network error occurred: Log and return error
     print('Network error occurred: $e');
-    return LoginResult.error;
+    return Result.error;
   }
 }
