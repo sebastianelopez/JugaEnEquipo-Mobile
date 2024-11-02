@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/create_post_use_case.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 
 class CreatePost extends StatelessWidget {
-  const CreatePost({super.key});
+  CreatePost({super.key});
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,10 @@ class CreatePost extends StatelessWidget {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    createPost(_controller.text.toString());
+                    print('TextField value: ${_controller.text}');
+                  },
                   style: ButtonStyle(
                     backgroundColor:
                         const WidgetStatePropertyAll(AppTheme.primary),
@@ -48,6 +53,7 @@ class CreatePost extends StatelessWidget {
             ),
             Expanded(
               child: TextFormField(
+                controller: _controller,
                 autocorrect: false,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
