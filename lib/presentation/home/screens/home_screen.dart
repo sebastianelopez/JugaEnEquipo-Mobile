@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen>
     super.build(context);
     return Scaffold(
       body: ChangeNotifierProvider(
-        create: (context) => HomeScreenProvider(),
+        create: (context) => HomeScreenProvider(context: context),
         child: const Posts(),
       ),
     );
