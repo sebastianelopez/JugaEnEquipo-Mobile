@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/login_use_case.dart';
 import 'package:jugaenequipo/providers/providers.dart';
+import 'package:jugaenequipo/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class LoginFormProvider extends ChangeNotifier {
@@ -25,8 +27,6 @@ class LoginFormProvider extends ChangeNotifier {
 
   bool isValidForm() {
     return formKey.currentState?.validate() ?? false;
-
-    //return true;
   }
 
   Future<void> handleLogin(
@@ -38,33 +38,15 @@ class LoginFormProvider extends ChangeNotifier {
     final result = await login(email, password);
 
     switch (result) {
-      case LoginResult.success:
+      case Result.success:
         var token = await storage.read(key: 'access_token');
 
         if (token == null) {
           isLoading = false;
           throw const FormatException('Token is null');
         }
-
-        // Split the token into its three parts
-        final parts = token.split('.');
-        if (parts.length != 3) {
-          throw const FormatException('Invalid token');
-        }
-
-        // Decode the second part (payload)
-        final payload = parts[1];
-        final normalized = base64.normalize(payload);
-        final decodedBytes = base64.decode(normalized);
-        final decodedString = utf8.decode(decodedBytes);
-
-        // Extract the user ID from the decoded payload
-        final payloadMap = json.decode(decodedString);
-        final decodedId = payloadMap['id'];
-
-        if (decodedId == null) {
-          throw const FormatException('ID not found in token payload');
-        }
+        
+        final decodedId = decodeUserIdByToken(token);
 
         var user = await getUserById(decodedId);
 
@@ -76,9 +58,10 @@ class LoginFormProvider extends ChangeNotifier {
         isLoading = false;
         Navigator.pushReplacementNamed(context, 'tabs');
         break;
-      case LoginResult.unauthorized:
+      case Result.unauthorized:
         isLoading = false;
         showDialog(
+          // ignore: use_build_context_synchronously
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -96,9 +79,10 @@ class LoginFormProvider extends ChangeNotifier {
           },
         );
         break;
-      case LoginResult.error:
+      case Result.error:
         isLoading = false;
         showDialog(
+          // ignore: use_build_context_synchronously
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
