@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
@@ -14,7 +15,7 @@ class DrawerNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final drawerOptions = AppRoutes.getDrawerOptions(context).toList();
-    final user = Provider.of<UserProvider>(context).user;
+    UserModel? user = Provider.of<UserProvider>(context).user;
     final storage = const FlutterSecureStorage();
 
     return Drawer(
@@ -25,11 +26,11 @@ class DrawerNav extends StatelessWidget {
           SizedBox(
             height: 250.h,
             child: DrawerHeader(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppTheme.primary,
                 image: DecorationImage(
                   image: NetworkImage(
-                    "https://static.wikia.nocookie.net/onepiece/images/a/af/Monkey_D._Luffy_Anime_Dos_A%C3%B1os_Despu%C3%A9s_Infobox.png/revision/latest?cb=20200616015904&path-prefix=es",
+                    user?.profileImage ?? 'https://via.placeholder.com/150',
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -40,7 +41,7 @@ class DrawerNav extends StatelessWidget {
                     bottom: 8.0.h,
                     left: 4.0.w,
                     child: Text(
-                      user!.firstName,
+                      user?.firstName ?? 'user',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.sp,
@@ -65,17 +66,6 @@ class DrawerNav extends StatelessWidget {
                   },
                 );
               }),
-              Row(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(right: 30.0.w, left: 15.0.h),
-                      child: Text(
-                          AppLocalizations.of(context)!.drawerlanguageLabel,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, fontSize: 15.sp))),
-                  const LanguageDropdown(showLabel: true),
-                ],
-              ),
               SizedBox(
                 height: 50.h,
               ),
@@ -92,9 +82,12 @@ class DrawerNav extends StatelessWidget {
             ),
             iconAlignment: IconAlignment.start,
             onPressed: () async {
-                  await storage.delete(key: 'access_token');
-                  Navigator.pushReplacementNamed(context, 'login');
-                  return;
+              if (context.mounted) {
+                await storage.delete(key: 'access_token');
+                // ignore: use_build_context_synchronously
+                Navigator.pushReplacementNamed(context, 'login');
+                return;
+              }
             },
             icon: Icon(Icons.logout, size: 30.sp),
             label: Text(AppLocalizations.of(context)!.drawerLogoutLabel,
