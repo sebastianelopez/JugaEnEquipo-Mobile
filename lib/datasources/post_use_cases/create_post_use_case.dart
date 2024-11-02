@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -5,7 +6,9 @@ var uuid = const Uuid();
 
 Future<void> createPost(String text) async {
   try {
-     var id = uuid.v4();
+    const storage = FlutterSecureStorage();
+    final accessToken = await storage.read(key: 'access_token');
+    var id = uuid.v4();
 
     final response = await APIService.instance.request(
       '/api/post', // enter the endpoint for required API call
@@ -15,6 +18,9 @@ Future<void> createPost(String text) async {
         "body": text,
       },
       contentType: 'application/json',
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
     );
 
     // Handle the response
