@@ -45,7 +45,7 @@ class Comments extends StatelessWidget {
             ),
             Expanded(
               child: ChangeNotifierProvider(
-                create: (context) => HomeScreenProvider(),
+                create: (context) => HomeScreenProvider(context: context),
                 child: const CommentsList(),
               ),
             ),
