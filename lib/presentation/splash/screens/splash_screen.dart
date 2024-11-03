@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
             await Navigator.of(context).pushReplacementNamed('login');
             return;
           }
-          userProvider.setUser(user!);
+          userProvider.setUser(user);
           await Navigator.of(context).pushReplacementNamed('tabs');
         }
       } else {

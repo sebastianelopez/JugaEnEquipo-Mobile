@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/post_model.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
-import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:provider/provider.dart';

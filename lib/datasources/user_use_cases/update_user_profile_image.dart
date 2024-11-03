@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:mime_type/mime_type.dart';

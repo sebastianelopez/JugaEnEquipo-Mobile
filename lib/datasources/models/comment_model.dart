@@ -1,5 +1,3 @@
-import 'package:jugaenequipo/datasources/models/models.dart';
-
 class CommentModel {
   final String id;
   final String userId;

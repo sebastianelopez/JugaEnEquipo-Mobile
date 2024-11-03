@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/presentation/tournaments/business_logic/tournaments_provider.dart';
 import 'package:jugaenequipo/presentation/tournaments/widgets/tournaments_table.dart';
-import 'package:jugaenequipo/global_widgets/widgets.dart';
-import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TournamentsScreen extends StatefulWidget {
   const TournamentsScreen({Key? key}) : super(key: key);

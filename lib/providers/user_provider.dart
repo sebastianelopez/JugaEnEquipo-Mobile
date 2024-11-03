@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
 import 'package:jugaenequipo/utils/utils.dart';
-import 'package:provider/provider.dart';
 
 class UserProvider with ChangeNotifier {
   UserModel? _user;
@@ -24,7 +23,7 @@ class UserProvider with ChangeNotifier {
   Future<void> updateUser() async {
     var token = await storage.read(key: 'access_token');
     if (token != null) {
-      final decodedId = decodeUserIdByToken(token!);
+      final decodedId = decodeUserIdByToken(token);
       var updatedUser = await getUserById(decodedId);
       if (updatedUser == null) {
         print('User not found');

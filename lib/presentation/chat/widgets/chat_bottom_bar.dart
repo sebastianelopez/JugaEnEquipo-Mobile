@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/providers/theme_provider.dart';
 import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
-import 'package:provider/provider.dart';
 
 class ChatBottomBar extends StatelessWidget {
   const ChatBottomBar({

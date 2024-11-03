@@ -4,10 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
-import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/update_user_profile_image.dart';
 import 'package:jugaenequipo/providers/providers.dart';
-import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
 
 enum ImageType { post, imageProfile }
@@ -57,7 +55,6 @@ class ImagePickerProvider extends ChangeNotifier {
       if (pickedFile == null) return;
 
       final File cleanFile = File(pickedFile.path);
-      final mimeType = lookupMimeType(cleanFile.path);
       _setImageFile(cleanFile);
     } catch (e) {
       _pickImageError = e;

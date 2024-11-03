@@ -3,7 +3,6 @@ import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
 import 'package:jugaenequipo/global_widgets/create_post.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigationBarCustom extends StatefulWidget {
