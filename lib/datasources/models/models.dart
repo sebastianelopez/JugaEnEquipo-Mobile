@@ -1,3 +1,4 @@
+export 'package:jugaenequipo/datasources/models/resource_model.dart';
 export 'package:jugaenequipo/datasources/models/game_model.dart';
 export 'package:jugaenequipo/datasources/models/tournament_model.dart';
 export 'package:jugaenequipo/datasources/models/notification_model.dart';
