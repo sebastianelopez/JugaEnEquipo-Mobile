@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/create_post_use_case.dart';
+import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class CreatePost extends StatelessWidget {
   CreatePost({super.key});
@@ -10,6 +13,9 @@ class CreatePost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final postProvider = Provider.of<PostProvider>(context);
+    final mediaIds = Provider.of<ImagePickerProvider>(context).mediaFileListIds;
+    final postId= postProvider.postId;
     return Scaffold(
       backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
@@ -35,8 +41,13 @@ class CreatePost extends StatelessWidget {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {
-                    createPost(_controller.text.toString());
+                  onPressed: () async {
+                    if (postId != null) {
+                      final Result result = await createPost(_controller.text.toString(), mediaIds, postId);
+                      if(result == Result.success){
+                        postProvider.clearPostId();
+                      }
+                    }
                     print('TextField value: ${_controller.text}');
                   },
                   style: ButtonStyle(

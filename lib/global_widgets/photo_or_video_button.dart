@@ -13,6 +13,7 @@ class PhotoOrVideoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final imageProvider = Provider.of<ImagePickerProvider>(context);
     UserModel? user = Provider.of<UserProvider>(context).user;
+    final postId = Provider.of<PostProvider>(context).postId;
 
     return Column(
       children: [
@@ -25,7 +26,7 @@ class PhotoOrVideoButton extends StatelessWidget {
           onPressed: () async => {
             if (user != null)
               await imageProvider.showOptions(context,
-                  imageType: ImageType.post, userId: user.id)
+                  imageType: ImageType.post, userId: user.id, postId: postId)
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,

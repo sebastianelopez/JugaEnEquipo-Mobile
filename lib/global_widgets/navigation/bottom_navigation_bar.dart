@@ -24,6 +24,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
         FocusScope.of(context).unfocus();
         Navigator.pushNamed(context, mainNavigationOptions[index].route);
       } else if (mainNavigationOptions[index].route == "createPost") {
+        Provider.of<PostProvider>(context, listen: false).generatePostId();
         showModalBottomSheet(
           context: context,
           constraints: BoxConstraints(
