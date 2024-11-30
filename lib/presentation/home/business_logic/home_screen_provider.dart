@@ -123,7 +123,8 @@ class HomeScreenProvider extends ChangeNotifier {
       }
       final fetchedPosts = await getPostsByUserId(user!.id);
       if (fetchedPosts != null) {
-        posts = fetchedPosts;
+        posts = fetchedPosts
+          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
         notifyListeners();
       }
     } catch (e) {
