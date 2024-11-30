@@ -4,14 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/add_post_resource_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/update_user_profile_image.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
+import 'package:mime/mime.dart';
 
 enum ImageType { post, imageProfile }
 
 class ImagePickerProvider extends ChangeNotifier {
-  List<XFile>? mediaFileList;
+  List<File>? mediaFileList;
+  List<String>? mediaFileListIds;
   File? profileImage;
 
   void _setImageFile(File? value) {
@@ -24,13 +27,21 @@ class ImagePickerProvider extends ChangeNotifier {
 
   final ImagePicker _picker = ImagePicker();
 
+  bool isVideo(String path) {
+    final mimeType = lookupMimeType(path);
+    return mimeType?.startsWith('video/') ?? false;
+  }
+
 //Image Picker function to get image from gallery
   Future getImageFromGallery(bool isMulti) async {
     try {
       if (isMulti) {
         final List<XFile> pickedFileList = await _picker.pickMultiImage();
 
-        mediaFileList = pickedFileList;
+        if (pickedFileList.isEmpty) return;
+
+        mediaFileList =
+            pickedFileList.map((xfile) => File(xfile.path)).toList();
       } else {
         final XFile? pickedFile = await _picker.pickImage(
           source: ImageSource.gallery,
@@ -63,8 +74,10 @@ class ImagePickerProvider extends ChangeNotifier {
 
   //Show options to get image from camera or gallery
   Future showOptions(BuildContext context,
-      {required ImageType imageType, required String userId}) async {
-        var savedContext = context;
+      {required ImageType imageType,
+      required String userId,
+      String? postId}) async {
+    var savedContext = context;
     showDialog(
       context: savedContext,
       builder: (context) => SimpleDialog(
@@ -77,7 +90,16 @@ class ImagePickerProvider extends ChangeNotifier {
               // get image from gallery
 
               if (imageType == ImageType.post) {
-                await getImageFromGallery(true);
+                await getImageFromGallery(true).then((_) async {
+                  if ((mediaFileList != null && mediaFileList!.isEmpty) ||
+                      postId != null) return;
+                  mediaFileList?.map((file) async {
+                    var mediaId = uuid.v4();
+                    mediaFileListIds?.add(mediaId);
+                    final isVideo = this.isVideo(file.path);
+                    await addPostResource(postId!, mediaId, file, isVideo);
+                  });
+                });
               } else if (imageType == ImageType.imageProfile) {
                 getImageFromGallery(false).then((_) async {
                   if (profileImage == null) return;
@@ -85,7 +107,7 @@ class ImagePickerProvider extends ChangeNotifier {
                       await updateUserProfileImage(userId, profileImage!);
                   profileImage = null;
                   // ignore: use_build_context_synchronously
-                   _handleImageSelection(result, savedContext);
+                  _handleImageSelection(result, savedContext);
                 });
               }
             },
@@ -105,7 +127,6 @@ class ImagePickerProvider extends ChangeNotifier {
   }
 
   void _handleImageSelection(Result result, BuildContext context) {
-
     switch (result) {
       case Result.success:
         Provider.of<UserProvider>(context, listen: false).updateUser();
