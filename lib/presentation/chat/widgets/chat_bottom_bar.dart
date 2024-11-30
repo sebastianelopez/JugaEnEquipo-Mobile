@@ -23,7 +23,7 @@ class ChatBottomBar extends StatelessWidget {
               color: Colors.black.withOpacity(0.2),
               spreadRadius: 0,
               blurRadius: 10,
-              offset: Offset(0, -10),
+              offset: const Offset(0, -10),
             ),
           ],
         ),

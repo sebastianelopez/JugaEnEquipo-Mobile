@@ -46,7 +46,7 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
           Scaffold.of(context).openDrawer();
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 7.0),
+          padding: const EdgeInsets.symmetric(vertical: 7.0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
                 user?.profileImage ?? 'https://via.placeholder.com/150'),

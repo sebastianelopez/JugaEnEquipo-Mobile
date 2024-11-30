@@ -15,7 +15,7 @@ class DrawerNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final drawerOptions = AppRoutes.getDrawerOptions(context).toList();
     UserModel? user = Provider.of<UserProvider>(context).user;
-    final storage = const FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
 
     return Drawer(
       width: 280.w,
