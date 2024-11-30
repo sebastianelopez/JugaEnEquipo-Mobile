@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
@@ -17,16 +18,22 @@ Future<UserModel?> getUserById(String id) async {
 
     // Manage the response
     if (response.statusCode == 200) {
-      print('API call successful: ${response.data['data']}');
+      if (kDebugMode) {
+        debugPrint('API call successful: ${response.data['data']}');
+      }
       return UserModel.fromJson(response.data['data']);
     } else {
       // Error: Manage the error response
-      print('API call failed: ${response.statusMessage}');
+      if (kDebugMode) {
+        debugPrint('API call failed: ${response.statusMessage}');
+      }
       return null;
     }
   } catch (e) {
     // Error: Manage network errors
-    print('Network error occurred: $e');
+    if (kDebugMode) {
+      debugPrint('Network error occurred: $e');
+    }
     return null;
   }
 }
