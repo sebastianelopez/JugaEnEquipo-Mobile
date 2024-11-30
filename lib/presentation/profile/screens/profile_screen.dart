@@ -98,7 +98,7 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(child: const StatsTable()),
+                      const StatsTable(),
                     ]),
                   ),
                   Positioned(
