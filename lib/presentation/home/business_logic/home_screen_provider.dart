@@ -117,9 +117,11 @@ class HomeScreenProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      if(user == null) return;
-      final fetchedPosts =
-          await getPostsByUserId(user!.id);
+      if (user == null) {
+        debugPrint('User is null');
+        return;
+      }
+      final fetchedPosts = await getPostsByUserId(user!.id);
       if (fetchedPosts != null) {
         posts = fetchedPosts;
         notifyListeners();
