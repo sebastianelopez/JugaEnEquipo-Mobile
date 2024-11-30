@@ -64,7 +64,7 @@ class AppRoutes {
     MenuOptionModel(
         route: 'tabs',
         name: 'tabs screen',
-        screen: TabsScreen()),
+        screen: const TabsScreen()),
     MenuOptionModel(
         route: 'messages',
         name: 'Messages Screen',
