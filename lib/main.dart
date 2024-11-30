@@ -23,6 +23,7 @@ Future<void> main() async {
             create: (_) => ThemeProvider(isDarkmode: Preferences.isDarkmode)),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
+        ChangeNotifierProvider(create: (_) => PostProvider()),
         ChangeNotifierProvider(create: (_) => ImagePickerProvider())
       ],
       child: const MyApp(),
