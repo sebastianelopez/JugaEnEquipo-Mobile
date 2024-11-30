@@ -37,6 +37,7 @@ class Posts extends StatelessWidget {
           child: Skeletonizer(
             enabled: homeScreen.isLoading,
             child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               controller: homeScreen.scrollController,
               itemCount: posts.length,
               itemBuilder: (BuildContext context, int index) {

@@ -14,6 +14,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeProvider = Provider.of<HomeScreenProvider>(context);
+    final imagesUrls = post.resources?.map((e) => e.url).toList();
     return Center(
       child: Card(
         margin: EdgeInsets.only(
@@ -69,7 +70,7 @@ class PostCard extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 8),
-                if (post.images != null) ImageGrid(images: post.images!),
+                if (imagesUrls != null && imagesUrls.isNotEmpty) ImageGrid(images: imagesUrls),
                 const SizedBox(height: 8),
               ],
             ),
