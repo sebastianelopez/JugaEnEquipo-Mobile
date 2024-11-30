@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:uuid/uuid.dart';
@@ -25,16 +26,22 @@ Future<Result> createPost(
     // Handle the response
     if (response.statusCode == 200) {
       // Success: Process the response data
-      print('API call successful: ${response.data}');
+      if (kDebugMode) {
+        debugPrint('API call successful: ${response.data}');
+      }
       return Result.success;
     } else {
       // Error: Handle the error response
-      print('API call failed: ${response.statusMessage}');
+      if (kDebugMode) {
+        debugPrint('API call failed: ${response.statusMessage}');
+      }
       return Result.error;
     }
   } catch (e) {
     // Error: Handle network errors
-    print('Network error occurred: $e');
+    if (kDebugMode) {
+      debugPrint('Network error occurred: $e');
+    }
     return Result.error;
   }
 }
