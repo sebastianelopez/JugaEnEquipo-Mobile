@@ -4,7 +4,7 @@ class PostModel {
   final String id;
   final UserModel? user;
   final String? copy;
-  final List<String>? images;
+  final List<ResourceModel>? resources;
   final int? likes;
   final int? shares;
   final int? comments;
@@ -16,7 +16,7 @@ class PostModel {
     required this.id,
     this.user,
     this.copy,
-    this.images,
+    this.resources,
     this.likes,
     this.comments,
     this.shares,
@@ -30,7 +30,11 @@ class PostModel {
       id: json['id'] as String,
       user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
       copy: json['body'] as String?,
-      images: json['images'] != null ? List<String>.from(json['images']) : null,
+      resources: json['resources'] != null
+          ? (json['resources'] as List)
+              .map((item) => ResourceModel.fromJson(item))
+              .toList()
+          : null,
       likes: json['likes'] as int?,
       shares: json['shares'] as int?,
       comments: json['comments'] as int?,
@@ -45,7 +49,7 @@ class PostModel {
       'id': id,
       'user': user?.toJson(),
       'copy': copy,
-      'images': images,
+      'resources': resources,
       'likes': likes,
       'shares': shares,
       'comments': comments,
