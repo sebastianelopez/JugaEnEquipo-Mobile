@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/presentation/teams/business_logic/teams_screen_provider.dart';
+import 'package:jugaenequipo/presentation/teams/widgets/teams.dart';
+import 'package:provider/provider.dart';
 
 class TeamsScreen extends StatefulWidget {
   const TeamsScreen({super.key});
@@ -11,8 +14,11 @@ class _TeamsScreenState extends State<TeamsScreen> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return const Scaffold(
-      body: Text("Teams"),
+    return Scaffold(
+      body: ChangeNotifierProvider(
+        create: (context) => TeamsScreenProvider(context: context),
+        child: const Teams(),
+      ),
     );
   }
   
