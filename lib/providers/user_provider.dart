@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
@@ -25,8 +26,8 @@ class UserProvider with ChangeNotifier {
     if (token != null) {
       final decodedId = decodeUserIdByToken(token);
       var updatedUser = await getUserById(decodedId);
-      if (updatedUser == null) {
-        print('User not found');
+      if (updatedUser == null && kDebugMode) {
+        debugPrint('User Provider: user not found');
       }
       setUser(updatedUser!);
       notifyListeners();

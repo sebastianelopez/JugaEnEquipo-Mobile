@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
@@ -21,7 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getToken() async {
     token = await storage.read(key: 'access_token');
-    print('hay token: $token');
+
+    if (kDebugMode) {
+      debugPrint('Splash screen: hay token: $token');
+    }
   }
 
   @override
@@ -35,11 +39,15 @@ class _SplashScreenState extends State<SplashScreen> {
           final userProvider =
               Provider.of<UserProvider>(context, listen: false);
           final decodedId = decodeUserIdByToken(token);
-          print(decodedId);
           var user = await getUserById(decodedId);
-          print(user);
+          if (kDebugMode) {
+            debugPrint('Splash screen: deodedId $decodedId');
+            debugPrint('Splash screen: user $user');
+          }
           if (user == null) {
-            print('User not found');
+            if (kDebugMode) {
+              debugPrint('Splash screen: user not found');
+            }
             await Navigator.of(context).pushReplacementNamed('login');
             return;
           }
