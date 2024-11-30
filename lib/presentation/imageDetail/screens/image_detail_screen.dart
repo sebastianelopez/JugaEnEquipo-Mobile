@@ -14,7 +14,7 @@ class ImageDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: BackAppBar(
+      appBar: const BackAppBar(
         label: "",
       ),
       body: CarouselSlider(
