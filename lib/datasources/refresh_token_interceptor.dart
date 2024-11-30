@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     as flutter_storage;
 import 'package:jugaenequipo/datasources/api_service.dart';
@@ -9,7 +11,9 @@ class RefreshTokenInterceptor extends Interceptor {
   List<Map<dynamic, dynamic>> failedRequests = [];
   bool isRefreshing = false;
 
-  RefreshTokenInterceptor(this.dio);
+  final VoidCallback onRefreshToken;
+
+  RefreshTokenInterceptor(this.dio, this.onRefreshToken);
 
   Future<String?> getRefreshToken() async {
     return await storage.read(key: 'refresh_token');
@@ -20,7 +24,9 @@ class RefreshTokenInterceptor extends Interceptor {
 
     if (refreshToken == null || isRefreshing) {
       // No refresh token or already refreshing, handle error
-      print('No refresh token or already refreshing');
+      if (kDebugMode) {
+        debugPrint('No refresh token or already refreshing');
+      }
       return;
     }
 
@@ -38,17 +44,23 @@ class RefreshTokenInterceptor extends Interceptor {
 
       if (response.statusCode == 200) {
         final newAccessToken = response.data['token'];
-        print('token refreshed successfully');
+        if (kDebugMode) {
+          debugPrint('token refreshed successfully');
+        }
         await storage.write(key: 'access_token', value: newAccessToken);
       } else {
         // Refresh token failed, handle error (e.g., logout)
-        print('Refresh token failed');
+        if (kDebugMode) {
+          debugPrint('Refresh token failed');
+        }
         await storage.deleteAll();
         throw Exception('Refresh token failed');
       }
     } catch (e) {
       // Handle refresh token failure (e.g., logout)
-      print('Refresh token failed: $e');
+      if (kDebugMode) {
+        debugPrint('Refresh token failed: $e');
+      }
     } finally {
       isRefreshing = false;
     }
@@ -58,7 +70,10 @@ class RefreshTokenInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final oldRefreshToken = await getRefreshToken();
 
-    if (err.response?.statusCode == 401 && oldRefreshToken != null) {
+    if (oldRefreshToken != null) {
+      if (kDebugMode) {
+        debugPrint(err.response?.statusCode.toString());
+      }
       if (failedRequests.isEmpty) {
         try {
           await refreshToken();
@@ -72,10 +87,14 @@ class RefreshTokenInterceptor extends Interceptor {
             });
             await retryRequests(newToken, handler);
             failedRequests.clear();
+
+            onRefreshToken();
           }
         } catch (e) {
           // TODO:: Handle refresh token failure (e.g., logout)
-          print('Refresh token failed: $e');
+          if (kDebugMode) {
+            debugPrint('Refresh token failed: $e');
+          }
         }
       } else {
         failedRequests.add({
