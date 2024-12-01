@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/get_posts_by_user_use_case.dart';
@@ -128,7 +129,9 @@ class HomeScreenProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print('Error fetching posts: $e');
+      if (kDebugMode) {
+        debugPrint('Error fetching posts: $e');
+      }
     } finally {
       isLoading = false;
       notifyListeners();
