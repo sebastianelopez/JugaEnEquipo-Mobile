@@ -5,7 +5,7 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 
 Future<UserModel?> getUserById(String id) async {
   try {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
     final response = await APIService.instance.request(
       '/api/user/$id',

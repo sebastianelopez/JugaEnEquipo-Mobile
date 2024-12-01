@@ -11,7 +11,7 @@ var uuid = const Uuid();
 
 Future<Result> updateUserProfileImage(String userId, File profileImage) async {
   try {
-    final storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
 
     if (accessToken == null) {
