@@ -5,14 +5,15 @@ import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  final String profileImage;
+  final UserModel profileUser;
 
-  const ProfileAvatar({super.key, required this.profileImage});
+  const ProfileAvatar({super.key, required this.profileUser});
 
   @override
   Widget build(BuildContext context) {
     final imageProvider = Provider.of<ImagePickerProvider>(context);
     UserModel? user = Provider.of<UserProvider>(context).user;
+    final isLoggedUser = user?.id == profileUser.id;
 
     return GestureDetector(
       onTap: () async {
@@ -39,7 +40,7 @@ class ProfileAvatar extends StatelessWidget {
         ),
         child: CircleAvatar(
           maxRadius: 46.h,
-          backgroundImage: NetworkImage(profileImage),
+          backgroundImage: NetworkImage(profileUser.profileImage!),
         ),
       ),
     );
