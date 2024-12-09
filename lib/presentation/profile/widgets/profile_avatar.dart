@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_screen.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
 
@@ -17,10 +18,41 @@ class ProfileAvatar extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        if(user != null) {
-          await imageProvider.showOptions(context,
-            imageType: ImageType.imageProfile, userId: user.id);
-        }
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return SafeArea(
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.visibility),
+                    title: const Text('Ver imagen'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImageDetailScreen(
+                              imageUrls: [profileUser.profileImage!], currentIndex: 0),
+                        ),
+                      );
+                    },
+                  ),
+                  if (isLoggedUser)
+                    ListTile(
+                      leading: const Icon(Icons.edit),
+                      title: const Text('Cambiar imagen de perfil'),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        await imageProvider.showOptions(context,
+                            imageType: ImageType.imageProfile);
+                      },
+                    ),
+                ],
+              ),
+            );
+          },
+        );
       },
       child: Container(
         decoration: BoxDecoration(
