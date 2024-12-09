@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
-import 'package:jugaenequipo/datasources/post_use_cases/get_posts_by_user_use_case.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/get_feed_by_user_use_case.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
@@ -122,7 +122,7 @@ class HomeScreenProvider extends ChangeNotifier {
         debugPrint('User is null');
         return;
       }
-      final fetchedPosts = await getPostsByUserId(user!.id);
+      final fetchedPosts = await getFeedByUserId(user!.id);
       if (fetchedPosts != null) {
         posts = fetchedPosts
           ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
