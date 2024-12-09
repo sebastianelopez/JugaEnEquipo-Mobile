@@ -34,7 +34,7 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
               ),
-              title: Text(post.user?.userName ?? 'user',
+              title: Text(post.user ?? 'user',
                   style:
                       TextStyle(fontWeight: FontWeight.w900, fontSize: 15.h)),
               subtitle: SizedBox(
