@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/follow/follow_model.dart';
 import 'package:jugaenequipo/datasources/models/follow/follow_user_model.dart';
 import 'package:jugaenequipo/datasources/models/user_model.dart';
-import 'package:jugaenequipo/datasources/user_use_cases/get_followers_quantity_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_followers_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followings_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
