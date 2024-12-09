@@ -33,7 +33,7 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
               prefixIcon: const Icon(Icons.search),
-              labelStyle: TextStyle()),
+              labelStyle: const TextStyle()),
           onChanged: (value) {
             // Handle the search input changes here.
           },
