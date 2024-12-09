@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/datasources/models/post_model.dart';
+import 'package:jugaenequipo/datasources/models/post/post_model.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
