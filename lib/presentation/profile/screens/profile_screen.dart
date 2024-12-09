@@ -21,96 +21,13 @@ class ProfileScreen extends StatelessWidget {
         appBar: BackAppBar(
           label: AppLocalizations.of(context)!.profilePageLabel,
         ),
-        body: SingleChildScrollView(
-          child: Expanded(
-            child: Container(
-              width: double.infinity,
-              color: AppTheme.primary,
-              padding: EdgeInsets.only(top: 50.h),
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 80.h),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Preferences.isDarkmode
-                            ? Colors.grey[900]
-                            : Colors.white,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30))),
-                    child: Column(children: [
-                      Text(
-                        '${user!.firstName} ${user.lastName}',
-                        style: TextStyle(
-                            fontSize: 18.h, fontWeight: FontWeight.w900),
-                      ),
-                      Text(
-                        '@${user.userName}',
-                        style: TextStyle(color: Colors.grey, fontSize: 14.h),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 15.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ProfileElevatedButton(
-                              label: AppLocalizations.of(context)!
-                                  .profileFollowButtonLabel,
-                              onPressed: () {},
-                            ),
-                            ProfileElevatedButton(
-                              label: AppLocalizations.of(context)!
-                                  .profileMessagesButtonLabel,
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: NumberAndLabel(
-                                label: AppLocalizations.of(context)!
-                                    .profileFollowingButtonLabel,
-                                number: 1234,
-                                hasRightBorder: true,
-                              ),
-                            ),
-                            Expanded(
-                              child: NumberAndLabel(
-                                  label: AppLocalizations.of(context)!
-                                      .profileFollowersButtonLabel,
-                                  number: 234,
-                                  hasRightBorder: true),
-                            ),
-                            Expanded(
-                              child: NumberAndLabel(
-                                  label: AppLocalizations.of(context)!
-                                      .profilePrizesButtonLabel,
-                                  number: 124),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const StatsTable(),
-                    ]),
-                  ),
-                  Positioned(
-                    top: -40.h,
-                    child: ProfileAvatar(
-                      profileImage: user.profileImage!,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ));
+      body: ChangeNotifierProvider(
+        create: (context) => ProfileProvider(
+          context: context,
+          userId: userId, // Pass userId to provider
+        ),
+        child: ProfileContent(),
+      ),
+    );
   }
 }
