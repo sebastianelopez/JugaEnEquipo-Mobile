@@ -19,20 +19,20 @@ Future<UserModel?> getUserById(String id) async {
     // Manage the response
     if (response.statusCode == 200) {
       if (kDebugMode) {
-        debugPrint('API call successful: ${response.data['data']}');
+        debugPrint('getUserById: API call successful: ${response.data['data']}');
       }
       return UserModel.fromJson(response.data['data']);
     } else {
       // Error: Manage the error response
       if (kDebugMode) {
-        debugPrint('API call failed: ${response.statusMessage}');
+        debugPrint('getUserById: API call failed: ${response.statusMessage}');
       }
       return null;
     }
   } catch (e) {
     // Error: Manage network errors
     if (kDebugMode) {
-      debugPrint('Network error occurred: $e');
+      debugPrint('getUserById: Network error occurred: $e');
     }
     return null;
   }
