@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
           context: context,
           userId: userId, // Pass userId to provider
         ),
-        child: ProfileContent(),
+        child: const ProfileContent(),
       ),
     );
   }
