@@ -2,7 +2,7 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 
 class PostModel {
   final String id;
-  final UserModel? user;
+  final String? user;
   final String? copy;
   final List<ResourceModel>? resources;
   final int? likes;
@@ -28,7 +28,7 @@ class PostModel {
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
       id: json['id'] as String,
-      user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
+      user: json['username'] as String,
       copy: json['body'] as String?,
       resources: json['resources'] != null
           ? (json['resources'] as List)
@@ -47,7 +47,7 @@ class PostModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'user': user?.toJson(),
+      'user': user,
       'copy': copy,
       'resources': resources,
       'likes': likes,
