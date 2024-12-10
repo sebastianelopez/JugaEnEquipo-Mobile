@@ -91,6 +91,7 @@ class ImagePickerProvider extends ChangeNotifier {
             onPressed: () async {
               // close the options modal
               Navigator.of(context).pop();
+
               // get image from gallery
               if (imageType == ImageType.post) {
                 await getImageFromGallery(true).then((_) async {
