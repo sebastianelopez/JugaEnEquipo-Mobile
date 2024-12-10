@@ -1,21 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
-import 'package:uuid/uuid.dart';
 
 Future<Result> createPost(
     String text, List<String>? imageIds, String id) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
-    var id = uuid.v4();
 
     final response = await APIService.instance.request(
-      '/api/post', // enter the endpoint for required API call
-      DioMethod.post,
+      '/api/post/$id',
+      DioMethod.put,
       param: {
-        "id": id,
         "body": text,
+        "resources": [],
       },
       contentType: 'application/json',
       headers: {
