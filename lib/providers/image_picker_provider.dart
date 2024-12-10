@@ -14,11 +14,17 @@ enum ImageType { post, imageProfile }
 
 class ImagePickerProvider extends ChangeNotifier {
   List<File>? mediaFileList;
-  List<String>? mediaFileListIds;
+  List<String>? mediaFileListIds = [];
   File? profileImage;
 
   void _setImageFile(File? value) {
     profileImage = value;
+  }
+
+  void clearMediaFileList() {
+    mediaFileList?.clear();
+    mediaFileListIds = [];
+    notifyListeners();
   }
 
   dynamic _pickImageError;
@@ -42,6 +48,7 @@ class ImagePickerProvider extends ChangeNotifier {
 
         mediaFileList =
             pickedFileList.map((xfile) => File(xfile.path)).toList();
+        notifyListeners();
       } else {
         final XFile? pickedFile = await _picker.pickImage(
           source: ImageSource.gallery,
@@ -87,23 +94,21 @@ class ImagePickerProvider extends ChangeNotifier {
               // close the options modal
               Navigator.of(context).pop();
               // get image from gallery
-
               if (imageType == ImageType.post) {
                 await getImageFromGallery(true).then((_) async {
                   if ((mediaFileList != null && mediaFileList!.isEmpty) ||
-                      postId != null) return;
-                  mediaFileList?.map((file) async {
+                      postId == null) return;
+                  mediaFileList?.forEach((file) async {
                     var mediaId = uuid.v4();
                     mediaFileListIds?.add(mediaId);
                     final isVideo = this.isVideo(file.path);
-                    await addPostResource(postId!, mediaId, file, isVideo);
+                    await addPostResource(postId, mediaId, file, isVideo);
                   });
                 });
               } else if (imageType == ImageType.imageProfile) {
                 getImageFromGallery(false).then((_) async {
                   if (profileImage == null) return;
-                  final result =
-                      await updateUserProfileImage(profileImage!);
+                  final result = await updateUserProfileImage(profileImage!);
                   profileImage = null;
                   // ignore: use_build_context_synchronously
                   _handleImageSelection(result, savedContext);

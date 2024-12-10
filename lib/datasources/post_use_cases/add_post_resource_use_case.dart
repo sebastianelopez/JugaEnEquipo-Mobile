@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
@@ -9,15 +10,22 @@ Future<void> addPostResource(
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
 
+    // Create form data
+    String fileName = resource.path.split('/').last;
+    FormData formData = FormData.fromMap({
+      'id': mediaId,
+      'type': isVideo ? 'video' : 'image',
+      'resource': await MultipartFile.fromFile(
+        resource.path,
+        filename: fileName,
+      ),
+    });
+
     final response = await APIService.instance.request(
       '/api/post/$postId/resource',
       DioMethod.post,
-      param: {
-        "id": mediaId,
-        "resource": resource,
-        "type": isVideo ? 'video' : 'image',
-      },
-      contentType: 'application/json',
+      formData: formData,
+      contentType: 'multipart/form-data',
       headers: {
         'Authorization': 'Bearer $accessToken',
       },

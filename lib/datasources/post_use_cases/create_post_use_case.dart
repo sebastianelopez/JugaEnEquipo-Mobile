@@ -13,7 +13,7 @@ Future<Result> createPost(
       DioMethod.put,
       param: {
         "body": text,
-        "resources": [],
+        "resources": imageIds,
       },
       contentType: 'application/json',
       headers: {
