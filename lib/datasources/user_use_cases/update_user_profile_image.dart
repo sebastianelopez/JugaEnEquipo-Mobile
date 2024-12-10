@@ -9,7 +9,7 @@ import 'package:mime_type/mime_type.dart';
 
 var uuid = const Uuid();
 
-Future<Result> updateUserProfileImage(String userId, File profileImage) async {
+Future<Result> updateUserProfileImage(File profileImage) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
@@ -28,7 +28,7 @@ Future<Result> updateUserProfileImage(String userId, File profileImage) async {
     });
 
     final response = await APIService.instance.request(
-      '/api/user/profile-image/$userId',
+      '/api/user-profile-image',
       DioMethod.post,
       formData: formData,
       headers: {
