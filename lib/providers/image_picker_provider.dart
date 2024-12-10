@@ -38,7 +38,6 @@ class ImagePickerProvider extends ChangeNotifier {
     return mimeType?.startsWith('video/') ?? false;
   }
 
-//Image Picker function to get image from gallery
   Future getImageFromGallery(bool isMulti) async {
     try {
       if (isMulti) {
@@ -64,7 +63,6 @@ class ImagePickerProvider extends ChangeNotifier {
     }
   }
 
-  //Image Picker function to get image from camera
   Future getImageFromCamera() async {
     try {
       final XFile? pickedFile = await _picker.pickImage(
