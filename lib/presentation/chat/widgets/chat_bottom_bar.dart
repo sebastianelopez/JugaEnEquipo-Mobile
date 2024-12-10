@@ -31,7 +31,6 @@ class ChatBottomBar extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () {
-                print('hola');
               },
               child: Container(
                 height: 30,
