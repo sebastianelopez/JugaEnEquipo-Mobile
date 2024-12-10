@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
-import 'package:jugaenequipo/datasources/post_use_cases/get_posts_by_user_use_case.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/get_feed_by_user_use_case.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
 
@@ -137,7 +137,7 @@ class TeamsScreenProvider extends ChangeNotifier {
     notifyListeners();
     try {
       if (user == null) return;
-      final fetchedTeams = await getPostsByUserId(user!.id);
+      final fetchedTeams = await getFeedByUserId(user!.id);
       if (fetchedTeams != null) {
         // teams = fetchedTeams;
         notifyListeners();
