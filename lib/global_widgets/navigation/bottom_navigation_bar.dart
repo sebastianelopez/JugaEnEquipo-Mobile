@@ -18,13 +18,15 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
   @override
   Widget build(BuildContext context) {
     final navigation = Provider.of<NavigationProvider>(context);
+    final postProvider = Provider.of<PostProvider>(context);
+    final imageProvider = Provider.of<ImagePickerProvider>(context);
 
     void onItemTapped(int index) {
       if (mainNavigationOptions[index].route == "notifications") {
         FocusScope.of(context).unfocus();
         Navigator.pushNamed(context, mainNavigationOptions[index].route);
       } else if (mainNavigationOptions[index].route == "createPost") {
-        Provider.of<PostProvider>(context, listen: false).generatePostId();
+        postProvider.generatePostId();
         showModalBottomSheet(
           context: context,
           constraints: BoxConstraints(
@@ -36,7 +38,10 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
           builder: (BuildContext context) {
             return CreatePost();
           },
-        );
+        ).then((value) {
+          postProvider.clearPostId();
+          imageProvider.clearMediaFileList();
+        });
       } else {
         navigation.setCurrentPage = index;
       }
