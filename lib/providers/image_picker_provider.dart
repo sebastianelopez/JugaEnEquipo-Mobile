@@ -75,7 +75,6 @@ class ImagePickerProvider extends ChangeNotifier {
   //Show options to get image from camera or gallery
   Future showOptions(BuildContext context,
       {required ImageType imageType,
-      required String userId,
       String? postId}) async {
     var savedContext = context;
     showDialog(
@@ -104,7 +103,7 @@ class ImagePickerProvider extends ChangeNotifier {
                 getImageFromGallery(false).then((_) async {
                   if (profileImage == null) return;
                   final result =
-                      await updateUserProfileImage(userId, profileImage!);
+                      await updateUserProfileImage(profileImage!);
                   profileImage = null;
                   // ignore: use_build_context_synchronously
                   _handleImageSelection(result, savedContext);

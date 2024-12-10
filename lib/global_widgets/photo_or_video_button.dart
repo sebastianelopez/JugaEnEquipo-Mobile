@@ -26,7 +26,7 @@ class PhotoOrVideoButton extends StatelessWidget {
           onPressed: () async => {
             if (user != null)
               await imageProvider.showOptions(context,
-                  imageType: ImageType.post, userId: user.id, postId: postId)
+                  imageType: ImageType.post, postId: postId)
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
