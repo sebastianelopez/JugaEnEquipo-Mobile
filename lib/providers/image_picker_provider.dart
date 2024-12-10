@@ -196,33 +196,27 @@ class ImagePickerProvider extends ChangeNotifier {
     if (mediaFileList != null) {
       return Semantics(
         label: 'image_picker_example_picked_images',
-        child: GridView.builder(
+        child: GridView.count(
+          primary: false,
+          padding: const EdgeInsets.all(20),
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          crossAxisCount: 5,
           key: UniqueKey(),
-          itemBuilder: (BuildContext context, int index) {
-            return Semantics(
-              label: 'image_picker_example_picked_image',
-              child: kIsWeb
-                  ? Image.network(mediaFileList![index].path)
-                  : Image.file(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width /
-                          mediaFileList!.length,
-                      File(mediaFileList![index].path),
-                      errorBuilder: (BuildContext context, Object error,
-                          StackTrace? stackTrace) {
-                        return const Center(
-                            child: Text('This image type is not supported'));
-                      },
-                    ),
-            );
-          },
-          itemCount: mediaFileList!.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount:
-                mediaFileList!.length, // Adjust the number of columns as needed
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4,
-          ),
+          children: mediaFileList!.map((file) {
+            return kIsWeb
+                ? Image.network(file.path)
+                : Image.file(
+                    height: 80,
+                    width: 80,
+                    File(file.path),
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      return const Center(
+                          child: Text('This image type is not supported'));
+                    },
+                  );
+          }).toList(),
         ),
       );
     } else if (_pickImageError != null) {
