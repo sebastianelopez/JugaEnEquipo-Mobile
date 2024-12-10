@@ -25,20 +25,20 @@ Future<Result> createPost(
     if (response.statusCode == 200) {
       // Success: Process the response data
       if (kDebugMode) {
-        debugPrint('API call successful: ${response.data}');
+        debugPrint('createPost - API call successful: ${response.data}');
       }
       return Result.success;
     } else {
       // Error: Handle the error response
       if (kDebugMode) {
-        debugPrint('API call failed: ${response.statusMessage}');
+        debugPrint('createPost - API call failed: ${response.statusMessage}');
       }
       return Result.error;
     }
   } catch (e) {
     // Error: Handle network errors
     if (kDebugMode) {
-      debugPrint('Network error occurred: $e');
+      debugPrint('createPost - Network error occurred: $e');
     }
     return Result.error;
   }
