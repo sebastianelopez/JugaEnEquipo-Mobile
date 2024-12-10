@@ -79,8 +79,7 @@ class ImagePickerProvider extends ChangeNotifier {
 
   //Show options to get image from camera or gallery
   Future showOptions(BuildContext context,
-      {required ImageType imageType,
-      String? postId}) async {
+      {required ImageType imageType, String? postId}) async {
     var savedContext = context;
     showDialog(
       context: savedContext,
