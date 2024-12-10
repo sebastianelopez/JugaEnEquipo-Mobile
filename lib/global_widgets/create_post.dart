@@ -48,9 +48,9 @@ class CreatePost extends StatelessWidget {
                       if (result == Result.success) {
                         postProvider.clearPostId();
                       }
-                    }
-                    if (kDebugMode) {
-                      debugPrint('TextField value: ${_controller.text}');
+
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
                     }
                   },
                   style: ButtonStyle(
