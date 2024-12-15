@@ -8,8 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Comments extends StatelessWidget {
   final bool autofocus;
+  final String postId;
 
-  const Comments({super.key, required this.autofocus});
+  const Comments({super.key, required this.autofocus, required this.postId});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class Comments extends StatelessWidget {
             ),
             Expanded(
               child: ChangeNotifierProvider(
-                create: (context) => HomeScreenProvider(context: context),
+                create: (context) => PostProvider(postId: postId),
                 child: const CommentsList(),
               ),
             ),

@@ -28,72 +28,6 @@ class HomeScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<CommentModel> commentsMocks = [
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Excelente!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Merecidisimo!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: '1502689a-5483-421a-b836-0d08b3ba2731',
-        copy: "Gracias!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Excelente!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Merecidisimo!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Excelente!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Merecidisimo!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Excelente!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-    CommentModel(
-        id: 'asd873738',
-        userId: 'asdasdsadds',
-        copy: "Merecidisimo!",
-        createdAt: "2024-05-04 15:00:04Z",
-        updatedAt: "2024-05-04 15:00:04Z",
-        deletedAt: ""),
-  ];
-
   Future<void> initData() async {
     fetchData();
     if (posts.isNotEmpty) {
@@ -156,7 +90,7 @@ class HomeScreenProvider extends ChangeNotifier {
   }
 
   Future<dynamic> openCommentsModal(BuildContext context,
-      {bool? autofocus = false}) {
+      {bool? autofocus = false, required String postId}) {
     return showModalBottomSheet(
       enableDrag: true,
       context: context,
@@ -172,7 +106,9 @@ class HomeScreenProvider extends ChangeNotifier {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Comments(
+              key: Key(postId),
               autofocus: autofocus ?? false,
+              postId: postId,
             ),
           ),
         );
