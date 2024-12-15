@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/profile_provider.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/profile_content.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
