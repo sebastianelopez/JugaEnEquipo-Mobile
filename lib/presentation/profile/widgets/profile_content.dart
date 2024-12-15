@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/profile_provider.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
