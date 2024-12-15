@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
-import 'package:jugaenequipo/presentation/home/widgets/comments_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
+import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Comments extends StatelessWidget {
   final bool autofocus;
@@ -50,39 +50,10 @@ class Comments extends StatelessWidget {
                 child: const CommentsList(),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey[200],
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2.h,
-                    blurRadius: 5.h,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: TextField(
-                autofocus: autofocus,
-                onTap: () {
-                  homeProvider.setFocus(true);
-                },
-                onSubmitted: (value) {
-                  FocusScope.of(context).unfocus();
-                },
-                onEditingComplete: () {
-                  FocusScope.of(context).unfocus();
-                },
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  hintText: 'Escribe un comentario',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-              ),
-            ),
+            ChangeNotifierProvider(
+                create: (context) => PostProvider(),
+                child: CommentsBottomBar(
+                    autofocus: autofocus, postId: postId)),
           ]),
         ),
       ),
