@@ -30,7 +30,9 @@ class ImageGrid extends StatelessWidget {
             image: NetworkImage(images[0]),
             width: imageSize,
             height: imageSize,
-            fit: BoxFit.cover, // Adjust fit as needed (cover, contain, etc.)
+            fit: BoxFit.cover,
+            imageErrorBuilder: (context, error, stackTrace) =>
+                imageErrorBuilder(context, error, stackTrace, imageSize),
           ),
         ),
       );
@@ -57,6 +59,9 @@ class ImageGrid extends StatelessWidget {
                   width: imageSize / 2,
                   height: imageSize / 2, // Adjust height as needed
                   fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) =>
+                      imageErrorBuilder(
+                          context, error, stackTrace, imageSize / 2),
                 ),
               ),
             ),
@@ -80,6 +85,9 @@ class ImageGrid extends StatelessWidget {
                   width: imageSize / 2,
                   height: imageSize / 2,
                   fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) =>
+                      imageErrorBuilder(
+                          context, error, stackTrace, imageSize / 2),
                 ),
               ),
             ),
@@ -108,10 +116,11 @@ class ImageGrid extends StatelessWidget {
                   child: Hero(
                     tag: images[index],
                     child: FadeInImage(
-                      placeholder: const AssetImage('assets/placeholder.png'),
-                      image: NetworkImage(images[index]),
-                      fit: BoxFit.cover,
-                    ),
+                        placeholder: const AssetImage('assets/placeholder.png'),
+                        image: NetworkImage(images[index]),
+                        fit: BoxFit.cover,
+                        imageErrorBuilder: (context, error, stackTrace) =>
+                            imageErrorBuilder(context, error, stackTrace)),
                   ),
                 )),
       );
@@ -140,6 +149,9 @@ class ImageGrid extends StatelessWidget {
                       width: imageSize / 2,
                       height: imageSize / 2,
                       fit: BoxFit.cover,
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          imageErrorBuilder(
+                              context, error, stackTrace, imageSize / 2),
                     ),
                   ),
                 ),
@@ -163,6 +175,9 @@ class ImageGrid extends StatelessWidget {
                       width: imageSize / 2,
                       height: imageSize / 2,
                       fit: BoxFit.cover,
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          imageErrorBuilder(
+                              context, error, stackTrace, imageSize / 2),
                     ),
                   ),
                 ),
@@ -188,7 +203,10 @@ class ImageGrid extends StatelessWidget {
                       placeholder: const AssetImage('assets/placeholder.png'),
                       image: NetworkImage(images[2]),
                       width: imageSize / 3,
-                      height: imageSize / 3, // Adjust height as needed
+                      height: imageSize / 3,
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          imageErrorBuilder(
+                              context, error, stackTrace, imageSize / 3),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -213,6 +231,9 @@ class ImageGrid extends StatelessWidget {
                       width: imageSize / 3,
                       height: imageSize / 3,
                       fit: BoxFit.cover,
+                      imageErrorBuilder: (context, error, stackTrace) =>
+                          imageErrorBuilder(
+                              context, error, stackTrace, imageSize / 3),
                     ),
                   ),
                 ),
@@ -244,6 +265,10 @@ class ImageGrid extends StatelessWidget {
                                   width: imageSize / 3,
                                   height: imageSize / 3,
                                   fit: BoxFit.cover,
+                                  imageErrorBuilder: (context, error,
+                                          stackTrace) =>
+                                      imageErrorBuilder(context, error,
+                                          stackTrace, imageSize / 3),
                                 ),
                               ),
                             ),
@@ -279,6 +304,9 @@ class ImageGrid extends StatelessWidget {
                             image: NetworkImage(images[4]),
                             width: imageSize / 3,
                             height: imageSize / 3,
+                            imageErrorBuilder: (context, error, stackTrace) =>
+                                imageErrorBuilder(
+                                    context, error, stackTrace, imageSize / 3),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -290,4 +318,15 @@ class ImageGrid extends StatelessWidget {
       );
     }
   }
+}
+
+Widget imageErrorBuilder(
+    BuildContext context, Object error, StackTrace? stackTrace,
+    [double? imageSize]) {
+  return Image.asset(
+    'assets/error.png',
+    width: imageSize,
+    height: imageSize,
+    fit: BoxFit.cover,
+  );
 }
