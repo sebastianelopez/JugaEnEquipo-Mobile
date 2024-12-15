@@ -20,18 +20,17 @@ Future<List<PostModel>?> getPostsByUserId(String id) async {
       },
     );
 
-    // Manejar la respuesta
+    // Handle the response
     if (response.statusCode == 200) {
+      // Success: Process the response data
       if (kDebugMode) {
         debugPrint('API call successful: ${response.data['data']}');
       }
       final data = response.data['data'];
 
-      // Debug: Check if data is a list
       if (data is List) {
         final posts = data.map((post) => PostModel.fromJson(post)).toList();
         if (kDebugMode) {
-          debugPrint('Data is a list');
           debugPrint('Parsed posts: $posts');
         }
         return posts;
@@ -42,14 +41,14 @@ Future<List<PostModel>?> getPostsByUserId(String id) async {
         return null;
       }
     } else {
-      // Error: Manejar la respuesta de error
+      // Error: Handle the error response
       if (kDebugMode) {
         debugPrint('API call failed: ${response.statusMessage}');
       }
       return null;
     }
   } catch (e) {
-    // Error: Manejar errores de red
+    // Error: Handle network errors
     if (kDebugMode) {
       debugPrint('Network error occurredd: $e');
     }
