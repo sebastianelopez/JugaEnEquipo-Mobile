@@ -44,7 +44,7 @@ class ProfileContent extends StatelessWidget {
                         topRight: Radius.circular(30))),
                 child: Column(children: [
                   Text(
-                    '${user!.firstName} ${user.lastName}',
+                    '${user.firstName} ${user.lastName}',
                     style:
                         TextStyle(fontSize: 18.h, fontWeight: FontWeight.w900),
                   ),
