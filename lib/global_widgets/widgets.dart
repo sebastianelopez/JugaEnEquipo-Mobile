@@ -1,3 +1,4 @@
+export 'package:jugaenequipo/global_widgets/shared_post.dart';
 export 'package:jugaenequipo/global_widgets/custom_page_view.dart';
 export 'package:jugaenequipo/global_widgets/photo_or_video_button.dart';
 export 'package:jugaenequipo/global_widgets/navigation/back_appbar.dart';
