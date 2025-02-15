@@ -14,34 +14,49 @@ class BottomNavigationBarCustom extends StatefulWidget {
 
 class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
   final mainNavigationOptions = AppRoutes.mainNavigationOptions;
+  late PostProvider postProvider;
+  late ImagePickerProvider imageProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      postProvider = Provider.of<PostProvider>(context, listen: false);
+      imageProvider = Provider.of<ImagePickerProvider>(context, listen: false);
+    });
+  }
+
+  Future<void> _showCreatePostModal() async {
+    try {
+      postProvider.generatePostId();
+      await showModalBottomSheet(
+        context: context,
+        constraints: BoxConstraints(
+          maxHeight: 600.h,
+          maxWidth: MediaQuery.of(context).size.width,
+        ),
+        isScrollControlled: true,
+        useSafeArea: true,
+        builder: (BuildContext context) => CreatePost(),
+      );
+    } catch (e) {
+      debugPrint('Error showing modal: $e');
+    } finally {
+      postProvider.clearPostId();
+      imageProvider.clearMediaFileList();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final navigation = Provider.of<NavigationProvider>(context);
-    final postProvider = Provider.of<PostProvider>(context);
-    final imageProvider = Provider.of<ImagePickerProvider>(context);
 
     void onItemTapped(int index) {
       if (mainNavigationOptions[index].route == "notifications") {
         FocusScope.of(context).unfocus();
         Navigator.pushNamed(context, mainNavigationOptions[index].route);
       } else if (mainNavigationOptions[index].route == "createPost") {
-        postProvider.generatePostId();
-        showModalBottomSheet(
-          context: context,
-          constraints: BoxConstraints(
-            maxHeight: 600.h,
-            maxWidth: 1200,
-          ),
-          isScrollControlled: true,
-          useSafeArea: true,
-          builder: (BuildContext context) {
-            return CreatePost();
-          },
-        ).then((value) {
-          postProvider.clearPostId();
-          imageProvider.clearMediaFileList();
-        });
+        _showCreatePostModal();
       } else {
         navigation.setCurrentPage = index;
       }
