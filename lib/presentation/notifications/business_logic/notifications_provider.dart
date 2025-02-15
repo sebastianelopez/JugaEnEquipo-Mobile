@@ -3,7 +3,7 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationsProvider extends ChangeNotifier {
-  List<NotificationModel> getMockNotifications([BuildContext? context]) {
+  List<NotificationModel> getMockNotifications(BuildContext context) {
     return [
       NotificationModel(
           id: 'op23343',
@@ -16,7 +16,7 @@ class NotificationsProvider extends ChangeNotifier {
               profileImage:
                   "https://scontent.cdninstagram.com/v/t51.2885-19/195780402_1055586888183094_99043525364029635_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent.cdninstagram.com&_nc_cat=110&_nc_ohc=XT8Rspy1K-EQ7kNvgGA1T9o&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfD4gI3ZTZvVUa-z2ETq6fOTk6bqrFpoOa8G_hBi8xfz4A&oe=663C6879&_nc_sid=10d13b"),
           notificationContent:
-              AppLocalizations.of(context!)!.notificationPostLiked('Lautaro'),
+              AppLocalizations.of(context)!.notificationPostLiked('Lautaro'),
           isNotificationRead: false,
           date: "2024-05-04 15:00:04Z"),
       NotificationModel(
