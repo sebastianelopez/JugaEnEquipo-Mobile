@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/delete_post_use_case.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/get_feed_by_user_use_case.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:jugaenequipo/providers/providers.dart';
@@ -11,6 +12,12 @@ class HomeScreenProvider extends ChangeNotifier {
   BuildContext context;
   late UserModel? user;
   var posts = <PostModel>[];
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   HomeScreenProvider({required this.context}) {
     user = Provider.of<UserProvider>(context, listen: false).user;
@@ -75,11 +82,10 @@ class HomeScreenProvider extends ChangeNotifier {
 
     isLoading = false;
 
-    if (scrollController.position.pixels + 100 <=
-        scrollController.position.maxScrollExtent) return;
-    scrollController.animateTo(scrollController.position.pixels + 120,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.fastOutSlowIn);
+    // Only handle scroll animation if controller is attached
+    if (scrollController.hasClients) {
+      _handleScrollAnimation();
+    }
   }
 
   void add5() {
@@ -87,6 +93,43 @@ class HomeScreenProvider extends ChangeNotifier {
 
     imageIds.addAll([1, 2, 3, 4, 5].map((e) => lastId + e));
     setState(() {}); */
+  }
+
+  void _handleScrollAnimation() {
+    if (!scrollController.hasClients) return;
+
+    final position = scrollController.position;
+    if (position.pixels + 100 <= position.maxScrollExtent) return;
+
+    scrollController.animateTo(scrollController.position.pixels + 120,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.fastOutSlowIn);
+  }
+
+  void _setPostHeight(String postId, double height) {
+    final postIndex = posts.indexWhere((post) => post.id == postId);
+    if (postIndex != -1) {
+      posts[postIndex].height = height;
+      notifyListeners();
+    }
+  }
+
+  void handlePostMenuOptionClick(Menu option, String postId) async {
+    switch (option) {
+      case Menu.delete:
+        final postIndex = posts.indexWhere((post) => post.id == postId);
+        if (postIndex != -1) {
+          posts[postIndex].isVisible = false;
+          notifyListeners();
+
+          await Future.delayed(const Duration(milliseconds: 400));
+          _setPostHeight(postId, 0);
+          await deletePost(postId);
+          posts.removeAt(postIndex);
+          notifyListeners();
+        }
+        break;
+    }
   }
 
   Future<dynamic> openCommentsModal(BuildContext context,
