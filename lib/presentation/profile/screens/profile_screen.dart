@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
       body: ChangeNotifierProvider(
         create: (context) => ProfileProvider(
           context: context,
-          userId: userId, // Pass userId to provider
+          userId: userId,
         ),
         child: const ProfileContent(),
       ),
