@@ -137,7 +137,7 @@ class TeamsScreenProvider extends ChangeNotifier {
     notifyListeners();
     try {
       if (user == null) return;
-      final fetchedTeams = await getFeedByUserId(user!.id);
+      final fetchedTeams = await getFeedByUserId();
       if (fetchedTeams != null) {
         // teams = fetchedTeams;
         notifyListeners();

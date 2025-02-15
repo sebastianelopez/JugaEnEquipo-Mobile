@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 
-Future<List<PostModel>?> getFeedByUserId(String id) async {
+Future<List<PostModel>?> getFeedByUserId() async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
@@ -12,9 +12,6 @@ Future<List<PostModel>?> getFeedByUserId(String id) async {
       '/api/my-feed',
       DioMethod.get,
       contentType: 'application/json',
-      param: {
-        "q": "user:$id",
-      },
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
@@ -51,7 +48,7 @@ Future<List<PostModel>?> getFeedByUserId(String id) async {
   } catch (e) {
     // Error: Manejar errores de red
     if (kDebugMode) {
-      debugPrint('Network error occurredd: $e');
+      debugPrint('getFeedByUserId - Network error occurred: $e');
     }
     return null;
   }

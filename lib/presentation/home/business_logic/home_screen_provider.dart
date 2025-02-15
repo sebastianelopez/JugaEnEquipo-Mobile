@@ -56,7 +56,7 @@ class HomeScreenProvider extends ChangeNotifier {
         debugPrint('User is null');
         return;
       }
-      final fetchedPosts = await getFeedByUserId(user!.id);
+      final fetchedPosts = await getFeedByUserId();
       if (fetchedPosts != null) {
         posts = fetchedPosts
           ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
