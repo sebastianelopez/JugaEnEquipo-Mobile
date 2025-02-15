@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/post/post_model.dart';
+import 'package:jugaenequipo/datasources/models/user_model.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/add_like_post_use_case.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/get_post_by_id_use_case.dart';
+import 'package:jugaenequipo/global_widgets/create_post.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:provider/provider.dart';
+
+enum Menu { delete }
 
 class PostCard extends StatelessWidget {
   final PostModel post;
@@ -15,144 +22,225 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeProvider = Provider.of<HomeScreenProvider>(context);
+    final postProvider = Provider.of<PostProvider>(context);
+    final imageProvider = Provider.of<ImagePickerProvider>(context);
+    UserModel? user = Provider.of<UserProvider>(context).user;
+    final isLoggedUserPost = user?.userName == post.user;
     final imagesUrls = post.resources?.map((e) => e.url).toList();
 
     return ChangeNotifierProvider.value(
       value: PostProvider()..getCommentsQuantity(post.id),
       child: Center(
-        child: Card(
-          margin: EdgeInsets.only(
-            top: 8.0.w,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: SizedBox(
-                  height: 50.h,
-                  width: 50.h,
-                  child: CircleAvatar(
-                    maxRadius: 15.h,
-                    backgroundImage: const NetworkImage(
-                      'https://elcomercio.pe/resizer/xvcflv5nZ6qztMCIojBYfROeCmo=/1200x800/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/J5TZJL65YBB2JN5TCPZBJVNJTQ.webp',
-                    ),
-                  ),
-                ),
-                title: Text(post.user ?? 'user',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w900, fontSize: 15.h)),
-                subtitle: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // TODO: getTeamById()
-                      /*  
-                        if (post.user.teamId != null)
-                        Text(
-                          post.user.team!.name,
-                          style: const TextStyle(fontSize: 13),
-                        ), */
-                      Text(
-                          formatTimeElapsed(
-                              DateTime.parse(post.createdAt), context),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 13.h)),
-                    ],
-                  ),
-                ),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: post.height,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: post.isVisible ? 1.0 : 0.0,
+            curve: Curves.easeInOut,
+            child: Card(
+              margin: EdgeInsets.only(
+                top: 8.0.w,
               ),
-              Column(
-                children: <Widget>[
-                  if (post.copy != null && post.copy!.isNotEmpty)
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18),
-                      width: double.infinity,
-                      child: Text(
-                        post.copy!,
-                        style: TextStyle(fontSize: 13.h),
-                      ),
-                    ),
-                  const SizedBox(height: 8),
-                  if (imagesUrls != null && imagesUrls.isNotEmpty)
-                    ImageGrid(images: imagesUrls),
-                  const SizedBox(height: 8),
-                ],
-              ),
-              Consumer<PostProvider>(
-                builder: (_, provider, __) {
-                  final commentsCount =
-                      provider.getCommentsCountForPost(post.id);
-                  if ((post.likes != null && post.likes! > 0) ||
-                      commentsCount > 0) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (post.likes != null && post.likes! > 0)
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.favorite,
-                                size: 15.0.h,
-                                color: Colors.red,
-                              ),
-                              const SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                post.likes.toString(),
-                                style: TextStyle(fontSize: 14.h),
-                              ),
-                            ],
-                          )
-                        else
-                          const SizedBox.shrink(),
-                        if (commentsCount > 0)
-                          TextButton(
-                            onPressed: () {
-                              homeProvider.openCommentsModal(context,
-                                  postId: post.id);
-                            },
-                            child: Text(
-                              "$commentsCount comentarios",
-                              style: TextStyle(fontSize: 14.h),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        leading: SizedBox(
+                          height: 50.h,
+                          width: 50.h,
+                          child: CircleAvatar(
+                            maxRadius: 15.h,
+                            backgroundImage: NetworkImage(
+                              post.urlProfileImage != null
+                                  ? post.urlProfileImage!
+                                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
                             ),
                           ),
-                      ],
-                    );
-                  }
-                  return const SizedBox.shrink();
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(post.user ?? 'user',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 15.h)),
+                            if (isLoggedUserPost)
+                              PopupMenuButton(
+                                icon: const Icon(Icons.more_vert),
+                                onSelected: (Menu item) {
+                                  homeProvider.handlePostMenuOptionClick(
+                                      item, post.id);
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<Menu>>[
+                                  const PopupMenuItem<Menu>(
+                                    value: Menu.delete,
+                                    child: ListTile(
+                                      leading: Icon(Icons.delete_outline),
+                                      title: Text('Delete post'),
+                                    ),
+                                  ),
+                                ],
+                              )
+                          ],
+                        ),
+                        subtitle: SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // TODO: getTeamById()
+                              /*  
+                              if (post.user.teamId != null)
+                              Text(
+                                post.user.team!.name,
+                                style: const TextStyle(fontSize: 13),
+                              ), */
+                              Text(
+                                  formatTimeElapsed(
+                                      DateTime.parse(post.createdAt), context),
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 13.h)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          if (post.copy != null && post.copy!.isNotEmpty)
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 18),
+                              width: double.infinity,
+                              child: Text(
+                                post.copy!,
+                                style: TextStyle(fontSize: 13.h),
+                              ),
+                            ),
+                          if (imagesUrls != null && imagesUrls.isNotEmpty)
+                            Container(
+                                margin: const EdgeInsets.only(bottom: 8),
+                                child: ImageGrid(images: imagesUrls)),
+                          if (post.sharedPost != null)
+                            Container(
+                                margin: const EdgeInsets.only(bottom: 8),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 18),
+                                width: double.infinity,
+                                child: SharedPost(
+                                  post: post.sharedPost!,
+                                )),
+                        ],
+                      ),
+                      Consumer<PostProvider>(
+                        builder: (_, provider, __) {
+                          final commentsCount =
+                              provider.getCommentsCountForPost(post.id);
+                          if ((post.likes != null && post.likes! > 0) ||
+                              commentsCount > 0) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                if (post.likes != null && post.likes! > 0)
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.favorite,
+                                        size: 15.0.h,
+                                        color: Colors.red,
+                                      ),
+                                      const SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Text(
+                                        post.likes.toString(),
+                                        style: TextStyle(fontSize: 14.h),
+                                      ),
+                                    ],
+                                  )
+                                else
+                                  const SizedBox.shrink(),
+                                if (commentsCount > 0)
+                                  TextButton(
+                                    onPressed: () {
+                                      homeProvider.openCommentsModal(context,
+                                          postId: post.id);
+                                    },
+                                    child: Text(
+                                      "$commentsCount comentarios",
+                                      style: TextStyle(fontSize: 14.h),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                      Divider(
+                        color: Colors.grey[300],
+                        height: 5,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          IconButton(
+                            color: Colors.grey,
+                            icon: const Icon(Icons.favorite),
+                            iconSize: 24.h,
+                            onPressed: () {
+                              addLikePost(post.id);
+                              //TODO: If the user has already liked the post, remove the like
+                              // removeLikePost(post.id);
+                            },
+                          ),
+                          IconButton(
+                            color: Colors.grey,
+                            icon: const Icon(Icons.message),
+                            iconSize: 24.h,
+                            onPressed: () {
+                              homeProvider.openCommentsModal(context,
+                                  autofocus: true, postId: post.id);
+                            },
+                          ),
+                          IconButton(
+                            color: Colors.grey,
+                            icon: const Icon(Icons.share),
+                            iconSize: 24.h,
+                            onPressed: () {
+                              postProvider.generatePostId();
+                              showModalBottomSheet(
+                                context: context,
+                                constraints: BoxConstraints(
+                                  maxHeight: 600.h,
+                                  maxWidth: 1200,
+                                ),
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (BuildContext context) {
+                                  return CreatePost(
+                                    sharedPost: post,
+                                  );
+                                },
+                              ).then((value) {
+                                postProvider.clearPostId();
+                                imageProvider.clearMediaFileList();
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
                 },
               ),
-              Divider(
-                color: Colors.grey[300],
-                height: 5,
-                indent: 10,
-                endIndent: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.favorite),
-                    iconSize: 24.h,
-                    onPressed: () {
-                      // Handle the message icon press here.
-                    },
-                  ),
-                  IconButton(
-                    color: Colors.grey,
-                    icon: const Icon(Icons.message),
-                    iconSize: 24.h,
-                    onPressed: () {
-                      homeProvider.openCommentsModal(context,
-                          autofocus: true, postId: post.id);
-                    },
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
