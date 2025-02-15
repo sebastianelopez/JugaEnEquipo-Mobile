@@ -36,7 +36,16 @@ class NotificationsListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage: NetworkImage(user.profileImage!),
+                    backgroundImage: user.profileImage != null
+                        ? Image.network(
+                            user.profileImage!,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                              'assets/error.png',
+                            ),
+                          ).image
+                        : const AssetImage('assets/user_image.jpg')
+                            as ImageProvider,
                     maxRadius: 20.h,
                   ),
                   Expanded(
