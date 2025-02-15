@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/profile_provider.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
+import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,12 +10,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class ProfileContent extends StatelessWidget {
-  const ProfileContent({super.key});
+  const ProfileContent({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
-    final user = profileProvider.profileUser; // Get user from provider
+    UserModel? user = Provider.of<UserProvider>(context).user;
+    final profileUser = profileProvider.profileUser;
+    final isLoggedUser = user?.id == profileUser?.id;
 
     if (profileProvider.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -57,11 +63,17 @@ class ProfileContent extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ProfileElevatedButton(
-                          label: AppLocalizations.of(context)!
-                              .profileFollowButtonLabel,
-                          onPressed: () {},
-                        ),
+                        if (isLoggedUser)
+                          ProfileElevatedButton(
+                            label: 'Editar perfil',
+                            onPressed: () {},
+                          )
+                        else
+                          ProfileElevatedButton(
+                            label: AppLocalizations.of(context)!
+                                .profileFollowButtonLabel,
+                            onPressed: () {},
+                          ),
                         ProfileElevatedButton(
                           label: AppLocalizations.of(context)!
                               .profileMessagesButtonLabel,
@@ -112,6 +124,7 @@ class ProfileContent extends StatelessWidget {
                 top: -40.h,
                 child: ProfileAvatar(
                   profileUser: user,
+                  isLoggedUser: isLoggedUser,
                 ),
               )
             ],

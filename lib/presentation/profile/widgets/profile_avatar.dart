@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 
 class ProfileAvatar extends StatelessWidget {
   final UserModel profileUser;
+  final bool isLoggedUser;
 
-  const ProfileAvatar({super.key, required this.profileUser});
+  const ProfileAvatar(
+      {super.key, required this.profileUser, required this.isLoggedUser});
 
   @override
   Widget build(BuildContext context) {
     final imageProvider = Provider.of<ImagePickerProvider>(context);
-    UserModel? user = Provider.of<UserProvider>(context).user;
-    final isLoggedUser = user?.id == profileUser.id;
 
     return GestureDetector(
       onTap: () async {
