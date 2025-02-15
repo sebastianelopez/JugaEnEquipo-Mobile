@@ -40,10 +40,17 @@ class TeamCard extends StatelessWidget {
               child: Container(
                 color: Colors.white,
                 width: 125,
-                child: Image.network(
-                  team.teamImage ?? 'https://picsum.photos/80/80',
-                  fit: BoxFit.cover,
-                ),
+                child: team.teamImage != null
+                    ? Image.network(
+                        team.teamImage!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                          'assets/error.png',
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Image.asset('assets/team_image.jpg', fit: BoxFit.cover),
               ),
             ),
 
@@ -90,7 +97,7 @@ class TeamCard extends StatelessWidget {
                           team.membersIds.length,
                           (index) => const CircleAvatar(
                             backgroundImage:
-                                NetworkImage("https://via.placeholder.com/150"),
+                                AssetImage('assets/user_image.jpg'),
                             maxRadius: 10,
                           ),
                         ),
@@ -104,7 +111,7 @@ class TeamCard extends StatelessWidget {
                           team.membersIds.length,
                           (index) => const CircleAvatar(
                             backgroundImage:
-                                NetworkImage("https://via.placeholder.com/150"),
+                                AssetImage('assets/user_image.jpg'),
                             maxRadius: 10,
                           ),
                         ),
