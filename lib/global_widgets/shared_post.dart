@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:jugaenequipo/datasources/models/post/post_model.dart';
+import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jugaenequipo/providers/providers.dart';
+import 'package:jugaenequipo/utils/utils.dart';
+import 'package:provider/provider.dart';
+
+class SharedPost extends StatelessWidget {
+  final PostModel post;
+
+  const SharedPost({super.key, required this.post});
+
+  @override
+  Widget build(BuildContext context) {
+    final imagesUrls = post.resources?.map((e) => e.url).toList();
+
+    return ChangeNotifierProvider.value(
+      value: PostProvider()..getCommentsQuantity(post.id),
+      child: Center(
+        child: Card(
+          elevation: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                ),
+                BoxShadow(
+                  color: Colors.white,
+                  spreadRadius: -1.0,
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: SizedBox(
+                        height: 50.h,
+                        width: 50.h,
+                        child: CircleAvatar(
+                          maxRadius: 15.h,
+                          backgroundImage: NetworkImage(
+                            post.urlProfileImage != null
+                                ? post.urlProfileImage!
+                                : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+                          ),
+                        ),
+                      ),
+                      title: Text(post.user ?? 'user',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 15.h)),
+                      subtitle: SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // TODO: getTeamById()
+                            /*  
+                            if (post.user.teamId != null)
+                            Text(
+                              post.user.team!.name,
+                              style: const TextStyle(fontSize: 13),
+                            ), */
+                            Text(
+                                formatTimeElapsed(
+                                    DateTime.parse(post.createdAt), context),
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 13.h)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Column(
+                      children: <Widget>[
+                        if (post.copy != null && post.copy!.isNotEmpty)
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                            width: double.infinity,
+                            child: Text(
+                              post.copy!,
+                              style: TextStyle(fontSize: 13.h),
+                            ),
+                          ),
+                        if (imagesUrls != null && imagesUrls.isNotEmpty)
+                          Container(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              child: ImageGrid(images: imagesUrls)),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
