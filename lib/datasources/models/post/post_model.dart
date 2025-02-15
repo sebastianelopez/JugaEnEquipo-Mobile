@@ -11,6 +11,10 @@ class PostModel {
   final String createdAt;
   final String? updatedAt;
   final String? deletedAt;
+  final String? urlProfileImage;
+  final PostModel? sharedPost;
+  bool isVisible;
+  double? height;
 
   PostModel({
     required this.id,
@@ -23,6 +27,10 @@ class PostModel {
     required this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    this.urlProfileImage,
+    this.sharedPost,
+    this.isVisible = true,
+    this.height,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -41,6 +49,9 @@ class PostModel {
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String?,
       deletedAt: json['deletedAt'] as String?,
+      urlProfileImage: json['urlProfileImage'] as String?,
+      sharedPost:
+          json['sharedPost'] != null ? PostModel.fromJson(json['sharedPost']) : null,
     );
   }
 
@@ -55,7 +66,9 @@ class PostModel {
       'comments': comments,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'deletedAt': deletedAt
+      'deletedAt': deletedAt,
+      'urlProfileImage': urlProfileImage,
+      'sharedPost': sharedPost,
     };
   }
 }
