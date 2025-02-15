@@ -23,7 +23,7 @@ Future<List<PostModel>?> getFeedByUserId(String id) async {
     // Manejar la respuesta
     if (response.statusCode == 200) {
       if (kDebugMode) {
-        debugPrint('API call successful: ${response.data['data']}');
+        debugPrint('getFeedByUserId - API call successful: ${response.data['data']}');
       }
       final data = response.data['data'];
 
@@ -44,7 +44,7 @@ Future<List<PostModel>?> getFeedByUserId(String id) async {
     } else {
       // Error: Manejar la respuesta de error
       if (kDebugMode) {
-        debugPrint('API call failed: ${response.statusMessage}');
+        debugPrint('getFeedByUserId - API call failed: ${response.statusMessage}');
       }
       return null;
     }

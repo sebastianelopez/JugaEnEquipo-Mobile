@@ -24,7 +24,7 @@ Future<List<PostModel>?> getPostsByUserId(String id) async {
     if (response.statusCode == 200) {
       // Success: Process the response data
       if (kDebugMode) {
-        debugPrint('API call successful: ${response.data['data']}');
+        debugPrint('getPostsByUserId - API call successful: ${response.data['data']}');
       }
       final data = response.data['data'];
 
@@ -43,14 +43,14 @@ Future<List<PostModel>?> getPostsByUserId(String id) async {
     } else {
       // Error: Handle the error response
       if (kDebugMode) {
-        debugPrint('API call failed: ${response.statusMessage}');
+        debugPrint('getPostsByUserId - API call failed: ${response.statusMessage}');
       }
       return null;
     }
   } catch (e) {
     // Error: Handle network errors
     if (kDebugMode) {
-      debugPrint('Network error occurredd: $e');
+      debugPrint('getPostsByUserId - Network error occurredd: $e');
     }
     return null;
   }

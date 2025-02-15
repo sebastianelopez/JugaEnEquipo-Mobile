@@ -19,7 +19,8 @@ Future<List<TeamModel>?> getInitialTeams() async {
 
     // Manage data
     if (response.statusCode == 200) {
-      debugLog('API call successful: ${response.data['data']}');
+      debugLog(
+          'getInitialTeams - API call successful: ${response.data['data']}');
       final data = response.data['data'];
 
       // Debug: Check if data is a list
@@ -34,12 +35,12 @@ Future<List<TeamModel>?> getInitialTeams() async {
       }
     } else {
       // Error: Manage error response
-      debugLog('API call failed: ${response.statusMessage}');
+      debugLog('getInitialTeams - API call failed: ${response.statusMessage}');
       return null;
     }
   } catch (e) {
     // Error: Manage network errors
-    debugLog('Network error occurredd: $e');
+    debugLog('getInitialTeams - Network error occurredd: $e');
     return null;
   }
 }
