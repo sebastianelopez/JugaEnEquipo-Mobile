@@ -71,9 +71,10 @@ class ProfileAvatar extends StatelessWidget {
           ],
         ),
         child: CircleAvatar(
-          maxRadius: 46.h,
-          backgroundImage: NetworkImage(profileUser.profileImage!),
-        ),
+            maxRadius: 46.h,
+            backgroundImage: profileUser.profileImage != null
+                ? NetworkImage(profileUser.profileImage!)
+                : const AssetImage('assets/user_image.jpg') as ImageProvider),
       ),
     );
   }
