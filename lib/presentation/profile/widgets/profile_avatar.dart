@@ -33,7 +33,8 @@ class ProfileAvatar extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ImageDetailScreen(
-                              imageUrls: [profileUser.profileImage!], currentIndex: 0),
+                              imageUrls: [profileUser.profileImage!],
+                              currentIndex: 0),
                         ),
                       );
                     },
