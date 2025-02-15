@@ -48,8 +48,9 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 7.0),
           child: CircleAvatar(
-            backgroundImage: NetworkImage(
-                user?.profileImage ?? 'https://via.placeholder.com/150'),
+            backgroundImage: user?.profileImage != null
+                ? NetworkImage(user!.profileImage!)
+                : const AssetImage('assets/user_image.jpg') as ImageProvider,
             radius: 16.w,
             backgroundColor: Colors.white,
           ),
