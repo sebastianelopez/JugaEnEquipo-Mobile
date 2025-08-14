@@ -62,7 +62,7 @@ class DrawerNav extends StatelessWidget {
                   onTap: () {
                     // Hide keyboard
                     FocusScope.of(context).unfocus();
-                    Navigator.pushNamed(context, option.route);
+                    Navigator.of(context).pushNamed(option.route);
                   },
                 );
               }),

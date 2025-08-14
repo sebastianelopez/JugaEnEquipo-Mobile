@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 class BottomNavigationBarCustom extends StatefulWidget {
   const BottomNavigationBarCustom({Key? key}) : super(key: key);
 
+
   @override
   State<BottomNavigationBarCustom> createState() => _BottomNavigationBarState();
 }
@@ -16,7 +17,6 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
   final mainNavigationOptions = AppRoutes.mainNavigationOptions;
   late PostProvider postProvider;
   late ImagePickerProvider imageProvider;
-
   @override
   void initState() {
     super.initState();
@@ -63,10 +63,10 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
     }
 
     return BottomNavigationBar(
+      currentIndex: navigation.currentPage,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: false,
       showUnselectedLabels: false,
-      currentIndex: navigation.currentPage,
       onTap: (i) => onItemTapped(i),
       selectedItemColor: Colors.red[900],
       items: mainNavigationOptions.map((option) {

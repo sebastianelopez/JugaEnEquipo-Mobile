@@ -11,14 +11,14 @@ class MessagesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BackAppBar(
-        label: AppLocalizations.of(context)!.messagesPageLabel,
-        backgroundColor: AppTheme.primary,
-      ),
-      body: ChangeNotifierProvider(
-        create: (context) => MessagesProvider(),
-        child: const SingleChildScrollView(
+    return ChangeNotifierProvider(
+      create: (_) => MessagesProvider(),
+      child: Scaffold(
+        appBar: BackAppBar(
+          label: AppLocalizations.of(context)!.messagesPageLabel,
+          backgroundColor: AppTheme.primary,
+        ),
+        body: const SingleChildScrollView(
           scrollDirection: Axis.vertical,
           physics: BouncingScrollPhysics(),
           child: Column(

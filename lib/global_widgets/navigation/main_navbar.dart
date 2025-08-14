@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -65,7 +66,13 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             //hide keyboard
             FocusScope.of(context).unfocus();
-            Navigator.pushNamed(context, 'messages');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MessagesScreen(),
+                fullscreenDialog: true,
+              ),
+            );
           },
         ),
       ],

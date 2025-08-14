@@ -24,7 +24,7 @@ class NotificationsListItem extends StatelessWidget {
       onTap: () {
         //hide keyboard
         FocusScope.of(context).unfocus();
-        Navigator.pushNamed(context, 'chat');
+        Navigator.of(context).pushNamed('chat', arguments: user);
       },
       child: Container(
         padding:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jugaenequipo/presentation/messages/business_logic/messages_provider.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/providers/theme_provider.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
@@ -24,7 +25,10 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider(create: (_) => PostProvider()),
-        ChangeNotifierProvider(create: (_) => ImagePickerProvider())
+        ChangeNotifierProvider(create: (_) => ImagePickerProvider()),
+        ChangeNotifierProvider(
+          create: (_) => MessagesProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -32,6 +36,7 @@ Future<void> main() async {
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

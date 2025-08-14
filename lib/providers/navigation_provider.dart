@@ -17,5 +17,24 @@ class NavigationProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void onPageChanged(int page) {
+    _currentPage = page;
+    notifyListeners();
+  }
+
+  void resetToTab(int tab) {
+    _currentPage = tab;
+    if (_pageController.hasClients) {
+      _pageController.jumpToPage(tab); // Sin animación para evitar conflictos
+    }
+    notifyListeners();
+  }
+
   PageController get pageController => _pageController;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 }

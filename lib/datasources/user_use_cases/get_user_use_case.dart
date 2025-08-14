@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
@@ -13,6 +15,12 @@ Future<UserModel?> getUserById(String id) async {
       contentType: 'application/json',
       headers: {
         'Authorization': 'Bearer $accessToken',
+      },
+    ).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        debugPrint('API request timed out');
+        throw TimeoutException('Request timed out');
       },
     );
 

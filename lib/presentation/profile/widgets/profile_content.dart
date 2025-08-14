@@ -10,9 +10,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class ProfileContent extends StatelessWidget {
+  final VoidCallback? onFollowersPressed;
+  final VoidCallback? onFollowingsPressed;
+  final VoidCallback? onPrizesPressed;
+
   const ProfileContent({
-    super.key,
-  });
+    Key? key,
+    this.onFollowersPressed,
+    this.onFollowingsPressed,
+    this.onPrizesPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,26 +100,24 @@ class ProfileContent extends StatelessWidget {
                                 .profileFollowingButtonLabel,
                             number: profileProvider.numberOfFollowings,
                             hasRightBorder: true,
-                            onTap: () =>
-                                profileProvider.openModal(ModalType.followings),
+                            onTap: onFollowingsPressed,
                           ),
                         ),
                         Expanded(
                           child: NumberAndLabel(
-                              label: AppLocalizations.of(context)!
-                                  .profileFollowersButtonLabel,
-                              number: profileProvider.numberOfFollowers,
-                              hasRightBorder: true,
-                              onTap: () => profileProvider
-                                  .openModal(ModalType.followers)),
+                            label: AppLocalizations.of(context)!
+                                .profileFollowersButtonLabel,
+                            number: profileProvider.numberOfFollowers,
+                            hasRightBorder: true,
+                            onTap: onFollowersPressed,
+                          ),
                         ),
                         Expanded(
                           child: NumberAndLabel(
                               label: AppLocalizations.of(context)!
                                   .profilePrizesButtonLabel,
                               number: 124,
-                              onTap: () =>
-                                  profileProvider.openModal(ModalType.prizes)),
+                              onTap: onPrizesPressed),
                         ),
                       ],
                     ),

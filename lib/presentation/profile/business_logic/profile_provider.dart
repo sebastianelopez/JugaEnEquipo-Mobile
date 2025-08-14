@@ -15,130 +15,89 @@ import 'package:provider/provider.dart';
 enum ModalType { followers, followings, prizes }
 
 class ProfileProvider extends ChangeNotifier {
-  BuildContext context;
   final String? userId;
+  final UserModel? initialUser;
 
   UserModel? profileUser;
   int numberOfFollowings = 0;
   int numberOfFollowers = 0;
   List<FollowUserModel> followings = [];
   List<FollowUserModel> followers = [];
+  bool isLoading = true;
+  String? error;
 
   ProfileProvider({
-    required this.context,
     this.userId,
+    this.initialUser,
   }) {
-    initData();
+    _loadData();
   }
 
-  bool isLoading = false;
-
-  Future<void> initData() async {
-    fetchData();
-
-    notifyListeners();
-  }
-
-  Future fetchData() async {
-    if (isLoading) return;
-
-    isLoading = true;
-    notifyListeners();
+  // Private method to load data
+  Future<void> _loadData() async {
     try {
-      if (userId == null) {
-        // Show logged user profile
-        profileUser = Provider.of<UserProvider>(context, listen: false).user;
-      } else {
+      // Use the initialUser if provided (from UserProvider)
+      if (userId == null && initialUser != null) {
+        profileUser = initialUser;
+      } else if (userId != null) {
         // Fetch other user's profile
         profileUser = await getUserById(userId!);
       }
-      debugPrint(profileUser.toString());
 
       if (profileUser == null) {
-        debugPrint('User is null');
+        error = 'Failed to load user profile';
+        isLoading = false;
+        notifyListeners();
         return;
       }
-      var followingsResponse = await getFollowings(profileUser!.id);
+
+      await Future.wait([
+        _loadFollowings(),
+        _loadFollowers(),
+      ]);
+    } catch (e) {
+      error = 'Error: ${e.toString()}';
+      debugPrint('Error loading profile: $e');
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _loadFollowings() async {
+    if (profileUser == null) return;
+
+    try {
+      final followingsResponse = await getFollowings(profileUser!.id);
       if (followingsResponse != null) {
         FollowModel followingsModel = followingsResponse;
         numberOfFollowings = followingsModel.quantity;
         followings = followingsModel.users;
       }
+    } catch (e) {
+      debugPrint('Error loading followings: $e');
+    }
+  }
 
-      var followersResponse = await getFollowers(profileUser!.id);
+  Future<void> _loadFollowers() async {
+    if (profileUser == null) return;
+
+    try {
+      final followersResponse = await getFollowers(profileUser!.id);
       if (followersResponse != null) {
         FollowModel followersModel = followersResponse;
         numberOfFollowers = followersModel.quantity;
         followers = followersModel.users;
       }
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint('Error profile stats: $e');
-      }
-    } finally {
-      isLoading = false;
-      notifyListeners();
+      debugPrint('Error loading followers: $e');
     }
-
-    isLoading = false;
   }
 
-  void openModal(ModalType type) {
-    showDialog(
-      useSafeArea: true,
-      context: context,
-      builder: (BuildContext context) {
-        String title;
-        List<Widget> content;
-
-        switch (type) {
-          case ModalType.followers:
-            title = AppLocalizations.of(context)!.profileFollowersButtonLabel;
-            content =
-                followers.map((user) => _buildUserListTile(user)).toList();
-            break;
-          case ModalType.followings:
-            title = AppLocalizations.of(context)!.profileFollowingButtonLabel;
-            content =
-                followings.map((user) => _buildUserListTile(user)).toList();
-            break;
-          case ModalType.prizes:
-            title = AppLocalizations.of(context)!.profilePrizesButtonLabel;
-            content = [const Text('Prizes content goes here')];
-            break;
-        }
-
-        return ProfileModal(
-          title: title,
-          content: content,
-        );
-      },
-    );
-  }
-
-  Widget _buildUserListTile(FollowUserModel user) {
-    return ListTile(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileScreen(userId: user.id),
-          ),
-        );
-      },
-      leading: const CircleAvatar(
-        backgroundImage: AssetImage('assets/login.png'),
-        radius: 16,
-        backgroundColor: Colors.white,
-      ),
-      title: Text(
-        "${user.firstname} ${user.lastname}",
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text(
-        '@${user.username}',
-        style: const TextStyle(fontSize: 11),
-      ),
-    );
+  // Method to refresh data
+  Future<void> refreshData() async {
+    isLoading = true;
+    notifyListeners();
+    await _loadData();
   }
 }

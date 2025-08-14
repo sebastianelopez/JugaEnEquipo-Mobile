@@ -20,46 +20,68 @@ class _SplashScreenState extends State<SplashScreen> {
   var token;
   var storage = const FlutterSecureStorage();
 
-  getToken() async {
-    token = await storage.read(key: 'access_token');
-
-    if (kDebugMode) {
-      debugPrint('Splash screen: hay token: $token');
-    }
-  }
-
   @override
   void initState() {
-    getToken();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(seconds: 3));
-      if (token != null) {
-        if (mounted) {
-          final userProvider =
-              Provider.of<UserProvider>(context, listen: false);
-          final decodedId = decodeUserIdByToken(token);
-          var user = await getUserById(decodedId);
-          if (kDebugMode) {
-            debugPrint('Splash screen: deodedId $decodedId');
-            debugPrint('Splash screen: user $user');
-          }
-          if (user == null) {
-            if (kDebugMode) {
-              debugPrint('Splash screen: user not found');
-            }
-            await Navigator.of(context).pushReplacementNamed('login');
-            return;
-          }
-          userProvider.setUser(user);
-          await Navigator.of(context).pushReplacementNamed('tabs');
-        }
-      } else {
-        if (mounted) await Navigator.of(context).pushReplacementNamed('login');
-      }
-    });
-
     super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    try {
+      debugPrint('Starting splash screen initialization...');
+      token = await storage.read(key: 'access_token');
+      debugPrint('Token read result: ${token != null ? 'exists' : 'null'}');
+
+      if (!mounted) return;
+
+      debugPrint('Starting 3 second delay...');
+      await Future.delayed(const Duration(seconds: 3));
+      debugPrint('Delay completed');
+
+      if (!mounted) return;
+
+      if (token != null) {
+        debugPrint('Token exists, attempting to decode and fetch user...');
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        final decodedId = decodeUserIdByToken(token);
+        debugPrint('Decoded user ID: $decodedId');
+
+        // Add timeout and error handling for user fetch
+        final user = await Future.any([
+          getUserById(decodedId).timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              debugPrint('User fetch timeout');
+              return null;
+            },
+          ),
+          Future.delayed(const Duration(seconds: 10), () => null)
+        ]).catchError((error) {
+          debugPrint('Error fetching user: $error');
+          return null;
+        });
+
+        if (!mounted) return;
+
+        if (user == null) {
+          debugPrint('User fetch failed, navigating to login...');
+          await Navigator.of(context).pushReplacementNamed('login');
+          return;
+        }
+
+        debugPrint('User fetch successful, navigating to tabs...');
+        userProvider.setUser(user);
+        await Navigator.of(context).pushReplacementNamed('tabs');
+      } else {
+        debugPrint('No token found, navigating to login...');
+        await Navigator.of(context).pushReplacementNamed('login');
+      }
+    } catch (e) {
+      debugPrint('Error in splash screen: $e');
+      if (mounted) {
+        await Navigator.of(context).pushReplacementNamed('login');
+      }
+    }
   }
 
   @override

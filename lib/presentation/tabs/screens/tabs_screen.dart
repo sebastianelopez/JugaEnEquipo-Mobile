@@ -28,6 +28,7 @@ class _Pages extends StatelessWidget {
     return PageView(
       controller: navigation.pageController,
       physics: const NeverScrollableScrollPhysics(),
+      onPageChanged: navigation.onPageChanged,
       children: <Widget>[
         const HomeScreen(),
         const TeamsScreen(),
