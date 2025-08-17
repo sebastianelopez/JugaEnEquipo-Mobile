@@ -24,15 +24,15 @@ class ProfileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
-    UserModel? user = Provider.of<UserProvider>(context).user;
+    UserModel? loggedUser = Provider.of<UserProvider>(context).user;
     final profileUser = profileProvider.profileUser;
-    final isLoggedUser = user?.id == profileUser?.id;
+    final isLoggedUser = loggedUser?.id == profileUser?.id;
 
     if (profileProvider.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (user == null) {
+    if (profileUser == null) {
       return const Center(child: Text('User not found'));
     }
     return SingleChildScrollView(
@@ -57,12 +57,12 @@ class ProfileContent extends StatelessWidget {
                         topRight: Radius.circular(30))),
                 child: Column(children: [
                   Text(
-                    '${user.firstName} ${user.lastName}',
+                    '${profileUser.firstName} ${profileUser.lastName}',
                     style:
                         TextStyle(fontSize: 18.h, fontWeight: FontWeight.w900),
                   ),
                   Text(
-                    '@${user.userName}',
+                    '@${profileUser.userName}',
                     style: TextStyle(
                         color: Theme.of(context)
                             .colorScheme
@@ -133,7 +133,7 @@ class ProfileContent extends StatelessWidget {
               Positioned(
                 top: -40.h,
                 child: ProfileAvatar(
-                  profileUser: user,
+                  profileUser: profileUser,
                   isLoggedUser: isLoggedUser,
                 ),
               )

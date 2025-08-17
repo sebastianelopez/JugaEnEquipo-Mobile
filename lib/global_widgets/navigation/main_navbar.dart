@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
+import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
@@ -107,6 +108,12 @@ class _MainNavbarState extends State<MainNavbar> {
                 FocusScope.of(context).unfocus();
                 context.read<SearchProvider>().clearResults();
                 _removeOverlay();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(userId: user.id),
+                  ),
+                );
               },
             ),
           ),
