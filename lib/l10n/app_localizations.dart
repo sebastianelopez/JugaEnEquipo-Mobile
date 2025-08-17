@@ -280,6 +280,12 @@ abstract class AppLocalizations {
   /// **'Messages'**
   String get profileMessagesButtonLabel;
 
+  /// No description provided for @profileSendMessageButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Send message'**
+  String get profileSendMessageButtonLabel;
+
   /// No description provided for @profileFollowingButtonLabel.
   ///
   /// In en, this message translates to:

@@ -101,6 +101,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileMessagesButtonLabel => 'Messages';
 
   @override
+  String get profileSendMessageButtonLabel => 'Send message';
+
+  @override
   String get profileFollowingButtonLabel => 'Following';
 
   @override

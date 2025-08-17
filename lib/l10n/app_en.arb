@@ -29,6 +29,7 @@
   "profilePageLabel": "Profile",
   "profileFollowButtonLabel": "Follow",
   "profileMessagesButtonLabel": "Messages",
+  "profileSendMessageButtonLabel": "Send message",
   "profileFollowingButtonLabel": "Following",
   "profileFollowersButtonLabel": "Followers",
   "profilePrizesButtonLabel": "Prizes",

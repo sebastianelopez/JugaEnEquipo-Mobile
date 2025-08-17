@@ -86,11 +86,18 @@ class ProfileContent extends StatelessWidget {
                                 .profileFollowButtonLabel,
                             onPressed: () {},
                           ),
-                        ProfileElevatedButton(
-                          label: AppLocalizations.of(context)!
-                              .profileMessagesButtonLabel,
-                          onPressed: () {},
-                        ),
+                        if (isLoggedUser)
+                          ProfileElevatedButton(
+                            label: AppLocalizations.of(context)!
+                                .profileMessagesButtonLabel,
+                            onPressed: () {},
+                          )
+                        else
+                          ProfileElevatedButton(
+                            label: AppLocalizations.of(context)!
+                                .profileSendMessageButtonLabel,
+                            onPressed: () {},
+                          ),
                       ],
                     ),
                   ),
