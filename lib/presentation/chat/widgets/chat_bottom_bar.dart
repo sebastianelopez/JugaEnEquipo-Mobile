@@ -20,7 +20,7 @@ class ChatBottomBar extends StatelessWidget {
           color: isDarkTheme ? Colors.grey[900] : Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               spreadRadius: 0,
               blurRadius: 10,
               offset: const Offset(0, -10),
@@ -30,8 +30,7 @@ class ChatBottomBar extends StatelessWidget {
         child: Row(
           children: <Widget>[
             GestureDetector(
-              onTap: () {
-              },
+              onTap: () {},
               child: Container(
                 height: 30,
                 width: 30,

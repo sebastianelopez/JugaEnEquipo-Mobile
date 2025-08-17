@@ -68,7 +68,7 @@ class ProfileAvatar extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
               spreadRadius: 2.h,
               blurRadius: 5.h,
               offset: const Offset(0, 3),

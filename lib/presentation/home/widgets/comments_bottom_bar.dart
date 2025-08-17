@@ -29,7 +29,7 @@ class CommentsBottomBar extends StatelessWidget {
             color: Colors.grey[200],
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: Colors.grey.withValues(alpha: 0.5),
                 spreadRadius: 2.h,
                 blurRadius: 5.h,
                 offset: const Offset(0, 3),
@@ -61,7 +61,7 @@ class CommentsBottomBar extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
               spreadRadius: 2.h,
               blurRadius: 5.h,
               offset: const Offset(0, 3),
