@@ -52,7 +52,12 @@ class PostCard extends StatelessWidget {
                           width: 50.h,
                           child: CircleAvatar(
                             maxRadius: 15.h,
-                            backgroundImage: post.urlProfileImage != null
+                            backgroundImage: (post.urlProfileImage != null &&
+                                    post.urlProfileImage!.isNotEmpty &&
+                                    (post.urlProfileImage!
+                                            .startsWith('http://') ||
+                                        post.urlProfileImage!
+                                            .startsWith('https://')))
                                 ? NetworkImage(post.urlProfileImage!)
                                 : const AssetImage('assets/user_image.jpg')
                                     as ImageProvider,

@@ -28,8 +28,11 @@ class DrawerNav extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppTheme.primary,
                 image: DecorationImage(
-                  image: user?.profileImage != null
-                      ? NetworkImage(user!.profileImage!)
+                  image: (user?.profileImage != null &&
+                          (user!.profileImage?.isNotEmpty ?? false) &&
+                          (user.profileImage!.startsWith('http://') ||
+                              user.profileImage!.startsWith('https://')))
+                      ? NetworkImage(user.profileImage!)
                       : const AssetImage('assets/user_image.jpg')
                           as ImageProvider,
                   fit: BoxFit.cover,

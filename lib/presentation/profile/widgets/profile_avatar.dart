@@ -24,21 +24,25 @@ class ProfileAvatar extends StatelessWidget {
             return SafeArea(
               child: Wrap(
                 children: <Widget>[
-                  ListTile(
-                    leading: const Icon(Icons.visibility),
-                    title: const Text('Ver imagen'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ImageDetailScreen(
-                              imageUrls: [profileUser.profileImage!],
-                              currentIndex: 0),
-                        ),
-                      );
-                    },
-                  ),
+                  if (profileUser.profileImage != null &&
+                      profileUser.profileImage!.isNotEmpty &&
+                      (profileUser.profileImage!.startsWith('http://') ||
+                          profileUser.profileImage!.startsWith('https://')))
+                    ListTile(
+                      leading: const Icon(Icons.visibility),
+                      title: const Text('Ver imagen'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImageDetailScreen(
+                                imageUrls: [profileUser.profileImage!],
+                                currentIndex: 0),
+                          ),
+                        );
+                      },
+                    ),
                   if (isLoggedUser)
                     ListTile(
                       leading: const Icon(Icons.edit),
@@ -73,7 +77,10 @@ class ProfileAvatar extends StatelessWidget {
         ),
         child: CircleAvatar(
             maxRadius: 46.h,
-            backgroundImage: profileUser.profileImage != null
+            backgroundImage: (profileUser.profileImage != null &&
+                    profileUser.profileImage!.isNotEmpty &&
+                    (profileUser.profileImage!.startsWith('http://') ||
+                        profileUser.profileImage!.startsWith('https://')))
                 ? NetworkImage(profileUser.profileImage!)
                 : const AssetImage('assets/user_image.jpg') as ImageProvider),
       ),

@@ -40,7 +40,10 @@ class TeamCard extends StatelessWidget {
               child: Container(
                 color: Colors.white,
                 width: 125,
-                child: team.teamImage != null
+                child: (team.teamImage != null &&
+                        team.teamImage!.isNotEmpty &&
+                        (team.teamImage!.startsWith('http://') ||
+                            team.teamImage!.startsWith('https://')))
                     ? Image.network(
                         team.teamImage!,
                         fit: BoxFit.cover,

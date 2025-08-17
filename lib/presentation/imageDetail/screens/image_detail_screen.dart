@@ -7,8 +7,7 @@ class ImageDetailScreen extends StatelessWidget {
   final int currentIndex;
 
   const ImageDetailScreen(
-      {Key? key, required this.imageUrls, required this.currentIndex})
-      : super(key: key);
+      {super.key, required this.imageUrls, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +18,19 @@ class ImageDetailScreen extends StatelessWidget {
       ),
       body: CarouselSlider(
         items: imageUrls.map((imageUrl) {
+          final bool isValidUrl =
+              imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
           return Builder(
             builder: (context) => Hero(
               tag: imageUrl,
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.contain,
-              ),
+              child: isValidUrl
+                  ? Image.network(
+                      imageUrl,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Image.asset('assets/error.png', fit: BoxFit.contain),
+                    )
+                  : Image.asset('assets/error.png', fit: BoxFit.contain),
             ),
           );
         }).toList(),
