@@ -25,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
                 Consumer<ThemeProvider>(
                   builder: (context, themeProvider, child) {
                     return SwitchListTile.adaptive(
-                        activeColor: AppTheme.primary,
+                        activeTrackColor: AppTheme.primary,
                         value: Preferences.isDarkmode,
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
