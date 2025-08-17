@@ -52,7 +52,7 @@ Future<Result> updateUserProfileImage(File profileImage) async {
     }
   } catch (e) {
     // Error: Handle network errors
-    if (e is DioError) {
+    if (e is DioException) {
       if (e.response?.data != null && kDebugMode) {
         debugPrint('Error details: ${e.response?.data}');
       }

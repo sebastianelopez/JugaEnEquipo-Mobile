@@ -5,7 +5,7 @@ import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

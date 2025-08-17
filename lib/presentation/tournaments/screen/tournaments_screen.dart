@@ -4,7 +4,7 @@ import 'package:jugaenequipo/presentation/tournaments/widgets/tournaments_table.
 import 'package:provider/provider.dart';
 
 class TournamentsScreen extends StatefulWidget {
-  const TournamentsScreen({Key? key}) : super(key: key);
+  const TournamentsScreen({super.key});
 
   @override
   State<TournamentsScreen> createState() => _TournamentsScreenState();

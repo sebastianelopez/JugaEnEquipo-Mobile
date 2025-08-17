@@ -7,8 +7,7 @@ class CardContainer extends StatelessWidget {
   final BoxShadow? boxShadow;
 
   const CardContainer(
-      {Key? key, required this.child, this.backgroundColor, this.boxShadow})
-      : super(key: key);
+      {super.key, required this.child, this.backgroundColor, this.boxShadow});
 
   @override
   Widget build(BuildContext context) {

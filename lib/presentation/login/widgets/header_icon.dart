@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class HeaderIcon extends StatelessWidget {
   const HeaderIcon({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,8 +3,8 @@ import 'package:jugaenequipo/theme/app_theme.dart';
 
 class LoadingIcon extends StatelessWidget {
   const LoadingIcon({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

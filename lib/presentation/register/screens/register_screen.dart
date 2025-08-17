@@ -8,7 +8,7 @@ import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 
 class MessagesScreen extends StatelessWidget {
-  const MessagesScreen({Key? key}) : super(key: key);
+  const MessagesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

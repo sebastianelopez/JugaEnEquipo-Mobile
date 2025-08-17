@@ -15,11 +15,11 @@ class ProfileContent extends StatelessWidget {
   final VoidCallback? onPrizesPressed;
 
   const ProfileContent({
-    Key? key,
+    super.key,
     this.onFollowersPressed,
     this.onFollowingsPressed,
     this.onPrizesPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

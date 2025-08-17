@@ -156,7 +156,9 @@ class TeamsScreenProvider extends ChangeNotifier {
     isLoading = false;
 
     if (scrollController.position.pixels + 100 <=
-        scrollController.position.maxScrollExtent) return;
+        scrollController.position.maxScrollExtent) {
+      return;
+    }
     scrollController.animateTo(scrollController.position.pixels + 120,
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn);

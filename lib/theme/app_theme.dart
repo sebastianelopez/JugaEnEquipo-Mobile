@@ -8,7 +8,7 @@ class AppTheme {
   static ThemeData baseTheme(ThemeData theme) {
     return theme.copyWith(
       primaryColor: primary,
-      appBarTheme: const AppBarTheme(color: primary, elevation: 0),
+      appBarTheme: const AppBarTheme(backgroundColor: primary, elevation: 0),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: primary, elevation: 5),
       elevatedButtonTheme: ElevatedButtonThemeData(

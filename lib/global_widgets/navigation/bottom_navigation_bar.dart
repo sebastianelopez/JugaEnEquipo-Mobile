@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigationBarCustom extends StatefulWidget {
-  const BottomNavigationBarCustom({Key? key}) : super(key: key);
+  const BottomNavigationBarCustom({super.key});
 
 
   @override

@@ -4,7 +4,7 @@ import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_scree
 class ImageGrid extends StatelessWidget {
   final List<String> images;
 
-  const ImageGrid({Key? key, required this.images}) : super(key: key);
+  const ImageGrid({super.key, required this.images});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,10 @@ class ImageGrid extends StatelessWidget {
           tag: images[0],
           child: FadeInImage(
             placeholder: const AssetImage('assets/placeholder.png'),
-            image: NetworkImage(images[0]),
+            image: ((images[0].startsWith('http://') ||
+                    images[0].startsWith('https://'))
+                ? NetworkImage(images[0])
+                : const AssetImage('assets/error.png')) as ImageProvider,
             width: imageSize,
             height: imageSize,
             fit: BoxFit.cover,
@@ -55,7 +58,10 @@ class ImageGrid extends StatelessWidget {
                 tag: images[0],
                 child: FadeInImage(
                   placeholder: const AssetImage('assets/placeholder.png'),
-                  image: NetworkImage(images[0]),
+                  image: ((images[0].startsWith('http://') ||
+                          images[0].startsWith('https://'))
+                      ? NetworkImage(images[0])
+                      : const AssetImage('assets/error.png')) as ImageProvider,
                   width: imageSize / 2,
                   height: imageSize / 2, // Adjust height as needed
                   fit: BoxFit.cover,
@@ -81,7 +87,10 @@ class ImageGrid extends StatelessWidget {
                 tag: images[1],
                 child: FadeInImage(
                   placeholder: const AssetImage('assets/placeholder.png'),
-                  image: NetworkImage(images[1]),
+                  image: ((images[1].startsWith('http://') ||
+                          images[1].startsWith('https://'))
+                      ? NetworkImage(images[1])
+                      : const AssetImage('assets/error.png')) as ImageProvider,
                   width: imageSize / 2,
                   height: imageSize / 2,
                   fit: BoxFit.cover,
@@ -117,7 +126,11 @@ class ImageGrid extends StatelessWidget {
                     tag: images[index],
                     child: FadeInImage(
                         placeholder: const AssetImage('assets/placeholder.png'),
-                        image: NetworkImage(images[index]),
+                        image: ((images[index].startsWith('http://') ||
+                                    images[index].startsWith('https://'))
+                                ? NetworkImage(images[index])
+                                : const AssetImage('assets/error.png'))
+                            as ImageProvider,
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) =>
                             imageErrorBuilder(context, error, stackTrace)),
@@ -145,7 +158,11 @@ class ImageGrid extends StatelessWidget {
                     tag: images[0],
                     child: FadeInImage(
                       placeholder: const AssetImage('assets/placeholder.png'),
-                      image: NetworkImage(images[0]),
+                      image: ((images[0].startsWith('http://') ||
+                                  images[0].startsWith('https://'))
+                              ? NetworkImage(images[0])
+                              : const AssetImage('assets/error.png'))
+                          as ImageProvider,
                       width: imageSize / 2,
                       height: imageSize / 2,
                       fit: BoxFit.cover,
@@ -171,7 +188,11 @@ class ImageGrid extends StatelessWidget {
                     tag: images[1],
                     child: FadeInImage(
                       placeholder: const AssetImage('assets/placeholder.png'),
-                      image: NetworkImage(images[1]),
+                      image: ((images[1].startsWith('http://') ||
+                                  images[1].startsWith('https://'))
+                              ? NetworkImage(images[1])
+                              : const AssetImage('assets/error.png'))
+                          as ImageProvider,
                       width: imageSize / 2,
                       height: imageSize / 2,
                       fit: BoxFit.cover,
@@ -201,7 +222,11 @@ class ImageGrid extends StatelessWidget {
                     tag: images[2],
                     child: FadeInImage(
                       placeholder: const AssetImage('assets/placeholder.png'),
-                      image: NetworkImage(images[2]),
+                      image: ((images[2].startsWith('http://') ||
+                                  images[2].startsWith('https://'))
+                              ? NetworkImage(images[2])
+                              : const AssetImage('assets/error.png'))
+                          as ImageProvider,
                       width: imageSize / 3,
                       height: imageSize / 3,
                       imageErrorBuilder: (context, error, stackTrace) =>
@@ -227,7 +252,11 @@ class ImageGrid extends StatelessWidget {
                     tag: images[3],
                     child: FadeInImage(
                       placeholder: const AssetImage('assets/placeholder.png'),
-                      image: NetworkImage(images[3]),
+                      image: ((images[3].startsWith('http://') ||
+                                  images[3].startsWith('https://'))
+                              ? NetworkImage(images[3])
+                              : const AssetImage('assets/error.png'))
+                          as ImageProvider,
                       width: imageSize / 3,
                       height: imageSize / 3,
                       fit: BoxFit.cover,
@@ -261,7 +290,11 @@ class ImageGrid extends StatelessWidget {
                                 child: FadeInImage(
                                   placeholder: const AssetImage(
                                       'assets/placeholder.png'),
-                                  image: NetworkImage(images[4]),
+                                  image: ((images[4].startsWith('http://') ||
+                                          images[4].startsWith('https://'))
+                                      ? NetworkImage(images[4])
+                                      : const AssetImage(
+                                          'assets/error.png')) as ImageProvider,
                                   width: imageSize / 3,
                                   height: imageSize / 3,
                                   fit: BoxFit.cover,
@@ -301,7 +334,11 @@ class ImageGrid extends StatelessWidget {
                           child: FadeInImage(
                             placeholder:
                                 const AssetImage('assets/placeholder.png'),
-                            image: NetworkImage(images[4]),
+                            image: ((images[4].startsWith('http://') ||
+                                        images[4].startsWith('https://'))
+                                    ? NetworkImage(images[4])
+                                    : const AssetImage('assets/error.png'))
+                                as ImageProvider,
                             width: imageSize / 3,
                             height: imageSize / 3,
                             imageErrorBuilder: (context, error, stackTrace) =>

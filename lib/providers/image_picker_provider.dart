@@ -95,7 +95,9 @@ class ImagePickerProvider extends ChangeNotifier {
               if (imageType == ImageType.post) {
                 await getImageFromGallery(true).then((_) async {
                   if ((mediaFileList != null && mediaFileList!.isEmpty) ||
-                      postId == null) return;
+                      postId == null) {
+                    return;
+                  }
                   mediaFileList?.forEach((file) async {
                     var mediaId = uuid.v4();
                     mediaFileListIds?.add(mediaId);

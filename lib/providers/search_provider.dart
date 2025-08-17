@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_users_by_username_use_case.dart';
 
