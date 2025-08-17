@@ -94,29 +94,51 @@ class _MainNavbarState extends State<MainNavbar> {
         final Size targetSize = renderBox.size;
         final Offset targetOffset = renderBox.localToGlobal(Offset.zero);
         final double overlayWidth = targetSize.width;
-        return Positioned(
-          left: targetOffset.dx,
-          top: targetOffset.dy + targetSize.height,
-          width: overlayWidth,
-          height: _dropdownMaxHeight.h,
-          child: Material(
-            color: Theme.of(context).colorScheme.surface,
-            elevation: 4,
-            clipBehavior: Clip.hardEdge,
-            child: _SuggestionsList(
-              onItemTap: (user) {
-                FocusScope.of(context).unfocus();
-                context.read<SearchProvider>().clearResults();
-                _removeOverlay();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileScreen(userId: user.id),
-                  ),
-                );
-              },
+        return Stack(
+          children: [
+            // Body-only tap layer to close suggestions when clicking outside
+            Positioned(
+              left: 0,
+              right: 0,
+              top: MediaQuery.of(context).padding.top + _toolbarHeight,
+              bottom: MediaQuery.of(context).padding.bottom +
+                  kBottomNavigationBarHeight,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  context.read<SearchProvider>().clearResults();
+                  _removeOverlay();
+                },
+                child: Container(color: Colors.transparent),
+              ),
             ),
-          ),
+            // Suggestions dropdown
+            Positioned(
+              left: targetOffset.dx,
+              top: targetOffset.dy + targetSize.height,
+              width: overlayWidth,
+              height: _dropdownMaxHeight.h,
+              child: Material(
+                color: Theme.of(context).colorScheme.surface,
+                elevation: 4,
+                clipBehavior: Clip.hardEdge,
+                child: _SuggestionsList(
+                  onItemTap: (user) {
+                    FocusScope.of(context).unfocus();
+                    context.read<SearchProvider>().clearResults();
+                    _removeOverlay();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(userId: user.id),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
