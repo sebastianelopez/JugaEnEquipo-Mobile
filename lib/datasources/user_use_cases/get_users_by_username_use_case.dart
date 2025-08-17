@@ -26,9 +26,12 @@ Future<List<UserModel>?> getUsersByUsername(String username) async {
             'getUsersByUsername - API call successful: ${response.data['data']}');
       }
 
-      final data = response.data['data'];
+      final data = response.data['data']['data'];
       if (data is List) {
-        return data.map<UserModel>((json) => UserModel.fromJson(json)).toList();
+        return data
+            .map<UserModel>((dynamic json) =>
+                UserModel.fromJson(json as Map<String, dynamic>))
+            .toList();
       }
 
       if (kDebugMode) {
