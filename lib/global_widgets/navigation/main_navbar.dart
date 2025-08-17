@@ -25,7 +25,7 @@ class _MainNavbarState extends State<MainNavbar> {
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _fieldKey = GlobalKey();
   OverlayEntry? _overlayEntry;
-  final double _dropdownMaxHeight = 120.0;
+  final double _dropdownMaxHeight = 220.0;
   bool _isListeningToProvider = false;
 
   @override
