@@ -35,6 +35,11 @@ class LoginFormProvider extends ChangeNotifier {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final result = await login(email, password);
 
+    if (!context.mounted) {
+      isLoading = false;
+      return;
+    }
+
     switch (result) {
       case Result.success:
         var token = await storage.read(key: 'access_token');
@@ -48,18 +53,24 @@ class LoginFormProvider extends ChangeNotifier {
 
         var user = await getUserById(decodedId);
 
+        if (!context.mounted) {
+          isLoading = false;
+          return;
+        }
+
         if (user == null) {
           throw Exception('User not found');
         }
         userProvider.setUser(user);
 
         isLoading = false;
+        if (!context.mounted) return;
         Navigator.pushReplacementNamed(context, 'tabs');
         break;
       case Result.unauthorized:
         isLoading = false;
+        if (!context.mounted) return;
         showDialog(
-          // ignore: use_build_context_synchronously
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -79,8 +90,8 @@ class LoginFormProvider extends ChangeNotifier {
         break;
       case Result.error:
         isLoading = false;
+        if (!context.mounted) return;
         showDialog(
-          // ignore: use_build_context_synchronously
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
