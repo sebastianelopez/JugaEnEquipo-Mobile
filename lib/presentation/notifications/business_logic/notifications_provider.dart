@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 class NotificationsProvider extends ChangeNotifier {
   List<NotificationModel> getMockNotifications(BuildContext context) {

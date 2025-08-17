@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
@@ -52,8 +52,7 @@ class Comments extends StatelessWidget {
             ),
             ChangeNotifierProvider(
                 create: (context) => PostProvider(),
-                child: CommentsBottomBar(
-                    autofocus: autofocus, postId: postId)),
+                child: CommentsBottomBar(autofocus: autofocus, postId: postId)),
           ]),
         ),
       ),

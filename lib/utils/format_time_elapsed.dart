@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 const int secondsPerMinute = 60;
 const int minutesPerHour = 60;

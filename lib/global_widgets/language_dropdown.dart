@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/providers/providers.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,11 +34,14 @@ class LanguageDropdown extends StatelessWidget {
           return DropdownMenuEntry(
             value: locale,
             label: showLabel ? locale.languageCode.toUpperCase() : '',
-            labelWidget: CountryFlag.fromCountryCode(
-              internalization.languages[index].countryCode?.toLowerCase() ?? '',
-              height: 38,
-              width: 62,
-              borderRadius: 8,
+            labelWidget: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: CountryFlag.fromCountryCode(
+                internalization.languages[index].countryCode?.toLowerCase() ??
+                    '',
+                height: 38,
+                width: 62,
+              ),
             ),
             style: const ButtonStyle(
               foregroundColor: WidgetStatePropertyAll(Colors.red),

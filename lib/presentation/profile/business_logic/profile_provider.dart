@@ -6,11 +6,6 @@ import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followers_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followings_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
-import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
-import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
-import 'package:jugaenequipo/providers/providers.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 
 enum ModalType { followers, followings, prizes }
 

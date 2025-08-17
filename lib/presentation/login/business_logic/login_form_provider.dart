@@ -43,7 +43,7 @@ class LoginFormProvider extends ChangeNotifier {
           isLoading = false;
           throw const FormatException('Token is null');
         }
-        
+
         final decodedId = decodeUserIdByToken(token);
 
         var user = await getUserById(decodedId);

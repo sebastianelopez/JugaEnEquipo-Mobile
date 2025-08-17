@@ -12,7 +12,7 @@ class TeamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final teamProvider = Provider.of<TeamsScreenProvider>(context);
+    Provider.of<TeamsScreenProvider>(context, listen: false);
 
     return Center(
       child: Container(

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jugaenequipo/presentation/login/business_logic/login_form_provider.dart';
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +32,6 @@ class LoginForm extends StatelessWidget {
                 hintText: AppLocalizations.of(context)!.loginUserHintText,
                 hintTextColor: Colors.white,
                 labelTextColor: Colors.white,
-                
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -86,7 +85,7 @@ class LoginForm extends StatelessWidget {
                   child: Text(
                     AppLocalizations.of(context)!.loginButton,
                     style: GoogleFonts.openSans(
-                        textStyle:  TextStyle(
+                        textStyle: TextStyle(
                             color: Colors.white70,
                             fontWeight: FontWeight.w900,
                             fontSize: 16.0.h)),

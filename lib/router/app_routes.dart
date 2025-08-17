@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/chat/screens/chat_screen.dart';
 import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
@@ -28,15 +28,10 @@ class AppRoutes {
   ];
 
   static final mainNavigationOptions = <MainNavigationOptionModel>[
-    MainNavigationOptionModel(
-        route: 'home', icon: Icons.home),
-    MainNavigationOptionModel(
-        route: 'teams',
-        icon: Icons.supervisor_account),
+    MainNavigationOptionModel(route: 'home', icon: Icons.home),
+    MainNavigationOptionModel(route: 'teams', icon: Icons.supervisor_account),
     MainNavigationOptionModel(route: 'createPost', icon: Icons.add_circle),
-    MainNavigationOptionModel(
-        route: 'tournaments',
-        icon: Icons.emoji_events),
+    MainNavigationOptionModel(route: 'tournaments', icon: Icons.emoji_events),
     MainNavigationOptionModel(
         route: 'notifications',
         screen: const NotificationsScreen(),
@@ -51,7 +46,7 @@ class AppRoutes {
               ? AppLocalizations.of(context)!.drawerProfileLabel
               : '',
           screen: const ProfileScreen()),
-          MenuOptionModel(
+      MenuOptionModel(
           route: 'settings',
           name: context != null
               ? AppLocalizations.of(context)!.drawerSettingsLabel
@@ -62,9 +57,7 @@ class AppRoutes {
 
   static final otherRoutes = <MenuOptionModel>[
     MenuOptionModel(
-        route: 'tabs',
-        name: 'tabs screen',
-        screen: const TabsScreen()),
+        route: 'tabs', name: 'tabs screen', screen: const TabsScreen()),
     MenuOptionModel(
         route: 'messages',
         name: 'Messages Screen',

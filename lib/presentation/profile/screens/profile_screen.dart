@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/follow/follow_user_model.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/profile_provider.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/profile_content.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
@@ -17,10 +17,10 @@ class ProfileScreen extends StatelessWidget {
     this.userId,
   }) : super(key: key);
 
-   @override
+  @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    
+
     return Scaffold(
       backgroundColor: AppTheme.primary,
       appBar: BackAppBar(
@@ -36,7 +36,7 @@ class ProfileScreen extends StatelessWidget {
             if (provider.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
-            
+
             if (provider.error != null) {
               return Center(
                 child: Column(
@@ -52,23 +52,14 @@ class ProfileScreen extends StatelessWidget {
                 ),
               );
             }
-            
+
             return ProfileContent(
-              onFollowersPressed: () => _openModal(
-                context, 
-                ModalType.followers, 
-                provider
-              ),
-              onFollowingsPressed: () => _openModal(
-                context, 
-                ModalType.followings, 
-                provider
-              ),
-              onPrizesPressed: () => _openModal(
-                context, 
-                ModalType.prizes, 
-                provider
-              ),
+              onFollowersPressed: () =>
+                  _openModal(context, ModalType.followers, provider),
+              onFollowingsPressed: () =>
+                  _openModal(context, ModalType.followings, provider),
+              onPrizesPressed: () =>
+                  _openModal(context, ModalType.prizes, provider),
             );
           },
         ),
@@ -76,7 +67,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  void _openModal(BuildContext context, ModalType type, ProfileProvider provider) {
+  void _openModal(
+      BuildContext context, ModalType type, ProfileProvider provider) {
     showDialog(
       useSafeArea: true,
       context: context,
@@ -84,18 +76,18 @@ class ProfileScreen extends StatelessWidget {
         String title;
         List<Widget> content;
 
-          switch (type) {
+        switch (type) {
           case ModalType.followers:
             title = AppLocalizations.of(context)!.profileFollowersButtonLabel;
-            content = provider.followers.map(
-              (user) => _buildUserListTile(context, user)
-            ).toList();
+            content = provider.followers
+                .map((user) => _buildUserListTile(context, user))
+                .toList();
             break;
           case ModalType.followings:
             title = AppLocalizations.of(context)!.profileFollowingButtonLabel;
-            content = provider.followings.map(
-              (user) => _buildUserListTile(context, user)
-            ).toList();
+            content = provider.followings
+                .map((user) => _buildUserListTile(context, user))
+                .toList();
             break;
           case ModalType.prizes:
             title = AppLocalizations.of(context)!.profilePrizesButtonLabel;

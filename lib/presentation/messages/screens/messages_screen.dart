@@ -3,7 +3,7 @@ import 'package:jugaenequipo/presentation/messages/business_logic/messages_provi
 import 'package:jugaenequipo/presentation/messages/widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 
 class MessagesScreen extends StatelessWidget {
