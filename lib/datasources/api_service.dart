@@ -14,16 +14,13 @@ class APIService {
     _dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
-        // Aumentar timeouts
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         sendTimeout: const Duration(seconds: 30),
-        // Agregar validación de certificados
         validateStatus: (status) => status! < 500,
       ),
     );
 
-    // Agregar interceptor para logs de red detallados
     if (kDebugMode) {
       _dio.interceptors.add(LogInterceptor(
         requestBody: true,
@@ -51,7 +48,6 @@ class APIService {
     try {
       debugPrint('Starting request to: $baseUrl$endpoint');
 
-      // Verificar conectividad antes de hacer la request
       final connectivity = await Connectivity().checkConnectivity();
       if (connectivity == ConnectivityResult.none) {
         throw DioException(

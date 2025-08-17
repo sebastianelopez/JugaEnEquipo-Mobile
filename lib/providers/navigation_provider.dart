@@ -25,7 +25,7 @@ class NavigationProvider with ChangeNotifier {
   void resetToTab(int tab) {
     _currentPage = tab;
     if (_pageController.hasClients) {
-      _pageController.jumpToPage(tab); // Sin animación para evitar conflictos
+      _pageController.jumpToPage(tab);
     }
     notifyListeners();
   }

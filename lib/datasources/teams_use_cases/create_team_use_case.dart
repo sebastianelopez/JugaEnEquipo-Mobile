@@ -12,7 +12,7 @@ Future<void> createTeam(String name, String game) async {
     var id = uuid.v4();
 
     final response = await APIService.instance.request(
-      '/api/team', // enter the endpoint for required API call
+      '/api/team',
       DioMethod.post,
       param: {
         "id": id,

@@ -45,7 +45,6 @@ class _SplashScreenState extends State<SplashScreen> {
         final decodedId = decodeUserIdByToken(token);
         debugPrint('Decoded user ID: $decodedId');
 
-        // Add timeout and error handling for user fetch
         final user = await Future.any([
           getUserById(decodedId).timeout(
             const Duration(seconds: 10),

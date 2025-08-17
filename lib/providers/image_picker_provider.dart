@@ -88,7 +88,6 @@ class ImagePickerProvider extends ChangeNotifier {
           SimpleDialogOption(
             child: const Text('Photo Gallery'),
             onPressed: () async {
-              // close the options modal
               Navigator.of(context).pop();
 
               // get image from gallery

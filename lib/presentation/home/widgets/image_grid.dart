@@ -63,7 +63,7 @@ class ImageGrid extends StatelessWidget {
                       ? NetworkImage(images[0])
                       : const AssetImage('assets/error.png')) as ImageProvider,
                   width: imageSize / 2,
-                  height: imageSize / 2, // Adjust height as needed
+                  height: imageSize / 2,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (context, error, stackTrace) =>
                       imageErrorBuilder(
@@ -108,8 +108,7 @@ class ImageGrid extends StatelessWidget {
       return GridView.count(
         shrinkWrap: true, // Prevent excessive scrolling
         crossAxisCount: 2,
-        childAspectRatio:
-            imageSize / (imageSize / 2), // Adjust based on desired aspect ratio
+        childAspectRatio: imageSize / (imageSize / 2),
         children: List.generate(
             imageCount,
             (index) => GestureDetector(
@@ -267,14 +266,13 @@ class ImageGrid extends StatelessWidget {
                   ),
                 ),
               ),
-
               imageCount > 5
                   ? Expanded(
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
                           Opacity(
-                            opacity: 0.2, // Adjust opacity as desired
+                            opacity: 0.2,
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -349,7 +347,7 @@ class ImageGrid extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ), // Empty space if less than 6 images
+                    ),
             ],
           ),
         ],

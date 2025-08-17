@@ -21,7 +21,6 @@ class RefreshTokenInterceptor extends Interceptor {
     final refreshToken = await getRefreshToken();
 
     if (refreshToken == null || isRefreshing) {
-      // No refresh token or already refreshing, handle error
       if (kDebugMode) {
         debugPrint('No refresh token or already refreshing');
       }
@@ -59,7 +58,6 @@ class RefreshTokenInterceptor extends Interceptor {
         await storage.write(key: 'refresh_token', value: newRefreshToken);
         navigatorKey.currentState?.pushReplacementNamed('home');
       } else {
-        // Refresh token failed, handle error (e.g., logout)
         if (kDebugMode) {
           debugPrint('Refresh token failed');
         }
@@ -68,11 +66,9 @@ class RefreshTokenInterceptor extends Interceptor {
         throw Exception('Refresh token failed');
       }
     } catch (e) {
-      // Handle refresh token failure (e.g., logout)
       if (kDebugMode) {
         debugPrint('Refresh token failed: $e');
         await storage.deleteAll();
-        // ignore: use_build_context_synchronously
         navigatorKey.currentState?.pushReplacementNamed('login');
       }
     } finally {
@@ -117,7 +113,6 @@ class RefreshTokenInterceptor extends Interceptor {
         });
       }
     } else {
-      // Handle other errors
       handler.next(err);
     }
   }

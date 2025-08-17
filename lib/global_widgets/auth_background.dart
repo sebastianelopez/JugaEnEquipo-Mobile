@@ -16,9 +16,8 @@ class AuthBackground extends StatelessWidget {
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black, // Color del gradiente con opacidad
-                    Colors
-                        .transparent, // Transparente para que la imagen no sea afectada
+                    Colors.black,
+                    Colors.transparent,
                   ],
                   stops: [
                     0.05,

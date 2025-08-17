@@ -28,14 +28,11 @@ class ProfileProvider extends ChangeNotifier {
     _loadData();
   }
 
-  // Private method to load data
   Future<void> _loadData() async {
     try {
-      // Use the initialUser if provided (from UserProvider)
       if (userId == null && initialUser != null) {
         profileUser = initialUser;
       } else if (userId != null) {
-        // Fetch other user's profile
         profileUser = await getUserById(userId!);
       }
 
