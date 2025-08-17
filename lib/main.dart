@@ -12,7 +12,7 @@ import 'package:jugaenequipo/share_preferences/preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Preferences.init(); // Initialize Preferences
+  await Preferences.init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -41,7 +41,6 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
       create: (context) => InternalizationProvider(),
