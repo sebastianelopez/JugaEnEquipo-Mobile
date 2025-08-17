@@ -18,9 +18,10 @@ class ProfileElevatedButton extends StatelessWidget {
       style: ButtonStyle(
         maximumSize: WidgetStatePropertyAll(Size(130.h, 40.h)),
         minimumSize: WidgetStatePropertyAll(Size(130.h, 40.h)),
-        shadowColor: const WidgetStatePropertyAll(Colors.grey),
+        shadowColor: WidgetStatePropertyAll(Theme.of(context).shadowColor),
         elevation: WidgetStatePropertyAll(2.0.h),
-        foregroundColor: const WidgetStatePropertyAll(Colors.white),
+        foregroundColor:
+            WidgetStatePropertyAll(Theme.of(context).colorScheme.onPrimary),
         textStyle: WidgetStatePropertyAll(
             TextStyle(fontWeight: FontWeight.w500, fontSize: 13.5.h)),
       ),

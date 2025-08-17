@@ -24,14 +24,16 @@ class LoginForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: email,
-              style: TextStyle(color: Colors.white, fontSize: 16.h),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 16.h),
               autocorrect: false,
               enableSuggestions: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                 hintText: AppLocalizations.of(context)!.loginUserHintText,
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: Theme.of(context).colorScheme.onPrimary,
+                labelTextColor: Theme.of(context).colorScheme.onPrimary,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -46,14 +48,16 @@ class LoginForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: password,
-              style: TextStyle(color: Colors.white, fontSize: 16.h),
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 16.h),
               autocorrect: false,
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                 hintText: AppLocalizations.of(context)!.loginPasswordHintText,
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: Theme.of(context).colorScheme.onPrimary,
+                labelTextColor: Theme.of(context).colorScheme.onPrimary,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -70,9 +74,12 @@ class LoginForm extends StatelessWidget {
             MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                disabledColor: Colors.grey,
+                disabledColor: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.5),
                 elevation: 0,
-                color: const Color(0xFFD72323),
+                color: Theme.of(context).colorScheme.primary,
                 onPressed: isLoading
                     ? null
                     : () {
@@ -86,7 +93,10 @@ class LoginForm extends StatelessWidget {
                     AppLocalizations.of(context)!.loginButton,
                     style: GoogleFonts.openSans(
                         textStyle: TextStyle(
-                            color: Colors.white70,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withValues(alpha: 0.7),
                             fontWeight: FontWeight.w900,
                             fontSize: 16.0.h)),
                   ),
