@@ -93,7 +93,7 @@ class CreatePost extends StatelessWidget {
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 8.h, vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(8.h),
                 ),
                 child: SharedPost(post: sharedPost!),

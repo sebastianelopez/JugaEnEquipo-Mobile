@@ -104,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
               "Juga en Equipo",
               style: TextStyle(
-                  color: Colors.blueGrey,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w900),
             )

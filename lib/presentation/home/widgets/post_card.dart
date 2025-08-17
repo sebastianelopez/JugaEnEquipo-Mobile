@@ -154,7 +154,8 @@ class PostCard extends StatelessWidget {
                                       Icon(
                                         Icons.favorite,
                                         size: 15.0.h,
-                                        color: Colors.red,
+                                        color:
+                                            Theme.of(context).colorScheme.error,
                                       ),
                                       const SizedBox(
                                         width: 5.0,
@@ -185,7 +186,7 @@ class PostCard extends StatelessWidget {
                         },
                       ),
                       Divider(
-                        color: Colors.grey[300],
+                        color: Theme.of(context).dividerColor,
                         height: 5,
                         indent: 10,
                         endIndent: 10,
@@ -194,7 +195,10 @@ class PostCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           IconButton(
-                            color: Colors.grey,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             icon: const Icon(Icons.favorite),
                             iconSize: 24.h,
                             onPressed: () {
@@ -204,7 +208,10 @@ class PostCard extends StatelessWidget {
                             },
                           ),
                           IconButton(
-                            color: Colors.grey,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             icon: const Icon(Icons.message),
                             iconSize: 24.h,
                             onPressed: () {
@@ -213,7 +220,10 @@ class PostCard extends StatelessWidget {
                             },
                           ),
                           IconButton(
-                            color: Colors.grey,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
                             icon: const Icon(Icons.share),
                             iconSize: 24.h,
                             onPressed: () {

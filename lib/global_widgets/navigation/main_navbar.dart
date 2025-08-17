@@ -26,7 +26,7 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
         margin: EdgeInsets.symmetric(vertical: 5.0.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.all(
             Radius.circular(10.0.h),
           ),
@@ -39,7 +39,8 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
               prefixIcon: const Icon(Icons.search),
-              labelStyle: const TextStyle()),
+              labelStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.onSurface)),
           onChanged: (value) {
             if (value.trim().isEmpty) {
               searchProvider.clearResults();
@@ -65,11 +66,11 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
                 ? NetworkImage(user.profileImage!)
                 : const AssetImage('assets/user_image.jpg') as ImageProvider,
             radius: 16.w,
-            backgroundColor: Colors.white,
+            backgroundColor: AppTheme.white,
           ),
         ),
       ),
-      shadowColor: Colors.black,
+      shadowColor: AppTheme.black,
       bottom: hasSuggestions
           ? PreferredSize(
               preferredSize: Size.fromHeight(dropdownMaxHeight),
@@ -78,7 +79,7 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(horizontal: 16.0.w),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10.0.h),
                     bottomRight: Radius.circular(10.0.h),
@@ -113,7 +114,10 @@ class MainNavbar extends StatelessWidget implements PreferredSizeWidget {
                               ),
                               title: Text(
                                 suggestion.userName,
-                                style: const TextStyle(color: Colors.black),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
                               ),
                               onTap: () {
                                 FocusScope.of(context).unfocus();

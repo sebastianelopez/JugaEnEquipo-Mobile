@@ -34,7 +34,10 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 14.h,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white70)),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onPrimary
+                        .withValues(alpha: 0.7))),
             onPressed: () {
               //hide keyboard
               FocusScope.of(context).unfocus();

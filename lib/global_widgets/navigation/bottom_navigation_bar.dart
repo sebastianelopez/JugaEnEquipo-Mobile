@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 class BottomNavigationBarCustom extends StatefulWidget {
   const BottomNavigationBarCustom({super.key});
 
-
   @override
   State<BottomNavigationBarCustom> createState() => _BottomNavigationBarState();
 }
@@ -68,7 +67,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
       showSelectedLabels: false,
       showUnselectedLabels: false,
       onTap: (i) => onItemTapped(i),
-      selectedItemColor: Colors.red[900],
+      selectedItemColor: Theme.of(context).colorScheme.primary,
       items: mainNavigationOptions.map((option) {
         return BottomNavigationBarItem(
           icon: Icon(

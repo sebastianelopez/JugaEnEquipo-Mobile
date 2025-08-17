@@ -37,7 +37,7 @@ class PhotoOrVideoButton extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: Colors.grey[300]!,
+                  color: Theme.of(context).dividerColor,
                   width: 1.0.h,
                 ),
               ),

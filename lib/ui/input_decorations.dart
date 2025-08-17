@@ -25,9 +25,10 @@ class InputDecorations {
           EdgeInsets.only(left: 30.h, bottom: 15.h, top: 10.h, right: 15.h),
       hintFadeDuration: const Duration(milliseconds: 300),
       hintText: hintText,
-      hintStyle: TextStyle(color: hintTextColor ?? Colors.white, fontSize: 16.h),
+      hintStyle:
+          TextStyle(color: hintTextColor ?? AppTheme.white, fontSize: 16.h),
       labelText: labelText,
-      labelStyle: TextStyle(color: labelTextColor ?? Colors.white),
+      labelStyle: TextStyle(color: labelTextColor ?? AppTheme.white),
       prefixIcon: prefixIcon != null
           ? Icon(
               prefixIcon,
@@ -43,16 +44,16 @@ class InputDecorations {
       IconData? prefixIcon}) {
     return InputDecoration(
       enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.deepPurple)),
+          borderSide: BorderSide(color: AppTheme.primary)),
       focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
+          borderSide: BorderSide(color: AppTheme.primary, width: 2)),
       hintText: hintText,
       labelText: labelText,
-      labelStyle: const TextStyle(color: Colors.grey),
+      labelStyle: const TextStyle(color: AppTheme.secondary),
       prefixIcon: prefixIcon != null
           ? Icon(
               prefixIcon,
-              color: Colors.deepPurple,
+              color: AppTheme.primary,
             )
           : null,
     );

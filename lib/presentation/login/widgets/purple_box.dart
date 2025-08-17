@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 
 // ignore: use_key_in_widget_constructors
 class PurpleBox extends StatelessWidget {
@@ -40,13 +41,12 @@ class PurpleBox extends StatelessWidget {
     );
   }
 
-  BoxDecoration _purpleBackground() => const BoxDecoration(
+  BoxDecoration _purpleBackground() => BoxDecoration(
           gradient: LinearGradient(colors: [
-        Color.fromRGBO(63, 63, 156, 1),
-        Color.fromRGBO(90, 70, 178, 1),
+        AppTheme.primary,
+        AppTheme.primary.withValues(alpha: 0.85),
       ]));
 }
-
 
 class _Bubble extends StatelessWidget {
   @override
@@ -56,7 +56,7 @@ class _Bubble extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: const Color.fromRGBO(255, 255, 255, 0.05)),
+          color: AppTheme.white.withValues(alpha: 0.05)),
     );
   }
 }

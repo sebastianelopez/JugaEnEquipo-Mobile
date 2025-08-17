@@ -37,12 +37,12 @@ class ProfileModal extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Divider(
+                  Divider(
                     height: 20,
                     thickness: 0.4,
                     indent: 20,
                     endIndent: 20,
-                    color: Colors.grey,
+                    color: Theme.of(context).dividerColor,
                   ),
                   Expanded(
                     child: ListView(

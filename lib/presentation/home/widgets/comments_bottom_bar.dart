@@ -26,10 +26,10 @@ class CommentsBottomBar extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.grey[200],
+            color: Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withValues(alpha: 0.5),
+                color: AppTheme.black.withValues(alpha: 0.5),
                 spreadRadius: 2.h,
                 blurRadius: 5.h,
                 offset: const Offset(0, 3),
@@ -61,7 +61,7 @@ class CommentsBottomBar extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.5),
+              color: AppTheme.black.withValues(alpha: 0.5),
               spreadRadius: 2.h,
               blurRadius: 5.h,
               offset: const Offset(0, 3),

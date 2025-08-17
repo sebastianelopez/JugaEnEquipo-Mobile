@@ -37,12 +37,12 @@ class Comments extends StatelessWidget {
                 ),
               ],
             ),
-            const Divider(
+            Divider(
               height: 20,
               thickness: 0.4,
               indent: 20,
               endIndent: 0,
-              color: Colors.grey,
+              color: Theme.of(context).dividerColor,
             ),
             Expanded(
               child: ChangeNotifierProvider(

@@ -19,11 +19,11 @@ class TeamCard extends StatelessWidget {
         height: 150,
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.3),
+              color: AppTheme.black.withValues(alpha: 0.3),
               spreadRadius: 1,
               blurRadius: 5,
             ),
@@ -38,7 +38,7 @@ class TeamCard extends StatelessWidget {
                 Radius.circular(12),
               ),
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 width: 125,
                 child: (team.teamImage != null &&
                         team.teamImage!.isNotEmpty &&

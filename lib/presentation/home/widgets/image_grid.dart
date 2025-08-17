@@ -308,9 +308,10 @@ class ImageGrid extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              "+ ${imageCount - 5}", // Display remaining image count
-                              style: const TextStyle(
-                                  color: Colors.grey,
+                              "+ ${imageCount - 5}",
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                   fontSize: 40,
                                   fontWeight: FontWeight.w900),
                             ),

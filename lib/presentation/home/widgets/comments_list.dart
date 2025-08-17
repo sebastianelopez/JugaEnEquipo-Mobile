@@ -60,14 +60,18 @@ class CommentsList extends StatelessWidget {
                             backgroundImage:
                                 const AssetImage('assets/login.png'),
                             radius: 16.w,
-                            backgroundColor: Colors.white,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surface,
                           ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: (!isLoggedUser
-                                ? Colors.grey.shade300
-                                : Colors.blue[200]),
+                                ? Theme.of(context).colorScheme.surface
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .secondary
+                                    .withValues(alpha: 0.2)),
                           ),
                           margin: EdgeInsets.only(
                               left: isLoggedUser ? 0 : 10,
@@ -85,7 +89,8 @@ class CommentsList extends StatelessWidget {
                             backgroundImage:
                                 const AssetImage('assets/login.png'),
                             radius: 16.w,
-                            backgroundColor: Colors.white,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surface,
                           ),
                       ],
                     ),

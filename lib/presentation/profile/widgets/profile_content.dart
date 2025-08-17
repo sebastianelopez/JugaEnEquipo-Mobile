@@ -50,8 +50,8 @@ class ProfileContent extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Preferences.isDarkmode
-                        ? Colors.grey[900]
-                        : Colors.white,
+                        ? Theme.of(context).colorScheme.surface
+                        : Theme.of(context).colorScheme.surface,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30))),
@@ -63,7 +63,12 @@ class ProfileContent extends StatelessWidget {
                   ),
                   Text(
                     '@${user.userName}',
-                    style: TextStyle(color: Colors.grey, fontSize: 14.h),
+                    style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6),
+                        fontSize: 14.h),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 15.h),

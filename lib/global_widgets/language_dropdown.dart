@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:country_flags/country_flags.dart';
@@ -25,7 +26,7 @@ class LanguageDropdown extends StatelessWidget {
         width: 80.0.h,
         initialSelection: AppLocalizations.supportedLocales[1],
         textStyle: const TextStyle(
-          color: Colors.red,
+          color: AppTheme.primary,
         ),
         dropdownMenuEntries:
             AppLocalizations.supportedLocales.asMap().entries.map((entry) {
@@ -44,7 +45,7 @@ class LanguageDropdown extends StatelessWidget {
               ),
             ),
             style: const ButtonStyle(
-              foregroundColor: WidgetStatePropertyAll(Colors.red),
+              foregroundColor: WidgetStatePropertyAll(AppTheme.primary),
               textStyle: WidgetStatePropertyAll(
                 TextStyle(
                   fontWeight: FontWeight.w900,
@@ -60,7 +61,7 @@ class LanguageDropdown extends StatelessWidget {
         },
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red, width: 1.0.w),
+            borderSide: BorderSide(color: AppTheme.primary, width: 1.0.w),
             borderRadius: BorderRadius.circular(8.0),
           ),
           contentPadding:

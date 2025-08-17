@@ -63,12 +63,12 @@ class ProfileAvatar extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
             width: 2.h,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.5),
+              color: Colors.black.withValues(alpha: 0.5),
               spreadRadius: 2.h,
               blurRadius: 5.h,
               offset: const Offset(0, 3),

@@ -5,6 +5,7 @@ import 'package:jugaenequipo/presentation/register/business_logic/register_form_
 import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -32,11 +33,14 @@ class RegisterScreen extends StatelessWidget {
             ),
           ),
           TextButton(
-            child: const Text('¿Ya tienes cuenta? Inicia Sesion',
+            child: Text('¿Ya tienes cuenta? Inicia Sesion',
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white70)),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onPrimary
+                        .withValues(alpha: 0.7))),
             onPressed: () {
               //hide keyboard
               FocusScope.of(context).unfocus();
@@ -73,13 +77,13 @@ class _RegisterForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: firstName,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppTheme.white),
               autocorrect: false,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'First Name',
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: AppTheme.white,
+                labelTextColor: AppTheme.white,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -96,13 +100,13 @@ class _RegisterForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: lastName,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppTheme.white),
               autocorrect: false,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'Last Name',
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: AppTheme.white,
+                labelTextColor: AppTheme.white,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -119,13 +123,13 @@ class _RegisterForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: userName,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppTheme.white),
               autocorrect: false,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'User',
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: AppTheme.white,
+                labelTextColor: AppTheme.white,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -142,13 +146,13 @@ class _RegisterForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: email,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppTheme.white),
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'Email',
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: AppTheme.white,
+                labelTextColor: AppTheme.white,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -163,14 +167,14 @@ class _RegisterForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: password,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppTheme.white),
               autocorrect: false,
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'Password',
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: AppTheme.white,
+                labelTextColor: AppTheme.white,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -187,14 +191,14 @@ class _RegisterForm extends StatelessWidget {
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: confirmationPassword,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppTheme.white),
               autocorrect: false,
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'Repeat password',
-                hintTextColor: Colors.white,
-                labelTextColor: Colors.white,
+                hintTextColor: AppTheme.white,
+                labelTextColor: AppTheme.white,
               ),
               onTapOutside: (event) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -209,41 +213,42 @@ class _RegisterForm extends StatelessWidget {
               height: 25,
             ),
             MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                disabledColor: Colors.grey,
-                elevation: 0,
-                color: const Color(0xFFD72323),
-                onPressed: isLoading
-                    ? null
-                    : () {
-                        //hide keyboard
-                        FocusScope.of(context).unfocus();
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              disabledColor: AppTheme.secondary,
+              elevation: 0,
+              color: AppTheme.primary,
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      //hide keyboard
+                      FocusScope.of(context).unfocus();
 
-                        if (!registerForm.isValidForm()) return;
-                        registerForm.isLoading = true;
+                      if (!registerForm.isValidForm()) return;
+                      registerForm.isLoading = true;
 
-                        Future.delayed(const Duration(seconds: 2));
+                      Future.delayed(const Duration(seconds: 2));
 
-                        registerForm.isLoading = false;
-                        Navigator.pushReplacementNamed(context, 'home');
-                      },
-                
-                  
-                  child: TextButton(
-                    onPressed: () {
-                      createUser(firstName.text, lastName.text, userName.text, email.text, password.text, confirmationPassword.text);
+                      registerForm.isLoading = false;
+                      Navigator.pushReplacementNamed(context, 'home');
                     },
-                    
-                    child: Text('Register',
-                        style: GoogleFonts.openSans(
-                            textStyle: const TextStyle(
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16.0,
-                        ))),
-                  ),
-                )
+              child: TextButton(
+                onPressed: () {
+                  createUser(firstName.text, lastName.text, userName.text,
+                      email.text, password.text, confirmationPassword.text);
+                },
+                child: Text('Register',
+                    style: GoogleFonts.openSans(
+                        textStyle: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withValues(alpha: 0.7),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 16.0,
+                    ))),
+              ),
+            )
           ],
         ));
   }

@@ -18,7 +18,8 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       backgroundColor: backgroundColor ?? Colors.transparent,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        icon: Icon(Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onPrimary),
         onPressed: () {
           // Navigate back to the previous screen by popping the current route
           Navigator.of(context).pop();
@@ -26,7 +27,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(
         label ?? '',
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
       ),
     );
   }

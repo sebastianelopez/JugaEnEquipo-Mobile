@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 
 class ChatBottomBar extends StatelessWidget {
@@ -9,7 +8,6 @@ class ChatBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkTheme = Preferences.isDarkmode;
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
@@ -17,10 +15,10 @@ class ChatBottomBar extends StatelessWidget {
         height: 60,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: isDarkTheme ? Colors.grey[900] : Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
+              color: AppTheme.black.withValues(alpha: 0.2),
               spreadRadius: 0,
               blurRadius: 10,
               offset: const Offset(0, -10),
@@ -53,7 +51,7 @@ class ChatBottomBar extends StatelessWidget {
                 decoration: InputDecoration(
                     hintText: "Write message...",
                     hintStyle: TextStyle(
-                      color: isDarkTheme ? Colors.white : Colors.grey[900],
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                     border: InputBorder.none),
               ),

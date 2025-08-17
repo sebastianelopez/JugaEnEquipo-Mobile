@@ -23,12 +23,12 @@ class SharedPost extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.grey,
+                  color: Theme.of(context).shadowColor.withValues(alpha: 0.2),
                 ),
                 BoxShadow(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   spreadRadius: -1.0,
                   blurRadius: 6,
                 ),

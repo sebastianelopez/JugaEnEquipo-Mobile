@@ -21,9 +21,9 @@ class ChatAppbar extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
               const SizedBox(
@@ -42,7 +42,7 @@ class ChatAppbar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       "Lautaro Gabriel Rivadeneira Casas",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -50,22 +50,29 @@ class ChatAppbar extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                          color: Theme.of(context).colorScheme.onPrimary),
                     ),
                     const SizedBox(
                       height: 6,
                     ),
                     Text(
                       "Online",
-                      style:
-                          TextStyle(color: Colors.grey.shade400, fontSize: 13),
+                      style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              .withValues(alpha: 0.7),
+                          fontSize: 13),
                     ),
                   ],
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.settings,
-                color: Colors.black54,
+                color: Theme.of(context)
+                    .colorScheme
+                    .onPrimary
+                    .withValues(alpha: 0.6),
               ),
             ],
           ),

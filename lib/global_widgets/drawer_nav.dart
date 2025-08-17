@@ -46,7 +46,7 @@ class DrawerNav extends StatelessWidget {
                     child: Text(
                       user?.firstName ?? 'user',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w900),
                     ),
