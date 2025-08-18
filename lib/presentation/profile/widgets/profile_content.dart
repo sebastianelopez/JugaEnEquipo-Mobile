@@ -8,8 +8,9 @@ import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:jugaenequipo/datasources/chat_use_cases/get_conversation_by_other_user_use_case.dart';
 
-class ProfileContent extends StatelessWidget {
+class ProfileContent extends StatefulWidget {
   final VoidCallback? onFollowersPressed;
   final VoidCallback? onFollowingsPressed;
   final VoidCallback? onPrizesPressed;
@@ -21,6 +22,11 @@ class ProfileContent extends StatelessWidget {
     this.onPrizesPressed,
   });
 
+  @override
+  State<ProfileContent> createState() => _ProfileContentState();
+}
+
+class _ProfileContentState extends State<ProfileContent> {
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
@@ -96,7 +102,21 @@ class ProfileContent extends StatelessWidget {
                           ProfileElevatedButton(
                             label: AppLocalizations.of(context)!
                                 .profileSendMessageButtonLabel,
-                            onPressed: () {},
+                            onPressed: () async {
+                              final userId = profileUser.id;
+                              final navigator = Navigator.of(context);
+                              final conversationId =
+                                  await getConversationIdByOtherUser(userId);
+                              if (!mounted) return;
+                              if (conversationId != null &&
+                                  conversationId.isNotEmpty) {
+                                navigator.pushNamed('chat', arguments: {
+                                  'conversationId': conversationId,
+                                });
+                              } else {
+                                navigator.pushNamed('chat');
+                              }
+                            },
                           ),
                       ],
                     ),
@@ -112,7 +132,7 @@ class ProfileContent extends StatelessWidget {
                                 .profileFollowingButtonLabel,
                             number: profileProvider.numberOfFollowings,
                             hasRightBorder: true,
-                            onTap: onFollowingsPressed,
+                            onTap: widget.onFollowingsPressed,
                           ),
                         ),
                         Expanded(
@@ -121,7 +141,7 @@ class ProfileContent extends StatelessWidget {
                                 .profileFollowersButtonLabel,
                             number: profileProvider.numberOfFollowers,
                             hasRightBorder: true,
-                            onTap: onFollowersPressed,
+                            onTap: widget.onFollowersPressed,
                           ),
                         ),
                         Expanded(
@@ -129,7 +149,7 @@ class ProfileContent extends StatelessWidget {
                               label: AppLocalizations.of(context)!
                                   .profilePrizesButtonLabel,
                               number: 124,
-                              onTap: onPrizesPressed),
+                              onTap: widget.onPrizesPressed),
                         ),
                       ],
                     ),

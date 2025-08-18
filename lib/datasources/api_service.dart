@@ -44,6 +44,7 @@ class APIService {
     String? contentType,
     dynamic formData,
     Map<String, String>? headers,
+    ResponseType? responseType,
   }) async {
     try {
       debugPrint('Starting request to: $baseUrl$endpoint');
@@ -69,15 +70,28 @@ class APIService {
             options: Options(
               followRedirects: true,
               validateStatus: (status) => status! < 500,
+              responseType: responseType,
             ),
           );
           break;
         case DioMethod.post:
-          return await _dio.post(endpoint, data: param ?? formData);
+          return await _dio.post(
+            endpoint,
+            data: param ?? formData,
+            options: Options(responseType: responseType),
+          );
         case DioMethod.put:
-          return await _dio.put(endpoint, data: param ?? formData);
+          return await _dio.put(
+            endpoint,
+            data: param ?? formData,
+            options: Options(responseType: responseType),
+          );
         case DioMethod.delete:
-          return await _dio.delete(endpoint, data: param ?? formData);
+          return await _dio.delete(
+            endpoint,
+            data: param ?? formData,
+            options: Options(responseType: responseType),
+          );
         default:
           throw Exception('Invalid method');
       }

@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:jugaenequipo/presentation/chat/business_logic/chat_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 
-class ChatBottomBar extends StatelessWidget {
-  const ChatBottomBar({
-    super.key,
-  });
+class ChatBottomBar extends StatefulWidget {
+  const ChatBottomBar({super.key});
+
+  @override
+  State<ChatBottomBar> createState() => _ChatBottomBarState();
+}
+
+class _ChatBottomBarState extends State<ChatBottomBar> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +61,15 @@ class ChatBottomBar extends StatelessWidget {
             ),
             Expanded(
               child: TextField(
+                controller: _controller,
                 decoration: InputDecoration(
-                    hintText: "Write message...",
-                    hintStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    border: InputBorder.none),
+                  hintText: "Write message...",
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  border: InputBorder.none,
+                ),
+                onSubmitted: (_) => _send(context),
               ),
             ),
             const SizedBox(
@@ -62,7 +78,7 @@ class ChatBottomBar extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 12),
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () => _send(context),
                 backgroundColor: AppTheme.primary,
                 elevation: 0,
                 child: const Icon(
@@ -76,5 +92,12 @@ class ChatBottomBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _send(BuildContext context) {
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+    context.read<ChatProvider>().send(text);
+    _controller.clear();
   }
 }
