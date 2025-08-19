@@ -164,6 +164,7 @@ class _MainNavbarState extends State<MainNavbar> {
         child: Container(
           key: _fieldKey,
           margin: EdgeInsets.symmetric(vertical: 5.0.w),
+          constraints: BoxConstraints(maxHeight: 36.0.h),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.all(
@@ -173,12 +174,17 @@ class _MainNavbarState extends State<MainNavbar> {
           child: TextField(
             focusNode: _focusNode,
             decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0.h),
+                isDense: true,
+                contentPadding: EdgeInsets.symmetric(vertical: 4.0.h),
                 hintText: AppLocalizations.of(context)!.navSearchInputLabel,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: Icon(Icons.search, size: 20.0.h),
+                prefixIconConstraints: BoxConstraints(
+                  minHeight: 28.0.h,
+                  minWidth: 36.0.h,
+                ),
                 labelStyle:
                     TextStyle(color: Theme.of(context).colorScheme.onSurface)),
             onChanged: (value) {
