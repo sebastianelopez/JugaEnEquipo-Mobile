@@ -118,23 +118,25 @@ class _MainNavbarState extends State<MainNavbar> {
               left: targetOffset.dx,
               top: targetOffset.dy + targetSize.height,
               width: overlayWidth,
-              height: _dropdownMaxHeight.h,
               child: Material(
                 color: Theme.of(context).colorScheme.surface,
                 elevation: 4,
                 clipBehavior: Clip.hardEdge,
-                child: _SuggestionsList(
-                  onItemTap: (user) {
-                    FocusScope.of(context).unfocus();
-                    context.read<SearchProvider>().clearResults();
-                    _removeOverlay();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileScreen(userId: user.id),
-                      ),
-                    );
-                  },
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: _dropdownMaxHeight.h),
+                  child: _SuggestionsList(
+                    onItemTap: (user) {
+                      FocusScope.of(context).unfocus();
+                      context.read<SearchProvider>().clearResults();
+                      _removeOverlay();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileScreen(userId: user.id),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
