@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/presentation/chat/business_logic/chat_provider.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/presentation/chat/widgets/widgets.dart';
@@ -13,6 +14,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final ChatProvider _provider = ChatProvider();
+  String? _appBarName;
+  String? _appBarAvatar;
 
   @override
   void initState() {
@@ -23,23 +26,46 @@ class _ChatScreenState extends State<ChatScreen> {
         _provider.setCurrentUsername(currentUsername);
       }
       final args = ModalRoute.of(context)?.settings.arguments;
-      final conversationId = (args is Map && args['conversationId'] is String)
-          ? args['conversationId'] as String
-          : null;
+      String? conversationId;
+      String? otherDisplayName;
+      String? otherAvatar;
+
+      if (args is Map) {
+        if (args['conversationId'] is String) {
+          conversationId = args['conversationId'] as String?;
+        }
+        if (args['otherUserName'] is String) {
+          otherDisplayName = args['otherUserName'] as String?;
+        }
+        if (args['otherUserAvatar'] is String) {
+          otherAvatar = args['otherUserAvatar'] as String?;
+        }
+      } else if (args is UserModel) {
+        otherDisplayName = args.userName;
+        otherAvatar = args.profileImage;
+      }
       if (conversationId != null) {
         _provider.loadConversation(conversationId);
       }
+      setState(() {
+        _appBarName = otherDisplayName;
+        _appBarAvatar = otherAvatar;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Resolve app bar info from initial args or messages as fallback in the app bar itself
     return ChangeNotifierProvider.value(
       value: _provider,
       child: Scaffold(
-        appBar: const PreferredSize(
+        appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
-          child: ChatAppbar(),
+          child: ChatAppbar(
+            displayName: _appBarName,
+            avatarUrl: _appBarAvatar,
+          ),
         ),
         body: Container(
           color: Theme.of(context).colorScheme.surface,

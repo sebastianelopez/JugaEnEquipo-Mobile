@@ -112,9 +112,14 @@ class _ProfileContentState extends State<ProfileContent> {
                                   conversationId.isNotEmpty) {
                                 navigator.pushNamed('chat', arguments: {
                                   'conversationId': conversationId,
+                                  'otherUserName': profileUser.userName,
+                                  'otherUserAvatar': profileUser.profileImage,
                                 });
                               } else {
-                                navigator.pushNamed('chat');
+                                navigator.pushNamed('chat', arguments: {
+                                  'otherUserName': profileUser.userName,
+                                  'otherUserAvatar': profileUser.profileImage,
+                                });
                               }
                             },
                           ),

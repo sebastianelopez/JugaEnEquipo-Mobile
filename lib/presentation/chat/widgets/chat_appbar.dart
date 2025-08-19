@@ -1,13 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:jugaenequipo/presentation/chat/business_logic/chat_provider.dart';
 
 class ChatAppbar extends StatelessWidget {
+  final String? displayName;
+  final String? avatarUrl;
+
   const ChatAppbar({
     super.key,
+    this.displayName,
+    this.avatarUrl,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Try to resolve name from provided value; if not present, infer from messages
+    String resolvedName = (displayName ?? '').trim();
+    if (resolvedName.isEmpty) {
+      final chatProvider = context.read<ChatProvider?>();
+      if (chatProvider != null) {
+        for (final message in chatProvider.messages) {
+          final isOther =
+              (message.mine == false) || (message.messageType == 'receiver');
+          if (isOther) {
+            resolvedName = (message.username ?? '').trim();
+            if (resolvedName.isNotEmpty) break;
+          }
+        }
+      }
+    }
+    if (resolvedName.isEmpty) {
+      resolvedName = 'Chat';
+    }
+
+    final String? imageUrl =
+        (avatarUrl != null && avatarUrl!.isNotEmpty) ? avatarUrl : null;
+
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
@@ -29,9 +58,17 @@ class ChatAppbar extends StatelessWidget {
               const SizedBox(
                 width: 2,
               ),
-              const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://scontent.cdninstagram.com/v/t51.2885-19/195780402_1055586888183094_99043525364029635_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent.cdninstagram.com&_nc_cat=110&_nc_ohc=XT8Rspy1K-EQ7kNvgGA1T9o&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfD4gI3ZTZvVUa-z2ETq6fOTk6bqrFpoOa8G_hBi8xfz4A&oe=663C6879&_nc_sid=10d13b"),
+              CircleAvatar(
+                backgroundImage: (imageUrl != null &&
+                        (imageUrl.startsWith('http://') ||
+                            imageUrl.startsWith('https://')))
+                    ? Image.network(
+                        imageUrl,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset('assets/error.png'),
+                      ).image
+                    : const AssetImage('assets/user_image.jpg')
+                        as ImageProvider,
                 maxRadius: 20,
               ),
               const SizedBox(
@@ -43,7 +80,7 @@ class ChatAppbar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Lautaro Gabriel Rivadeneira Casas",
+                      resolvedName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
