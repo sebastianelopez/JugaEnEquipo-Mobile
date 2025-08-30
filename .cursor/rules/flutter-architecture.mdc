@@ -1,0 +1,38 @@
+# Flutter Architecture & Development Patterns
+
+## Project Structure
+
+This is a Flutter mobile app called "Juga en Equipo" with a clean architecture pattern. The main entry point is [main.dart](mdc:lib/main.dart) which sets up the app with Provider state management.
+
+## Architecture Layers
+
+- **Presentation Layer**: Located in `lib/presentation/` with screens, widgets, and business logic
+- **Data Layer**: Located in `lib/datasources/` with API services, models, and use cases
+- **Providers**: Located in `lib/providers/` for state management using Provider package
+- **Router**: Located in `lib/router/` with [app_routes.dart](mdc:lib/router/app_routes.dart) defining navigation
+
+## Key Patterns
+
+1. **Provider Pattern**: Use ChangeNotifierProvider for state management
+2. **Screen Structure**: Each screen has its own directory with business_logic, screens, and widgets subdirectories
+3. **Navigation**: Use the centralized routing system in AppRoutes
+4. **Theme**: Follow the theme system in [app_theme.dart](mdc:lib/theme/app_theme.dart) with consistent colors and styling
+5. **Internationalization**: Support for EN, ES, and PT languages using l10n
+
+## File Naming Conventions
+
+- Use snake_case for file names
+- Screen files end with `_screen.dart`
+- Provider files end with `_provider.dart`
+- Widget files end with descriptive names
+- Model files end with `_model.dart`
+
+## State Management
+
+- Use Provider package for state management
+- Create providers in the business_logic directory of each feature
+- Register providers in [main.dart](mdc:lib/main.dart) MultiProvider setup
+
+## Dependencies
+
+Key packages used: provider, google_fonts, dio, flutter_screenutil, image_picker, shared_preferences

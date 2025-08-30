@@ -1,0 +1,64 @@
+---
+globs: **/datasources/**/*.dart
+---
+
+# API & Data Layer Guidelines
+
+## Architecture Pattern
+
+This project follows a clean architecture approach with separate data and domain layers.
+
+## Data Sources Structure
+
+- **API Service**: [api_service.dart](mdc:lib/datasources/api_service.dart) - HTTP client using Dio
+- **Use Cases**: Organized by feature (chat, post, teams, user)
+- **Models**: Data models for API responses and business entities
+
+## API Service
+
+- Uses Dio package for HTTP requests
+- Implements refresh token interceptor in [refresh_token_interceptor.dart](mdc:lib/datasources/refresh_token_interceptor.dart)
+- Handles authentication and error responses
+
+## Use Case Pattern
+
+- Each feature has its own use case directory
+- Use cases encapsulate business logic and API calls
+- Follow naming convention: `verb_noun_use_case.dart`
+
+## Model Structure
+
+- Models are organized by feature in `lib/datasources/models/`
+- Use proper serialization/deserialization
+- Follow Dart naming conventions (PascalCase for classes)
+
+## Example Use Case Structure
+
+```dart
+class GetUserDataUseCase {
+  final ApiService _apiService;
+
+  GetUserDataUseCase(this._apiService);
+
+  Future<UserModel> execute(String userId) async {
+    try {
+      final response = await _apiService.get('/users/$userId');
+      return UserModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to get user data: $e');
+    }
+  }
+}
+```
+
+## Error Handling
+
+- Implement proper try-catch blocks in use cases
+- Use meaningful error messages
+- Handle network errors and API response errors separately
+
+## Authentication
+
+- Use the refresh token interceptor for automatic token renewal
+- Store sensitive data in secure storage
+- Handle authentication state in providers

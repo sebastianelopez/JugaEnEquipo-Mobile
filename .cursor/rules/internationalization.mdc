@@ -1,0 +1,48 @@
+---
+alwaysApply: true
+---
+
+# Internationalization Guidelines
+
+## Supported Languages
+
+This app supports three languages:
+
+- **English (EN)**: Primary language
+- **Spanish (ES)**: Argentine Spanish
+- **Portuguese (PT)**: Brazilian Portuguese
+
+## Localization Files
+
+- **ARB Files**: [app_en.arb](mdc:lib/l10n/app_en.arb), [app_es.arb](mdc:lib/l10n/app_arb), [app_pt.arb](mdc:lib/l10n/app_pt.arb)
+- **Generated Files**: [app_localizations_en.dart](mdc:lib/l10n/app_localizations_en.dart) and similar for other languages
+
+## Usage in UI
+
+- Use `AppLocalizations.of(context)!.keyName` to access localized strings
+- Always provide context when calling localization methods
+- Use the `InternalizationProvider` to manage language changes
+
+## Adding New Strings
+
+1. Add the string to all ARB files with the same key
+2. Use descriptive keys that indicate the string's purpose
+3. Follow the existing naming convention (camelCase)
+4. Regenerate localization files after changes
+
+## Example Usage
+
+```dart
+// In a widget
+Text(AppLocalizations.of(context)!.welcomeMessage)
+
+// In a provider
+final internalization = Provider.of<InternalizationProvider>(context, listen: false);
+internalization.changeLanguage(Locale('es', 'AR'));
+```
+
+## Language Switching
+
+- Use the `InternalizationProvider` to change languages
+- The app will automatically update all localized strings
+- Language preference is stored in shared preferences

@@ -1,0 +1,54 @@
+---
+alwaysApply: true
+---
+
+# Development Best Practices
+
+## Code Style
+
+- Follow Dart/Flutter style guide
+- Use `flutter_lints` package for code quality
+- Run `flutter analyze` before committing
+- Use meaningful variable and function names
+
+## Performance
+
+- Use `const` constructors when possible
+- Implement proper `dispose()` methods in providers
+- Use `ListView.builder` for long lists
+- Avoid unnecessary rebuilds with proper provider usage
+
+## Error Handling
+
+- Implement proper error boundaries
+- Use try-catch blocks for async operations
+- Provide meaningful error messages to users
+- Log errors for debugging purposes
+
+## Dependencies
+
+- Keep dependencies up to date
+- Use specific version constraints in [pubspec.yaml](mdc:pubspec.yaml)
+- Avoid adding unnecessary packages
+- Document why each dependency is needed
+
+## Asset Management
+
+- Store images in `assets/` directory
+- Use appropriate image formats (PNG for icons, JPG for photos)
+- Optimize images for mobile devices
+- Follow the established asset naming conventions
+
+## Platform Considerations
+
+- Test on both iOS and Android
+- Handle platform-specific differences
+- Use platform-appropriate widgets when needed
+- Consider different screen sizes and densities
+
+## Security
+
+- Store sensitive data in secure storage
+- Validate all user inputs
+- Use HTTPS for API calls
+- Implement proper authentication flows

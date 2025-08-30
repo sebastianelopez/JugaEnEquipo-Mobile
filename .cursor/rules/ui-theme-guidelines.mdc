@@ -1,0 +1,50 @@
+---
+alwaysApply: true
+---
+
+# UI & Theme Guidelines
+
+## Color System
+
+Follow the established color palette in [app_theme.dart](mdc:lib/theme/app_theme.dart):
+
+- **Primary**: #6C5CE7 (purple)
+- **Secondary**: #2D3436 (dark gray)
+- **Accent**: #00CEC9 (teal)
+- **Warning**: #FDCB6E (yellow)
+- **Success**: #00B894 (green)
+- **Error**: #E17055 (orange)
+- **Backgrounds**: Light (#F8F9FA), Dark (#1A1A2E)
+
+## Theme Usage
+
+- Always use `Theme.of(context)` to access theme colors
+- Use `AppTheme.primary`, `AppTheme.secondary`, etc. for custom colors
+- Support both light and dark themes
+- Use `Provider.of<ThemeProvider>(context)` to access theme state
+
+## Typography
+
+- Use Google Fonts (Open Sans) as defined in the theme
+- Follow Material Design text scale
+- Use `TextTheme` from the current theme for consistent text styling
+
+## Component Guidelines
+
+- Use `CardContainer` widget for consistent card styling
+- Follow Material Design elevation principles
+- Use `SizedBox` with `ScreenUtil` for responsive sizing
+- Implement proper dark/light mode support
+
+## Responsive Design
+
+- Use `flutter_screenutil` for responsive layouts
+- Design size: 375x812 (iPhone X dimensions)
+- Use `ScreenUtil().setSp()` for font sizes
+- Use `ScreenUtil().setHeight()` and `ScreenUtil().setWidth()` for dimensions
+
+## Input Fields
+
+- Use the input decoration theme from [ui.dart](mdc:lib/ui/ui.dart)
+- Follow the established input styling patterns
+- Use proper validation and error states

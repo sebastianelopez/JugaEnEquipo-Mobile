@@ -1,0 +1,79 @@
+---
+globs: **/presentation/**/*.dart
+---
+
+# Widget Structure Guidelines
+
+## Feature Organization
+
+Each feature follows a consistent directory structure:
+
+```
+presentation/feature_name/
+├── business_logic/
+│   └── feature_provider.dart
+├── screens/
+│   └── feature_screen.dart
+└── widgets/
+    ├── feature_widget.dart
+    └── widgets.dart (export file)
+```
+
+## Screen Structure
+
+- Screens should be stateless widgets when possible
+- Use providers for state management
+- Follow the established screen patterns from existing features
+- Use `ScreenUtil` for responsive design
+
+## Widget Organization
+
+- Create reusable widgets in the `widgets/` directory
+- Export all widgets through `widgets.dart` for easy imports
+- Use descriptive names that indicate the widget's purpose
+- Keep widgets focused on single responsibility
+
+## Provider Integration
+
+- Access providers using `Provider.of<ProviderType>(context)`
+- Use `Consumer<ProviderType>` for widgets that need to rebuild
+- Handle loading and error states properly
+
+## Example Screen Structure
+
+```dart
+class FeatureScreen extends StatelessWidget {
+  const FeatureScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.featureTitle),
+      ),
+      body: Consumer<FeatureProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return ListView.builder(
+            itemCount: provider.items.length,
+            itemBuilder: (context, index) {
+              return FeatureWidget(item: provider.items[index]);
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+## Global Widgets
+
+Use the established global widgets from `lib/global_widgets/`:
+
+- `CardContainer` for consistent card styling
+- `AuthBackground` for authentication screens
+- `BackAppBar` for screens with back navigation

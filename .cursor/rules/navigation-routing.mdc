@@ -1,0 +1,56 @@
+---
+globs: **/router/**/*.dart,**/navigation/**/*.dart
+---
+
+# Navigation & Routing Guidelines
+
+## Centralized Routing System
+
+This project uses a centralized routing system defined in [app_routes.dart](mdc:lib/router/app_routes.dart).
+
+## Route Structure
+
+- **Initial Route**: 'splash' - the app starts here
+- **Main Navigation**: home, teams, createPost, tournaments, notifications
+- **Drawer Routes**: profile, settings
+- **Other Routes**: tabs, messages, chat, search, advanced-search, team-profile
+
+## Adding New Routes
+
+1. Add the route to the appropriate list in `AppRoutes`:
+
+   - `mainNavigationOptions` for main navigation items
+   - `getDrawerOptions()` for drawer menu items
+   - `otherRoutes` for additional screens
+
+2. Create the route mapping in `getAppRoutes()` method
+
+3. Ensure the screen widget exists and is properly imported
+
+## Navigation Usage
+
+- Use `Navigator.pushNamed(context, routeName)` for navigation
+- Use `Navigator.pushReplacementNamed(context, routeName)` to replace current screen
+- Use `Navigator.pop(context)` to go back
+
+## Route Parameters
+
+- For routes with parameters, use `onGenerateRoute` in [main.dart](mdc:lib/main.dart)
+- Define parameter handling in the route generation logic
+
+## Example Route Addition
+
+```dart
+// Add to appropriate list
+MenuOptionModel(
+  route: 'new-screen',
+  name: 'New Screen',
+  screen: const NewScreen(),
+  icon: Icons.new_releases
+),
+
+// Add to getAppRoutes()
+appRoutes.addAll({
+  'new-screen': (BuildContext context) => const NewScreen()
+});
+```

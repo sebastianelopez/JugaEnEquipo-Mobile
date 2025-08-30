@@ -1,0 +1,66 @@
+---
+globs: **/*_provider.dart,**/business_logic/**/*.dart
+---
+
+# State Management Guidelines
+
+## Provider Pattern
+
+This project uses the Provider package for state management. Follow these patterns:
+
+## Provider Structure
+
+- Create providers in the `business_logic` directory of each feature
+- Extend `ChangeNotifier` for state management
+- Use descriptive names ending with `_provider.dart`
+
+## Provider Registration
+
+All providers must be registered in [main.dart](mdc:lib/main.dart) MultiProvider setup:
+
+```dart
+MultiProvider(
+  providers: [
+    ChangeNotifierProvider(create: (_) => YourProvider()),
+    // ... other providers
+  ],
+  child: const MyApp(),
+)
+```
+
+## State Management Best Practices
+
+- Keep providers focused on single responsibility
+- Use `notifyListeners()` to update UI when state changes
+- Implement proper dispose methods for cleanup
+- Use `Provider.of<ProviderType>(context)` or `context.read<ProviderType>()` to access providers
+
+## Provider Usage in Widgets
+
+- Use `Consumer<ProviderType>` for widgets that need to rebuild on state changes
+- Use `Provider.of<ProviderType>(context, listen: false)` for one-time access
+- Use `context.watch<ProviderType>()` for listening to changes
+
+## Example Provider Structure
+
+```dart
+class ExampleProvider extends ChangeNotifier {
+  // State variables
+  String _data = '';
+
+  // Getters
+  String get data => _data;
+
+  // Methods that update state
+  void updateData(String newData) {
+    _data = newData;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    // Cleanup resources
+    super.dispose();
+  }
+}
+```
