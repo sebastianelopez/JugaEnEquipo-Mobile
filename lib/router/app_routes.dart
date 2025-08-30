@@ -104,6 +104,28 @@ class AppRoutes {
   }
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    if (settings.name == 'profile') {
+      final args = settings.arguments as Map<String, dynamic>?;
+      if (args != null) {
+        if (args.containsKey('teamId')) {
+          return MaterialPageRoute(
+            builder: (context) => ProfileScreen(
+              teamId: args['teamId'],
+              profileType: ProfileType.team,
+            ),
+          );
+        } else if (args.containsKey('userId')) {
+          return MaterialPageRoute(
+            builder: (context) => ProfileScreen(
+              userId: args['userId'],
+              profileType: ProfileType.user,
+            ),
+          );
+        }
+      }
+      return MaterialPageRoute(builder: (context) => const ProfileScreen());
+    }
+
     return MaterialPageRoute(builder: (context) => const SplashScreen());
   }
 }
