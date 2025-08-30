@@ -64,6 +64,16 @@ class AppRoutes {
         screen: const MessagesScreen()),
     MenuOptionModel(
         route: 'chat', name: 'Chat Screen', screen: const ChatScreen()),
+    MenuOptionModel(
+        route: 'search', name: 'Search Screen', screen: const SearchScreen()),
+    MenuOptionModel(
+        route: 'advanced-search',
+        name: 'Advanced Search Screen',
+        screen: const AdvancedSearchScreen()),
+    MenuOptionModel(
+        route: 'team-profile',
+        name: 'Team Profile Screen',
+        screen: const ProfileScreen(profileType: ProfileType.team)),
   ];
 
   static Map<String, Widget Function(BuildContext)> getAppRoutes() {

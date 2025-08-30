@@ -27,6 +27,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => PostProvider()),
         ChangeNotifierProvider(create: (_) => ImagePickerProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
+        ChangeNotifierProvider(create: (_) => TeamSearchProvider()),
         ChangeNotifierProvider(
           create: (_) => MessagesProvider(),
         ),
