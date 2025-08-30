@@ -35,6 +35,30 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navSearchInputLabel => 'Busca';
 
   @override
+  String get advancedSearchTitle => 'Busca avançada';
+
+  @override
+  String get advancedSearchPlayersButton => 'Buscar jogadores';
+
+  @override
+  String get advancedSearchTeamsButton => 'Buscar equipes';
+
+  @override
+  String get advancedSearchTeams => 'Equipes';
+
+  @override
+  String get advancedSearchPlayers => 'Jogadores';
+
+  @override
+  String get advancedSearchGame => 'Jogo';
+
+  @override
+  String get advancedSearchRole => 'Função';
+
+  @override
+  String get advancedSearchRanking => 'Classificação';
+
+  @override
   String get timePrefixText => '';
 
   @override
@@ -92,10 +116,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get drawerLogoutLabel => 'Sair';
 
   @override
-  String get profilePageLabel => 'Profile';
+  String get profilePageLabel => 'Perfil';
 
   @override
   String get profileFollowButtonLabel => 'Seguir';
+
+  @override
+  String get profileUnfollowButtonLabel => 'Deixar de seguir';
 
   @override
   String get profileMessagesButtonLabel => 'Mensagens';
@@ -135,4 +162,183 @@ class AppLocalizationsPt extends AppLocalizations {
   String notificationApplicationAccepted(String role, String team) {
     return '<b>$team</b> aceitou sua inscrição para a posição de $role em Overwatch. Você agora é membro da equipe profissional.';
   }
+
+  @override
+  String get errorTitle => 'Erro';
+
+  @override
+  String get errorMessage => 'Ocorreu um erro. Por favor, tente novamente.';
+
+  @override
+  String get okButton => 'OK';
+
+  @override
+  String get editProfileButtonLabel => 'Editar perfil';
+
+  @override
+  String get userNotFound => 'Usuário não encontrado';
+
+  @override
+  String get teamNotFound => 'Equipe não encontrada';
+
+  @override
+  String get tryAgain => 'Tentar novamente';
+
+  @override
+  String get teamIdRequired => 'ID da equipe é obrigatório';
+
+  @override
+  String get prizesContent => 'Conteúdo de prêmios vai aqui';
+
+  @override
+  String get teamMembersTitle => 'Membros da Equipe';
+
+  @override
+  String get teamTournamentsTitle => 'Torneios da Equipe';
+
+  @override
+  String get teamWinsTitle => 'Vitórias da Equipe';
+
+  @override
+  String get teamTournamentsList => 'Lista de torneios participados';
+
+  @override
+  String get teamWinsHistory => 'Histórico de vitórias';
+
+  @override
+  String get verifyImageTitle => 'Ver imagem';
+
+  @override
+  String get changeProfileImageTitle => 'Alterar imagem do perfil';
+
+  @override
+  String get deletePost => 'Excluir post';
+
+  @override
+  String searchTeamSnackbar(String name) {
+    return 'Equipe: $name';
+  }
+
+  @override
+  String get noPostsYet => 'Ainda não há posts';
+
+  @override
+  String get followToSeePosts =>
+      'Siga uma equipe ou jogador para ver seus posts.';
+
+  @override
+  String get searchUsersTeams => 'Pesquisar usuários ou equipes';
+
+  @override
+  String get playersSection => 'Jogadores';
+
+  @override
+  String get teamsSection => 'Equipes';
+
+  @override
+  String get verifiedStatus => 'Verificado';
+
+  @override
+  String get pendingStatus => 'Pendente';
+
+  @override
+  String get membersLabel => 'Membros';
+
+  @override
+  String get gamesLabel => 'Jogos';
+
+  @override
+  String get searchPlayersHint => 'Pesquisar jogadores...';
+
+  @override
+  String get searchTeamsHint => 'Pesquisar equipes...';
+
+  @override
+  String get teamSizeFilter => 'Tamanho da Equipe';
+
+  @override
+  String get verifiedTeamsOnly => 'Apenas equipes verificadas';
+
+  @override
+  String playersSearchResult(String filters) {
+    return 'Pesquisa de jogadores com filtros: $filters';
+  }
+
+  @override
+  String teamsSearchResult(String filters) {
+    return 'Pesquisa de equipes com filtros: $filters';
+  }
+
+  @override
+  String get viewMembersButtonLabel => 'Ver membros';
+
+  @override
+  String get contactButtonLabel => 'Contatar';
+
+  @override
+  String get statisticsLabel => 'Estatísticas';
+
+  @override
+  String get tournamentsPlayedLabel => 'Torneios jogados';
+
+  @override
+  String get winsLabel => 'Vitórias';
+
+  @override
+  String get photoGalleryOption => 'Galeria de fotos';
+
+  @override
+  String get cameraOption => 'Câmera';
+
+  @override
+  String get unauthorizedError => 'Não autorizado';
+
+  @override
+  String get unexpectedError =>
+      'Ocorreu um erro inesperado. Por favor, tente novamente.';
+
+  @override
+  String get acceptButton => 'Aceitar';
+
+  @override
+  String get incorrectCredentials => 'O e-mail ou senha está incorreto';
+
+  @override
+  String get photoVideoButton => 'Foto / Vídeo';
+
+  @override
+  String get writeMessageHint => 'Escrever mensagem...';
+
+  @override
+  String get tournamentTitleColumn => 'Título';
+
+  @override
+  String get officialColumn => 'Oficial';
+
+  @override
+  String get gameColumn => 'Jogo';
+
+  @override
+  String get registeredPlayersColumn => 'Jogadores inscritos';
+
+  @override
+  String get settingsLabel => 'Configurações';
+
+  @override
+  String get darkmodeLabel => 'Modo escuro';
+
+  @override
+  String get languageLabel => 'Idioma';
+
+  @override
+  String get commentsLabel => 'comentários';
+
+  @override
+  String get imageNotSupported => 'Este tipo de imagem não é suportado';
+
+  @override
+  String get pickImageError => 'Erro ao selecionar imagem';
+
+  @override
+  String get noImageSelected => 'Você ainda não selecionou uma imagem.';
 }

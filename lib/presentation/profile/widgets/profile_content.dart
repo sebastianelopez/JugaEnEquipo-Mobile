@@ -39,7 +39,7 @@ class _ProfileContentState extends State<ProfileContent> {
     }
 
     if (profileUser == null) {
-      return const Center(child: Text('User not found'));
+      return Center(child: Text(AppLocalizations.of(context)!.userNotFound));
     }
     return SingleChildScrollView(
       child: Expanded(

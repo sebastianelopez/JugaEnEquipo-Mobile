@@ -7,6 +7,14 @@
   "loginUserValidation": "El valor ingresado no parece un correo electrónico",
   "loginUserRequiredValidation": "El email es obligatorio",
   "navSearchInputLabel": "Buscar",
+  "advancedSearchTitle": "Busqueda avanzada",
+  "advancedSearchPlayersButton": "Buscar jugadores",
+  "advancedSearchTeamsButton": "Buscar equipos",
+  "advancedSearchTeams": "Equipos",
+  "advancedSearchPlayers": "Jugadores",
+  "advancedSearchGame": "Juego",
+  "advancedSearchRole": "Rol",
+  "advancedSearchRanking": "Ranking",
   "timePrefixText": "Hace ",
   "timeYearSuffixText": "año",
   "timeYearsSuffixText": "años",
@@ -28,6 +36,7 @@
   "drawerLogoutLabel": "Cerrar sesion",
   "profilePageLabel": "Perfil",
   "profileFollowButtonLabel": "Seguir",
+  "profileUnfollowButtonLabel": "Dejar de seguir",
   "profileMessagesButtonLabel": "Mensajes",
   "profileSendMessageButtonLabel": "Enviar mensaje",
   "profileFollowingButtonLabel": "Siguiendo",
@@ -67,5 +76,83 @@
         "type": "String"
       }
     }
-  }
+  },
+  "errorTitle": "Error",
+  "errorMessage": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+  "okButton": "Aceptar",
+  "editProfileButtonLabel": "Editar perfil",
+  "userNotFound": "Usuario no encontrado",
+  "teamNotFound": "Equipo no encontrado",
+  "tryAgain": "Intentar de nuevo",
+  "teamIdRequired": "ID del equipo es requerido",
+  "prizesContent": "El contenido de premios va aquí",
+  "teamMembersTitle": "Miembros del Equipo",
+  "teamTournamentsTitle": "Torneos del Equipo",
+  "teamWinsTitle": "Victorias del Equipo",
+  "teamTournamentsList": "Lista de torneos participados",
+  "teamWinsHistory": "Historial de victorias",
+  "verifyImageTitle": "Ver imagen",
+  "changeProfileImageTitle": "Cambiar imagen de perfil",
+  "deletePost": "Eliminar publicación",
+  "searchTeamSnackbar": "Equipo: {name}",
+  "@searchTeamSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noPostsYet": "No hay publicaciones aún",
+  "followToSeePosts": "Sigue a un equipo o jugador para ver sus publicaciones.",
+  "searchUsersTeams": "Busca usuarios o equipos",
+  "playersSection": "Jugadores",
+  "teamsSection": "Equipos",
+  "verifiedStatus": "Verificado",
+  "pendingStatus": "Pendiente",
+  "membersLabel": "Miembros",
+  "gamesLabel": "Juegos",
+  "searchPlayersHint": "Buscar jugadores...",
+  "searchTeamsHint": "Buscar equipos...",
+  "teamSizeFilter": "Tamaño del Equipo",
+  "verifiedTeamsOnly": "Solo equipos verificados",
+  "playersSearchResult": "Búsqueda de jugadores con filtros: {filters}",
+  "@playersSearchResult": {
+    "placeholders": {
+      "filters": {
+        "type": "String"
+      }
+    }
+  },
+  "teamsSearchResult": "Búsqueda de equipos con filtros: {filters}",
+  "@teamsSearchResult": {
+    "placeholders": {
+      "filters": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMembersButtonLabel": "Ver miembros",
+  "contactButtonLabel": "Contactar",
+  "statisticsLabel": "Estadísticas",
+  "tournamentsPlayedLabel": "Torneos jugados",
+  "winsLabel": "Victorias",
+  "photoGalleryOption": "Galería de fotos",
+  "cameraOption": "Cámara",
+  "unauthorizedError": "No autorizado",
+  "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+  "acceptButton": "Aceptar",
+  "incorrectCredentials": "El mail o la contraseña no son correctas",
+  "photoVideoButton": "Foto / Video",
+  "writeMessageHint": "Escribir mensaje...",
+  "tournamentTitleColumn": "Título",
+  "officialColumn": "Oficial",
+  "gameColumn": "Juego",
+  "registeredPlayersColumn": "Jugadores inscriptos",
+  "settingsLabel": "Configuración",
+  "darkmodeLabel": "Modo oscuro",
+  "languageLabel": "Idioma",
+  "commentsLabel": "comentarios",
+  "imageNotSupported": "Este tipo de imagen no es compatible",
+  "pickImageError": "Error al seleccionar imagen",
+  "noImageSelected": "Aún no has seleccionado una imagen."
 }

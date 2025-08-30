@@ -4,6 +4,7 @@ import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/add_like_post_use_case.dart';
 import 'package:jugaenequipo/global_widgets/create_post.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,11 +80,12 @@ class PostCard extends StatelessWidget {
                                 },
                                 itemBuilder: (BuildContext context) =>
                                     <PopupMenuEntry<Menu>>[
-                                  const PopupMenuItem<Menu>(
+                                  PopupMenuItem<Menu>(
                                     value: Menu.delete,
                                     child: ListTile(
-                                      leading: Icon(Icons.delete_outline),
-                                      title: Text('Delete post'),
+                                      leading: const Icon(Icons.delete_outline),
+                                      title: Text(AppLocalizations.of(context)!
+                                          .deletePost),
                                     ),
                                   ),
                                 ],
@@ -175,7 +177,7 @@ class PostCard extends StatelessWidget {
                                           postId: post.id);
                                     },
                                     child: Text(
-                                      "$commentsCount comentarios",
+                                      "$commentsCount ${AppLocalizations.of(context)!.commentsLabel}",
                                       style: TextStyle(fontSize: 14.h),
                                     ),
                                   ),

@@ -7,6 +7,14 @@
   "loginUserValidation": "The entered value doesn't look like an email",
   "loginUserRequiredValidation": "Email is required",
   "navSearchInputLabel": "Search",
+  "advancedSearchTitle": "Advanced search",
+  "advancedSearchPlayersButton": "Search players",
+  "advancedSearchTeamsButton": "Search teams",
+  "advancedSearchTeams": "Teams",
+  "advancedSearchPlayers": "Players",
+  "advancedSearchGame": "Game",
+  "advancedSearchRole": "Role",
+  "advancedSearchRanking": "Ranking",
   "timePrefixText": "",
   "timeYearSuffixText": "year ago",
   "timeYearsSuffixText": "years ago",
@@ -28,6 +36,7 @@
   "drawerLogoutLabel": "Sign out",
   "profilePageLabel": "Profile",
   "profileFollowButtonLabel": "Follow",
+  "profileUnfollowButtonLabel": "Unfollow",
   "profileMessagesButtonLabel": "Messages",
   "profileSendMessageButtonLabel": "Send message",
   "profileFollowingButtonLabel": "Following",
@@ -67,5 +76,83 @@
         "type": "String"
       }
     }
-  }
+  },
+  "errorTitle": "Error",
+  "errorMessage": "An error has occurred. Please try again.",
+  "okButton": "OK",
+  "editProfileButtonLabel": "Edit profile",
+  "userNotFound": "User not found",
+  "teamNotFound": "Team not found",
+  "tryAgain": "Try Again",
+  "teamIdRequired": "Team ID is required",
+  "prizesContent": "Prizes content goes here",
+  "teamMembersTitle": "Team Members",
+  "teamTournamentsTitle": "Team Tournaments",
+  "teamWinsTitle": "Team Wins",
+  "teamTournamentsList": "List of participated tournaments",
+  "teamWinsHistory": "Win history",
+  "verifyImageTitle": "View image",
+  "changeProfileImageTitle": "Change profile image",
+  "deletePost": "Delete post",
+  "searchTeamSnackbar": "Team: {name}",
+  "@searchTeamSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noPostsYet": "No posts yet",
+  "followToSeePosts": "Follow a team or player to see their posts.",
+  "searchUsersTeams": "Search users or teams",
+  "playersSection": "Players",
+  "teamsSection": "Teams",
+  "verifiedStatus": "Verified",
+  "pendingStatus": "Pending",
+  "membersLabel": "Members",
+  "gamesLabel": "Games",
+  "searchPlayersHint": "Search players...",
+  "searchTeamsHint": "Search teams...",
+  "teamSizeFilter": "Team Size",
+  "verifiedTeamsOnly": "Verified teams only",
+  "playersSearchResult": "Player search with filters: {filters}",
+  "@playersSearchResult": {
+    "placeholders": {
+      "filters": {
+        "type": "String"
+      }
+    }
+  },
+  "teamsSearchResult": "Team search with filters: {filters}",
+  "@teamsSearchResult": {
+    "placeholders": {
+      "filters": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMembersButtonLabel": "View members",
+  "contactButtonLabel": "Contact",
+  "statisticsLabel": "Statistics",
+  "tournamentsPlayedLabel": "Tournaments played",
+  "winsLabel": "Wins",
+  "photoGalleryOption": "Photo Gallery",
+  "cameraOption": "Camera",
+  "unauthorizedError": "Unauthorized",
+  "unexpectedError": "An unexpected error occurred. Please try again.",
+  "acceptButton": "Accept",
+  "incorrectCredentials": "The email or password is incorrect",
+  "photoVideoButton": "Photo / Video",
+  "writeMessageHint": "Write message...",
+  "tournamentTitleColumn": "Title",
+  "officialColumn": "Official",
+  "gameColumn": "Game",
+  "registeredPlayersColumn": "Registered players",
+  "settingsLabel": "Settings",
+  "darkmodeLabel": "Darkmode",
+  "languageLabel": "Language",
+  "commentsLabel": "comments",
+  "imageNotSupported": "This image type is not supported",
+  "pickImageError": "Pick image error",
+  "noImageSelected": "You have not yet picked an image."
 }

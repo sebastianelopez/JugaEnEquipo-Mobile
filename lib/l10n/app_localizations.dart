@@ -148,6 +148,54 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get navSearchInputLabel;
 
+  /// No description provided for @advancedSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced search'**
+  String get advancedSearchTitle;
+
+  /// No description provided for @advancedSearchPlayersButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Search players'**
+  String get advancedSearchPlayersButton;
+
+  /// No description provided for @advancedSearchTeamsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Search teams'**
+  String get advancedSearchTeamsButton;
+
+  /// No description provided for @advancedSearchTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get advancedSearchTeams;
+
+  /// No description provided for @advancedSearchPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Players'**
+  String get advancedSearchPlayers;
+
+  /// No description provided for @advancedSearchGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Game'**
+  String get advancedSearchGame;
+
+  /// No description provided for @advancedSearchRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get advancedSearchRole;
+
+  /// No description provided for @advancedSearchRanking.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking'**
+  String get advancedSearchRanking;
+
   /// No description provided for @timePrefixText.
   ///
   /// In en, this message translates to:
@@ -274,6 +322,12 @@ abstract class AppLocalizations {
   /// **'Follow'**
   String get profileFollowButtonLabel;
 
+  /// No description provided for @profileUnfollowButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow'**
+  String get profileUnfollowButtonLabel;
+
   /// No description provided for @profileMessagesButtonLabel.
   ///
   /// In en, this message translates to:
@@ -339,6 +393,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'<b>{team}</b> has accepted your application for the {role} position in Overwatch. You are now a member of the professional team.'**
   String notificationApplicationAccepted(String role, String team);
+
+  /// No description provided for @errorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get errorTitle;
+
+  /// No description provided for @errorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An error has occurred. Please try again.'**
+  String get errorMessage;
+
+  /// No description provided for @okButton.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get okButton;
+
+  /// No description provided for @editProfileButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfileButtonLabel;
+
+  /// No description provided for @userNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'User not found'**
+  String get userNotFound;
+
+  /// No description provided for @teamNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Team not found'**
+  String get teamNotFound;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @teamIdRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Team ID is required'**
+  String get teamIdRequired;
+
+  /// No description provided for @prizesContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Prizes content goes here'**
+  String get prizesContent;
+
+  /// No description provided for @teamMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Members'**
+  String get teamMembersTitle;
+
+  /// No description provided for @teamTournamentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Tournaments'**
+  String get teamTournamentsTitle;
+
+  /// No description provided for @teamWinsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Wins'**
+  String get teamWinsTitle;
+
+  /// No description provided for @teamTournamentsList.
+  ///
+  /// In en, this message translates to:
+  /// **'List of participated tournaments'**
+  String get teamTournamentsList;
+
+  /// No description provided for @teamWinsHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Win history'**
+  String get teamWinsHistory;
+
+  /// No description provided for @verifyImageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View image'**
+  String get verifyImageTitle;
+
+  /// No description provided for @changeProfileImageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change profile image'**
+  String get changeProfileImageTitle;
+
+  /// No description provided for @deletePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete post'**
+  String get deletePost;
+
+  /// No description provided for @searchTeamSnackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Team: {name}'**
+  String searchTeamSnackbar(String name);
+
+  /// No description provided for @noPostsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet'**
+  String get noPostsYet;
+
+  /// No description provided for @followToSeePosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow a team or player to see their posts.'**
+  String get followToSeePosts;
+
+  /// No description provided for @searchUsersTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Search users or teams'**
+  String get searchUsersTeams;
+
+  /// No description provided for @playersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Players'**
+  String get playersSection;
+
+  /// No description provided for @teamsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get teamsSection;
+
+  /// No description provided for @verifiedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verifiedStatus;
+
+  /// No description provided for @pendingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pendingStatus;
+
+  /// No description provided for @membersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get membersLabel;
+
+  /// No description provided for @gamesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Games'**
+  String get gamesLabel;
+
+  /// No description provided for @searchPlayersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search players...'**
+  String get searchPlayersHint;
+
+  /// No description provided for @searchTeamsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search teams...'**
+  String get searchTeamsHint;
+
+  /// No description provided for @teamSizeFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Size'**
+  String get teamSizeFilter;
+
+  /// No description provided for @verifiedTeamsOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified teams only'**
+  String get verifiedTeamsOnly;
+
+  /// No description provided for @playersSearchResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Player search with filters: {filters}'**
+  String playersSearchResult(String filters);
+
+  /// No description provided for @teamsSearchResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Team search with filters: {filters}'**
+  String teamsSearchResult(String filters);
+
+  /// No description provided for @viewMembersButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View members'**
+  String get viewMembersButtonLabel;
+
+  /// No description provided for @contactButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get contactButtonLabel;
+
+  /// No description provided for @statisticsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statisticsLabel;
+
+  /// No description provided for @tournamentsPlayedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournaments played'**
+  String get tournamentsPlayedLabel;
+
+  /// No description provided for @winsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Wins'**
+  String get winsLabel;
+
+  /// No description provided for @photoGalleryOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Gallery'**
+  String get photoGalleryOption;
+
+  /// No description provided for @cameraOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get cameraOption;
+
+  /// No description provided for @unauthorizedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unauthorized'**
+  String get unauthorizedError;
+
+  /// No description provided for @unexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred. Please try again.'**
+  String get unexpectedError;
+
+  /// No description provided for @acceptButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get acceptButton;
+
+  /// No description provided for @incorrectCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'The email or password is incorrect'**
+  String get incorrectCredentials;
+
+  /// No description provided for @photoVideoButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo / Video'**
+  String get photoVideoButton;
+
+  /// No description provided for @writeMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write message...'**
+  String get writeMessageHint;
+
+  /// No description provided for @tournamentTitleColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get tournamentTitleColumn;
+
+  /// No description provided for @officialColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Official'**
+  String get officialColumn;
+
+  /// No description provided for @gameColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Game'**
+  String get gameColumn;
+
+  /// No description provided for @registeredPlayersColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered players'**
+  String get registeredPlayersColumn;
+
+  /// No description provided for @settingsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsLabel;
+
+  /// No description provided for @darkmodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Darkmode'**
+  String get darkmodeLabel;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageLabel;
+
+  /// No description provided for @commentsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'comments'**
+  String get commentsLabel;
+
+  /// No description provided for @imageNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This image type is not supported'**
+  String get imageNotSupported;
+
+  /// No description provided for @pickImageError.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick image error'**
+  String get pickImageError;
+
+  /// No description provided for @noImageSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not yet picked an image.'**
+  String get noImageSelected;
 }
 
 class _AppLocalizationsDelegate

@@ -7,6 +7,14 @@
   "loginUserValidation": "O valor inserido não se parece com um e-mail",
   "loginUserRequiredValidation": "O e-mail é obrigatório",
   "navSearchInputLabel": "Busca",
+  "advancedSearchTitle": "Busca avançada",
+  "advancedSearchPlayersButton": "Buscar jogadores",
+  "advancedSearchTeamsButton": "Buscar equipes",
+  "advancedSearchTeams": "Equipes",
+  "advancedSearchPlayers": "Jogadores",
+  "advancedSearchGame": "Jogo",
+  "advancedSearchRole": "Função",
+  "advancedSearchRanking": "Classificação",
   "timePrefixText": "",
   "timeYearSuffixText": "ano atras",
   "timeYearsSuffixText": "anos atras",
@@ -26,7 +34,9 @@
   "drawerProfileLabel": "Perfil",
   "drawerSettingsLabel": "Configurações",
   "drawerLogoutLabel": "Sair",
+  "profilePageLabel": "Perfil",
   "profileFollowButtonLabel": "Seguir",
+  "profileUnfollowButtonLabel": "Deixar de seguir",
   "profileMessagesButtonLabel": "Mensagens",
   "profileSendMessageButtonLabel": "Enviar mensagem",
   "profileFollowingButtonLabel": "Seguindo",
@@ -66,5 +76,83 @@
         "type": "String"
       }
     }
-  }
+  },
+  "errorTitle": "Erro",
+  "errorMessage": "Ocorreu um erro. Por favor, tente novamente.",
+  "okButton": "OK",
+  "editProfileButtonLabel": "Editar perfil",
+  "userNotFound": "Usuário não encontrado",
+  "teamNotFound": "Equipe não encontrada",
+  "tryAgain": "Tentar novamente",
+  "teamIdRequired": "ID da equipe é obrigatório",
+  "prizesContent": "Conteúdo de prêmios vai aqui",
+  "teamMembersTitle": "Membros da Equipe",
+  "teamTournamentsTitle": "Torneios da Equipe",
+  "teamWinsTitle": "Vitórias da Equipe",
+  "teamTournamentsList": "Lista de torneios participados",
+  "teamWinsHistory": "Histórico de vitórias",
+  "verifyImageTitle": "Ver imagem",
+  "changeProfileImageTitle": "Alterar imagem do perfil",
+  "deletePost": "Excluir post",
+  "searchTeamSnackbar": "Equipe: {name}",
+  "@searchTeamSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noPostsYet": "Ainda não há posts",
+  "followToSeePosts": "Siga uma equipe ou jogador para ver seus posts.",
+  "searchUsersTeams": "Pesquisar usuários ou equipes",
+  "playersSection": "Jogadores",
+  "teamsSection": "Equipes",
+  "verifiedStatus": "Verificado",
+  "pendingStatus": "Pendente",
+  "membersLabel": "Membros",
+  "gamesLabel": "Jogos",
+  "searchPlayersHint": "Pesquisar jogadores...",
+  "searchTeamsHint": "Pesquisar equipes...",
+  "teamSizeFilter": "Tamanho da Equipe",
+  "verifiedTeamsOnly": "Apenas equipes verificadas",
+  "playersSearchResult": "Pesquisa de jogadores com filtros: {filters}",
+  "@playersSearchResult": {
+    "placeholders": {
+      "filters": {
+        "type": "String"
+      }
+    }
+  },
+  "teamsSearchResult": "Pesquisa de equipes com filtros: {filters}",
+  "@teamsSearchResult": {
+    "placeholders": {
+      "filters": {
+        "type": "String"
+      }
+    }
+  },
+  "viewMembersButtonLabel": "Ver membros",
+  "contactButtonLabel": "Contatar",
+  "statisticsLabel": "Estatísticas",
+  "tournamentsPlayedLabel": "Torneios jogados",
+  "winsLabel": "Vitórias",
+  "photoGalleryOption": "Galeria de fotos",
+  "cameraOption": "Câmera",
+  "unauthorizedError": "Não autorizado",
+  "unexpectedError": "Ocorreu um erro inesperado. Por favor, tente novamente.",
+  "acceptButton": "Aceitar",
+  "incorrectCredentials": "O e-mail ou senha está incorreto",
+  "photoVideoButton": "Foto / Vídeo",
+  "writeMessageHint": "Escrever mensagem...",
+  "tournamentTitleColumn": "Título",
+  "officialColumn": "Oficial",
+  "gameColumn": "Jogo",
+  "registeredPlayersColumn": "Jogadores inscritos",
+  "settingsLabel": "Configurações",
+  "darkmodeLabel": "Modo escuro",
+  "languageLabel": "Idioma",
+  "commentsLabel": "comentários",
+  "imageNotSupported": "Este tipo de imagem não é suportado",
+  "pickImageError": "Erro ao selecionar imagem",
+  "noImageSelected": "Você ainda não selecionou uma imagem."
 }

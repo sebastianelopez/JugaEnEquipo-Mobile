@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/add_post_resource_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/update_user_profile_image.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
 import 'package:mime/mime.dart';
@@ -86,7 +87,7 @@ class ImagePickerProvider extends ChangeNotifier {
       builder: (context) => SimpleDialog(
         children: [
           SimpleDialogOption(
-            child: const Text('Photo Gallery'),
+            child: Text(AppLocalizations.of(context)!.photoGalleryOption),
             onPressed: () async {
               Navigator.of(context).pop();
 
@@ -116,7 +117,7 @@ class ImagePickerProvider extends ChangeNotifier {
             },
           ),
           SimpleDialogOption(
-            child: const Text('Camera'),
+            child: Text(AppLocalizations.of(context)!.cameraOption),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -142,7 +143,7 @@ class ImagePickerProvider extends ChangeNotifier {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Error'),
-              content: const Text('unauthorized'),
+              content: Text(AppLocalizations.of(context)!.unauthorizedError),
               actions: [
                 TextButton(
                   onPressed: () {

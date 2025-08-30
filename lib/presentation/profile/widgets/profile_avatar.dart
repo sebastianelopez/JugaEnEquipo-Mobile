@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_screen.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,8 @@ class ProfileAvatar extends StatelessWidget {
                           profileUser.profileImage!.startsWith('https://')))
                     ListTile(
                       leading: const Icon(Icons.visibility),
-                      title: const Text('Ver imagen'),
+                      title:
+                          Text(AppLocalizations.of(context)!.verifyImageTitle),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
@@ -46,7 +48,8 @@ class ProfileAvatar extends StatelessWidget {
                   if (isLoggedUser)
                     ListTile(
                       leading: const Icon(Icons.edit),
-                      title: const Text('Cambiar imagen de perfil'),
+                      title: Text(AppLocalizations.of(context)!
+                          .changeProfileImageTitle),
                       onTap: () async {
                         Navigator.pop(context);
                         await imageProvider.showOptions(context,
