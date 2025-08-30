@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/post/post_model.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
@@ -34,19 +35,21 @@ class Posts extends StatelessWidget {
         RefreshIndicator(
           color: AppTheme.primary,
           onRefresh: homeScreen.onRefresh,
-          child: Skeletonizer(
-            enabled: homeScreen.isLoading,
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              controller: homeScreen.scrollController,
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return PostCard(
-                  post: posts[index],
-                );
-              },
-            ),
-          ),
+          child: homeScreen.isLoading || posts.isNotEmpty
+              ? Skeletonizer(
+                  enabled: homeScreen.isLoading,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    controller: homeScreen.scrollController,
+                    itemCount: posts.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return PostCard(
+                        post: posts[index],
+                      );
+                    },
+                  ),
+                )
+              : _buildEmptyState(context),
         ),
         if (homeScreen.isLoading)
           Positioned(
@@ -54,6 +57,77 @@ class Posts extends StatelessWidget {
               left: size.width * 0.5 - 30,
               child: const LoadingIcon())
       ],
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Icono con animación
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 800),
+            builder: (context, value, child) {
+              return Transform.scale(
+                scale: value,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.post_add_outlined,
+                    size: 80,
+                    color: Colors.grey[400],
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 24),
+          // Texto principal
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 600),
+            builder: (context, value, child) {
+              return Opacity(
+                opacity: value,
+                child: Text(
+                  AppLocalizations.of(context)!.noPostsYet,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 12),
+          // Texto secundario
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 800),
+            builder: (context, value, child) {
+              return Opacity(
+                opacity: value,
+                child: Text(
+                  AppLocalizations.of(context)!.followToSeePosts,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[500],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 32),
+        ],
+      ),
     );
   }
 }
