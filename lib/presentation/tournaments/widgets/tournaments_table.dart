@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/tournaments/business_logic/tournaments_provider.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class TournamentsTable extends StatelessWidget {
@@ -8,40 +10,41 @@ class TournamentsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tournamentsScreen = Provider.of<TournamentsProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
-        columns: const <DataColumn>[
+        columns: <DataColumn>[
           DataColumn(
             label: Expanded(
               child: Text(
-                'Title',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                l10n.tournamentTitleColumn,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ),
           DataColumn(
             label: Expanded(
               child: Text(
-                'Oficial',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                l10n.officialColumn,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ),
           DataColumn(
             label: Expanded(
               child: Text(
-                'Game',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                l10n.gameColumn,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ),
           DataColumn(
             label: Expanded(
               child: Text(
-                'Jugadores inscriptos',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                l10n.registeredPlayersColumn,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -51,17 +54,23 @@ class TournamentsTable extends StatelessWidget {
             cells: <DataCell>[
               DataCell(Text(tournament.title)),
               DataCell(tournament.isOfficial
-                  ? const Icon(Icons.verified)
+                  ? Icon(Icons.verified, color: AppTheme.primary)
                   : const Text('-')),
-              const DataCell(
-                Image(
-                  height: 20,
-                  width: 20,
-                  image: AssetImage('assets/overwatchLogo.png'),
-                ),
+              DataCell(
+                tournament.game.image.isNotEmpty
+                    ? Image(
+                        height: 20,
+                        width: 20,
+                        image: AssetImage(tournament.game.image),
+                        errorBuilder: (context, error, stackTrace) {
+                          return Text(tournament.game.name);
+                        },
+                      )
+                    : Text(tournament.game.name),
               ),
               DataCell(
-                  Text(tournament.registeredPlayersIds?.length.toString() ?? '0')),
+                Text(tournament.registeredPlayersIds?.length.toString() ?? '0'),
+              ),
             ],
           );
         }).toList(),
