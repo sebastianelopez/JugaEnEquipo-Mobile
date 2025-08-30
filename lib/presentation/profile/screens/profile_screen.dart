@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/follow/follow_user_model.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/profile_provider.dart';
+import 'package:jugaenequipo/presentation/profile/business_logic/team_profile_provider.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/profile_content.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
@@ -9,12 +11,18 @@ import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
+enum ProfileType { user, team }
+
 class ProfileScreen extends StatelessWidget {
   final String? userId;
+  final String? teamId;
+  final ProfileType profileType;
 
   const ProfileScreen({
     super.key,
     this.userId,
+    this.teamId,
+    this.profileType = ProfileType.user,
   });
 
   @override
@@ -24,50 +32,113 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.primary,
       appBar: BackAppBar(
-        label: AppLocalizations.of(context)!.profilePageLabel,
+        label: _getAppBarLabel(context),
       ),
-      body: ChangeNotifierProvider(
-        create: (context) => ProfileProvider(
-          userId: userId,
-          initialUser: userId == null ? userProvider.user : null,
-        ),
-        child: Consumer<ProfileProvider>(
-          builder: (context, provider, _) {
-            if (provider.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      body: _buildBody(context, userProvider),
+    );
+  }
 
-            if (provider.error != null) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(provider.error!),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => provider.refreshData(),
-                      child: const Text('Try Again'),
-                    ),
-                  ],
-                ),
-              );
-            }
+  String _getAppBarLabel(BuildContext context) {
+    switch (profileType) {
+      case ProfileType.user:
+        return AppLocalizations.of(context)!.profilePageLabel;
+      case ProfileType.team:
+        return 'Perfil del Equipo';
+    }
+  }
 
-            return ProfileContent(
-              onFollowersPressed: () =>
-                  _openModal(context, ModalType.followers, provider),
-              onFollowingsPressed: () =>
-                  _openModal(context, ModalType.followings, provider),
-              onPrizesPressed: () =>
-                  _openModal(context, ModalType.prizes, provider),
+  Widget _buildBody(BuildContext context, UserProvider userProvider) {
+    switch (profileType) {
+      case ProfileType.user:
+        return _buildUserProfile(context, userProvider);
+      case ProfileType.team:
+        return _buildTeamProfile(context);
+    }
+  }
+
+  Widget _buildUserProfile(BuildContext context, UserProvider userProvider) {
+    return ChangeNotifierProvider(
+      create: (context) => ProfileProvider(
+        userId: userId,
+        initialUser: userId == null ? userProvider.user : null,
+      ),
+      child: Consumer<ProfileProvider>(
+        builder: (context, provider, _) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (provider.error != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(provider.error!),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => provider.refreshData(),
+                    child: Text(AppLocalizations.of(context)!.tryAgain),
+                  ),
+                ],
+              ),
             );
-          },
-        ),
+          }
+
+          return ProfileContent(
+            onFollowersPressed: () =>
+                _openUserModal(context, ModalType.followers, provider),
+            onFollowingsPressed: () =>
+                _openUserModal(context, ModalType.followings, provider),
+            onPrizesPressed: () =>
+                _openUserModal(context, ModalType.prizes, provider),
+          );
+        },
       ),
     );
   }
 
-  void _openModal(
+  Widget _buildTeamProfile(BuildContext context) {
+    if (teamId == null) {
+      return Center(child: Text(AppLocalizations.of(context)!.teamIdRequired));
+    }
+
+    return ChangeNotifierProvider(
+      create: (context) => TeamProfileProvider(teamId: teamId!),
+      child: Consumer<TeamProfileProvider>(
+        builder: (context, provider, _) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (provider.error != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(provider.error!),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => provider.refreshData(),
+                    child: Text(AppLocalizations.of(context)!.tryAgain),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return TeamProfileContent(
+            onMembersPressed: () =>
+                _openTeamModal(context, 'Miembros', provider),
+            onTournamentsPressed: () =>
+                _openTeamModal(context, 'Torneos', provider),
+            onWinsPressed: () => _openTeamModal(context, 'Victorias', provider),
+          );
+        },
+      ),
+    );
+  }
+
+  void _openUserModal(
       BuildContext context, ModalType type, ProfileProvider provider) {
     showDialog(
       useSafeArea: true,
@@ -91,7 +162,7 @@ class ProfileScreen extends StatelessWidget {
             break;
           case ModalType.prizes:
             title = AppLocalizations.of(context)!.profilePrizesButtonLabel;
-            content = [const Text('Prizes content goes here')];
+            content = [Text(AppLocalizations.of(context)!.prizesContent)];
             break;
         }
 
@@ -103,13 +174,60 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  void _openTeamModal(
+      BuildContext context, String type, TeamProfileProvider provider) {
+    switch (type) {
+      case 'Miembros':
+        showDialog(
+          useSafeArea: true,
+          context: context,
+          builder: (BuildContext context) {
+            return TeamMemberModal(
+              title: AppLocalizations.of(context)!.teamMembersTitle,
+              members: provider.teamProfile?.members ?? [],
+            );
+          },
+        );
+        break;
+      case 'Torneos':
+        showDialog(
+          useSafeArea: true,
+          context: context,
+          builder: (BuildContext context) {
+            return ProfileModal(
+              title: AppLocalizations.of(context)!.teamTournamentsTitle,
+              content: [
+                Text(AppLocalizations.of(context)!.teamTournamentsList)
+              ],
+            );
+          },
+        );
+        break;
+      case 'Victorias':
+        showDialog(
+          useSafeArea: true,
+          context: context,
+          builder: (BuildContext context) {
+            return ProfileModal(
+              title: AppLocalizations.of(context)!.teamWinsTitle,
+              content: [Text(AppLocalizations.of(context)!.teamWinsHistory)],
+            );
+          },
+        );
+        break;
+    }
+  }
+
   Widget _buildUserListTile(BuildContext context, FollowUserModel user) {
     return ListTile(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfileScreen(userId: user.id),
+            builder: (context) => ProfileScreen(
+              userId: user.id,
+              profileType: ProfileType.user,
+            ),
           ),
         );
       },
@@ -124,6 +242,40 @@ class ProfileScreen extends StatelessWidget {
       ),
       subtitle: Text(
         '@${user.username}',
+        style: const TextStyle(fontSize: 11),
+      ),
+    );
+  }
+
+  Widget _buildMemberListTile(BuildContext context, UserModel member) {
+    return ListTile(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfileScreen(
+              userId: member.id,
+              profileType: ProfileType.user,
+            ),
+          ),
+        );
+      },
+      leading: CircleAvatar(
+        backgroundImage: member.profileImage != null
+            ? (member.profileImage!.startsWith('http://') ||
+                    member.profileImage!.startsWith('https://')
+                ? NetworkImage(member.profileImage!)
+                : AssetImage(member.profileImage!) as ImageProvider)
+            : const AssetImage('assets/user_image.jpg'),
+        radius: 16,
+        backgroundColor: Colors.white,
+      ),
+      title: Text(
+        "${member.firstName} ${member.lastName}",
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        '@${member.userName}',
         style: const TextStyle(fontSize: 11),
       ),
     );
