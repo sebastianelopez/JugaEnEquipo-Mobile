@@ -108,7 +108,6 @@ class PostCard extends StatelessWidget {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 15.h,
                                   color: Theme.of(context).colorScheme.primary,
-                                  decoration: TextDecoration.underline,
                                 ),
                               ),
                             ),
