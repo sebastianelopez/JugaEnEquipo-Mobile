@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/post/post_model.dart';
 import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/add_like_post_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_users_by_username_use_case.dart';
 import 'package:jugaenequipo/global_widgets/create_post.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
@@ -18,6 +19,33 @@ class PostCard extends StatelessWidget {
   final PostModel post;
 
   const PostCard({super.key, required this.post});
+
+  Future<void> _navigateToUserProfile(
+      BuildContext context, String username) async {
+    try {
+      final users = await getUsersByUsername(username);
+      if (users != null && users.isNotEmpty) {
+        final postUser = users.first;
+        if (context.mounted) {
+          Navigator.pushNamed(
+            context,
+            'profile',
+            arguments: {'userId': postUser.id},
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.errorLoadingUserProfile),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,29 +76,42 @@ class PostCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
-                        leading: SizedBox(
-                          height: 50.h,
-                          width: 50.h,
-                          child: CircleAvatar(
-                            maxRadius: 15.h,
-                            backgroundImage: (post.urlProfileImage != null &&
-                                    post.urlProfileImage!.isNotEmpty &&
-                                    (post.urlProfileImage!
-                                            .startsWith('http://') ||
-                                        post.urlProfileImage!
-                                            .startsWith('https://')))
-                                ? NetworkImage(post.urlProfileImage!)
-                                : const AssetImage('assets/user_image.jpg')
-                                    as ImageProvider,
+                        leading: GestureDetector(
+                          onTap: () =>
+                              _navigateToUserProfile(context, post.user ?? ''),
+                          child: SizedBox(
+                            height: 50.h,
+                            width: 50.h,
+                            child: CircleAvatar(
+                              maxRadius: 15.h,
+                              backgroundImage: (post.urlProfileImage != null &&
+                                      post.urlProfileImage!.isNotEmpty &&
+                                      (post.urlProfileImage!
+                                              .startsWith('http://') ||
+                                          post.urlProfileImage!
+                                              .startsWith('https://')))
+                                  ? NetworkImage(post.urlProfileImage!)
+                                  : const AssetImage('assets/user_image.jpg')
+                                      as ImageProvider,
+                            ),
                           ),
                         ),
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(post.user ?? 'user',
+                            GestureDetector(
+                              onTap: () => _navigateToUserProfile(
+                                  context, post.user ?? ''),
+                              child: Text(
+                                post.user ?? 'user',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 15.h)),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 15.h,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
                             if (isLoggedUserPost)
                               PopupMenuButton(
                                 icon: const Icon(Icons.more_vert),

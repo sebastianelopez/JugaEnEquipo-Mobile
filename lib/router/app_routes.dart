@@ -41,7 +41,7 @@ class AppRoutes {
   static List<MenuOptionModel> getDrawerOptions([BuildContext? context]) {
     return [
       MenuOptionModel(
-          route: 'profile',
+          route: 'my-profile',
           name: context != null
               ? AppLocalizations.of(context)!.drawerProfileLabel
               : '',
@@ -123,6 +123,8 @@ class AppRoutes {
           );
         }
       }
+      return MaterialPageRoute(builder: (context) => const ProfileScreen());
+    } else if (settings.name == 'my-profile') {
       return MaterialPageRoute(builder: (context) => const ProfileScreen());
     }
 

@@ -340,4 +340,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noImageSelected => 'You have not yet picked an image.';
+
+  @override
+  String get errorLoadingUserProfile => 'Error loading user profile';
 }

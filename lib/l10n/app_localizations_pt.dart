@@ -341,4 +341,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get noImageSelected => 'Você ainda não selecionou uma imagem.';
+
+  @override
+  String get errorLoadingUserProfile => 'Erro ao carregar o perfil do usuário';
 }

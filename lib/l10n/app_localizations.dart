@@ -735,6 +735,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have not yet picked an image.'**
   String get noImageSelected;
+
+  /// No description provided for @errorLoadingUserProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading user profile'**
+  String get errorLoadingUserProfile;
 }
 
 class _AppLocalizationsDelegate

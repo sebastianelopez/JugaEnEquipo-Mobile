@@ -154,5 +154,6 @@
   "commentsLabel": "comentários",
   "imageNotSupported": "Este tipo de imagem não é suportado",
   "pickImageError": "Erro ao selecionar imagem",
-  "noImageSelected": "Você ainda não selecionou uma imagem."
+  "noImageSelected": "Você ainda não selecionou uma imagem.",
+  "errorLoadingUserProfile": "Erro ao carregar o perfil do usuário"
 }
