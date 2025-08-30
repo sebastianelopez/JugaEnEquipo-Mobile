@@ -28,6 +28,24 @@ class ProfileContent extends StatefulWidget {
 
 class _ProfileContentState extends State<ProfileContent> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkIfFollowing();
+    });
+  }
+
+  void _checkIfFollowing() {
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    final loggedUser = Provider.of<UserProvider>(context, listen: false).user;
+
+    if (loggedUser != null && profileProvider.profileUser != null) {
+      profileProvider.checkIfFollowing(loggedUser);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
     UserModel? loggedUser = Provider.of<UserProvider>(context).user;
@@ -83,14 +101,29 @@ class _ProfileContentState extends State<ProfileContent> {
                       children: [
                         if (isLoggedUser)
                           ProfileElevatedButton(
-                            label: 'Editar perfil',
+                            label: AppLocalizations.of(context)!
+                                .editProfileButtonLabel,
                             onPressed: () {},
                           )
                         else
                           ProfileElevatedButton(
-                            label: AppLocalizations.of(context)!
-                                .profileFollowButtonLabel,
-                            onPressed: () {},
+                            label: profileProvider.isFollowLoading
+                                ? '...'
+                                : (profileProvider.isFollowing
+                                    ? AppLocalizations.of(context)!
+                                        .profileUnfollowButtonLabel
+                                    : AppLocalizations.of(context)!
+                                        .profileFollowButtonLabel),
+                            onPressed: profileProvider.isFollowLoading
+                                ? null
+                                : () async {
+                                    final currentContext = context;
+                                    final success =
+                                        await profileProvider.toggleFollow();
+                                    if (!success && mounted) {
+                                      _showErrorDialog(currentContext);
+                                    }
+                                  },
                           ),
                         if (isLoggedUser)
                           ProfileElevatedButton(
@@ -173,6 +206,26 @@ class _ProfileContentState extends State<ProfileContent> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.errorTitle),
+          content: Text(AppLocalizations.of(context)!.errorMessage),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.okButton),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

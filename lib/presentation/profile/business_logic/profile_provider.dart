@@ -6,6 +6,8 @@ import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followers_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followings_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/follow_user_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/unfollow_user_use_case.dart';
 
 enum ModalType { followers, followings, prizes }
 
@@ -20,6 +22,8 @@ class ProfileProvider extends ChangeNotifier {
   List<FollowUserModel> followers = [];
   bool isLoading = true;
   String? error;
+  bool isFollowing = false;
+  bool isFollowLoading = false;
 
   ProfileProvider({
     this.userId,
@@ -83,6 +87,60 @@ class ProfileProvider extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint('Error loading followers: $e');
+    }
+  }
+
+  Future<void> checkIfFollowing(UserModel currentUser) async {
+    if (profileUser == null) return;
+
+    try {
+      // Get current user's followings to check if they're following the profile user
+      final currentUserFollowings = await getFollowings(currentUser.id);
+      if (currentUserFollowings != null) {
+        isFollowing = currentUserFollowings.users
+            .any((user) => user.id == profileUser!.id);
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error checking if following: $e');
+    }
+  }
+
+  Future<bool> toggleFollow() async {
+    if (profileUser == null) return false;
+
+    isFollowLoading = true;
+    notifyListeners();
+
+    try {
+      bool success;
+      if (isFollowing) {
+        success = await unfollowUser(profileUser!.id);
+        if (success) {
+          isFollowing = false;
+          numberOfFollowers =
+              (numberOfFollowers - 1).clamp(0, double.infinity).toInt();
+        }
+      } else {
+        if (kDebugMode) {
+          debugPrint('followUser: ${profileUser!.userName}');
+        }
+        success = await followUser(profileUser!.id);
+        if (success) {
+          isFollowing = true;
+          numberOfFollowers = numberOfFollowers + 1;
+        }
+      }
+
+      notifyListeners();
+      return success;
+    } catch (e) {
+      debugPrint('Error toggling follow: $e');
+      notifyListeners();
+      return false;
+    } finally {
+      isFollowLoading = false;
+      notifyListeners();
     }
   }
 
