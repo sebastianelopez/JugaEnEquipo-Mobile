@@ -345,4 +345,68 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorLoadingUserProfile => 'Error al cargar el perfil del usuario';
+
+  @override
+  String get tournamentDetailsTitle => 'Detalles del Torneo';
+
+  @override
+  String get tournamentParticipantsLabel => 'Participantes';
+
+  @override
+  String get tournamentGameInfoLabel => 'Información del Juego';
+
+  @override
+  String get tournamentGameTypeLabel => 'Tipo de Juego';
+
+  @override
+  String get tournamentOfficialLabel => 'Torneo Oficial';
+
+  @override
+  String get tournamentCommunityLabel => 'Torneo Comunitario';
+
+  @override
+  String get tournamentOfficialDescription =>
+      'Organizado por desarrolladores oficiales o patrocinadores';
+
+  @override
+  String get tournamentCommunityDescription => 'Organizado por la comunidad';
+
+  @override
+  String get tournamentParticipantsListLabel =>
+      'La lista de participantes registrados se mostrará aquí';
+
+  @override
+  String get tournamentNoParticipantsLabel =>
+      'Aún no hay participantes. ¡Sé el primero en unirte!';
+
+  @override
+  String get tournamentRegistrationSuccess =>
+      '¡Te has registrado exitosamente para el torneo!';
+
+  @override
+  String get tournamentAlreadyRegisteredLabel => 'Ya Registrado';
+
+  @override
+  String get tournamentRegisterButtonLabel => 'Registrarse para el Torneo';
+
+  @override
+  String get tournamentAdditionalInfoLabel => 'Información Adicional';
+
+  @override
+  String get tournamentStartDateLabel => 'Fecha de Inicio';
+
+  @override
+  String get tournamentStartDatePlaceholder => 'Por anunciar';
+
+  @override
+  String get tournamentLocationLabel => 'Ubicación';
+
+  @override
+  String get tournamentLocationPlaceholder => 'En línea';
+
+  @override
+  String get tournamentPrizePoolLabel => 'Premio del Torneo';
+
+  @override
+  String get tournamentPrizePoolPlaceholder => 'Por anunciar';
 }

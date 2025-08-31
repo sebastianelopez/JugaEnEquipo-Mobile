@@ -741,6 +741,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading user profile'**
   String get errorLoadingUserProfile;
+
+  /// No description provided for @tournamentDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Details'**
+  String get tournamentDetailsTitle;
+
+  /// No description provided for @tournamentParticipantsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get tournamentParticipantsLabel;
+
+  /// No description provided for @tournamentGameInfoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Information'**
+  String get tournamentGameInfoLabel;
+
+  /// No description provided for @tournamentGameTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Type'**
+  String get tournamentGameTypeLabel;
+
+  /// No description provided for @tournamentOfficialLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Official Tournament'**
+  String get tournamentOfficialLabel;
+
+  /// No description provided for @tournamentCommunityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Community Tournament'**
+  String get tournamentCommunityLabel;
+
+  /// No description provided for @tournamentOfficialDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Organized by official game developers or sponsors'**
+  String get tournamentOfficialDescription;
+
+  /// No description provided for @tournamentCommunityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Organized by the community'**
+  String get tournamentCommunityDescription;
+
+  /// No description provided for @tournamentParticipantsListLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'List of registered participants will be displayed here'**
+  String get tournamentParticipantsListLabel;
+
+  /// No description provided for @tournamentNoParticipantsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No participants yet. Be the first to join!'**
+  String get tournamentNoParticipantsLabel;
+
+  /// No description provided for @tournamentRegistrationSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully registered for tournament!'**
+  String get tournamentRegistrationSuccess;
+
+  /// No description provided for @tournamentAlreadyRegisteredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Registered'**
+  String get tournamentAlreadyRegisteredLabel;
+
+  /// No description provided for @tournamentRegisterButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Register for Tournament'**
+  String get tournamentRegisterButtonLabel;
+
+  /// No description provided for @tournamentAdditionalInfoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Information'**
+  String get tournamentAdditionalInfoLabel;
+
+  /// No description provided for @tournamentStartDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get tournamentStartDateLabel;
+
+  /// No description provided for @tournamentStartDatePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'To be announced'**
+  String get tournamentStartDatePlaceholder;
+
+  /// No description provided for @tournamentLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get tournamentLocationLabel;
+
+  /// No description provided for @tournamentLocationPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get tournamentLocationPlaceholder;
+
+  /// No description provided for @tournamentPrizePoolLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Prize Pool'**
+  String get tournamentPrizePoolLabel;
+
+  /// No description provided for @tournamentPrizePoolPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'To be announced'**
+  String get tournamentPrizePoolPlaceholder;
 }
 
 class _AppLocalizationsDelegate
