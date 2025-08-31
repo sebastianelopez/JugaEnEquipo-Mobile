@@ -22,10 +22,14 @@ class TeamCard extends StatelessWidget {
 
   Widget _buildTeamCard(BuildContext context, AppLocalizations l10n) {
     return Card(
-      elevation: 3,
-      shadowColor: Colors.black.withValues(alpha: 0.15),
+      elevation: 12,
+      shadowColor: AppTheme.primary.withValues(alpha: 0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
+        side: BorderSide(
+          color: Colors.white.withValues(alpha: 0.3),
+          width: 1.5,
+        ),
       ),
       child: InkWell(
         onTap: () {

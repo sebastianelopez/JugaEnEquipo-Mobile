@@ -176,17 +176,37 @@ class _SearchResults extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.search,
-              size: 64.h,
-              color: Colors.grey[400],
+            Container(
+              padding: EdgeInsets.all(24.h),
+              decoration: BoxDecoration(
+                color: AppTheme.accent.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppTheme.accent.withValues(alpha: 0.3),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.accent.withValues(alpha: 0.2),
+                    blurRadius: 20,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.search,
+                size: 64.h,
+                color: AppTheme.accent,
+              ),
             ),
             SizedBox(height: 16.h),
             Text(
               AppLocalizations.of(context)!.searchUsersTeams,
               style: TextStyle(
                 fontSize: 16.sp,
-                color: Colors.grey[600],
+                color: AppTheme.secondary.withValues(alpha: 0.7),
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],

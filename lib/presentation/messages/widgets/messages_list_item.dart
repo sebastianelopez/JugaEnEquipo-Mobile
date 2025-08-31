@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/utils/utils.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 
 class MessagesListItem extends StatelessWidget {
   final UserModel user;
@@ -26,6 +27,28 @@ class MessagesListItem extends StatelessWidget {
       child: Container(
         padding:
             const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+        decoration: BoxDecoration(
+          color: isMessageRead
+              ? Colors.transparent
+              : AppTheme.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isMessageRead
+                ? Colors.transparent
+                : Colors.white.withValues(alpha: 0.2),
+            width: 1,
+          ),
+          boxShadow: isMessageRead
+              ? null
+              : [
+                  BoxShadow(
+                    color: AppTheme.primary.withValues(alpha: 0.1),
+                    blurRadius: 12,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+        ),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -33,9 +56,9 @@ class MessagesListItem extends StatelessWidget {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundImage: (user.profileImage != null &&
-                              user.profileImage!.isNotEmpty &&
-                              (user.profileImage!.startsWith('http://') ||
-                                  user.profileImage!.startsWith('https://')))
+                            user.profileImage!.isNotEmpty &&
+                            (user.profileImage!.startsWith('http://') ||
+                                user.profileImage!.startsWith('https://')))
                         ? Image.network(
                             user.profileImage!,
                             errorBuilder: (context, error, stackTrace) =>
@@ -73,7 +96,12 @@ class MessagesListItem extends StatelessWidget {
                             softWrap: false,
                             style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.grey.shade600,
+                                color: isMessageRead
+                                    ? AppTheme.primary
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.6),
                                 fontWeight: isMessageRead
                                     ? FontWeight.bold
                                     : FontWeight.normal),

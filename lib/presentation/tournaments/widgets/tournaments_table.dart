@@ -67,8 +67,20 @@ class TournamentsTable extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(24.w),
             decoration: BoxDecoration(
-              color: AppTheme.primary.withValues(alpha: 0.1),
+              color: AppTheme.primary.withValues(alpha: 0.15),
               shape: BoxShape.circle,
+              border: Border.all(
+                color: AppTheme.primary.withValues(alpha: 0.3),
+                width: 2,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppTheme.primary.withValues(alpha: 0.2),
+                  blurRadius: 20,
+                  spreadRadius: 0,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
             child: Icon(
               Icons.emoji_events_outlined,
@@ -195,9 +207,7 @@ class TournamentsTable extends StatelessWidget {
                     ),
                 ],
               ),
-
               SizedBox(height: 16.h),
-
               Row(
                 children: [
                   Container(
@@ -228,9 +238,7 @@ class TournamentsTable extends StatelessWidget {
                             size: 20.w,
                           ),
                   ),
-
                   SizedBox(width: 12.w),
-
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,9 +268,7 @@ class TournamentsTable extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   SizedBox(width: 16.w),
-
                   Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -298,9 +304,7 @@ class TournamentsTable extends StatelessWidget {
                   ),
                 ],
               ),
-
               SizedBox(height: 16.h),
-
               Row(
                 children: [
                   Expanded(
@@ -326,9 +330,7 @@ class TournamentsTable extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   SizedBox(width: 12.w),
-
                   Container(
                     width: 44.w,
                     height: 44.h,

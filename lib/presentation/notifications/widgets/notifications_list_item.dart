@@ -4,6 +4,7 @@ import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 
 class NotificationsListItem extends StatelessWidget {
   final UserModel user;
@@ -29,6 +30,28 @@ class NotificationsListItem extends StatelessWidget {
       child: Container(
         padding:
             EdgeInsets.only(left: 16.h, right: 16.h, top: 10.h, bottom: 10.h),
+        decoration: BoxDecoration(
+          color: isNotificationRead
+              ? Colors.transparent
+              : AppTheme.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isNotificationRead
+                ? Colors.transparent
+                : Colors.white.withValues(alpha: 0.2),
+            width: 1,
+          ),
+          boxShadow: isNotificationRead
+              ? null
+              : [
+                  BoxShadow(
+                    color: AppTheme.primary.withValues(alpha: 0.1),
+                    blurRadius: 12,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+        ),
         child: Row(
           children: <Widget>[
             Expanded(

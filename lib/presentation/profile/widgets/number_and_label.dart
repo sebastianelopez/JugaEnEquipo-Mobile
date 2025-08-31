@@ -23,7 +23,8 @@ class NumberAndLabel extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border(
                 right: hasRightBorder != null && hasRightBorder!
-                    ? BorderSide(color: Colors.grey[300]!)
+                    ? BorderSide(
+                        color: AppTheme.secondary.withValues(alpha: 0.2))
                     : BorderSide.none)),
         child: Column(
           children: [
@@ -31,13 +32,13 @@ class NumberAndLabel extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
                     color: AppTheme.primary,
-                    fontSize: 14.h)),
+                    fontSize: 16.h)),
             Text(
               label,
               style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: AppTheme.primary,
-                  fontSize: 13.h),
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.secondary.withValues(alpha: 0.7),
+                  fontSize: 12.h),
             )
           ],
         ),

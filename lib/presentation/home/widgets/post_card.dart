@@ -11,6 +11,7 @@ import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/utils/utils.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 enum Menu { delete }
@@ -69,6 +70,15 @@ class PostCard extends StatelessWidget {
             child: Card(
               margin: EdgeInsets.only(
                 top: 8.0.w,
+              ),
+              elevation: 12,
+              shadowColor: AppTheme.primary.withValues(alpha: 0.3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.3),
+                  width: 1.5,
+                ),
               ),
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -236,58 +246,94 @@ class PostCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          IconButton(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.6),
-                            icon: const Icon(Icons.favorite),
-                            iconSize: 24.h,
-                            onPressed: () {
-                              addLikePost(post.id);
-                              //TODO: If the user has already liked the post, remove the like
-                              // removeLikePost(post.id);
-                            },
-                          ),
-                          IconButton(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.6),
-                            icon: const Icon(Icons.message),
-                            iconSize: 24.h,
-                            onPressed: () {
-                              homeProvider.openCommentsModal(context,
-                                  autofocus: true, postId: post.id);
-                            },
-                          ),
-                          IconButton(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.6),
-                            icon: const Icon(Icons.share),
-                            iconSize: 24.h,
-                            onPressed: () {
-                              postProvider.generatePostId();
-                              showModalBottomSheet(
-                                context: context,
-                                constraints: BoxConstraints(
-                                  maxHeight: 600.h,
-                                  maxWidth: 1200,
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.favorite),
+                              iconSize: 24.h,
+                              color: AppTheme.primary,
+                              onPressed: () {
+                                addLikePost(post.id);
+                                //TODO: If the user has already liked the post, remove the like
+                                // removeLikePost(post.id);
+                              },
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: AppTheme.primary,
+                                elevation: 0,
+                                padding: EdgeInsets.all(8.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                isScrollControlled: true,
-                                useSafeArea: true,
-                                builder: (BuildContext context) {
-                                  return CreatePost(
-                                    sharedPost: post,
-                                  );
-                                },
-                              ).then((value) {
-                                postProvider.clearPostId();
-                                imageProvider.clearMediaFileList();
-                              });
-                            },
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.message),
+                              iconSize: 24.h,
+                              color: AppTheme.accent,
+                              onPressed: () {
+                                homeProvider.openCommentsModal(context,
+                                    autofocus: true, postId: post.id);
+                              },
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: AppTheme.accent,
+                                elevation: 0,
+                                padding: EdgeInsets.all(8.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.share),
+                              iconSize: 24.h,
+                              color: AppTheme.success,
+                              onPressed: () {
+                                postProvider.generatePostId();
+                                showModalBottomSheet(
+                                  context: context,
+                                  constraints: BoxConstraints(
+                                    maxHeight: 600.h,
+                                    maxWidth: 1200,
+                                  ),
+                                  isScrollControlled: true,
+                                  useSafeArea: true,
+                                  builder: (BuildContext context) {
+                                    return CreatePost(
+                                      sharedPost: post,
+                                    );
+                                  },
+                                ).then((value) {
+                                  postProvider.clearPostId();
+                                  imageProvider.clearMediaFileList();
+                                });
+                              },
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: AppTheme.success,
+                                elevation: 0,
+                                padding: EdgeInsets.all(8.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
