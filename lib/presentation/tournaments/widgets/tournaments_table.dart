@@ -146,7 +146,6 @@ class TournamentsTable extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header row with title and official status
               Row(
                 children: [
                   Expanded(
@@ -199,10 +198,8 @@ class TournamentsTable extends StatelessWidget {
 
               SizedBox(height: 16.h),
 
-              // Game information row
               Row(
                 children: [
-                  // Game icon/image
                   Container(
                     width: 40.w,
                     height: 40.w,
@@ -234,7 +231,6 @@ class TournamentsTable extends StatelessWidget {
 
                   SizedBox(width: 12.w),
 
-                  // Game name
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +263,6 @@ class TournamentsTable extends StatelessWidget {
 
                   SizedBox(width: 16.w),
 
-                  // Participants count
                   Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -306,12 +301,11 @@ class TournamentsTable extends StatelessWidget {
 
               SizedBox(height: 16.h),
 
-              // Action row
               Row(
                 children: [
                   Expanded(
                     child: Container(
-                      height: 44.h, // Minimum touch target
+                      height: 44.h,
                       decoration: BoxDecoration(
                         color: AppTheme.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12.r),
@@ -335,9 +329,8 @@ class TournamentsTable extends StatelessWidget {
 
                   SizedBox(width: 12.w),
 
-                  // Quick action button
                   Container(
-                    width: 44.w, // Minimum touch target
+                    width: 44.w,
                     height: 44.h,
                     decoration: BoxDecoration(
                       color: AppTheme.accent.withValues(alpha: 0.1),

@@ -261,7 +261,6 @@ class TournamentDetailScreen extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           if (participantsCount > 0) ...[
-            // Aquí podrías mostrar la lista de participantes
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
