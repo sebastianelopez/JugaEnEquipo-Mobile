@@ -5,7 +5,7 @@ class TeamModel {
   final String name;
   final List<String> membersIds;
   final String? teamImage;
-  final GameModel game;
+  final List<GameModel> games;
   final bool verified;
 
   TeamModel({
@@ -13,7 +13,7 @@ class TeamModel {
     required this.name,
     required this.membersIds,
     this.teamImage,
-    required this.game,
+    required this.games,
     required this.verified,
   });
 
@@ -24,7 +24,9 @@ class TeamModel {
         membersIds: json['membersIds'] as List<String>,
         teamImage:
             json['teamImage'] != null ? json['teamImage'] as String : null,
-        game: GameModel.fromJson(json['game']),
+        games: (json['games'] as List<dynamic>)
+            .map((game) => GameModel.fromJson(game))
+            .toList(),
         verified: json['verified'] as bool);
   }
 
@@ -34,6 +36,7 @@ class TeamModel {
       'name': name,
       'membersIds': membersIds,
       'teamImage': teamImage,
+      'games': games.map((game) => game.toJson()).toList(),
       'verified': verified,
     };
   }

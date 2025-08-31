@@ -16,12 +16,14 @@ enum ProfileType { user, team }
 class ProfileScreen extends StatelessWidget {
   final String? userId;
   final String? teamId;
+  final TeamModel? team; // Add team parameter
   final ProfileType profileType;
 
   const ProfileScreen({
     super.key,
     this.userId,
     this.teamId,
+    this.team, // Add team parameter
     this.profileType = ProfileType.user,
   });
 
@@ -103,7 +105,10 @@ class ProfileScreen extends StatelessWidget {
     }
 
     return ChangeNotifierProvider(
-      create: (context) => TeamProfileProvider(teamId: teamId!),
+      create: (context) => TeamProfileProvider(
+        teamId: teamId!,
+        team: team, // Pass the team data
+      ),
       child: Consumer<TeamProfileProvider>(
         builder: (context, provider, _) {
           if (provider.isLoading) {

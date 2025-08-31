@@ -304,7 +304,7 @@ class _SearchResults extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              team.game.name,
+              team.games.isNotEmpty ? team.games.first.name : 'No games',
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey[600],

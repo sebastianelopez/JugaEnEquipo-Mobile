@@ -73,16 +73,48 @@ class TeamProfileContent extends StatelessWidget {
                           ),
                       ],
                     ),
-                    Text(
-                      teamProfile.game.name,
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.6),
-                        fontSize: 14.h,
+                    // Games section
+                    if (teamProfile.games.isNotEmpty) ...[
+                      SizedBox(height: 8.h),
+                      Wrap(
+                        spacing: 8.w,
+                        runSpacing: 4.h,
+                        alignment: WrapAlignment.center,
+                        children: teamProfile.games.map((game) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12.w, vertical: 6.h),
+                            decoration: BoxDecoration(
+                              color: AppTheme.accent.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(16.r),
+                              border: Border.all(
+                                color: AppTheme.accent.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.sports_esports,
+                                  color: AppTheme.accent,
+                                  size: 16.w,
+                                ),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  game.name,
+                                  style: TextStyle(
+                                    color: AppTheme.accent,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    ),
+                    ],
                     if (teamProfile.description != null) ...[
                       SizedBox(height: 8.h),
                       Container(

@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 var uuid = const Uuid();
 
-Future<void> createTeam(String name, String game) async {
+Future<void> createTeam(String name, List<String> games) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
@@ -17,7 +17,7 @@ Future<void> createTeam(String name, String game) async {
       param: {
         "id": id,
         "name": name,
-        "game": game,
+        "games": games,
       },
       contentType: 'application/json',
       headers: {

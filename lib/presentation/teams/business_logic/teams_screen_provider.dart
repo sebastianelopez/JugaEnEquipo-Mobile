@@ -23,11 +23,18 @@ class TeamsScreenProvider extends ChangeNotifier {
         id: '1',
         name: 'Kru ESports',
         membersIds: ["1", "2", "3"],
-        game: GameModel(
-          id: '1',
-          name: 'Game 1',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '1',
+            name: 'Valorant',
+            image: 'https://picsum.photos/80/80',
+          ),
+          GameModel(
+            id: '2',
+            name: 'CS:GO',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage:
             'https://www.kruesports.gg/assets/img/teams/teams/July2022/wXk2hPFVHNav2r910xWY.png',
         verified: true),
@@ -35,11 +42,23 @@ class TeamsScreenProvider extends ChangeNotifier {
         id: '2',
         name: 'Cloud 9',
         membersIds: ["1", "2", "3", "5", "7"],
-        game: GameModel(
-          id: '2',
-          name: 'Game 2',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '3',
+            name: 'League of Legends',
+            image: 'https://picsum.photos/80/80',
+          ),
+          GameModel(
+            id: '4',
+            name: 'Valorant',
+            image: 'https://picsum.photos/80/80',
+          ),
+          GameModel(
+            id: '5',
+            name: 'CS:GO',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage:
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDvpcooEBU2rWLN9YS4z_VSqcHLxPV8HQIqA&s',
         verified: true),
@@ -47,11 +66,18 @@ class TeamsScreenProvider extends ChangeNotifier {
         id: '3',
         name: 'Furia',
         membersIds: ["1", "2", "3", "4"],
-        game: GameModel(
-          id: '3',
-          name: 'Game 3',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '6',
+            name: 'CS:GO',
+            image: 'https://picsum.photos/80/80',
+          ),
+          GameModel(
+            id: '7',
+            name: 'Valorant',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage:
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyvyyAZmtUF1lwLae-NxWrMJi7k4ohptUTNw&s',
         verified: true),
@@ -59,55 +85,75 @@ class TeamsScreenProvider extends ChangeNotifier {
         id: '4',
         name: 'Team 4',
         membersIds: ["1", "2", "3"],
-        game: GameModel(
-          id: '4',
-          name: 'Game 4',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '8',
+            name: 'Dota 2',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage: 'https://picsum.photos/80/80',
         verified: false),
     TeamModel(
         id: '5',
         name: 'Team 5',
         membersIds: ["1", "2", "3"],
-        game: GameModel(
-          id: '5',
-          name: 'Game 5',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '9',
+            name: 'Overwatch',
+            image: 'https://picsum.photos/80/80',
+          ),
+          GameModel(
+            id: '10',
+            name: 'Rocket League',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage: 'https://picsum.photos/80/80',
         verified: false),
     TeamModel(
         id: '6',
         name: 'Team 6',
         membersIds: ["1", "2", "3"],
-        game: GameModel(
-          id: '6',
-          name: 'Game 6',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '11',
+            name: 'FIFA',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage: 'https://picsum.photos/80/80',
         verified: false),
     TeamModel(
         id: '7',
         name: 'Team 7',
         membersIds: ["1", "2", "3"],
-        game: GameModel(
-          id: '7',
-          name: 'Game 7',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '12',
+            name: 'Fortnite',
+            image: 'https://picsum.photos/80/80',
+          ),
+          GameModel(
+            id: '13',
+            name: 'PUBG',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage: 'https://picsum.photos/80/80',
         verified: false),
     TeamModel(
         id: '8',
         name: 'Team 8',
         membersIds: ["1", "2", "3"],
-        game: GameModel(
-          id: '7',
-          name: 'Game 7',
-          image: 'https://picsum.photos/80/80',
-        ),
+        games: [
+          GameModel(
+            id: '14',
+            name: 'Rainbow Six Siege',
+            image: 'https://picsum.photos/80/80',
+          ),
+        ],
         teamImage: 'https://picsum.photos/80/80',
         verified: false),
   ];

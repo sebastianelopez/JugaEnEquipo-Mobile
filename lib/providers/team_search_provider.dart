@@ -58,7 +58,10 @@ class TeamSearchProvider with ChangeNotifier {
         name: 'Team Alpha',
         membersIds: ['user1', 'user2', 'user3'],
         teamImage: null,
-        game: GameModel(id: '1', name: 'League of Legends', image: 'lol.png'),
+        games: [
+          GameModel(id: '1', name: 'League of Legends', image: 'lol.png'),
+          GameModel(id: '2', name: 'Valorant', image: 'valorant.png'),
+        ],
         verified: true,
       ),
       TeamModel(
@@ -66,7 +69,9 @@ class TeamSearchProvider with ChangeNotifier {
         name: 'Beta Squad',
         membersIds: ['user4', 'user5'],
         teamImage: null,
-        game: GameModel(id: '2', name: 'Valorant', image: 'valorant.png'),
+        games: [
+          GameModel(id: '3', name: 'CS:GO', image: 'csgo.png'),
+        ],
         verified: false,
       ),
       TeamModel(
@@ -74,7 +79,10 @@ class TeamSearchProvider with ChangeNotifier {
         name: 'Gamma Gaming',
         membersIds: ['user6', 'user7', 'user8', 'user9'],
         teamImage: null,
-        game: GameModel(id: '3', name: 'CS:GO', image: 'csgo.png'),
+        games: [
+          GameModel(id: '4', name: 'Dota 2', image: 'dota2.png'),
+          GameModel(id: '5', name: 'Overwatch', image: 'overwatch.png'),
+        ],
         verified: true,
       ),
       TeamModel(
@@ -82,7 +90,9 @@ class TeamSearchProvider with ChangeNotifier {
         name: 'Delta Force',
         membersIds: ['user10', 'user11'],
         teamImage: null,
-        game: GameModel(id: '1', name: 'League of Legends', image: 'lol.png'),
+        games: [
+          GameModel(id: '1', name: 'League of Legends', image: 'lol.png'),
+        ],
         verified: false,
       ),
     ];
@@ -91,7 +101,8 @@ class TeamSearchProvider with ChangeNotifier {
     return allTeams
         .where((team) =>
             team.name.toLowerCase().contains(query.toLowerCase()) ||
-            team.game.name.toLowerCase().contains(query.toLowerCase()))
+            team.games.any((game) =>
+                game.name.toLowerCase().contains(query.toLowerCase())))
         .toList();
   }
 

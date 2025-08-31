@@ -19,16 +19,17 @@ class Teams extends StatelessWidget {
         ? List.filled(
             7,
             TeamModel(
-              id: '',
-              name: 'aaaaaaaaaaaaaaaaa',
-              membersIds: ["1", "2", "3"],
-              game: GameModel(
                 id: '',
                 name: 'aaaaaaaaaaaaaaaaa',
-                image: 'aaaaaaaaaaaaaaaaa',
-              ),
-              verified: false
-            ))
+                membersIds: ["1", "2", "3"],
+                games: [
+                  GameModel(
+                    id: '',
+                    name: 'aaaaaaaaaaaaaaaaa',
+                    image: 'aaaaaaaaaaaaaaaaa',
+                  ),
+                ],
+                verified: false))
         : teamProvider.teams;
 
     return Stack(

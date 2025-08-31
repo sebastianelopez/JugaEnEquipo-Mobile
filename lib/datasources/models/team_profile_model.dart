@@ -12,7 +12,7 @@ class TeamProfileModel extends TeamModel {
     required super.name,
     required super.membersIds,
     super.teamImage,
-    required super.game,
+    required super.games,
     required super.verified,
     required this.members,
     this.totalTournaments = 0,
@@ -27,11 +27,14 @@ class TeamProfileModel extends TeamModel {
       name: json['name'] as String,
       membersIds: json['membersIds'] as List<String>,
       teamImage: json['teamImage'] != null ? json['teamImage'] as String : null,
-      game: GameModel.fromJson(json['game']),
+      games: (json['games'] as List<dynamic>)
+          .map((game) => GameModel.fromJson(game))
+          .toList(),
       verified: json['verified'] as bool,
       members: (json['members'] as List<dynamic>?)
-          ?.map((member) => UserModel.fromJson(member))
-          .toList() ?? [],
+              ?.map((member) => UserModel.fromJson(member))
+              .toList() ??
+          [],
       totalTournaments: json['totalTournaments'] as int? ?? 0,
       totalWins: json['totalWins'] as int? ?? 0,
       description: json['description'] as String?,
