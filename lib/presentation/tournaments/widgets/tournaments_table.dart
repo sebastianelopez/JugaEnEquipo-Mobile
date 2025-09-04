@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
+import 'package:jugaenequipo/datasources/models/tournament_model.dart';
 import 'package:jugaenequipo/presentation/tournaments/business_logic/tournaments_provider.dart';
 import 'package:jugaenequipo/presentation/tournaments/screen/tournament_detail_screen.dart';
+import 'package:jugaenequipo/presentation/tournaments/screen/tournament_form_screen.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +25,7 @@ class TournamentsTable extends StatelessWidget {
     AppLocalizations l10n,
   ) {
     if (tournamentsScreen.isLoading) {
-      return _buildLoadingState(context);
+      return _buildLoadingState(context, l10n);
     }
 
     if (tournamentsScreen.tournamentsMocks.isEmpty) {
@@ -33,7 +35,7 @@ class TournamentsTable extends StatelessWidget {
     return _buildTournamentsGrid(context, tournamentsScreen, l10n);
   }
 
-  Widget _buildLoadingState(BuildContext context) {
+  Widget _buildLoadingState(BuildContext context, AppLocalizations l10n) {
     return Container(
       padding: EdgeInsets.all(24.w),
       child: Column(
@@ -44,7 +46,7 @@ class TournamentsTable extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            'Loading tournaments...',
+            l10n.tournamentFormLoadingTournaments,
             style: TextStyle(
               fontSize: 16.sp,
               color: Theme.of(context)
@@ -90,7 +92,7 @@ class TournamentsTable extends StatelessWidget {
           ),
           SizedBox(height: 24.h),
           Text(
-            'No tournaments available',
+            l10n.tournamentFormNoTournamentsAvailable,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
@@ -100,7 +102,7 @@ class TournamentsTable extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            'Check back later for new tournaments',
+            l10n.tournamentFormCheckBackLater,
             style: TextStyle(
               fontSize: 16.sp,
               color: Theme.of(context)
@@ -195,7 +197,7 @@ class TournamentsTable extends StatelessWidget {
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            'Official',
+                            l10n.tournamentFormOfficial,
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
@@ -205,6 +207,52 @@ class TournamentsTable extends StatelessWidget {
                         ],
                       ),
                     ),
+                  SizedBox(width: 8.w),
+                  PopupMenuButton<String>(
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
+                      size: 20.w,
+                    ),
+                    onSelected: (value) {
+                      if (value == 'edit') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                TournamentFormScreen(tournament: tournament),
+                          ),
+                        );
+                      } else if (value == 'delete') {
+                        _showDeleteConfirmation(context, tournament, l10n);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                                             PopupMenuItem(
+                         value: 'edit',
+                         child: Row(
+                           children: [
+                             Icon(Icons.edit, color: Colors.blue),
+                             SizedBox(width: 8),
+                             Text(l10n.tournamentFormEdit),
+                           ],
+                         ),
+                       ),
+                                             PopupMenuItem(
+                         value: 'delete',
+                         child: Row(
+                           children: [
+                             Icon(Icons.delete, color: Colors.red),
+                             SizedBox(width: 8),
+                             Text(l10n.tournamentFormDelete),
+                           ],
+                         ),
+                       ),
+                    ],
+                  ),
                 ],
               ),
               SizedBox(height: 16.h),
@@ -244,7 +292,7 @@ class TournamentsTable extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Game',
+                          l10n.tournamentFormGame,
                           style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
@@ -292,7 +340,7 @@ class TournamentsTable extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Players',
+                          l10n.tournamentFormPlayers,
                           style: TextStyle(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w500,
@@ -320,7 +368,7 @@ class TournamentsTable extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          'View Details',
+                          l10n.tournamentFormViewDetails,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
@@ -355,5 +403,37 @@ class TournamentsTable extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _showDeleteConfirmation(
+      BuildContext context, TournamentModel tournament, AppLocalizations l10n) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.tournamentFormDeleteTitle),
+        content: Text(l10n.tournamentFormDeleteMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.tournamentFormDeleteCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.error),
+            child: Text(l10n.tournamentFormDeleteConfirm),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      // TODO: Implement actual delete API call
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.tournamentFormSuccessDelete),
+          backgroundColor: AppTheme.success,
+        ),
+      );
+    }
   }
 }

@@ -32,6 +32,30 @@ class TournamentsProvider extends ChangeNotifier {
         "asda5t4498",
         "asda54p498",
       ],
+    ),
+    TournamentModel(
+      id: "asdas343",
+      title: 'CS PVP',
+      game: GameModel(id: '123', name: 'Counter Strike', image: ''),
+      isOfficial: true,
+      registeredPlayersIds: [
+        "asda4544968",
+        "asdau54498",
+        "asda5t4498",
+        "asda54p498",
+      ],
+    ),
+    TournamentModel(
+      id: "asdas343",
+      title: 'CS PVP',
+      game: GameModel(id: '123', name: 'Counter Strike', image: ''),
+      isOfficial: true,
+      registeredPlayersIds: [
+        "asda4544968",
+        "asdau54498",
+        "asda5t4498",
+        "asda54p498",
+      ],
     )
   ];
 
