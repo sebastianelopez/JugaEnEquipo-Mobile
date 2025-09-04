@@ -861,6 +861,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To be announced'**
   String get tournamentPrizePoolPlaceholder;
+
+  /// No description provided for @tournamentFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Title'**
+  String get tournamentFormTitle;
+
+  /// No description provided for @tournamentFormTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Summer Cup 2024'**
+  String get tournamentFormTitleHint;
+
+  /// No description provided for @tournamentFormDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get tournamentFormDescription;
+
+  /// No description provided for @tournamentFormDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your tournament...'**
+  String get tournamentFormDescriptionHint;
+
+  /// No description provided for @tournamentFormGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Game'**
+  String get tournamentFormGame;
+
+  /// No description provided for @tournamentFormGameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a game'**
+  String get tournamentFormGameHint;
+
+  /// No description provided for @tournamentFormType.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Format'**
+  String get tournamentFormType;
+
+  /// No description provided for @tournamentFormDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Dates'**
+  String get tournamentFormDates;
+
+  /// No description provided for @tournamentFormStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get tournamentFormStartDate;
+
+  /// No description provided for @tournamentFormEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get tournamentFormEndDate;
+
+  /// No description provided for @tournamentFormSelectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get tournamentFormSelectDate;
+
+  /// No description provided for @tournamentFormRegistrationDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Deadline'**
+  String get tournamentFormRegistrationDeadline;
+
+  /// No description provided for @tournamentFormConfiguration.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration'**
+  String get tournamentFormConfiguration;
+
+  /// No description provided for @tournamentFormOfficial.
+  ///
+  /// In en, this message translates to:
+  /// **'Official'**
+  String get tournamentFormOfficial;
+
+  /// No description provided for @tournamentFormOfficialSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as official platform tournament'**
+  String get tournamentFormOfficialSubtitle;
+
+  /// No description provided for @tournamentFormPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Private Tournament'**
+  String get tournamentFormPrivate;
+
+  /// No description provided for @tournamentFormPrivateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Only visible to invited participants'**
+  String get tournamentFormPrivateSubtitle;
+
+  /// No description provided for @tournamentFormMaxParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Participants'**
+  String get tournamentFormMaxParticipants;
+
+  /// No description provided for @tournamentFormPrizePool.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Prize (\$)'**
+  String get tournamentFormPrizePool;
+
+  /// No description provided for @tournamentFormCreateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Tournament'**
+  String get tournamentFormCreateButton;
+
+  /// No description provided for @tournamentFormUpdateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Tournament'**
+  String get tournamentFormUpdateButton;
+
+  /// No description provided for @tournamentFormCancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get tournamentFormCancelButton;
+
+  /// No description provided for @tournamentFormDeleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get tournamentFormDeleteButton;
+
+  /// No description provided for @tournamentFormDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Tournament'**
+  String get tournamentFormDeleteTitle;
+
+  /// No description provided for @tournamentFormDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this tournament? This action cannot be undone.'**
+  String get tournamentFormDeleteMessage;
+
+  /// No description provided for @tournamentFormDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get tournamentFormDeleteConfirm;
+
+  /// No description provided for @tournamentFormDeleteCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get tournamentFormDeleteCancel;
+
+  /// No description provided for @tournamentFormSuccessCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament created successfully'**
+  String get tournamentFormSuccessCreate;
+
+  /// No description provided for @tournamentFormSuccessUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament updated successfully'**
+  String get tournamentFormSuccessUpdate;
+
+  /// No description provided for @tournamentFormSuccessDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament deleted successfully'**
+  String get tournamentFormSuccessDelete;
+
+  /// No description provided for @tournamentFormErrorCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating tournament'**
+  String get tournamentFormErrorCreate;
+
+  /// No description provided for @tournamentFormErrorUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating tournament'**
+  String get tournamentFormErrorUpdate;
+
+  /// No description provided for @tournamentFormErrorDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting tournament'**
+  String get tournamentFormErrorDelete;
+
+  /// No description provided for @tournamentFormValidationTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get tournamentFormValidationTitleRequired;
+
+  /// No description provided for @tournamentFormValidationTitleMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Title must have at least 3 characters'**
+  String get tournamentFormValidationTitleMinLength;
+
+  /// No description provided for @tournamentFormValidationDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get tournamentFormValidationDescriptionRequired;
+
+  /// No description provided for @tournamentFormValidationDescriptionMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Description must have at least 10 characters'**
+  String get tournamentFormValidationDescriptionMinLength;
+
+  /// No description provided for @tournamentFormValidationGameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You must select a game'**
+  String get tournamentFormValidationGameRequired;
+
+  /// No description provided for @tournamentFormValidationStartDateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You must select a start date'**
+  String get tournamentFormValidationStartDateRequired;
+
+  /// No description provided for @tournamentFormValidationEndDateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You must select an end date'**
+  String get tournamentFormValidationEndDateRequired;
+
+  /// No description provided for @tournamentFormValidationDateOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date must be before end date'**
+  String get tournamentFormValidationDateOrder;
+
+  /// No description provided for @tournamentFormValidationDatePast.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date cannot be in the past'**
+  String get tournamentFormValidationDatePast;
+
+  /// No description provided for @tournamentFormTypeSingleElimination.
+  ///
+  /// In en, this message translates to:
+  /// **'Single Elimination'**
+  String get tournamentFormTypeSingleElimination;
+
+  /// No description provided for @tournamentFormTypeDoubleElimination.
+  ///
+  /// In en, this message translates to:
+  /// **'Double Elimination'**
+  String get tournamentFormTypeDoubleElimination;
+
+  /// No description provided for @tournamentFormTypeRoundRobin.
+  ///
+  /// In en, this message translates to:
+  /// **'Round Robin'**
+  String get tournamentFormTypeRoundRobin;
+
+  /// No description provided for @tournamentFormTypeSwissSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Swiss System'**
+  String get tournamentFormTypeSwissSystem;
+
+  /// No description provided for @tournamentFormDeadline1Day.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day before'**
+  String get tournamentFormDeadline1Day;
+
+  /// No description provided for @tournamentFormDeadline3Days.
+  ///
+  /// In en, this message translates to:
+  /// **'3 days before'**
+  String get tournamentFormDeadline3Days;
+
+  /// No description provided for @tournamentFormDeadline1Week.
+  ///
+  /// In en, this message translates to:
+  /// **'1 week before'**
+  String get tournamentFormDeadline1Week;
+
+  /// No description provided for @tournamentFormDeadline2Weeks.
+  ///
+  /// In en, this message translates to:
+  /// **'2 weeks before'**
+  String get tournamentFormDeadline2Weeks;
+
+  /// No description provided for @tournamentFormSelectGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a game'**
+  String get tournamentFormSelectGame;
+
+  /// No description provided for @tournamentFormViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get tournamentFormViewDetails;
+
+  /// No description provided for @tournamentFormPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Players'**
+  String get tournamentFormPlayers;
+
+  /// No description provided for @tournamentFormEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get tournamentFormEdit;
+
+  /// No description provided for @tournamentFormDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get tournamentFormDelete;
+
+  /// No description provided for @tournamentFormTournamentDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament \"{title}\" deleted'**
+  String tournamentFormTournamentDeleted(String title);
+
+  /// No description provided for @tournamentFormLoadingTournaments.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading tournaments...'**
+  String get tournamentFormLoadingTournaments;
+
+  /// No description provided for @tournamentFormNoTournamentsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tournaments available'**
+  String get tournamentFormNoTournamentsAvailable;
+
+  /// No description provided for @tournamentFormCheckBackLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Check back later for new tournaments'**
+  String get tournamentFormCheckBackLater;
+
+  /// No description provided for @tournamentFormPleaseFixErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fix the errors in the form'**
+  String get tournamentFormPleaseFixErrors;
 }
 
 class _AppLocalizationsDelegate

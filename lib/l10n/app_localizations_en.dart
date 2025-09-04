@@ -407,4 +407,198 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tournamentPrizePoolPlaceholder => 'To be announced';
+
+  @override
+  String get tournamentFormTitle => 'Tournament Title';
+
+  @override
+  String get tournamentFormTitleHint => 'Ex: Summer Cup 2024';
+
+  @override
+  String get tournamentFormDescription => 'Description';
+
+  @override
+  String get tournamentFormDescriptionHint => 'Describe your tournament...';
+
+  @override
+  String get tournamentFormGame => 'Game';
+
+  @override
+  String get tournamentFormGameHint => 'Select a game';
+
+  @override
+  String get tournamentFormType => 'Tournament Format';
+
+  @override
+  String get tournamentFormDates => 'Tournament Dates';
+
+  @override
+  String get tournamentFormStartDate => 'Start Date';
+
+  @override
+  String get tournamentFormEndDate => 'End Date';
+
+  @override
+  String get tournamentFormSelectDate => 'Select date';
+
+  @override
+  String get tournamentFormRegistrationDeadline => 'Registration Deadline';
+
+  @override
+  String get tournamentFormConfiguration => 'Configuration';
+
+  @override
+  String get tournamentFormOfficial => 'Official';
+
+  @override
+  String get tournamentFormOfficialSubtitle =>
+      'Mark as official platform tournament';
+
+  @override
+  String get tournamentFormPrivate => 'Private Tournament';
+
+  @override
+  String get tournamentFormPrivateSubtitle =>
+      'Only visible to invited participants';
+
+  @override
+  String get tournamentFormMaxParticipants => 'Max Participants';
+
+  @override
+  String get tournamentFormPrizePool => 'Total Prize (\$)';
+
+  @override
+  String get tournamentFormCreateButton => 'Create Tournament';
+
+  @override
+  String get tournamentFormUpdateButton => 'Update Tournament';
+
+  @override
+  String get tournamentFormCancelButton => 'Cancel';
+
+  @override
+  String get tournamentFormDeleteButton => 'Delete';
+
+  @override
+  String get tournamentFormDeleteTitle => 'Delete Tournament';
+
+  @override
+  String get tournamentFormDeleteMessage =>
+      'Are you sure you want to delete this tournament? This action cannot be undone.';
+
+  @override
+  String get tournamentFormDeleteConfirm => 'Delete';
+
+  @override
+  String get tournamentFormDeleteCancel => 'Cancel';
+
+  @override
+  String get tournamentFormSuccessCreate => 'Tournament created successfully';
+
+  @override
+  String get tournamentFormSuccessUpdate => 'Tournament updated successfully';
+
+  @override
+  String get tournamentFormSuccessDelete => 'Tournament deleted successfully';
+
+  @override
+  String get tournamentFormErrorCreate => 'Error creating tournament';
+
+  @override
+  String get tournamentFormErrorUpdate => 'Error updating tournament';
+
+  @override
+  String get tournamentFormErrorDelete => 'Error deleting tournament';
+
+  @override
+  String get tournamentFormValidationTitleRequired => 'Title is required';
+
+  @override
+  String get tournamentFormValidationTitleMinLength =>
+      'Title must have at least 3 characters';
+
+  @override
+  String get tournamentFormValidationDescriptionRequired =>
+      'Description is required';
+
+  @override
+  String get tournamentFormValidationDescriptionMinLength =>
+      'Description must have at least 10 characters';
+
+  @override
+  String get tournamentFormValidationGameRequired => 'You must select a game';
+
+  @override
+  String get tournamentFormValidationStartDateRequired =>
+      'You must select a start date';
+
+  @override
+  String get tournamentFormValidationEndDateRequired =>
+      'You must select an end date';
+
+  @override
+  String get tournamentFormValidationDateOrder =>
+      'Start date must be before end date';
+
+  @override
+  String get tournamentFormValidationDatePast =>
+      'Start date cannot be in the past';
+
+  @override
+  String get tournamentFormTypeSingleElimination => 'Single Elimination';
+
+  @override
+  String get tournamentFormTypeDoubleElimination => 'Double Elimination';
+
+  @override
+  String get tournamentFormTypeRoundRobin => 'Round Robin';
+
+  @override
+  String get tournamentFormTypeSwissSystem => 'Swiss System';
+
+  @override
+  String get tournamentFormDeadline1Day => '1 day before';
+
+  @override
+  String get tournamentFormDeadline3Days => '3 days before';
+
+  @override
+  String get tournamentFormDeadline1Week => '1 week before';
+
+  @override
+  String get tournamentFormDeadline2Weeks => '2 weeks before';
+
+  @override
+  String get tournamentFormSelectGame => 'Select a game';
+
+  @override
+  String get tournamentFormViewDetails => 'View Details';
+
+  @override
+  String get tournamentFormPlayers => 'Players';
+
+  @override
+  String get tournamentFormEdit => 'Edit';
+
+  @override
+  String get tournamentFormDelete => 'Delete';
+
+  @override
+  String tournamentFormTournamentDeleted(String title) {
+    return 'Tournament \"$title\" deleted';
+  }
+
+  @override
+  String get tournamentFormLoadingTournaments => 'Loading tournaments...';
+
+  @override
+  String get tournamentFormNoTournamentsAvailable => 'No tournaments available';
+
+  @override
+  String get tournamentFormCheckBackLater =>
+      'Check back later for new tournaments';
+
+  @override
+  String get tournamentFormPleaseFixErrors =>
+      'Please fix the errors in the form';
 }
