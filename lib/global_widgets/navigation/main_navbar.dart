@@ -5,6 +5,7 @@ import 'package:jugaenequipo/presentation/search/screens/search_screen.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
+import 'package:jugaenequipo/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -97,9 +98,11 @@ class _MainNavbarState extends State<MainNavbar> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => const MessagesScreen(),
-                fullscreenDialog: true,
+              NavigationUtils.slideTransition(
+                const MessagesScreen(),
+                direction: SlideDirection.fromRight,
+                duration: 400,
+                curve: Curves.easeOutExpo,
               ),
             );
           },
