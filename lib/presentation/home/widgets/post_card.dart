@@ -16,10 +16,64 @@ import 'package:provider/provider.dart';
 
 enum Menu { delete }
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final PostModel post;
 
   const PostCard({super.key, required this.post});
+
+  @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _likeAnimationController;
+  late Animation<double> _likeScaleAnimation;
+
+  bool _isLiked = false;
+  bool _showComments = false;
+  bool _isAvatarPressed = false;
+  bool _isSharePressed = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Inicializar controlador de animación para likes
+    _likeAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    // Configurar animación de escala para el botón de like
+    _likeScaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.3,
+    ).animate(CurvedAnimation(
+      parent: _likeAnimationController,
+      curve: Curves.elasticOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _likeAnimationController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLike() async {
+    setState(() {
+      _isLiked = !_isLiked;
+    });
+
+    if (_isLiked) {
+      await _likeAnimationController.forward();
+      await _likeAnimationController.reverse();
+    }
+
+    // Llamar a la función original de like
+    addLikePost(widget.post.id);
+  }
 
   Future<void> _navigateToUserProfile(
       BuildContext context, String username) async {
@@ -54,18 +108,18 @@ class PostCard extends StatelessWidget {
     final postProvider = Provider.of<PostProvider>(context);
     final imageProvider = Provider.of<ImagePickerProvider>(context);
     UserModel? user = Provider.of<UserProvider>(context).user;
-    final isLoggedUserPost = user?.userName == post.user;
-    final imagesUrls = post.resources?.map((e) => e.url).toList();
+    final isLoggedUserPost = user?.userName == widget.post.user;
+    final imagesUrls = widget.post.resources?.map((e) => e.url).toList();
 
     return ChangeNotifierProvider.value(
-      value: PostProvider()..getCommentsQuantity(post.id),
+      value: PostProvider()..getCommentsQuantity(widget.post.id),
       child: Center(
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          height: post.height,
+          height: widget.post.height,
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
-            opacity: post.isVisible ? 1.0 : 0.0,
+            opacity: widget.post.isVisible ? 1.0 : 0.0,
             curve: Curves.easeInOut,
             child: Card(
               margin: EdgeInsets.only(
@@ -87,22 +141,56 @@ class PostCard extends StatelessWidget {
                     children: <Widget>[
                       ListTile(
                         leading: GestureDetector(
-                          onTap: () =>
-                              _navigateToUserProfile(context, post.user ?? ''),
-                          child: SizedBox(
-                            height: 50.h,
-                            width: 50.h,
-                            child: CircleAvatar(
-                              maxRadius: 15.h,
-                              backgroundImage: (post.urlProfileImage != null &&
-                                      post.urlProfileImage!.isNotEmpty &&
-                                      (post.urlProfileImage!
-                                              .startsWith('http://') ||
-                                          post.urlProfileImage!
-                                              .startsWith('https://')))
-                                  ? NetworkImage(post.urlProfileImage!)
-                                  : const AssetImage('assets/user_image.jpg')
-                                      as ImageProvider,
+                          onTapDown: (_) {
+                            setState(() {
+                              _isAvatarPressed = true;
+                            });
+                          },
+                          onTapUp: (_) {
+                            setState(() {
+                              _isAvatarPressed = false;
+                            });
+                            _navigateToUserProfile(
+                                context, widget.post.user ?? '');
+                          },
+                          onTapCancel: () {
+                            setState(() {
+                              _isAvatarPressed = false;
+                            });
+                          },
+                          child: AnimatedScale(
+                            scale: _isAvatarPressed ? 0.9 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            child: Container(
+                              height: 50.h,
+                              width: 50.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: _isAvatarPressed
+                                    ? []
+                                    : [
+                                        BoxShadow(
+                                          color: Colors.black
+                                              .withValues(alpha: 0.1),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                              ),
+                              child: CircleAvatar(
+                                maxRadius: 25.h,
+                                backgroundImage: (widget.post.urlProfileImage !=
+                                            null &&
+                                        widget
+                                            .post.urlProfileImage!.isNotEmpty &&
+                                        (widget.post.urlProfileImage!
+                                                .startsWith('http://') ||
+                                            widget.post.urlProfileImage!
+                                                .startsWith('https://')))
+                                    ? NetworkImage(widget.post.urlProfileImage!)
+                                    : const AssetImage('assets/user_image.jpg')
+                                        as ImageProvider,
+                              ),
                             ),
                           ),
                         ),
@@ -111,9 +199,9 @@ class PostCard extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () => _navigateToUserProfile(
-                                  context, post.user ?? ''),
+                                  context, widget.post.user ?? ''),
                               child: Text(
-                                post.user ?? 'user',
+                                widget.post.user ?? 'user',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 15.h,
@@ -126,7 +214,7 @@ class PostCard extends StatelessWidget {
                                 icon: const Icon(Icons.more_vert),
                                 onSelected: (Menu item) {
                                   homeProvider.handlePostMenuOptionClick(
-                                      item, post.id);
+                                      item, widget.post.id);
                                 },
                                 itemBuilder: (BuildContext context) =>
                                     <PopupMenuEntry<Menu>>[
@@ -156,7 +244,8 @@ class PostCard extends StatelessWidget {
                               ), */
                               Text(
                                   formatTimeElapsed(
-                                      DateTime.parse(post.createdAt), context),
+                                      DateTime.parse(widget.post.createdAt),
+                                      context),
                                   textAlign: TextAlign.left,
                                   style: TextStyle(fontSize: 13.h)),
                             ],
@@ -165,14 +254,15 @@ class PostCard extends StatelessWidget {
                       ),
                       Column(
                         children: <Widget>[
-                          if (post.copy != null && post.copy!.isNotEmpty)
+                          if (widget.post.copy != null &&
+                              widget.post.copy!.isNotEmpty)
                             Container(
                               margin: const EdgeInsets.only(bottom: 8),
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 18),
                               width: double.infinity,
                               child: Text(
-                                post.copy!,
+                                widget.post.copy!,
                                 style: TextStyle(fontSize: 13.h),
                               ),
                             ),
@@ -180,27 +270,29 @@ class PostCard extends StatelessWidget {
                             Container(
                                 margin: const EdgeInsets.only(bottom: 8),
                                 child: ImageGrid(images: imagesUrls)),
-                          if (post.sharedPost != null)
+                          if (widget.post.sharedPost != null)
                             Container(
                                 margin: const EdgeInsets.only(bottom: 8),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 18),
                                 width: double.infinity,
                                 child: SharedPost(
-                                  post: post.sharedPost!,
+                                  post: widget.post.sharedPost!,
                                 )),
                         ],
                       ),
                       Consumer<PostProvider>(
                         builder: (_, provider, __) {
                           final commentsCount =
-                              provider.getCommentsCountForPost(post.id);
-                          if ((post.likes != null && post.likes! > 0) ||
+                              provider.getCommentsCountForPost(widget.post.id);
+                          if ((widget.post.likes != null &&
+                                  widget.post.likes! > 0) ||
                               commentsCount > 0) {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                if (post.likes != null && post.likes! > 0)
+                                if (widget.post.likes != null &&
+                                    widget.post.likes! > 0)
                                   Row(
                                     children: [
                                       Icon(
@@ -212,9 +304,27 @@ class PostCard extends StatelessWidget {
                                       const SizedBox(
                                         width: 5.0,
                                       ),
-                                      Text(
-                                        post.likes.toString(),
-                                        style: TextStyle(fontSize: 14.h),
+                                      TweenAnimationBuilder<int>(
+                                        tween: IntTween(
+                                          begin: widget.post.likes ?? 0,
+                                          end: widget.post.likes ?? 0,
+                                        ),
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        builder: (context, value, child) {
+                                          return AnimatedSwitcher(
+                                            duration: const Duration(
+                                                milliseconds: 200),
+                                            child: Text(
+                                              value.toString(),
+                                              key: ValueKey(value),
+                                              style: TextStyle(
+                                                fontSize: 14.h,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ],
                                   )
@@ -224,7 +334,7 @@ class PostCard extends StatelessWidget {
                                   TextButton(
                                     onPressed: () {
                                       homeProvider.openCommentsModal(context,
-                                          postId: post.id);
+                                          postId: widget.post.id);
                                     },
                                     child: Text(
                                       "$commentsCount ${AppLocalizations.of(context)!.commentsLabel}",
@@ -246,91 +356,160 @@ class PostCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.favorite),
-                              iconSize: 24.h,
-                              color: AppTheme.primary,
-                              onPressed: () {
-                                addLikePost(post.id);
-                                //TODO: If the user has already liked the post, remove the like
-                                // removeLikePost(post.id);
-                              },
-                              style: IconButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: AppTheme.primary,
-                                elevation: 0,
-                                padding: EdgeInsets.all(8.h),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.message),
-                              iconSize: 24.h,
-                              color: AppTheme.accent,
-                              onPressed: () {
-                                homeProvider.openCommentsModal(context,
-                                    autofocus: true, postId: post.id);
-                              },
-                              style: IconButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: AppTheme.accent,
-                                elevation: 0,
-                                padding: EdgeInsets.all(8.h),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.share),
-                              iconSize: 24.h,
-                              color: AppTheme.success,
-                              onPressed: () {
-                                postProvider.generatePostId();
-                                showModalBottomSheet(
-                                  context: context,
-                                  constraints: BoxConstraints(
-                                    maxHeight: 600.h,
-                                    maxWidth: 1200,
+                          // Botón de Like Animado
+                          AnimatedBuilder(
+                            animation: _likeScaleAnimation,
+                            builder: (context, child) {
+                              return Transform.scale(
+                                scale: _likeScaleAnimation.value,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  isScrollControlled: true,
-                                  useSafeArea: true,
-                                  builder: (BuildContext context) {
-                                    return CreatePost(
-                                      sharedPost: post,
-                                    );
-                                  },
-                                ).then((value) {
-                                  postProvider.clearPostId();
-                                  imageProvider.clearMediaFileList();
+                                  child: IconButton(
+                                    icon: AnimatedSwitcher(
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      child: Icon(
+                                        _isLiked
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        key: ValueKey(_isLiked),
+                                        color: AppTheme.primary,
+                                      ),
+                                    ),
+                                    iconSize: 24.h,
+                                    onPressed: _handleLike,
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      foregroundColor: AppTheme.primary,
+                                      elevation: 0,
+                                      padding: EdgeInsets.all(8.h),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          // Botón de Comentarios Animado
+                          GestureDetector(
+                            onTapDown: (_) {
+                              setState(() {
+                                _showComments = true;
+                              });
+                            },
+                            onTapUp: (_) {
+                              Future.delayed(const Duration(milliseconds: 100),
+                                  () {
+                                setState(() {
+                                  _showComments = false;
                                 });
-                              },
-                              style: IconButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: AppTheme.success,
-                                elevation: 0,
-                                padding: EdgeInsets.all(8.h),
-                                shape: RoundedRectangleBorder(
+                              });
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _showComments = false;
+                              });
+                            },
+                            child: AnimatedScale(
+                              scale: _showComments ? 0.9 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(Icons.message),
+                                  iconSize: 24.h,
+                                  color: AppTheme.accent,
+                                  onPressed: () {
+                                    homeProvider.openCommentsModal(context,
+                                        autofocus: true,
+                                        postId: widget.post.id);
+                                  },
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    foregroundColor: AppTheme.accent,
+                                    elevation: 0,
+                                    padding: EdgeInsets.all(8.h),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Botón de Share Animado
+                          GestureDetector(
+                            onTapDown: (_) {
+                              setState(() {
+                                _isSharePressed = true;
+                              });
+                            },
+                            onTapUp: (_) {
+                              Future.delayed(const Duration(milliseconds: 100),
+                                  () {
+                                setState(() {
+                                  _isSharePressed = false;
+                                });
+                              });
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _isSharePressed = false;
+                              });
+                            },
+                            child: AnimatedScale(
+                              scale: _isSharePressed ? 0.9 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: IconButton(
+                                  icon: AnimatedRotation(
+                                    turns: _isSharePressed ? 0.1 : 0.0,
+                                    duration: const Duration(milliseconds: 100),
+                                    child: const Icon(Icons.share),
+                                  ),
+                                  iconSize: 24.h,
+                                  color: AppTheme.success,
+                                  onPressed: () {
+                                    postProvider.generatePostId();
+                                    showModalBottomSheet(
+                                      context: context,
+                                      constraints: BoxConstraints(
+                                        maxHeight: 600.h,
+                                        maxWidth: 1200,
+                                      ),
+                                      isScrollControlled: true,
+                                      useSafeArea: true,
+                                      builder: (BuildContext context) {
+                                        return CreatePost(
+                                          sharedPost: widget.post,
+                                        );
+                                      },
+                                    ).then((value) {
+                                      postProvider.clearPostId();
+                                      imageProvider.clearMediaFileList();
+                                    });
+                                  },
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    foregroundColor: AppTheme.success,
+                                    elevation: 0,
+                                    padding: EdgeInsets.all(8.h),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

@@ -8,6 +8,41 @@ import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:provider/provider.dart';
 
+class AnimatedPostCard extends StatelessWidget {
+  final PostModel post;
+  final int index;
+  final bool isLoading;
+
+  const AnimatedPostCard({
+    super.key,
+    required this.post,
+    required this.index,
+    required this.isLoading,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return PostCard(post: post);
+    }
+
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 400 + (index * 100)),
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 30 * (1 - value)),
+          child: Opacity(
+            opacity: value,
+            child: PostCard(post: post),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class Posts extends StatelessWidget {
   const Posts({super.key});
 
@@ -43,8 +78,10 @@ class Posts extends StatelessWidget {
                     controller: homeScreen.scrollController,
                     itemCount: posts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return PostCard(
+                      return AnimatedPostCard(
                         post: posts[index],
+                        index: index,
+                        isLoading: homeScreen.isLoading,
                       );
                     },
                   ),
@@ -65,7 +102,6 @@ class Posts extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Icono con animación
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 800),
@@ -88,7 +124,6 @@ class Posts extends StatelessWidget {
             },
           ),
           const SizedBox(height: 24),
-          // Texto principal
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 600),
@@ -107,7 +142,6 @@ class Posts extends StatelessWidget {
             },
           ),
           const SizedBox(height: 12),
-          // Texto secundario
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 800),
