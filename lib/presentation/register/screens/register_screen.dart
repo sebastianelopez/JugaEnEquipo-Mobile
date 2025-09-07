@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/create_user_use_case.dart';
 import 'package:jugaenequipo/presentation/register/business_logic/register_form_provider.dart';
-import 'package:jugaenequipo/ui/input_decorations.dart';
 import 'package:jugaenequipo/utils/validator.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -18,8 +17,8 @@ class RegisterScreen extends StatelessWidget {
             child: SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(
-            height: 250,
+          SizedBox(
+            height: 250.h,
           ),
           CardContainer(
             backgroundColor: Colors.transparent,
@@ -35,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
           TextButton(
             child: Text('¿Ya tienes cuenta? Inicia Sesion',
                 style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.h,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context)
                         .colorScheme
@@ -47,8 +46,8 @@ class RegisterScreen extends StatelessWidget {
               Navigator.pushNamed(context, 'login');
             },
           ),
-          const SizedBox(
-            height: 50,
+          SizedBox(
+            height: 50.h,
           ),
         ],
       ),
@@ -56,7 +55,68 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatelessWidget {
+class _RegisterForm extends StatefulWidget {
+  @override
+  State<_RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<_RegisterForm>
+    with TickerProviderStateMixin {
+  late AnimationController _formAnimationController;
+  late List<Animation<double>> _fieldAnimations;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _formAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
+
+    _fieldAnimations = List.generate(7, (index) {
+      return Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).animate(CurvedAnimation(
+        parent: _formAnimationController,
+        curve: Interval(
+          index * 0.1,
+          0.6 + (index * 0.1),
+          curve: Curves.easeOutCubic,
+        ),
+      ));
+    });
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _formAnimationController.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _formAnimationController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildAnimatedField({
+    required int index,
+    required Widget child,
+  }) {
+    return AnimatedBuilder(
+      animation: _fieldAnimations[index],
+      builder: (context, _) {
+        return Transform.translate(
+          offset: Offset(0, 30 * (1 - _fieldAnimations[index].value)),
+          child: Opacity(
+            opacity: _fieldAnimations[index].value,
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final registerForm = Provider.of<RegisterFormProvider>(context);
@@ -71,185 +131,163 @@ class _RegisterForm extends StatelessWidget {
     final isLoading = registerForm.isLoading;
 
     return Form(
-        key: registerForm.formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+      key: registerForm.formKey,
+      child: Column(
+        children: [
+          _buildAnimatedField(
+            index: 0,
+            child: AnimatedFormField(
               controller: firstName,
-              style: const TextStyle(color: AppTheme.white),
-              autocorrect: false,
-              keyboardType: TextInputType.text,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: 'First Name',
-                hintTextColor: AppTheme.white,
-                labelTextColor: AppTheme.white,
-              ),
-              onTapOutside: (event) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
-              onChanged: (value) => firstName.text = value,
+              hintText: 'First Name',
+              prefixIcon: Icons.person_outline,
+              textColor: AppTheme.white,
+              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
               validator: (value) {
                 return (value != null && value.length > 2)
                     ? null
                     : 'Enter a valid name.';
               },
+              onChanged: (value) => firstName.text = value,
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 16.h),
+          _buildAnimatedField(
+            index: 1,
+            child: AnimatedFormField(
               controller: lastName,
-              style: const TextStyle(color: AppTheme.white),
-              autocorrect: false,
-              keyboardType: TextInputType.text,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: 'Last Name',
-                hintTextColor: AppTheme.white,
-                labelTextColor: AppTheme.white,
-              ),
-              onTapOutside: (event) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
-              onChanged: (value) => lastName.text = value,
+              hintText: 'Last Name',
+              prefixIcon: Icons.person_outline,
+              textColor: AppTheme.white,
+              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
               validator: (value) {
                 return (value != null && value.isNotEmpty)
                     ? null
                     : 'Last name is required';
               },
+              onChanged: (value) => lastName.text = value,
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 16.h),
+          _buildAnimatedField(
+            index: 2,
+            child: AnimatedFormField(
               controller: userName,
-              style: const TextStyle(color: AppTheme.white),
-              autocorrect: false,
-              keyboardType: TextInputType.text,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: 'User',
-                hintTextColor: AppTheme.white,
-                labelTextColor: AppTheme.white,
-              ),
-              onTapOutside: (event) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
-              onChanged: (value) => userName.text = value,
+              hintText: 'Username',
+              prefixIcon: Icons.alternate_email,
+              textColor: AppTheme.white,
+              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
               validator: (value) {
                 return (value != null && value.length > 2)
                     ? null
                     : 'User name should have at least 3 characters';
               },
+              onChanged: (value) => userName.text = value,
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 16.h),
+          _buildAnimatedField(
+            index: 3,
+            child: AnimatedFormField(
               controller: email,
-              style: const TextStyle(color: AppTheme.white),
-              autocorrect: false,
+              hintText: 'Email',
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: 'Email',
-                hintTextColor: AppTheme.white,
-                labelTextColor: AppTheme.white,
-              ),
-              onTapOutside: (event) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
-              onChanged: (value) => email.text = value,
+              prefixIcon: Icons.email_outlined,
+              textColor: AppTheme.white,
+              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
               validator: (value) => value != null
                   ? Validators.isEmail(value: value, context: context)
                   : 'Email is required',
+              onChanged: (value) => email.text = value,
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 16.h),
+          _buildAnimatedField(
+            index: 4,
+            child: AnimatedFormField(
               controller: password,
-              style: const TextStyle(color: AppTheme.white),
-              autocorrect: false,
+              hintText: 'Password',
               obscureText: true,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: 'Password',
-                hintTextColor: AppTheme.white,
-                labelTextColor: AppTheme.white,
-              ),
-              onTapOutside: (event) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
+              prefixIcon: Icons.lock_outline,
+              textColor: AppTheme.white,
+              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
+              validator: (value) {
+                return (value != null && value.length >= 6)
+                    ? null
+                    : 'The password must be at least six characters.';
+              },
               onChanged: (value) => password.text = value,
-              validator: (value) {
-                return (value != null && value.length >= 6)
-                    ? null
-                    : 'The password must be at least six characters.';
-              },
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+          ),
+          SizedBox(height: 16.h),
+          _buildAnimatedField(
+            index: 5,
+            child: AnimatedFormField(
               controller: confirmationPassword,
-              style: const TextStyle(color: AppTheme.white),
-              autocorrect: false,
+              hintText: 'Repeat password',
               obscureText: true,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: 'Repeat password',
-                hintTextColor: AppTheme.white,
-                labelTextColor: AppTheme.white,
-              ),
-              onTapOutside: (event) =>
-                  FocusManager.instance.primaryFocus?.unfocus(),
-              onChanged: (value) => confirmationPassword.text = value,
+              prefixIcon: Icons.lock_outline,
+              textColor: AppTheme.white,
+              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
               validator: (value) {
-                return (value != null && value.length >= 6)
-                    ? null
-                    : 'The password must be at least six characters.';
+                if (value == null || value.length < 6) {
+                  return 'The password must be at least six characters.';
+                }
+                if (value != password.text) {
+                  return 'Passwords do not match.';
+                }
+                return null;
               },
+              onChanged: (value) => confirmationPassword.text = value,
             ),
-            const SizedBox(
-              height: 25,
-            ),
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              disabledColor: AppTheme.secondary,
-              elevation: 0,
-              color: AppTheme.primary,
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      //hide keyboard
-                      FocusScope.of(context).unfocus();
+          ),
+          SizedBox(height: 24.h),
+          _buildAnimatedField(
+            index: 6,
+            child: SizedBox(
+              width: double.infinity,
+              child: AnimatedButton(
+                text: 'Register',
+                isLoading: isLoading,
+                icon: Icons.person_add,
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        FocusScope.of(context).unfocus();
 
-                      if (!registerForm.isValidForm()) return;
-                      registerForm.isLoading = true;
+                        if (registerForm.formKey.currentState?.validate() ??
+                            false) {
+                          registerForm.isLoading = true;
 
-                      Future.delayed(const Duration(seconds: 2));
+                          try {
+                            await createUser(
+                              firstName.text,
+                              lastName.text,
+                              userName.text,
+                              email.text,
+                              password.text,
+                              confirmationPassword.text,
+                            );
 
-                      registerForm.isLoading = false;
-                      Navigator.pushReplacementNamed(context, 'home');
-                    },
-              child: TextButton(
-                onPressed: () {
-                  createUser(firstName.text, lastName.text, userName.text,
-                      email.text, password.text, confirmationPassword.text);
-                },
-                child: Text('Register',
-                    style: GoogleFonts.openSans(
-                        textStyle: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onPrimary
-                          .withValues(alpha: 0.7),
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16.0,
-                    ))),
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(context, 'home');
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error creating account: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          } finally {
+                            registerForm.isLoading = false;
+                          }
+                        }
+                      },
               ),
-            )
-          ],
-        ));
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

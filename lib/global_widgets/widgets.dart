@@ -9,3 +9,5 @@ export 'package:jugaenequipo/global_widgets/navigation/main_navbar.dart';
 export 'package:jugaenequipo/global_widgets/navigation/bottom_navigation_bar.dart';
 export 'package:jugaenequipo/global_widgets/auth_background.dart';
 export 'package:jugaenequipo/global_widgets/card_container.dart';
+export 'package:jugaenequipo/global_widgets/animated_form_field.dart';
+export 'package:jugaenequipo/global_widgets/animated_button.dart';

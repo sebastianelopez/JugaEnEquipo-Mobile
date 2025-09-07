@@ -3,6 +3,7 @@ import 'package:jugaenequipo/presentation/tournaments/business_logic/tournaments
 import 'package:jugaenequipo/presentation/tournaments/widgets/tournaments_table.dart';
 import 'package:jugaenequipo/presentation/tournaments/screen/tournament_form_screen.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class TournamentsScreen extends StatefulWidget {
@@ -14,6 +15,8 @@ class TournamentsScreen extends StatefulWidget {
 
 class _TournamentsScreenState extends State<TournamentsScreen>
     with AutomaticKeepAliveClientMixin {
+  final GlobalKey _fabKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -23,16 +26,31 @@ class _TournamentsScreenState extends State<TournamentsScreen>
         child: const TournamentsTable(),
       ),
       floatingActionButton: FloatingActionButton(
+        key: _fabKey,
         onPressed: () async {
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const TournamentFormScreen(),
-            ),
-          );
-          if (result == true) {
-            // Refresh tournaments list
-            setState(() {});
+          final RenderBox? renderBox =
+              _fabKey.currentContext?.findRenderObject() as RenderBox?;
+          if (renderBox != null) {
+            final position = renderBox.localToGlobal(Offset.zero);
+            final size = renderBox.size;
+
+            final fabCenter = Offset(
+              position.dx + size.width / 2,
+              position.dy + size.height / 2,
+            );
+
+            final result = await Navigator.push(
+              context,
+              NavigationUtils.scaleFromPosition(
+                const TournamentFormScreen(),
+                startPosition: fabCenter,
+                duration: 800,
+                curve: Curves.easeOutExpo,
+              ),
+            );
+            if (result == true) {
+              setState(() {});
+            }
           }
         },
         backgroundColor: AppTheme.primary,

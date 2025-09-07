@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/datasources/models/tournament_model.dart';
 import 'package:jugaenequipo/presentation/tournaments/business_logic/tournament_management_provider.dart';
+import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-class TournamentFormScreen extends StatelessWidget {
+class TournamentFormScreen extends StatefulWidget {
   final TournamentModel? tournament;
 
   const TournamentFormScreen({
@@ -15,9 +16,73 @@ class TournamentFormScreen extends StatelessWidget {
   });
 
   @override
+  State<TournamentFormScreen> createState() => _TournamentFormScreenState();
+}
+
+class _TournamentFormScreenState extends State<TournamentFormScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late List<Animation<double>> _sectionAnimations;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+
+    _sectionAnimations = List.generate(5, (index) {
+      return Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).animate(CurvedAnimation(
+        parent: _animationController,
+        curve: Interval(
+          index * 0.1,
+          0.5 + (index * 0.1),
+          curve: Curves.easeOutCubic,
+        ),
+      ));
+    });
+
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (mounted) {
+        _animationController.forward();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildAnimatedSection({
+    required int index,
+    required Widget child,
+  }) {
+    return AnimatedBuilder(
+      animation: _sectionAnimations[index],
+      builder: (context, _) {
+        return Transform.translate(
+          offset: Offset(0, 50 * (1 - _sectionAnimations[index].value)),
+          child: Opacity(
+            opacity: _sectionAnimations[index].value,
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => TournamentManagementProvider(tournament: tournament),
+      create: (context) =>
+          TournamentManagementProvider(tournament: widget.tournament),
       child: Consumer<TournamentManagementProvider>(
         builder: (context, provider, child) {
           final l10n = AppLocalizations.of(context)!;
@@ -33,21 +98,21 @@ class TournamentFormScreen extends StatelessWidget {
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.more_vert),
                     onSelected: (value) {
-                                             if (value == 'delete') {
-                         _showDeleteConfirmation(context, provider, l10n);
-                       }
+                      if (value == 'delete') {
+                        _showDeleteConfirmation(context, provider, l10n);
+                      }
                     },
                     itemBuilder: (context) => [
-                                             PopupMenuItem(
-                         value: 'delete',
-                         child: Row(
-                           children: [
-                             Icon(Icons.delete, color: Colors.red),
-                             SizedBox(width: 8),
-                             Text(l10n.tournamentFormDeleteTitle),
-                           ],
-                         ),
-                       ),
+                      PopupMenuItem(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete, color: Colors.red),
+                            SizedBox(width: 8),
+                            Text(l10n.tournamentFormDeleteTitle),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
               ],
@@ -57,15 +122,30 @@ class TournamentFormScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildBasicInfoSection(context, provider, l10n),
+                  _buildAnimatedSection(
+                    index: 0,
+                    child: _buildBasicInfoSection(context, provider, l10n),
+                  ),
                   SizedBox(height: 24.h),
-                  _buildGameAndTypeSection(context, provider, l10n),
+                  _buildAnimatedSection(
+                    index: 1,
+                    child: _buildGameAndTypeSection(context, provider, l10n),
+                  ),
                   SizedBox(height: 24.h),
-                  _buildDateSection(context, provider, l10n),
+                  _buildAnimatedSection(
+                    index: 2,
+                    child: _buildDateSection(context, provider, l10n),
+                  ),
                   SizedBox(height: 24.h),
-                  _buildSettingsSection(context, provider, l10n),
+                  _buildAnimatedSection(
+                    index: 3,
+                    child: _buildSettingsSection(context, provider, l10n),
+                  ),
                   SizedBox(height: 24.h),
-                  _buildActionButtons(context, provider, l10n),
+                  _buildAnimatedSection(
+                    index: 4,
+                    child: _buildActionButtons(context, provider, l10n),
+                  ),
                 ],
               ),
             ),
@@ -227,8 +307,8 @@ class TournamentFormScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsSection(
-      BuildContext context, TournamentManagementProvider provider, AppLocalizations l10n) {
+  Widget _buildSettingsSection(BuildContext context,
+      TournamentManagementProvider provider, AppLocalizations l10n) {
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
@@ -274,21 +354,21 @@ class TournamentFormScreen extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                                 child: _buildTextField(
-                   controller: provider.maxParticipantsController,
-                   label: l10n.tournamentFormMaxParticipants,
-                   hint: '32',
-                   keyboardType: TextInputType.number,
-                 ),
+                child: _buildTextField(
+                  controller: provider.maxParticipantsController,
+                  label: l10n.tournamentFormMaxParticipants,
+                  hint: '32',
+                  keyboardType: TextInputType.number,
+                ),
               ),
               SizedBox(width: 16.w),
               Expanded(
-                                 child: _buildTextField(
-                   controller: provider.prizePoolController,
-                   label: l10n.tournamentFormPrizePool,
-                   hint: '1000',
-                   keyboardType: TextInputType.number,
-                 ),
+                child: _buildTextField(
+                  controller: provider.prizePoolController,
+                  label: l10n.tournamentFormPrizePool,
+                  hint: '1000',
+                  keyboardType: TextInputType.number,
+                ),
               ),
             ],
           ),
@@ -350,13 +430,13 @@ class TournamentFormScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-                             child: Text(
-                 l10n.tournamentFormCancelButton,
-                 style: TextStyle(
-                   fontSize: 16.sp,
-                   fontWeight: FontWeight.w600,
-                 ),
-               ),
+              child: Text(
+                l10n.tournamentFormCancelButton,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ),
         ],
@@ -385,47 +465,15 @@ class TournamentFormScreen extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.h),
-        TextField(
+        AnimatedFormField(
           controller: controller,
-          maxLines: maxLines,
-          keyboardType: keyboardType,
+          hintText: hint,
+          keyboardType: keyboardType ?? TextInputType.text,
+          textColor: AppTheme.secondary,
+          hintTextColor: Colors.grey.withValues(alpha: 0.6),
+          errorText: error,
           onChanged: onChanged,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: Colors.grey.withValues(alpha: 0.6),
-              fontSize: 14.sp,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: error != null
-                    ? AppTheme.error
-                    : Colors.grey.withValues(alpha: 0.3),
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey.withValues(alpha: 0.3),
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: AppTheme.primary,
-                width: 2,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: AppTheme.error,
-              ),
-            ),
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          ),
+          validator: error != null ? (value) => error : null,
         ),
         if (error != null) ...[
           SizedBox(height: 8.h),
@@ -471,13 +519,13 @@ class TournamentFormScreen extends StatelessWidget {
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             ),
-                         hint: Text(
-               l10n.tournamentFormSelectGame,
-               style: TextStyle(
-                 color: Colors.grey.withValues(alpha: 0.6),
-                 fontSize: 14.sp,
-               ),
-             ),
+            hint: Text(
+              l10n.tournamentFormSelectGame,
+              style: TextStyle(
+                color: Colors.grey.withValues(alpha: 0.6),
+                fontSize: 14.sp,
+              ),
+            ),
             items: provider.availableGames.map((game) {
               return DropdownMenuItem(
                 value: game.id,
@@ -751,16 +799,15 @@ class TournamentFormScreen extends StatelessWidget {
       BuildContext context, TournamentManagementProvider provider) async {
     final l10n = AppLocalizations.of(context)!;
 
-    // Validate all fields before submitting
     provider.validateForm(l10n);
 
     if (!provider.isFormValid) {
-             ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-           content: Text(l10n.tournamentFormPleaseFixErrors),
-           backgroundColor: AppTheme.error,
-         ),
-       );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.tournamentFormPleaseFixErrors),
+          backgroundColor: AppTheme.error,
+        ),
+      );
       return;
     }
 
@@ -770,68 +817,68 @@ class TournamentFormScreen extends StatelessWidget {
 
     if (success && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(
-           content: Text(
-             provider.isEditing
-                 ? l10n.tournamentFormSuccessUpdate
-                 : l10n.tournamentFormSuccessCreate,
-           ),
-           backgroundColor: AppTheme.success,
-         ),
+        SnackBar(
+          content: Text(
+            provider.isEditing
+                ? l10n.tournamentFormSuccessUpdate
+                : l10n.tournamentFormSuccessCreate,
+          ),
+          backgroundColor: AppTheme.success,
+        ),
       );
       Navigator.pop(context, true);
     } else if (context.mounted) {
-             ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-           content: Text(
-             provider.isEditing
-                 ? l10n.tournamentFormErrorUpdate
-                 : l10n.tournamentFormErrorCreate,
-           ),
-           backgroundColor: AppTheme.error,
-         ),
-       );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            provider.isEditing
+                ? l10n.tournamentFormErrorUpdate
+                : l10n.tournamentFormErrorCreate,
+          ),
+          backgroundColor: AppTheme.error,
+        ),
+      );
     }
   }
 
-  Future<void> _showDeleteConfirmation(
-      BuildContext context, TournamentManagementProvider provider, AppLocalizations l10n) async {
+  Future<void> _showDeleteConfirmation(BuildContext context,
+      TournamentManagementProvider provider, AppLocalizations l10n) async {
     final confirmed = await showDialog<bool>(
       context: context,
-             builder: (context) => AlertDialog(
-         title: Text(l10n.tournamentFormDeleteTitle),
-         content: Text(l10n.tournamentFormDeleteMessage),
-         actions: [
-           TextButton(
-             onPressed: () => Navigator.pop(context, false),
-             child: Text(l10n.tournamentFormDeleteCancel),
-           ),
-           TextButton(
-             onPressed: () => Navigator.pop(context, true),
-             style: TextButton.styleFrom(foregroundColor: AppTheme.error),
-             child: Text(l10n.tournamentFormDeleteConfirm),
-           ),
-         ],
-       ),
+      builder: (context) => AlertDialog(
+        title: Text(l10n.tournamentFormDeleteTitle),
+        content: Text(l10n.tournamentFormDeleteMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.tournamentFormDeleteCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.error),
+            child: Text(l10n.tournamentFormDeleteConfirm),
+          ),
+        ],
+      ),
     );
 
     if (confirmed == true && context.mounted) {
       final success = await provider.deleteTournament();
       if (success && context.mounted) {
-                 ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-             content: Text(l10n.tournamentFormSuccessDelete),
-             backgroundColor: AppTheme.success,
-           ),
-         );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.tournamentFormSuccessDelete),
+            backgroundColor: AppTheme.success,
+          ),
+        );
         Navigator.pop(context, true);
       } else if (context.mounted) {
-                 ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-             content: Text(l10n.tournamentFormErrorDelete),
-             backgroundColor: AppTheme.error,
-           ),
-         );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.tournamentFormErrorDelete),
+            backgroundColor: AppTheme.error,
+          ),
+        );
       }
     }
   }
