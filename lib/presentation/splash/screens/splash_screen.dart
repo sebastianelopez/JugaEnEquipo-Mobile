@@ -139,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen>
                 width: 200.w,
                 height: 200.h,
                 child: Lottie.asset(
-                  'assets/gamecontrollerlottie.json',
+                  'assets/lottie/gamecontrollerlottie.json',
                   controller: _lottieController,
                   onLoaded: (composition) {
                     final originalMs = composition.duration.inMilliseconds;
