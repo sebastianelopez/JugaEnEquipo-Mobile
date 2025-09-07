@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
 import 'package:jugaenequipo/providers/providers.dart';
-import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/utils/utils.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,13 +14,16 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   var token;
   var storage = const FlutterSecureStorage();
+  late AnimationController _lottieController;
 
   @override
   void initState() {
     super.initState();
+    _lottieController = AnimationController(vsync: this);
     _initializeApp();
   }
 
@@ -83,30 +85,80 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
+  void dispose() {
+    _lottieController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
+      body: Container(
         width: double.infinity,
         height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
+            ],
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(bottom: 50.h),
-              child: LoadingAnimationWidget.flickr(
-                leftDotColor: AppTheme.primary,
-                rightDotColor: AppTheme.black,
-                size: 200.h,
-              ),
+            TweenAnimationBuilder<double>(
+              duration: const Duration(milliseconds: 1200),
+              tween: Tween<double>(begin: 0.0, end: 1.0),
+              curve: Curves.easeOutBack,
+              builder: (context, value, child) {
+                return Transform.translate(
+                  offset: Offset(0, -40 * (0 - value)),
+                  child: Opacity(
+                    opacity: value.clamp(0.0, 1.0),
+                    child: Text(
+                      "Juga en Equipo",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-            Text(
-              "Juga en Equipo",
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w900),
-            )
+            TweenAnimationBuilder<double>(
+              duration: const Duration(milliseconds: 1500),
+              tween: Tween<double>(begin: 0.0, end: 1.0),
+              curve: Curves.elasticOut,
+              child: SizedBox(
+                width: 200.w,
+                height: 200.h,
+                child: Lottie.asset(
+                  'assets/gamecontrollerlottie.json',
+                  controller: _lottieController,
+                  onLoaded: (composition) {
+                    final originalMs = composition.duration.inMilliseconds;
+                    final targetMs = (originalMs * 0.5).round();
+                    _lottieController.duration =
+                        Duration(milliseconds: targetMs);
+                    _lottieController.repeat(reverse: true);
+                  },
+                  frameRate: FrameRate.max,
+                ),
+              ),
+              builder: (context, value, child) {
+                return Transform.scale(
+                  scale: value * 1.5,
+                  child: child,
+                );
+              },
+            ),
+            SizedBox(height: 40.h),
           ],
         ),
       ),
