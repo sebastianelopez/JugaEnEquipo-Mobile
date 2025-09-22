@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'package:jugaenequipo/datasources/user_use_cases/create_user_use_case.dart';
 import 'package:jugaenequipo/presentation/register/business_logic/register_form_provider.dart';
 import 'package:jugaenequipo/utils/validator.dart';
@@ -82,7 +83,7 @@ class _RegisterFormState extends State<_RegisterForm>
         parent: _formAnimationController,
         curve: Interval(
           index * 0.1,
-          0.6 + (index * 0.1),
+          math.min(1.0, 0.6 + (index * 0.1)),
           curve: Curves.easeOutCubic,
         ),
       ));
