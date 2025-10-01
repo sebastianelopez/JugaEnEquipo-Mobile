@@ -17,7 +17,7 @@ class NotificationsScreen extends StatelessWidget {
         backgroundColor: AppTheme.primary,
       ),
       body: ChangeNotifierProvider(
-        create: (context) => NotificationsProvider(),
+        create: (context) => NotificationsProvider()..initialize(),
         child: const SingleChildScrollView(
           scrollDirection: Axis.vertical,
           physics: BouncingScrollPhysics(),

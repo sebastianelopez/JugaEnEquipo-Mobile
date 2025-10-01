@@ -12,20 +12,31 @@ class NotificationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notificationsProvider = Provider.of<NotificationsProvider>(context);
-    final notificationMocks =
-        notificationsProvider.getMockNotifications(context);
+    final items = notificationsProvider.notifications.isEmpty
+        ? notificationsProvider.getMockNotifications(context)
+        : notificationsProvider.notifications;
 
     return ListView.builder(
-      itemCount: notificationMocks.length,
+      itemCount: items.length,
       shrinkWrap: true,
       padding: EdgeInsets.only(top: 16.h),
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return NotificationsListItem(
-          user: notificationMocks[index].user,
-          notificationContent: notificationMocks[index].notificationContent,
-          date: notificationMocks[index].date,
-          isNotificationRead: (index == 0 || index == 3) ? true : false,
+        final n = items[index];
+        return Dismissible(
+          key: ValueKey(n.id),
+          background: Container(color: Colors.transparent),
+          direction: DismissDirection.endToStart,
+          confirmDismiss: (_) async {
+            await notificationsProvider.markAsRead(n.id);
+            return false; // keep item, only mark read
+          },
+          child: NotificationsListItem(
+            user: n.user,
+            notificationContent: n.notificationContent,
+            date: n.date,
+            isNotificationRead: n.isNotificationRead,
+          ),
         );
       },
     );

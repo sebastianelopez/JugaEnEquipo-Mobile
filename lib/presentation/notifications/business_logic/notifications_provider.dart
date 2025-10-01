@@ -1,8 +1,106 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
+import 'package:jugaenequipo/datasources/notifications_use_cases/get_notifications_use_case.dart';
+import 'package:jugaenequipo/datasources/notifications_use_cases/mark_notification_as_read_use_case.dart';
+import 'package:jugaenequipo/datasources/notifications_use_cases/notifications_sse_service.dart';
 
 class NotificationsProvider extends ChangeNotifier {
+  final List<NotificationModel> _notifications = [];
+  bool _isLoading = false;
+  bool _hasMore = true;
+  int _offset = 0;
+  final int _pageSize = 20;
+
+  final NotificationsSSEService _sseService = NotificationsSSEService();
+  StreamSubscription<NotificationModel>? _sseSubscription;
+
+  List<NotificationModel> get notifications =>
+      List.unmodifiable(_notifications);
+  bool get isLoading => _isLoading;
+  bool get hasMore => _hasMore;
+
+  Future<void> initialize() async {
+    if (_notifications.isEmpty) {
+      await refresh();
+    }
+    _subscribeSSE();
+  }
+
+  Future<void> refresh() async {
+    _offset = 0;
+    _hasMore = true;
+    _notifications.clear();
+    notifyListeners();
+    await loadMore();
+  }
+
+  Future<void> loadMore() async {
+    if (_isLoading || !_hasMore) return;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final result = await getNotifications(limit: _pageSize, offset: _offset);
+      if (result != null) {
+        _notifications.addAll(result);
+        _offset += result.length;
+        _hasMore = result.length >= _pageSize;
+      }
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> markAsRead(String notificationId) async {
+    final idx = _notifications.indexWhere((n) => n.id == notificationId);
+    if (idx != -1 && _notifications[idx].isNotificationRead == false) {
+      _notifications[idx] = NotificationModel(
+        id: _notifications[idx].id,
+        user: _notifications[idx].user,
+        notificationContent: _notifications[idx].notificationContent,
+        isNotificationRead: true,
+        date: _notifications[idx].date,
+      );
+      notifyListeners();
+    }
+    final ok = await markNotificationAsRead(notificationId);
+    if (!ok && idx != -1) {
+      // rollback
+      _notifications[idx] = NotificationModel(
+        id: _notifications[idx].id,
+        user: _notifications[idx].user,
+        notificationContent: _notifications[idx].notificationContent,
+        isNotificationRead: false,
+        date: _notifications[idx].date,
+      );
+      notifyListeners();
+    }
+  }
+
+  void _subscribeSSE() {
+    _sseSubscription?.cancel();
+    _sseSubscription = _sseService.connect().listen((incoming) {
+      // Avoid duplicates by id if provided
+      if (incoming.id.isNotEmpty &&
+          _notifications.any((n) => n.id == incoming.id)) {
+        return;
+      }
+      _notifications.insert(0, incoming);
+      notifyListeners();
+    }, onError: (_) {
+      // Let it be silent; screen can be opened again to resubscribe
+    });
+  }
+
+  @override
+  void dispose() {
+    _sseSubscription?.cancel();
+    _sseService.disconnect();
+    super.dispose();
+  }
+
   List<NotificationModel> getMockNotifications(BuildContext context) {
     return [
       NotificationModel(

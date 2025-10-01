@@ -9,6 +9,7 @@ import 'package:jugaenequipo/router/app_routes.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:jugaenequipo/share_preferences/preferences.dart';
+import 'package:jugaenequipo/presentation/notifications/business_logic/notifications_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,9 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => TeamSearchProvider()),
         ChangeNotifierProvider(
           create: (_) => MessagesProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NotificationsProvider()..initialize(),
         ),
       ],
       child: const MyApp(),
