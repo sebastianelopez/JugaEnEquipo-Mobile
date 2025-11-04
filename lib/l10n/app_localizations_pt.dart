@@ -140,6 +140,24 @@ class AppLocalizationsPt extends AppLocalizations {
   String get profilePrizesButtonLabel => 'Prêmios';
 
   @override
+  String get memberSinceLabel => 'Membro desde';
+
+  @override
+  String get tournamentWinsLabel => 'Vitórias em Torneios';
+
+  @override
+  String get socialMediaLabel => 'Redes Sociais';
+
+  @override
+  String get achievementsAwardsLabel => 'Conquistas e Prêmios';
+
+  @override
+  String get postsLabel => 'Publicações';
+
+  @override
+  String get profileTeamsLabel => 'Equipes';
+
+  @override
   String get messagesPageLabel => 'Mensagens';
 
   @override

@@ -358,6 +358,42 @@ abstract class AppLocalizations {
   /// **'Prizes'**
   String get profilePrizesButtonLabel;
 
+  /// No description provided for @memberSinceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since'**
+  String get memberSinceLabel;
+
+  /// No description provided for @tournamentWinsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Wins'**
+  String get tournamentWinsLabel;
+
+  /// No description provided for @socialMediaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Social Media'**
+  String get socialMediaLabel;
+
+  /// No description provided for @achievementsAwardsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements & Awards'**
+  String get achievementsAwardsLabel;
+
+  /// No description provided for @postsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get postsLabel;
+
+  /// No description provided for @profileTeamsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get profileTeamsLabel;
+
   /// No description provided for @messagesPageLabel.
   ///
   /// In en, this message translates to:

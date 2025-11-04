@@ -140,6 +140,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profilePrizesButtonLabel => 'Premios';
 
   @override
+  String get memberSinceLabel => 'Miembro desde';
+
+  @override
+  String get tournamentWinsLabel => 'Victorias en Torneos';
+
+  @override
+  String get socialMediaLabel => 'Redes Sociales';
+
+  @override
+  String get achievementsAwardsLabel => 'Logros y Premios';
+
+  @override
+  String get postsLabel => 'Publicaciones';
+
+  @override
+  String get profileTeamsLabel => 'Equipos';
+
+  @override
   String get messagesPageLabel => 'Mensajes';
 
   @override
