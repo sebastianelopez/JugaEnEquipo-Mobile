@@ -251,38 +251,4 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildMemberListTile(BuildContext context, UserModel member) {
-    return ListTile(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileScreen(
-              userId: member.id,
-              profileType: ProfileType.user,
-            ),
-          ),
-        );
-      },
-      leading: CircleAvatar(
-        backgroundImage: member.profileImage != null
-            ? (member.profileImage!.startsWith('http://') ||
-                    member.profileImage!.startsWith('https://')
-                ? NetworkImage(member.profileImage!)
-                : AssetImage(member.profileImage!) as ImageProvider)
-            : const AssetImage('assets/user_image.jpg'),
-        radius: 16,
-        backgroundColor: Colors.white,
-      ),
-      title: Text(
-        "${member.firstName} ${member.lastName}",
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text(
-        '@${member.userName}',
-        style: const TextStyle(fontSize: 11),
-      ),
-    );
-  }
 }

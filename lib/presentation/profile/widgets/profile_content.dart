@@ -9,6 +9,7 @@ import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:jugaenequipo/datasources/chat_use_cases/get_conversation_by_other_user_use_case.dart';
+import 'package:jugaenequipo/utils/utils.dart';
 
 class ProfileContent extends StatefulWidget {
   final VoidCallback? onFollowersPressed;
@@ -91,9 +92,101 @@ class _ProfileContentState extends State<ProfileContent> {
                         color: Theme.of(context)
                             .colorScheme
                             .onSurface
-                            .withValues(alpha: 0.6),
+                            .withOpacity( 0.6),
                         fontSize: 14.h),
                   ),
+                  // Member since
+                  if (profileProvider.memberSince != null) ...[
+                    SizedBox(height: 4.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          size: 12.h,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity( 0.5),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          '${AppLocalizations.of(context)!.memberSinceLabel} ${formatTimeElapsed(profileProvider.memberSince!, context)}',
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity( 0.5),
+                            fontSize: 11.h,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  // Description (About me)
+                  if (profileProvider.description != null &&
+                      profileProvider.description!.isNotEmpty) ...[
+                    SizedBox(height: 12.h),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      padding: EdgeInsets.all(16.w),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface
+                            .withOpacity( 0.5),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Text(
+                        profileProvider.description!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 13.h,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity( 0.8),
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                  ],
+                  // Tournament wins
+                  if (profileProvider.tournamentWins > 0) ...[
+                    SizedBox(height: 12.h),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 12.h),
+                      decoration: BoxDecoration(
+                        color: AppTheme.success.withOpacity( 0.1),
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: AppTheme.success.withOpacity( 0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.emoji_events,
+                            color: AppTheme.success,
+                            size: 20.h,
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            '${profileProvider.tournamentWins} ${AppLocalizations.of(context)!.tournamentWinsLabel}',
+                            style: TextStyle(
+                              fontSize: 14.h,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.success,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                   Container(
                     margin: EdgeInsets.only(top: 15.h),
                     child: Row(
@@ -186,13 +279,34 @@ class _ProfileContentState extends State<ProfileContent> {
                           child: NumberAndLabel(
                               label: AppLocalizations.of(context)!
                                   .profilePrizesButtonLabel,
-                              number: 124,
+                              number: profileProvider.tournamentWins,
                               onTap: widget.onPrizesPressed),
                         ),
                       ],
                     ),
                   ),
-                  const StatsTable(),
+                  // Stats Cards (replacing StatsTable)
+                  if (profileProvider.stats.isNotEmpty)
+                    StatsCards(stats: profileProvider.stats),
+                  // Teams Section
+                  UserTeamsSection(teams: profileProvider.teams),
+                  // Social Media Section
+                  if (profileProvider.socialMedia.isNotEmpty)
+                    SocialMediaSection(
+                        socialLinks: profileProvider.socialMedia),
+                  // Achievements Section
+                  if (profileProvider.achievements.isNotEmpty)
+                    AchievementsSection(
+                      achievements: profileProvider.achievements
+                          .map((a) => Achievement.fromMap(a))
+                          .toList(),
+                    ),
+                  // Posts Section
+                  UserPostsSection(
+                    posts: profileProvider.posts,
+                    isLoading: profileProvider.isLoading,
+                  ),
+                  SizedBox(height: 20.h),
                 ]),
               ),
               Positioned(
