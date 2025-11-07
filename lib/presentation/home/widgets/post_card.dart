@@ -126,11 +126,11 @@ class _PostCardState extends State<PostCard>
                 top: 8.0.w,
               ),
               elevation: 12,
-              shadowColor: AppTheme.primary.withValues(alpha: 0.3),
+              shadowColor: AppTheme.primary.withOpacity(0.3),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
                 side: BorderSide(
-                  color: Colors.white.withValues(alpha: 0.3),
+                  color: Colors.white.withOpacity(0.3),
                   width: 1.5,
                 ),
               ),
@@ -170,8 +170,7 @@ class _PostCardState extends State<PostCard>
                                     ? []
                                     : [
                                         BoxShadow(
-                                          color: Colors.black
-                                              .withValues(alpha: 0.1),
+                                          color: Colors.black.withOpacity(0.1),
                                           blurRadius: 8,
                                           offset: const Offset(0, 2),
                                         ),
