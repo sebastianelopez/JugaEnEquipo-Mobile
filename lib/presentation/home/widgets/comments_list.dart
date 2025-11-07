@@ -71,7 +71,7 @@ class CommentsList extends StatelessWidget {
                                 : Theme.of(context)
                                     .colorScheme
                                     .secondary
-                                    .withValues(alpha: 0.2)),
+                                    .withOpacity( 0.2)),
                           ),
                           margin: EdgeInsets.only(
                               left: isLoggedUser ? 0 : 10,

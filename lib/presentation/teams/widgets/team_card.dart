@@ -23,11 +23,11 @@ class TeamCard extends StatelessWidget {
   Widget _buildTeamCard(BuildContext context, AppLocalizations l10n) {
     return Card(
       elevation: 12,
-      shadowColor: AppTheme.primary.withValues(alpha: 0.3),
+      shadowColor: AppTheme.primary.withOpacity( 0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
         side: BorderSide(
-          color: Colors.white.withValues(alpha: 0.3),
+          color: Colors.white.withOpacity( 0.3),
           width: 1.5,
         ),
       ),
@@ -71,8 +71,8 @@ class TeamCard extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withValues(alpha: 0.3),
-                        Colors.black.withValues(alpha: 0.7),
+                        Colors.black.withOpacity( 0.3),
+                        Colors.black.withOpacity( 0.7),
                       ],
                       stops: const [0.0, 0.5, 1.0],
                     ),
@@ -88,11 +88,11 @@ class TeamCard extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(8.w),
                     decoration: BoxDecoration(
-                      color: AppTheme.primary.withValues(alpha: 0.9),
+                      color: AppTheme.primary.withOpacity( 0.9),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.3),
+                          color: Colors.black.withOpacity( 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -132,7 +132,7 @@ class TeamCard extends StatelessWidget {
                           color: Colors.white,
                           shadows: [
                             Shadow(
-                              color: Colors.black.withValues(alpha: 0.5),
+                              color: Colors.black.withOpacity( 0.5),
                               offset: const Offset(0, 1),
                               blurRadius: 3,
                             ),
@@ -151,7 +151,7 @@ class TeamCard extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 12.w, vertical: 6.h),
                             decoration: BoxDecoration(
-                              color: AppTheme.success.withValues(alpha: 0.9),
+                              color: AppTheme.success.withOpacity( 0.9),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Row(
@@ -188,7 +188,7 @@ class TeamCard extends StatelessWidget {
                                       child: CircleAvatar(
                                         radius: 14.r,
                                         backgroundColor:
-                                            Colors.white.withValues(alpha: 0.9),
+                                            Colors.white.withOpacity( 0.9),
                                         child: Icon(
                                           Icons.person,
                                           color: AppTheme.primary,
@@ -221,11 +221,11 @@ class TeamCard extends StatelessWidget {
                         width: double.infinity,
                         height: 44.h,
                         decoration: BoxDecoration(
-                          color: AppTheme.primary.withValues(alpha: 0.9),
+                          color: AppTheme.primary.withOpacity( 0.9),
                           borderRadius: BorderRadius.circular(12.r),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.3),
+                              color: Colors.black.withOpacity( 0.3),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -269,11 +269,11 @@ class TeamCard extends StatelessWidget {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
         decoration: BoxDecoration(
-          color: AppTheme.accent.withValues(alpha: 0.9),
+          color: AppTheme.accent.withOpacity( 0.9),
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
+              color: Colors.black.withOpacity( 0.3),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -310,11 +310,11 @@ class TeamCard extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: AppTheme.accent.withValues(alpha: 0.9),
+              color: AppTheme.accent.withOpacity( 0.9),
               borderRadius: BorderRadius.circular(16.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.3),
+                  color: Colors.black.withOpacity( 0.3),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
@@ -352,7 +352,7 @@ class TeamCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: Colors.white.withOpacity( 0.9),
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
@@ -390,7 +390,7 @@ class TeamCard extends StatelessWidget {
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: Colors.black.withOpacity( 0.1),
               ),
             ),
           ),
@@ -410,15 +410,15 @@ class TeamCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppTheme.primary.withValues(alpha: 0.8),
-            AppTheme.accent.withValues(alpha: 0.6),
+            AppTheme.primary.withOpacity( 0.8),
+            AppTheme.accent.withOpacity( 0.6),
           ],
         ),
       ),
       child: Center(
         child: Icon(
           Icons.group,
-          color: Colors.white.withValues(alpha: 0.8),
+          color: Colors.white.withOpacity( 0.8),
           size: 60.w,
         ),
       ),

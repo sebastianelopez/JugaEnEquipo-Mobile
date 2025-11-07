@@ -98,7 +98,7 @@ class ChatAppbar extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimary
-                              .withValues(alpha: 0.7),
+                              .withOpacity( 0.7),
                           fontSize: 13),
                     ),
                   ],
@@ -109,7 +109,7 @@ class ChatAppbar extends StatelessWidget {
                 color: Theme.of(context)
                     .colorScheme
                     .onPrimary
-                    .withValues(alpha: 0.6),
+                    .withOpacity( 0.6),
               ),
             ],
           ),

@@ -85,10 +85,10 @@ class TeamProfileContent extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 12.w, vertical: 6.h),
                             decoration: BoxDecoration(
-                              color: AppTheme.accent.withValues(alpha: 0.1),
+                              color: AppTheme.accent.withOpacity( 0.1),
                               borderRadius: BorderRadius.circular(16.r),
                               border: Border.all(
-                                color: AppTheme.accent.withValues(alpha: 0.3),
+                                color: AppTheme.accent.withOpacity( 0.3),
                                 width: 1,
                               ),
                             ),
@@ -127,7 +127,7 @@ class TeamProfileContent extends StatelessWidget {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withValues(alpha: 0.8),
+                                .withOpacity( 0.8),
                           ),
                         ),
                       ),
@@ -210,7 +210,7 @@ class TeamProfileContent extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withOpacity( 0.2),
             spreadRadius: 2,
             blurRadius: 8,
             offset: const Offset(0, 4),
@@ -340,7 +340,7 @@ class TeamProfileContent extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppTheme.primary.withValues(alpha: 0.2),
+          color: AppTheme.primary.withOpacity( 0.2),
         ),
       ),
       child: Column(
@@ -367,7 +367,7 @@ class TeamProfileContent extends StatelessWidget {
               color: Theme.of(context)
                   .colorScheme
                   .onSurface
-                  .withValues(alpha: 0.7),
+                  .withOpacity( 0.7),
             ),
             textAlign: TextAlign.center,
           ),

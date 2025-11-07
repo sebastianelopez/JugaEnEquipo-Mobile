@@ -52,7 +52,7 @@ class TournamentsTable extends StatelessWidget {
               color: Theme.of(context)
                   .colorScheme
                   .onSurface
-                  .withValues(alpha: 0.6),
+                  .withOpacity( 0.6),
             ),
           ),
         ],
@@ -69,15 +69,15 @@ class TournamentsTable extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(24.w),
             decoration: BoxDecoration(
-              color: AppTheme.primary.withValues(alpha: 0.15),
+              color: AppTheme.primary.withOpacity( 0.15),
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppTheme.primary.withValues(alpha: 0.3),
+                color: AppTheme.primary.withOpacity( 0.3),
                 width: 2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.primary.withValues(alpha: 0.2),
+                  color: AppTheme.primary.withOpacity( 0.2),
                   blurRadius: 20,
                   spreadRadius: 0,
                   offset: const Offset(0, 8),
@@ -108,7 +108,7 @@ class TournamentsTable extends StatelessWidget {
               color: Theme.of(context)
                   .colorScheme
                   .onSurface
-                  .withValues(alpha: 0.6),
+                  .withOpacity( 0.6),
             ),
             textAlign: TextAlign.center,
           ),
@@ -140,7 +140,7 @@ class TournamentsTable extends StatelessWidget {
   ) {
     return Card(
       elevation: 2,
-      shadowColor: Colors.black.withValues(alpha: 0.1),
+      shadowColor: Colors.black.withOpacity( 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
       ),
@@ -180,10 +180,10 @@ class TournamentsTable extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                       decoration: BoxDecoration(
-                        color: AppTheme.primary.withValues(alpha: 0.1),
+                        color: AppTheme.primary.withOpacity( 0.1),
                         borderRadius: BorderRadius.circular(12.r),
                         border: Border.all(
-                          color: AppTheme.primary.withValues(alpha: 0.3),
+                          color: AppTheme.primary.withOpacity( 0.3),
                           width: 1,
                         ),
                       ),
@@ -214,7 +214,7 @@ class TournamentsTable extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .onSurface
-                          .withValues(alpha: 0.6),
+                          .withOpacity( 0.6),
                       size: 20.w,
                     ),
                     onSelected: (value) {
@@ -262,7 +262,7 @@ class TournamentsTable extends StatelessWidget {
                     width: 40.w,
                     height: 40.w,
                     decoration: BoxDecoration(
-                      color: AppTheme.accent.withValues(alpha: 0.1),
+                      color: AppTheme.accent.withOpacity( 0.1),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: tournament.game.image.isNotEmpty
@@ -299,7 +299,7 @@ class TournamentsTable extends StatelessWidget {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withValues(alpha: 0.6),
+                                .withOpacity( 0.6),
                           ),
                         ),
                         SizedBox(height: 2.h),
@@ -321,10 +321,10 @@ class TournamentsTable extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                     decoration: BoxDecoration(
-                      color: AppTheme.success.withValues(alpha: 0.1),
+                      color: AppTheme.success.withOpacity( 0.1),
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color: AppTheme.success.withValues(alpha: 0.3),
+                        color: AppTheme.success.withOpacity( 0.3),
                         width: 1,
                       ),
                     ),
@@ -359,10 +359,10 @@ class TournamentsTable extends StatelessWidget {
                     child: Container(
                       height: 44.h,
                       decoration: BoxDecoration(
-                        color: AppTheme.primary.withValues(alpha: 0.1),
+                        color: AppTheme.primary.withOpacity( 0.1),
                         borderRadius: BorderRadius.circular(12.r),
                         border: Border.all(
-                          color: AppTheme.primary.withValues(alpha: 0.3),
+                          color: AppTheme.primary.withOpacity( 0.3),
                           width: 1,
                         ),
                       ),
@@ -383,10 +383,10 @@ class TournamentsTable extends StatelessWidget {
                     width: 44.w,
                     height: 44.h,
                     decoration: BoxDecoration(
-                      color: AppTheme.accent.withValues(alpha: 0.1),
+                      color: AppTheme.accent.withOpacity( 0.1),
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color: AppTheme.accent.withValues(alpha: 0.3),
+                        color: AppTheme.accent.withOpacity( 0.3),
                         width: 1,
                       ),
                     ),

@@ -63,11 +63,11 @@ class _LoadingIconState extends State<LoadingIcon>
               height: 60,
               width: 60,
               decoration: BoxDecoration(
-                color: AppTheme.white.withValues(alpha: 0.95),
+                color: AppTheme.white.withOpacity( 0.95),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.primary.withValues(alpha: 0.3),
+                    color: AppTheme.primary.withOpacity( 0.3),
                     blurRadius: 15,
                     spreadRadius: 2,
                   ),

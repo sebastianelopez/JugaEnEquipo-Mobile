@@ -21,19 +21,19 @@ class ProfileElevatedButton extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             AppTheme.primary,
-            AppTheme.primary.withValues(alpha: 0.8),
+            AppTheme.primary.withOpacity( 0.8),
           ],
         ),
         borderRadius: BorderRadius.circular(16.h),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primary.withValues(alpha: 0.4),
+            color: AppTheme.primary.withOpacity( 0.4),
             blurRadius: 12,
             offset: const Offset(0, 6),
             spreadRadius: 0,
           ),
           BoxShadow(
-            color: Colors.white.withValues(alpha: 0.1),
+            color: Colors.white.withOpacity( 0.1),
             blurRadius: 1,
             offset: const Offset(0, 1),
             spreadRadius: 0,
@@ -51,7 +51,7 @@ class ProfileElevatedButton extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.h),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
+                color: Colors.white.withOpacity( 0.3),
                 width: 1,
               ),
             ),

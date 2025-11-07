@@ -30,19 +30,19 @@ class MessagesListItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: isMessageRead
               ? Colors.transparent
-              : AppTheme.primary.withValues(alpha: 0.08),
+              : AppTheme.primary.withOpacity( 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isMessageRead
                 ? Colors.transparent
-                : Colors.white.withValues(alpha: 0.2),
+                : Colors.white.withOpacity( 0.2),
             width: 1,
           ),
           boxShadow: isMessageRead
               ? null
               : [
                   BoxShadow(
-                    color: AppTheme.primary.withValues(alpha: 0.1),
+                    color: AppTheme.primary.withOpacity( 0.1),
                     blurRadius: 12,
                     spreadRadius: 0,
                     offset: const Offset(0, 4),
@@ -101,7 +101,7 @@ class MessagesListItem extends StatelessWidget {
                                     : Theme.of(context)
                                         .colorScheme
                                         .onSurface
-                                        .withValues(alpha: 0.6),
+                                        .withOpacity( 0.6),
                                 fontWeight: isMessageRead
                                     ? FontWeight.bold
                                     : FontWeight.normal),

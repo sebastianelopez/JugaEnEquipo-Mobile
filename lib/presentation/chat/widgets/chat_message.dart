@@ -19,7 +19,7 @@ class ChatMessage extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: (type == "receiver"
-            ? Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2)
+            ? Theme.of(context).colorScheme.secondary.withOpacity( 0.2)
             : Theme.of(context).colorScheme.primary),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -47,8 +47,8 @@ class ChatMessage extends StatelessWidget {
                   ? Theme.of(context)
                       .colorScheme
                       .onSurface
-                      .withValues(alpha: 0.6)
-                  : AppTheme.white.withValues(alpha: 0.6)),
+                      .withOpacity( 0.6)
+                  : AppTheme.white.withOpacity( 0.6)),
             ),
           ),
         ],

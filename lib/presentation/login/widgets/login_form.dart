@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                     hintTextColor: Theme.of(context)
                         .colorScheme
                         .onPrimary
-                        .withValues(alpha: 0.7),
+                        .withOpacity( 0.7),
                     validator: (value) => value != null
                         ? Validators.isEmail(value: value, context: context)
                         : AppLocalizations.of(context)!
@@ -99,7 +99,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                     hintTextColor: Theme.of(context)
                         .colorScheme
                         .onPrimary
-                        .withValues(alpha: 0.7),
+                        .withOpacity( 0.7),
                     validator: (value) {
                       return (value != null && value.length >= 6)
                           ? null

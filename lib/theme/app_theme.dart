@@ -16,7 +16,7 @@ class AppTheme {
   static ThemeData baseTheme(ThemeData theme) {
     return theme.copyWith(
       primaryColor: primary,
-      dividerColor: secondary.withValues(alpha: 0.2),
+      dividerColor: secondary.withOpacity(0.2),
       appBarTheme: const AppBarTheme(backgroundColor: primary, elevation: 0),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: primary, elevation: 5),
@@ -54,9 +54,9 @@ class AppTheme {
       ),
     ),
     chipTheme: ThemeData.light().chipTheme.copyWith(
-          backgroundColor: accent.withValues(alpha: 0.15),
+          backgroundColor: accent.withOpacity(0.15),
           selectedColor: success,
-          disabledColor: secondary.withValues(alpha: 0.2),
+          disabledColor: secondary.withOpacity(0.2),
           checkmarkColor: white,
           labelStyle: const TextStyle(color: secondary),
           deleteIconColor: error,
@@ -66,7 +66,7 @@ class AppTheme {
       thumbColor: WidgetStatePropertyAll(white),
       trackColor: WidgetStatePropertyAll(accent),
     ),
-    dialogTheme: const DialogThemeData(
+    dialogTheme: const DialogTheme(
       backgroundColor: white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -109,9 +109,9 @@ class AppTheme {
       ),
     ),
     chipTheme: ThemeData.dark().chipTheme.copyWith(
-          backgroundColor: accent.withValues(alpha: 0.2),
+          backgroundColor: accent.withOpacity(0.2),
           selectedColor: success,
-          disabledColor: white.withValues(alpha: 0.2),
+          disabledColor: white.withOpacity(0.2),
           checkmarkColor: white,
           labelStyle: const TextStyle(color: white),
           deleteIconColor: error,
@@ -121,7 +121,7 @@ class AppTheme {
       thumbColor: WidgetStatePropertyAll(white),
       trackColor: WidgetStatePropertyAll(accent),
     ),
-    dialogTheme: const DialogThemeData(
+    dialogTheme: const DialogTheme(
       backgroundColor: secondary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),

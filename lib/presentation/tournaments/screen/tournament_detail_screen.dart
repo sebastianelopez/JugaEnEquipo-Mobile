@@ -86,7 +86,7 @@ class TournamentDetailScreen extends StatelessWidget {
               color: Theme.of(context)
                   .colorScheme
                   .onSurface
-                  .withValues(alpha: 0.7),
+                  .withOpacity( 0.7),
             ),
           ),
         ],
@@ -124,7 +124,7 @@ class TournamentDetailScreen extends StatelessWidget {
                         width: 60.w,
                         height: 60.h,
                         decoration: BoxDecoration(
-                          color: AppTheme.accent.withValues(alpha: 0.1),
+                          color: AppTheme.accent.withOpacity( 0.1),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Icon(
@@ -141,7 +141,7 @@ class TournamentDetailScreen extends StatelessWidget {
                   width: 60.w,
                   height: 60.h,
                   decoration: BoxDecoration(
-                    color: AppTheme.accent.withValues(alpha: 0.1),
+                    color: AppTheme.accent.withOpacity( 0.1),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
@@ -171,7 +171,7 @@ class TournamentDetailScreen extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .onSurface
-                            .withValues(alpha: 0.6),
+                            .withOpacity( 0.6),
                       ),
                     ),
                   ],
@@ -219,7 +219,7 @@ class TournamentDetailScreen extends StatelessWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withValues(alpha: 0.7),
+                        .withOpacity( 0.7),
                   ),
                 ),
               ],
@@ -270,7 +270,7 @@ class TournamentDetailScreen extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .outline
-                      .withValues(alpha: 0.2),
+                      .withOpacity( 0.2),
                 ),
               ),
                               child: Text(
@@ -280,7 +280,7 @@ class TournamentDetailScreen extends StatelessWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withValues(alpha: 0.7),
+                        .withOpacity( 0.7),
                   ),
                 ),
             ),
@@ -288,7 +288,7 @@ class TournamentDetailScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: AppTheme.warning.withValues(alpha: 0.1),
+                color: AppTheme.warning.withOpacity( 0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Row(
@@ -417,7 +417,7 @@ class TournamentDetailScreen extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .onSurface
-                      .withValues(alpha: 0.6),
+                      .withOpacity( 0.6),
                 ),
               ),
               Text(

@@ -24,7 +24,7 @@ class NumberAndLabel extends StatelessWidget {
             border: Border(
                 right: hasRightBorder != null && hasRightBorder!
                     ? BorderSide(
-                        color: AppTheme.secondary.withValues(alpha: 0.2))
+                        color: AppTheme.secondary.withOpacity( 0.2))
                     : BorderSide.none)),
         child: Column(
           children: [
@@ -37,7 +37,7 @@ class NumberAndLabel extends StatelessWidget {
               label,
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: AppTheme.secondary.withValues(alpha: 0.7),
+                  color: AppTheme.secondary.withOpacity( 0.7),
                   fontSize: 12.h),
             )
           ],

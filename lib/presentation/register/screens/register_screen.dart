@@ -40,7 +40,7 @@ class RegisterScreen extends StatelessWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .onPrimary
-                        .withValues(alpha: 0.7))),
+                        .withOpacity( 0.7))),
             onPressed: () {
               //hide keyboard
               FocusScope.of(context).unfocus();
@@ -142,7 +142,7 @@ class _RegisterFormState extends State<_RegisterForm>
               hintText: 'First Name',
               prefixIcon: Icons.person_outline,
               textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
+              hintTextColor: AppTheme.white.withOpacity( 0.7),
               validator: (value) {
                 return (value != null && value.length > 2)
                     ? null
@@ -159,7 +159,7 @@ class _RegisterFormState extends State<_RegisterForm>
               hintText: 'Last Name',
               prefixIcon: Icons.person_outline,
               textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
+              hintTextColor: AppTheme.white.withOpacity( 0.7),
               validator: (value) {
                 return (value != null && value.isNotEmpty)
                     ? null
@@ -176,7 +176,7 @@ class _RegisterFormState extends State<_RegisterForm>
               hintText: 'Username',
               prefixIcon: Icons.alternate_email,
               textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
+              hintTextColor: AppTheme.white.withOpacity( 0.7),
               validator: (value) {
                 return (value != null && value.length > 2)
                     ? null
@@ -194,7 +194,7 @@ class _RegisterFormState extends State<_RegisterForm>
               keyboardType: TextInputType.emailAddress,
               prefixIcon: Icons.email_outlined,
               textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
+              hintTextColor: AppTheme.white.withOpacity( 0.7),
               validator: (value) => value != null
                   ? Validators.isEmail(value: value, context: context)
                   : 'Email is required',
@@ -210,7 +210,7 @@ class _RegisterFormState extends State<_RegisterForm>
               obscureText: true,
               prefixIcon: Icons.lock_outline,
               textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
+              hintTextColor: AppTheme.white.withOpacity( 0.7),
               validator: (value) {
                 return (value != null && value.length >= 6)
                     ? null
@@ -228,7 +228,7 @@ class _RegisterFormState extends State<_RegisterForm>
               obscureText: true,
               prefixIcon: Icons.lock_outline,
               textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withValues(alpha: 0.7),
+              hintTextColor: AppTheme.white.withOpacity( 0.7),
               validator: (value) {
                 if (value == null || value.length < 6) {
                   return 'The password must be at least six characters.';

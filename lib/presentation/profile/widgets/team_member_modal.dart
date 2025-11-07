@@ -117,7 +117,7 @@ class TeamMemberModal extends StatelessWidget {
           color: Theme.of(context)
               .colorScheme
               .onSurface
-              .withValues(alpha: 0.7),
+              .withOpacity( 0.7),
         ),
       ),
       trailing: Icon(
@@ -126,7 +126,7 @@ class TeamMemberModal extends StatelessWidget {
         color: Theme.of(context)
             .colorScheme
             .onSurface
-            .withValues(alpha: 0.5),
+            .withOpacity( 0.5),
       ),
     );
   }

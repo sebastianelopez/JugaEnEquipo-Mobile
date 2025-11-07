@@ -31,7 +31,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
           color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
-              color: AppTheme.black.withValues(alpha: 0.2),
+              color: AppTheme.black.withOpacity( 0.2),
               spreadRadius: 0,
               blurRadius: 10,
               offset: const Offset(0, -10),

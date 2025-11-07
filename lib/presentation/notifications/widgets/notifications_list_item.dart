@@ -33,19 +33,19 @@ class NotificationsListItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: isNotificationRead
               ? Colors.transparent
-              : AppTheme.primary.withValues(alpha: 0.08),
+              : AppTheme.primary.withOpacity( 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isNotificationRead
                 ? Colors.transparent
-                : Colors.white.withValues(alpha: 0.2),
+                : Colors.white.withOpacity( 0.2),
             width: 1,
           ),
           boxShadow: isNotificationRead
               ? null
               : [
                   BoxShadow(
-                    color: AppTheme.primary.withValues(alpha: 0.1),
+                    color: AppTheme.primary.withOpacity( 0.1),
                     blurRadius: 12,
                     spreadRadius: 0,
                     offset: const Offset(0, 4),

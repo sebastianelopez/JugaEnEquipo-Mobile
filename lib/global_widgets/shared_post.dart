@@ -25,7 +25,7 @@ class SharedPost extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).shadowColor.withValues(alpha: 0.2),
+                  color: Theme.of(context).shadowColor.withOpacity( 0.2),
                 ),
                 BoxShadow(
                   color: Theme.of(context).colorScheme.surface,

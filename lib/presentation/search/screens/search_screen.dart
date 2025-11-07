@@ -179,15 +179,15 @@ class _SearchResults extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(24.h),
               decoration: BoxDecoration(
-                color: AppTheme.accent.withValues(alpha: 0.15),
+                color: AppTheme.accent.withOpacity( 0.15),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppTheme.accent.withValues(alpha: 0.3),
+                  color: AppTheme.accent.withOpacity( 0.3),
                   width: 2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.accent.withValues(alpha: 0.2),
+                    color: AppTheme.accent.withOpacity( 0.2),
                     blurRadius: 20,
                     spreadRadius: 0,
                     offset: const Offset(0, 8),
@@ -205,7 +205,7 @@ class _SearchResults extends StatelessWidget {
               AppLocalizations.of(context)!.searchUsersTeams,
               style: TextStyle(
                 fontSize: 16.sp,
-                color: AppTheme.secondary.withValues(alpha: 0.7),
+                color: AppTheme.secondary.withOpacity( 0.7),
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -139,12 +139,12 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: _hasError
-                      ? Colors.red.withValues(alpha: 0.8)
+                      ? Colors.red.withOpacity( 0.8)
                       : _isFocused
                           ? Theme.of(context)
                               .colorScheme
                               .primary
-                              .withValues(alpha: 0.8)
+                              .withOpacity( 0.8)
                           : Colors.transparent,
                   width: _hasError || _isFocused ? 2 : 0,
                 ),
@@ -154,7 +154,7 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                           color: Theme.of(context)
                               .colorScheme
                               .primary
-                              .withValues(alpha: 0.3),
+                              .withOpacity( 0.3),
                           blurRadius: 8,
                           spreadRadius: 0,
                           offset: const Offset(0, 2),
@@ -163,7 +163,7 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                     : _hasError
                         ? [
                             BoxShadow(
-                              color: Colors.red.withValues(alpha: 0.3),
+                              color: Colors.red.withOpacity( 0.3),
                               blurRadius: 8,
                               spreadRadius: 0,
                               offset: const Offset(0, 2),
@@ -190,7 +190,7 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                         Theme.of(context)
                             .colorScheme
                             .onPrimary
-                            .withValues(alpha: 0.6),
+                            .withOpacity( 0.6),
                     fontSize: 16.h,
                   ),
                   prefixIcon: widget.prefixIcon != null
@@ -205,7 +205,7 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                                     Theme.of(context)
                                         .colorScheme
                                         .onPrimary
-                                        .withValues(alpha: 0.6),
+                                        .withOpacity( 0.6),
                           ),
                         )
                       : null,
@@ -223,7 +223,7 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                                       Theme.of(context)
                                           .colorScheme
                                           .onPrimary
-                                          .withValues(alpha: 0.6),
+                                          .withOpacity( 0.6),
                             ),
                           ),
                         )
@@ -252,13 +252,13 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                   fillColor: Theme.of(context)
                       .colorScheme
                       .surface
-                      .withValues(alpha: 0.1),
+                      .withOpacity( 0.1),
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 16.w,
                     vertical: 16.h,
                   ),
                   errorStyle: TextStyle(
-                    color: Colors.red.withValues(alpha: 0.8),
+                    color: Colors.red.withOpacity( 0.8),
                     fontSize: 12.h,
                     fontWeight: FontWeight.w500,
                   ),

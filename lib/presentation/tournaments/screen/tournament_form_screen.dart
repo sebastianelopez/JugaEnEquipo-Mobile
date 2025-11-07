@@ -164,7 +164,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -212,7 +212,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -247,7 +247,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -316,7 +316,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -470,7 +470,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           hintText: hint,
           keyboardType: keyboardType ?? TextInputType.text,
           textColor: AppTheme.secondary,
-          hintTextColor: Colors.grey.withValues(alpha: 0.6),
+          hintTextColor: Colors.grey.withOpacity(0.6),
           errorText: error,
           onChanged: onChanged,
           validator: error != null ? (value) => error : null,
@@ -508,12 +508,12 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             border: Border.all(
               color: provider.gameError != null
                   ? AppTheme.error
-                  : Colors.grey.withValues(alpha: 0.3),
+                  : Colors.grey.withOpacity(0.3),
             ),
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonFormField<String>(
-            initialValue: provider.selectedGameId,
+            value: provider.selectedGameId,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding:
@@ -522,7 +522,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             hint: Text(
               l10n.tournamentFormSelectGame,
               style: TextStyle(
-                color: Colors.grey.withValues(alpha: 0.6),
+                color: Colors.grey.withOpacity(0.6),
                 fontSize: 14.sp,
               ),
             ),
@@ -589,11 +589,11 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
         SizedBox(height: 8.h),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+            border: Border.all(color: Colors.grey.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonFormField<String>(
-            initialValue: provider.tournamentType,
+            value: provider.tournamentType,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding:
@@ -655,7 +655,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+              border: Border.all(color: Colors.grey.withOpacity(0.3)),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -675,7 +675,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                       fontSize: 12.sp,
                       color: date != null
                           ? AppTheme.secondary
-                          : Colors.grey.withValues(alpha: 0.6),
+                          : Colors.grey.withOpacity(0.6),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -704,11 +704,11 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
         SizedBox(height: 8.h),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+            border: Border.all(color: Colors.grey.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonFormField<String>(
-            initialValue: provider.registrationDeadline,
+            value: provider.registrationDeadline,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding:
@@ -746,10 +746,10 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.05),
+        color: Colors.grey.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: value ? iconColor.withValues(alpha: 0.3) : Colors.transparent,
+          color: value ? iconColor.withOpacity(0.3) : Colors.transparent,
         ),
       ),
       child: Row(
@@ -757,7 +757,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           Container(
             padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.1),
+              color: iconColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: iconColor, size: 20.w),
@@ -779,7 +779,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                   subtitle,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: Colors.grey.withValues(alpha: 0.7),
+                    color: Colors.grey.withOpacity(0.7),
                   ),
                 ),
               ],
@@ -788,7 +788,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: iconColor,
+            thumbColor: WidgetStateProperty.all(iconColor),
           ),
         ],
       ),

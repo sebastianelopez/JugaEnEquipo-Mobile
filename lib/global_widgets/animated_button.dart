@@ -143,14 +143,14 @@ class _AnimatedButtonState extends State<AnimatedButton>
                         Theme.of(context)
                             .colorScheme
                             .onSurface
-                            .withValues(alpha: 0.5)),
+                            .withOpacity( 0.5)),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: isEnabled && !_isPressed
                     ? [
                         BoxShadow(
                           color: (widget.backgroundColor ??
                                   Theme.of(context).colorScheme.primary)
-                              .withValues(alpha: 0.3),
+                              .withOpacity( 0.3),
                           blurRadius: 8,
                           spreadRadius: 0,
                           offset: const Offset(0, 4),
@@ -185,7 +185,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
                                       Theme.of(context)
                                           .colorScheme
                                           .onPrimary
-                                          .withValues(alpha: 0.8),
+                                          .withOpacity( 0.8),
                                 ),
                               ),
                             ),
@@ -200,7 +200,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
                                   Theme.of(context)
                                       .colorScheme
                                       .onPrimary
-                                      .withValues(alpha: 0.8),
+                                      .withOpacity( 0.8),
                               size: 20.h,
                             ),
                           ),
@@ -219,7 +219,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
                                     Theme.of(context)
                                         .colorScheme
                                         .onPrimary
-                                        .withValues(alpha: 0.8),
+                                        .withOpacity( 0.8),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16.h,
                               ),
