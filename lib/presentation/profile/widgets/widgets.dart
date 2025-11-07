@@ -1,7 +1,12 @@
 export 'package:jugaenequipo/presentation/profile/widgets/profile_modal.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/stats_table.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/stats_cards.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/profile_avatar.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/profile_elevated_button.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/number_and_label.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/team_profile_content.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/team_member_modal.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/user_teams_section.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/social_media_section.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/achievements_section.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/user_posts_section.dart';
