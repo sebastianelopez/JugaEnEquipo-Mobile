@@ -102,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen>
             end: Alignment.bottomRight,
             colors: [
               Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.surface.withOpacity( 0.8),
+              Theme.of(context).colorScheme.surface.withOpacity(0.8),
             ],
           ),
         ),
@@ -118,14 +118,11 @@ class _SplashScreenState extends State<SplashScreen>
                   offset: Offset(0, -40 * (0 - value)),
                   child: Opacity(
                     opacity: value.clamp(0.0, 1.0),
-                    child: Text(
-                      "Juga en Equipo",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.2,
-                      ),
+                    child: Image.asset(
+                      'assets/logo_only_text.png',
+                      width: 300.w,
+                      height: 100.h,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 );
