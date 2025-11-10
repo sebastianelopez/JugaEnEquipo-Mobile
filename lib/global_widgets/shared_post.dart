@@ -13,7 +13,7 @@ class SharedPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imagesUrls = post.resources?.map((e) => e.url).toList();
+    final mediaResources = post.resources;
 
     return ChangeNotifierProvider.value(
       value: PostProvider()..getCommentsQuantity(post.id),
@@ -92,10 +92,10 @@ class SharedPost extends StatelessWidget {
                               style: TextStyle(fontSize: 13.h),
                             ),
                           ),
-                        if (imagesUrls != null && imagesUrls.isNotEmpty)
+                        if (mediaResources != null && mediaResources.isNotEmpty)
                           Container(
                               margin: const EdgeInsets.only(bottom: 8),
-                              child: ImageGrid(images: imagesUrls)),
+                              child: MediaGrid(resources: mediaResources)),
                       ],
                     ),
                   ],
