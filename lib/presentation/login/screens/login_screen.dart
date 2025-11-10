@@ -16,7 +16,16 @@ class LoginScreen extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 400.h,
+            height: 60.h,
+          ),
+          Image.asset(
+            'assets/logo_text_bottom.png',
+            width: 500.w,
+            height: 300.h,
+            fit: BoxFit.contain,
+          ),
+          SizedBox(
+            height: 20.h,
           ),
           CardContainer(
             backgroundColor: Colors.transparent,
@@ -37,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .onPrimary
-                        .withOpacity( 0.7))),
+                        .withOpacity(0.7))),
             onPressed: () {
               //hide keyboard
               FocusScope.of(context).unfocus();

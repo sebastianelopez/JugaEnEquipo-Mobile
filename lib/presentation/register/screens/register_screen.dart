@@ -19,7 +19,16 @@ class RegisterScreen extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 250.h,
+            height: 60.h,
+          ),
+          Image.asset(
+            'assets/logo_text_bottom.png',
+            width: 500.w,
+            height: 300.h,
+            fit: BoxFit.contain,
+          ),
+          SizedBox(
+            height: 20.h,
           ),
           CardContainer(
             backgroundColor: Colors.transparent,
