@@ -36,7 +36,7 @@ class TeamSearchProvider with ChangeNotifier {
         notifyListeners();
 
         // Call the API to search teams
-        final teams = await searchTeams();
+        final teams = await searchTeams(name: query, limit: 3);
 
         if (teams != null) {
           // Filter teams by query (name or description)

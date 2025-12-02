@@ -31,7 +31,7 @@ class SearchProvider with ChangeNotifier {
         _isLoading = true;
         notifyListeners();
 
-        final List<UserModel>? users = await getUsersByUsername(query);
+        final List<UserModel>? users = await getUsersByUsername(query, limit: 3);
         _suggestions
           ..clear()
           ..addAll(users ?? <UserModel>[]);

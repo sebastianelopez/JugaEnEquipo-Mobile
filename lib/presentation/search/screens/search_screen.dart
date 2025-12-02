@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
+import 'package:jugaenequipo/presentation/advanced_search/screens/advanced_search_screen.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
@@ -112,11 +113,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 },
                 onTeamTap: (team) {
-                  // TODO: Navigate to team profile when implemented
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            '${AppLocalizations.of(context)!.teamsSection}: ${team.name}')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileScreen(
+                        teamId: team.id,
+                        team: team,
+                        profileType: ProfileType.team,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -126,7 +131,15 @@ class _SearchScreenState extends State<SearchScreen> {
               padding: EdgeInsets.all(16.0.h),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, 'advanced-search');
+                  final query = _searchController.text.trim();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdvancedSearchScreen(
+                        initialQuery: query.isNotEmpty ? query : null,
+                      ),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primary,
@@ -179,15 +192,15 @@ class _SearchResults extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(24.h),
               decoration: BoxDecoration(
-                color: AppTheme.accent.withOpacity( 0.15),
+                color: AppTheme.accent.withOpacity(0.15),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppTheme.accent.withOpacity( 0.3),
+                  color: AppTheme.accent.withOpacity(0.3),
                   width: 2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.accent.withOpacity( 0.2),
+                    color: AppTheme.accent.withOpacity(0.2),
                     blurRadius: 20,
                     spreadRadius: 0,
                     offset: const Offset(0, 8),
@@ -205,7 +218,7 @@ class _SearchResults extends StatelessWidget {
               AppLocalizations.of(context)!.searchUsersTeams,
               style: TextStyle(
                 fontSize: 16.sp,
-                color: AppTheme.secondary.withOpacity( 0.7),
+                color: AppTheme.secondary.withOpacity(0.7),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -344,7 +357,8 @@ class _SearchResults extends StatelessWidget {
                       : AppLocalizations.of(context)!.pendingStatus,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: (team.verified == true) ? Colors.green : Colors.orange,
+                    color:
+                        (team.verified == true) ? Colors.green : Colors.orange,
                   ),
                 ),
               ],

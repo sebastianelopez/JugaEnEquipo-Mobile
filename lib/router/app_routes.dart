@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/presentation/advanced_search/screens/advanced_search_screen.dart';
 import 'package:jugaenequipo/presentation/chat/screens/chat_screen.dart';
 import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';

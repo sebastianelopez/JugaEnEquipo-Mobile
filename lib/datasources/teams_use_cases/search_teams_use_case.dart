@@ -4,7 +4,7 @@ import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 
 /// Search teams with optional query parameters
-/// 
+///
 /// Parameters:
 /// - [userId]: Filter teams by user ID (member, creator, or leader)
 /// - [mine]: If true, returns only teams where the current user is a member
@@ -12,13 +12,18 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 /// - [tournamentId]: Filter teams by tournament ID
 /// - [leaderId]: Filter teams by leader ID
 /// - [creatorId]: Filter teams by creator ID
+/// - [limit]: Maximum number of results to return
+/// - [offset]: Number of results to skip (for pagination)
 Future<List<TeamModel>?> searchTeams({
+  String? name,
   String? userId,
   bool? mine,
   String? gameId,
   String? tournamentId,
   String? leaderId,
   String? creatorId,
+  int? limit,
+  int? offset,
 }) async {
   try {
     const storage = FlutterSecureStorage();
@@ -39,6 +44,9 @@ Future<List<TeamModel>?> searchTeams({
     if (tournamentId != null) queryParams['tournamentId'] = tournamentId;
     if (leaderId != null) queryParams['leaderId'] = leaderId;
     if (creatorId != null) queryParams['creatorId'] = creatorId;
+    if (limit != null) queryParams['limit'] = limit;
+    if (offset != null) queryParams['offset'] = offset;
+    if (name != null) queryParams['name'] = name;
 
     final response = await APIService.instance.request(
       '/api/teams',
@@ -104,4 +112,3 @@ Future<List<TeamModel>?> searchTeams({
     return null;
   }
 }
-

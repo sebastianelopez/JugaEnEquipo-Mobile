@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_users_by_username_use_case.dart';
+import 'package:jugaenequipo/datasources/teams_use_cases/search_teams_use_case.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/presentation/advanced_search/widgets/widgets.dart';
 
 class AdvancedSearchScreen extends StatefulWidget {
-  const AdvancedSearchScreen({super.key});
+  final String? initialQuery;
+
+  const AdvancedSearchScreen({
+    super.key,
+    this.initialQuery,
+  });
 
   @override
   State<AdvancedSearchScreen> createState() => _AdvancedSearchScreenState();
@@ -24,6 +33,12 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
   String? _selectedTeamGame;
   String? _selectedTeamSize;
   bool _verifiedTeamsOnly = false;
+
+  // Search results
+  List<UserModel> _userResults = [];
+  List<TeamModel> _teamResults = [];
+  bool _isSearchingUsers = false;
+  bool _isSearchingTeams = false;
 
   final List<String> _games = [
     'League of Legends',
@@ -53,10 +68,37 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
   ];
   final List<String> _teamSizes = ['2-3', '4-5', '6+'];
 
+  int get _activeUserFiltersCount {
+    int count = 0;
+    if (_selectedGame != null) count++;
+    if (_selectedRole != null) count++;
+    if (_selectedRank != null) count++;
+    return count;
+  }
+
+  int get _activeTeamFiltersCount {
+    int count = 0;
+    if (_selectedTeamGame != null) count++;
+    if (_selectedTeamSize != null) count++;
+    if (_verifiedTeamsOnly) count++;
+    return count;
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
+    // Set initial query if provided
+    if (widget.initialQuery != null && widget.initialQuery!.isNotEmpty) {
+      _searchController.text = widget.initialQuery!;
+
+      // Perform search automatically after the widget is built
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _performUserSearch();
+        _performTeamSearch();
+      });
+    }
   }
 
   @override
@@ -137,6 +179,10 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.searchPlayersHint,
                 prefixIcon: Icon(Icons.search),
+                suffixIcon: FilterIconWidget(
+                  activeFiltersCount: _activeUserFiltersCount,
+                  onTap: _showUserFiltersModal,
+                ),
                 border: InputBorder.none,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 12.0.h),
@@ -144,38 +190,6 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
             ),
           ),
           SizedBox(height: 24.h),
-
-          // Game filter
-          _buildFilterSection(AppLocalizations.of(context)!.advancedSearchGame,
-              _games, _selectedGame, (value) {
-            setState(() {
-              _selectedGame = value;
-            });
-          }),
-
-          SizedBox(height: 16.h),
-
-          // Role filter
-          _buildFilterSection(AppLocalizations.of(context)!.advancedSearchRole,
-              _roles, _selectedRole, (value) {
-            setState(() {
-              _selectedRole = value;
-            });
-          }),
-
-          SizedBox(height: 16.h),
-
-          // Rank filter
-          _buildFilterSection(
-              AppLocalizations.of(context)!.advancedSearchRanking,
-              _ranks,
-              _selectedRank, (value) {
-            setState(() {
-              _selectedRank = value;
-            });
-          }),
-
-          SizedBox(height: 32.h),
 
           // Search button
           SizedBox(
@@ -190,13 +204,35 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
                   borderRadius: BorderRadius.circular(10.0.h),
                 ),
               ),
-              child: Text(
-                AppLocalizations.of(context)!.advancedSearchPlayersButton,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: _isSearchingUsers
+                  ? SizedBox(
+                      height: 20.h,
+                      width: 20.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : Text(
+                      AppLocalizations.of(context)!.advancedSearchPlayersButton,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+            ),
+          ),
+
+          // Results section
+          SearchResultsSection(
+            isLoading: _isSearchingUsers,
+            hasResults: _userResults.isNotEmpty,
+            sectionTitle: AppLocalizations.of(context)!.playersSection,
+            sectionIcon: Icons.person,
+            resultsBuilder: () => Column(
+              children: _userResults
+                  .map((user) => UserResultCard(user: user))
+                  .toList(),
             ),
           ),
         ],
@@ -221,6 +257,10 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.searchTeamsHint,
                 prefixIcon: Icon(Icons.search),
+                suffixIcon: FilterIconWidget(
+                  activeFiltersCount: _activeTeamFiltersCount,
+                  onTap: _showTeamFiltersModal,
+                ),
                 border: InputBorder.none,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 12.0.h),
@@ -228,50 +268,6 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
             ),
           ),
           SizedBox(height: 24.h),
-
-          // Game filter
-          _buildFilterSection(AppLocalizations.of(context)!.advancedSearchGame,
-              _games, _selectedTeamGame, (value) {
-            setState(() {
-              _selectedTeamGame = value;
-            });
-          }),
-
-          SizedBox(height: 16.h),
-
-          // Team size filter
-          _buildFilterSection(AppLocalizations.of(context)!.teamSizeFilter,
-              _teamSizes, _selectedTeamSize, (value) {
-            setState(() {
-              _selectedTeamSize = value;
-            });
-          }),
-
-          SizedBox(height: 16.h),
-
-          // Verified teams only
-          Row(
-            children: [
-              Checkbox(
-                value: _verifiedTeamsOnly,
-                onChanged: (value) {
-                  setState(() {
-                    _verifiedTeamsOnly = value ?? false;
-                  });
-                },
-                activeColor: AppTheme.primary,
-              ),
-              Text(
-                AppLocalizations.of(context)!.verifiedTeamsOnly,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.grey[700],
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: 32.h),
 
           // Search button
           SizedBox(
@@ -286,13 +282,35 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
                   borderRadius: BorderRadius.circular(10.0.h),
                 ),
               ),
-              child: Text(
-                AppLocalizations.of(context)!.advancedSearchTeamsButton,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: _isSearchingTeams
+                  ? SizedBox(
+                      height: 20.h,
+                      width: 20.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : Text(
+                      AppLocalizations.of(context)!.advancedSearchTeamsButton,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+            ),
+          ),
+
+          // Results section
+          SearchResultsSection(
+            isLoading: _isSearchingTeams,
+            hasResults: _teamResults.isNotEmpty,
+            sectionTitle: AppLocalizations.of(context)!.teamsSection,
+            sectionIcon: Icons.group,
+            resultsBuilder: () => Column(
+              children: _teamResults
+                  .map((team) => TeamResultCard(team: team))
+                  .toList(),
             ),
           ),
         ],
@@ -300,87 +318,95 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen>
     );
   }
 
-  Widget _buildFilterSection(String title, List<String> options,
-      String? selectedValue, Function(String?) onChanged) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey[700],
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Wrap(
-          spacing: 8.w,
-          runSpacing: 8.h,
-          children: options.map((option) {
-            final isSelected = selectedValue == option;
-            return GestureDetector(
-              onTap: () => onChanged(isSelected ? null : option),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.primary : Colors.grey[200],
-                  borderRadius: BorderRadius.circular(20.h),
-                  border: Border.all(
-                    color: isSelected ? AppTheme.primary : Colors.grey[300]!,
-                    width: 1,
-                  ),
-                ),
-                child: Text(
-                  option,
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.grey[700],
-                    fontSize: 14.sp,
-                    fontWeight:
-                        isSelected ? FontWeight.w600 : FontWeight.normal,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
+  void _showUserFiltersModal() {
+    UserFiltersModal.show(
+      context,
+      games: _games,
+      roles: _roles,
+      ranks: _ranks,
+      selectedGame: _selectedGame,
+      selectedRole: _selectedRole,
+      selectedRank: _selectedRank,
+      onGameChanged: (value) => setState(() => _selectedGame = value),
+      onRoleChanged: (value) => setState(() => _selectedRole = value),
+      onRankChanged: (value) => setState(() => _selectedRank = value),
     );
   }
 
-  void _performUserSearch() {
-    // TODO: Implement user search with filters
-    final filters = {
-      'query': _searchController.text,
-      'game': _selectedGame,
-      'role': _selectedRole,
-      'rank': _selectedRank,
-    };
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            '${AppLocalizations.of(context)!.playersSearchResult}: $filters'),
-        backgroundColor: AppTheme.primary,
-      ),
+  void _showTeamFiltersModal() {
+    TeamFiltersModal.show(
+      context,
+      games: _games,
+      teamSizes: _teamSizes,
+      selectedGame: _selectedTeamGame,
+      selectedTeamSize: _selectedTeamSize,
+      verifiedTeamsOnly: _verifiedTeamsOnly,
+      onGameChanged: (value) => setState(() => _selectedTeamGame = value),
+      onTeamSizeChanged: (value) => setState(() => _selectedTeamSize = value),
+      onVerifiedChanged: (value) => setState(() => _verifiedTeamsOnly = value),
     );
   }
 
-  void _performTeamSearch() {
-    // TODO: Implement team search with filters
-    final filters = {
-      'query': _searchController.text,
-      'game': _selectedTeamGame,
-      'size': _selectedTeamSize,
-      'verified': _verifiedTeamsOnly,
-    };
+  Future<void> _performUserSearch() async {
+    setState(() {
+      _isSearchingUsers = true;
+      _userResults = [];
+    });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            '${AppLocalizations.of(context)!.teamsSearchResult}: $filters'),
-        backgroundColor: AppTheme.primary,
-      ),
-    );
+    try {
+      final query = _searchController.text.trim();
+      if (query.isEmpty) {
+        setState(() {
+          _isSearchingUsers = false;
+        });
+        return;
+      }
+
+      final users = await getUsersByUsername(query);
+      setState(() {
+        _userResults = users ?? [];
+        _isSearchingUsers = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isSearchingUsers = false;
+        _userResults = [];
+      });
+    }
+  }
+
+  Future<void> _performTeamSearch() async {
+    setState(() {
+      _isSearchingTeams = true;
+      _teamResults = [];
+    });
+
+    try {
+      final query = _searchController.text.trim();
+
+      final teams = await searchTeams(
+        name: query.isNotEmpty ? query : null,
+        gameId: _selectedTeamGame,
+        limit: 20,
+      );
+
+      // Apply additional filters
+      var filteredTeams = teams ?? [];
+
+      if (_verifiedTeamsOnly) {
+        filteredTeams =
+            filteredTeams.where((team) => team.verified == true).toList();
+      }
+
+      setState(() {
+        _teamResults = filteredTeams;
+        _isSearchingTeams = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isSearchingTeams = false;
+        _teamResults = [];
+      });
+    }
   }
 }
