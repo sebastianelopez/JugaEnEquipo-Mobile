@@ -7,10 +7,17 @@ Future<FollowModel?> getFollowings(String id) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
+
+    if (accessToken == null || accessToken.isEmpty) {
+      if (kDebugMode) {
+        debugPrint('getFollowings: No access token found');
+      }
+      return null;
+    }
+
     final response = await APIService.instance.request(
       '/api/user/$id/followings',
       DioMethod.get,
-      contentType: 'application/json',
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
@@ -19,13 +26,36 @@ Future<FollowModel?> getFollowings(String id) async {
     // Manage the response
     if (response.statusCode == 200) {
       if (kDebugMode) {
-        debugPrint('getFollowings: API call successful: ${response.data}');
+        debugPrint('getFollowings: API call successful');
       }
-      return FollowModel.fromJson(response.data);
+
+      // Validate response structure
+      if (response.data == null) {
+        if (kDebugMode) {
+          debugPrint('getFollowings: Response data is null');
+        }
+        return null;
+      }
+
+      try {
+        return FollowModel.fromJson(response.data);
+      } catch (e) {
+        if (kDebugMode) {
+          debugPrint('getFollowings: Error parsing response: $e');
+        }
+        return null;
+      }
+    } else if (response.statusCode == 401) {
+      // Unauthorized
+      if (kDebugMode) {
+        debugPrint('getFollowings: Unauthorized - invalid token');
+      }
+      return null;
     } else {
       // Error: Manage the error response
       if (kDebugMode) {
-        debugPrint('getFollowings: API call failed: ${response.statusMessage}');
+        debugPrint(
+            'getFollowings: API call failed with status ${response.statusCode}: ${response.statusMessage}');
       }
       return null;
     }
