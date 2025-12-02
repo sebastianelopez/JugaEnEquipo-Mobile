@@ -4,41 +4,49 @@ class TeamProfileModel extends TeamModel {
   final List<UserModel> members;
   final int totalTournaments;
   final int totalWins;
-  final String? description;
-  final DateTime createdAt;
 
   TeamProfileModel({
     required super.id,
     required super.name,
-    required super.membersIds,
-    super.teamImage,
+    super.description,
+    super.image,
+    required super.creatorId,
+    required super.leaderId,
+    required super.createdAt,
+    required super.updatedAt,
+    super.deletedAt,
     required super.games,
-    required super.verified,
+    super.membersIds,
+    super.verified,
     required this.members,
     this.totalTournaments = 0,
     this.totalWins = 0,
-    this.description,
-    required this.createdAt,
   });
 
   factory TeamProfileModel.fromJson(Map<String, dynamic> json) {
+    // Parse base TeamModel fields
+    final baseTeam = TeamModel.fromJson(json);
+
     return TeamProfileModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      membersIds: json['membersIds'] as List<String>,
-      teamImage: json['teamImage'] != null ? json['teamImage'] as String : null,
-      games: (json['games'] as List<dynamic>)
-          .map((game) => GameModel.fromJson(game))
-          .toList(),
-      verified: json['verified'] as bool,
+      id: baseTeam.id,
+      name: baseTeam.name,
+      description: baseTeam.description,
+      image: baseTeam.image,
+      creatorId: baseTeam.creatorId,
+      leaderId: baseTeam.leaderId,
+      createdAt: baseTeam.createdAt,
+      updatedAt: baseTeam.updatedAt,
+      deletedAt: baseTeam.deletedAt,
+      games: baseTeam.games,
+      membersIds: baseTeam.membersIds,
+      verified: baseTeam.verified,
       members: (json['members'] as List<dynamic>?)
-              ?.map((member) => UserModel.fromJson(member))
+              ?.map((member) =>
+                  UserModel.fromJson(member as Map<String, dynamic>))
               .toList() ??
           [],
       totalTournaments: json['totalTournaments'] as int? ?? 0,
       totalWins: json['totalWins'] as int? ?? 0,
-      description: json['description'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
 

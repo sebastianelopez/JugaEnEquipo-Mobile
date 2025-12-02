@@ -1,6 +1,8 @@
 export 'package:jugaenequipo/datasources/models/resource_model.dart';
 export 'package:jugaenequipo/datasources/models/game_model.dart';
 export 'package:jugaenequipo/datasources/models/tournament_model.dart';
+export 'package:jugaenequipo/datasources/models/tournament_status_model.dart';
+export 'package:jugaenequipo/datasources/models/tournament_request_model.dart';
 export 'package:jugaenequipo/datasources/models/notification_model.dart';
 export 'package:jugaenequipo/datasources/models/chat/chat_message_model.dart';
 export 'package:jugaenequipo/datasources/models/chat/chat_user_model.dart';
@@ -9,5 +11,6 @@ export 'package:jugaenequipo/datasources/models/post/post_model.dart';
 export 'package:jugaenequipo/datasources/models/team_model.dart';
 export 'package:jugaenequipo/datasources/models/team_profile_model.dart';
 export 'package:jugaenequipo/datasources/models/user_model.dart';
+export 'package:jugaenequipo/datasources/models/social_network_model.dart';
 export 'package:jugaenequipo/datasources/models/main_navigation_option_model.dart';
 export 'package:jugaenequipo/datasources/models/menu_option_model.dart';

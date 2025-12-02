@@ -513,7 +513,11 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButtonFormField<String>(
-            value: provider.selectedGameId,
+            value: provider.selectedGameId != null &&
+                    provider.availableGames
+                        .any((game) => game.id == provider.selectedGameId)
+                ? provider.selectedGameId
+                : null,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding:
@@ -531,16 +535,38 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                 value: game.id,
                 child: Row(
                   children: [
-                    if (game.image.isNotEmpty)
-                      Image.asset(
-                        game.image,
-                        width: 24.w,
-                        height: 24.w,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.sports_esports,
-                          size: 24.w,
-                          color: AppTheme.accent,
-                        ),
+                    if (game.image != null && game.image!.isNotEmpty)
+                      game.image!.startsWith('http://') ||
+                              game.image!.startsWith('https://')
+                          ? Image.network(
+                              game.image!,
+                              width: 24.w,
+                              height: 24.w,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(
+                                Icons.sports_esports,
+                                size: 24.w,
+                                color: AppTheme.accent,
+                              ),
+                            )
+                          : Image.asset(
+                              game.image!,
+                              width: 24.w,
+                              height: 24.w,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(
+                                Icons.sports_esports,
+                                size: 24.w,
+                                color: AppTheme.accent,
+                              ),
+                            )
+                    else
+                      Icon(
+                        Icons.sports_esports,
+                        size: 24.w,
+                        color: AppTheme.accent,
                       ),
                     SizedBox(width: 12.w),
                     Text(
@@ -627,6 +653,17 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
     required AppLocalizations l10n,
     required TournamentManagementProvider provider,
   }) {
+    final isEditing = provider.isEditing;
+    final now = DateTime.now();
+    final initialDate = date ?? now.add(const Duration(days: 1));
+
+    // When editing, allow past dates if the tournament already has a past date
+    // When creating, only allow future dates
+    final firstDate = isEditing && date != null && date.isBefore(now)
+        ? date.subtract(
+            const Duration(days: 365)) // Allow 1 year before the existing date
+        : now; // For new tournaments, only allow future dates
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -643,9 +680,9 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           onTap: () async {
             final selectedDate = await showDatePicker(
               context: context,
-              initialDate: date ?? DateTime.now().add(const Duration(days: 1)),
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 365)),
+              initialDate: initialDate,
+              firstDate: firstDate,
+              lastDate: now.add(const Duration(days: 365)),
             );
             if (selectedDate != null) {
               onDateSelected(selectedDate);

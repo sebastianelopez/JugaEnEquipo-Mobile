@@ -127,7 +127,7 @@ class UserTeamsSection extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                if (team.verified) ...[
+                if (team.verified == true) ...[
                   SizedBox(width: 4.w),
                   Icon(
                     Icons.verified_rounded,

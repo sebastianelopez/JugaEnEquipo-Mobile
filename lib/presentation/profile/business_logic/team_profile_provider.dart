@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/datasources/teams_use_cases/get_team_by_id_use_case.dart';
+import 'package:jugaenequipo/datasources/teams_use_cases/get_team_members_use_case.dart';
 
 class TeamProfileProvider extends ChangeNotifier {
   final String teamId;
-  final TeamModel? team; // Add team parameter
+  final TeamModel? team; // Optional team data if already available
 
   TeamProfileModel? teamProfile;
   bool isLoading = true;
@@ -11,124 +13,100 @@ class TeamProfileProvider extends ChangeNotifier {
 
   TeamProfileProvider({
     required this.teamId,
-    this.team, // Add team parameter
+    this.team,
   }) {
     _loadData();
   }
 
   Future<void> _loadData() async {
     try {
-      // TODO: Implementar llamada a API para obtener perfil del team
-      // Por ahora usamos datos mock
-      await _loadMockData();
+      isLoading = true;
+      error = null;
+      notifyListeners();
+
+      // If we already have team data, use it; otherwise fetch from API
+      TeamModel? teamData = team;
+
+      if (teamData == null) {
+        teamData = await getTeamById(teamId);
+      }
+
+      if (teamData == null) {
+        error = 'No se pudo cargar el equipo';
+        isLoading = false;
+        notifyListeners();
+        return;
+      }
+
+      // Load team members from API
+      if (kDebugMode) {
+        debugPrint('TeamProfileProvider: Loading members for teamId: $teamId');
+      }
+
+      List<UserModel> members = [];
+      try {
+        final membersResult = await getTeamMembers(teamId);
+
+        if (kDebugMode) {
+          debugPrint(
+              'TeamProfileProvider: getTeamMembers returned: ${membersResult != null ? membersResult.length : "null"} members');
+          if (membersResult != null) {
+            debugPrint(
+                'TeamProfileProvider: Members list: ${membersResult.map((m) => m.userName).toList()}');
+            if (membersResult.isNotEmpty) {
+              debugPrint(
+                  'TeamProfileProvider: First member: ${membersResult.first.userName}, id: ${membersResult.first.id}');
+            } else {
+              debugPrint('TeamProfileProvider: Members list is empty!');
+            }
+          } else {
+            debugPrint(
+                'TeamProfileProvider: Members is null - API call may have failed');
+          }
+        }
+
+        members = membersResult ?? [];
+      } catch (e) {
+        if (kDebugMode) {
+          debugPrint('TeamProfileProvider: Exception loading members: $e');
+        }
+        // Continue with empty members list if loading fails
+        members = [];
+      }
+
+      // Convert TeamModel to TeamProfileModel
+      teamProfile = TeamProfileModel(
+        id: teamData.id,
+        name: teamData.name,
+        description: teamData.description,
+        image: teamData.image,
+        creatorId: teamData.creatorId,
+        leaderId: teamData.leaderId,
+        createdAt: teamData.createdAt,
+        updatedAt: teamData.updatedAt,
+        deletedAt: teamData.deletedAt,
+        games: teamData.games,
+        membersIds: teamData.membersIds,
+        verified: teamData.verified,
+        members: members,
+        totalTournaments: 0, // TODO: Load from API when endpoint is available
+        totalWins: 0, // TODO: Load from API when endpoint is available
+      );
+
+      if (kDebugMode) {
+        debugPrint(
+            'TeamProfileProvider: TeamProfile created with ${teamProfile!.members.length} members');
+        debugPrint(
+            'TeamProfileProvider: TeamProfile members IDs: ${teamProfile!.members.map((m) => m.id).toList()}');
+      }
+
+      error = null;
     } catch (e) {
       error = 'Error: ${e.toString()}';
       debugPrint('Error loading team profile: $e');
     } finally {
       isLoading = false;
       notifyListeners();
-    }
-  }
-
-  Future<void> _loadMockData() async {
-    // Simular delay de API
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    // Si tenemos datos del equipo, usarlos; si no, crear datos mock
-    if (team != null) {
-      // Usar los datos reales del equipo
-      teamProfile = TeamProfileModel(
-        id: team!.id,
-        name: team!.name,
-        membersIds: team!.membersIds,
-        teamImage: team!.teamImage, // ✅ Incluir la imagen del equipo
-        games: team!.games,
-        verified: team!.verified,
-        members: [
-          // Crear miembros mock basados en membersIds
-          UserModel(
-            id: '1',
-            firstName: 'John',
-            lastName: 'Doe',
-            userName: 'johndoe',
-            email: 'john@example.com',
-            profileImage: 'assets/user_image.jpg',
-          ),
-          UserModel(
-            id: '2',
-            firstName: 'Jane',
-            lastName: 'Smith',
-            userName: 'janesmith',
-            email: 'jane@example.com',
-            profileImage: 'assets/user_image.jpg',
-          ),
-          UserModel(
-            id: '3',
-            firstName: 'Bob',
-            lastName: 'Johnson',
-            userName: 'bobjohnson',
-            email: 'bob@example.com',
-            profileImage: 'assets/user_image.jpg',
-          ),
-        ],
-        totalTournaments: 15,
-        totalWins: 8,
-        description:
-            'Un equipo competitivo con experiencia en torneos regionales.',
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-      );
-    } else {
-      // Fallback a datos mock si no hay equipo
-      teamProfile = TeamProfileModel(
-        id: teamId,
-        name: 'Team Mock',
-        membersIds: ['1', '2', '3'],
-        teamImage: 'assets/team_image.jpg', // ✅ Imagen mock por defecto
-        games: [
-          GameModel(
-            id: '1',
-            name: 'Valorant',
-            image: 'assets/game_image.jpg',
-          ),
-          GameModel(
-            id: '2',
-            name: 'CS:GO',
-            image: 'assets/game_image.jpg',
-          ),
-        ],
-        verified: true,
-        members: [
-          UserModel(
-            id: '1',
-            firstName: 'John',
-            lastName: 'Doe',
-            userName: 'johndoe',
-            email: 'john@example.com',
-            profileImage: 'assets/user_image.jpg',
-          ),
-          UserModel(
-            id: '2',
-            firstName: 'Jane',
-            lastName: 'Smith',
-            userName: 'janesmith',
-            email: 'jane@example.com',
-            profileImage: 'assets/user_image.jpg',
-          ),
-          UserModel(
-            id: '3',
-            firstName: 'Bob',
-            lastName: 'Johnson',
-            userName: 'bobjohnson',
-            email: 'bob@example.com',
-            profileImage: 'assets/user_image.jpg',
-          ),
-        ],
-        totalTournaments: 15,
-        totalWins: 8,
-        description:
-            'Un equipo competitivo de Valorant con experiencia en torneos regionales.',
-        createdAt: DateTime.now().subtract(const Duration(days: 180)),
-      );
     }
   }
 

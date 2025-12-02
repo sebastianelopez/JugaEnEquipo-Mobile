@@ -5,12 +5,51 @@ import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/teams/business_logic/teams_screen_provider.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/datasources/teams_use_cases/get_team_members_use_case.dart';
 import 'package:provider/provider.dart';
 
-class TeamCard extends StatelessWidget {
+class TeamCard extends StatefulWidget {
   final TeamModel team;
 
   const TeamCard({super.key, required this.team});
+
+  @override
+  State<TeamCard> createState() => _TeamCardState();
+}
+
+class _TeamCardState extends State<TeamCard> {
+  List<UserModel>? _members;
+  bool _isLoadingMembers = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMembers();
+  }
+
+  Future<void> _loadMembers() async {
+    if (_members != null) return; // Already loaded
+    
+    setState(() {
+      _isLoadingMembers = true;
+    });
+
+    try {
+      final members = await getTeamMembers(widget.team.id);
+      if (mounted) {
+        setState(() {
+          _members = members;
+          _isLoadingMembers = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoadingMembers = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +76,8 @@ class TeamCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ProfileScreen(
-                teamId: team.id,
-                team: team,
+                teamId: widget.team.id,
+                team: widget.team,
                 profileType: ProfileType.team,
               ),
             ),
@@ -81,7 +120,7 @@ class TeamCard extends StatelessWidget {
               ),
 
               // Top section with verification badge
-              if (team.verified)
+              if (widget.team.verified == true)
                 Positioned(
                   top: 16.h,
                   right: 16.w,
@@ -125,7 +164,7 @@ class TeamCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        team.name,
+                        widget.team.name,
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.w800,
@@ -164,7 +203,7 @@ class TeamCard extends StatelessWidget {
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
-                                  '${team.membersIds.length}',
+                                  '${_members?.length ?? widget.team.membersIds?.length ?? 0}',
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w700,
@@ -175,42 +214,10 @@ class TeamCard extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 12.w),
-                          if (team.membersIds.isNotEmpty)
+                          if ((_members != null && _members!.isNotEmpty) ||
+                              (widget.team.membersIds != null && widget.team.membersIds!.isNotEmpty))
                             Expanded(
-                              child: Row(
-                                children: [
-                                  ...List.generate(
-                                    team.membersIds.length > 4
-                                        ? 4
-                                        : team.membersIds.length,
-                                    (index) => Container(
-                                      margin: EdgeInsets.only(right: 6.w),
-                                      child: CircleAvatar(
-                                        radius: 14.r,
-                                        backgroundColor:
-                                            Colors.white.withOpacity( 0.9),
-                                        child: Icon(
-                                          Icons.person,
-                                          color: AppTheme.primary,
-                                          size: 16.w,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  if (team.membersIds.length > 4)
-                                    Container(
-                                      margin: EdgeInsets.only(left: 4.w),
-                                      child: Text(
-                                        '+${team.membersIds.length - 4}',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
+                              child: _buildMembersAvatars(),
                             ),
                         ],
                       ),
@@ -265,7 +272,7 @@ class TeamCard extends StatelessWidget {
   }
 
   Widget _buildGamesBadges() {
-    if (team.games.isEmpty) {
+    if (widget.team.games.isEmpty) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
         decoration: BoxDecoration(
@@ -302,7 +309,7 @@ class TeamCard extends StatelessWidget {
     }
 
     // Show first game as main badge with additional indicator
-    final mainGame = team.games.first;
+    final mainGame = widget.team.games.first;
     return Row(
       children: [
         // Main game badge - flexible to prevent overflow
@@ -347,7 +354,7 @@ class TeamCard extends StatelessWidget {
         ),
 
         // Additional games indicator - fixed size
-        if (team.games.length > 1) ...[
+        if (widget.team.games.length > 1) ...[
           SizedBox(width: 6.w),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
@@ -356,7 +363,7 @@ class TeamCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
-              '+${team.games.length - 1}',
+              '+${widget.team.games.length - 1}',
               style: TextStyle(
                 fontSize: 9.sp,
                 fontWeight: FontWeight.w600,
@@ -369,16 +376,91 @@ class TeamCard extends StatelessWidget {
     );
   }
 
+  Widget _buildMembersAvatars() {
+    final membersToShow = _members ?? [];
+    final maxToShow = 4;
+    final totalCount = membersToShow.isNotEmpty 
+        ? membersToShow.length 
+        : (widget.team.membersIds?.length ?? 0);
+
+    if (totalCount == 0) {
+      return const SizedBox.shrink();
+    }
+
+    return Row(
+      children: [
+        ...List.generate(
+          membersToShow.length > maxToShow ? maxToShow : membersToShow.length,
+          (index) {
+            final member = membersToShow[index];
+            return Container(
+              margin: EdgeInsets.only(right: 6.w),
+              child: CircleAvatar(
+                radius: 14.r,
+                backgroundColor: Colors.white.withOpacity(0.9),
+                backgroundImage: member.profileImage != null &&
+                        (member.profileImage!.startsWith('http://') ||
+                            member.profileImage!.startsWith('https://'))
+                    ? NetworkImage(member.profileImage!)
+                    : null,
+                child: member.profileImage == null ||
+                        (!member.profileImage!.startsWith('http://') &&
+                            !member.profileImage!.startsWith('https://'))
+                    ? Icon(
+                        Icons.person,
+                        color: AppTheme.primary,
+                        size: 16.w,
+                      )
+                    : null,
+              ),
+            );
+          },
+        ),
+        // Show placeholder avatars if members are still loading
+        if (_isLoadingMembers && membersToShow.isEmpty)
+          ...List.generate(
+            widget.team.membersIds != null && widget.team.membersIds!.length > maxToShow
+                ? maxToShow
+                : (widget.team.membersIds?.length ?? 0),
+            (index) => Container(
+              margin: EdgeInsets.only(right: 6.w),
+              child: CircleAvatar(
+                radius: 14.r,
+                backgroundColor: Colors.white.withOpacity(0.9),
+                child: Icon(
+                  Icons.person,
+                  color: AppTheme.primary,
+                  size: 16.w,
+                ),
+              ),
+            ),
+          ),
+        if (totalCount > maxToShow)
+          Container(
+            margin: EdgeInsets.only(left: 4.w),
+            child: Text(
+              '+${totalCount - maxToShow}',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
   Widget _buildTeamImageWithOverlay() {
-    if (team.teamImage != null &&
-        team.teamImage!.isNotEmpty &&
-        (team.teamImage!.startsWith('http://') ||
-            team.teamImage!.startsWith('https://'))) {
+    if (widget.team.image != null &&
+        widget.team.image!.isNotEmpty &&
+        (widget.team.image!.startsWith('http://') ||
+            widget.team.image!.startsWith('https://'))) {
       return Stack(
         children: [
           Positioned.fill(
             child: Image.network(
-              team.teamImage!,
+              widget.team.image!,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,

@@ -20,16 +20,17 @@ class Teams extends StatelessWidget {
             7,
             TeamModel(
                 id: '',
-                name: 'aaaaaaaaaaaaaaaaa',
-                membersIds: ["1", "2", "3"],
+                name: 'Loading...',
+                creatorId: '',
+                leaderId: '',
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
                 games: [
                   GameModel(
                     id: '',
-                    name: 'aaaaaaaaaaaaaaaaa',
-                    image: 'aaaaaaaaaaaaaaaaa',
+                    name: 'Loading...',
                   ),
-                ],
-                verified: false))
+                ]))
         : teamProvider.teams;
 
     return Stack(

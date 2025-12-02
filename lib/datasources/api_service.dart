@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jugaenequipo/datasources/refresh_token_interceptor.dart';
 
-enum DioMethod { post, get, put, delete }
+enum DioMethod { post, get, put, delete, patch }
 
 enum Result { success, unauthorized, error }
 
@@ -75,23 +75,33 @@ class APIService {
           );
           break;
         case DioMethod.post:
-          return await _dio.post(
+          response = await _dio.post(
             endpoint,
             data: param ?? formData,
             options: Options(responseType: responseType),
           );
+          break;
         case DioMethod.put:
-          return await _dio.put(
+          response = await _dio.put(
             endpoint,
             data: param ?? formData,
             options: Options(responseType: responseType),
           );
+          break;
+        case DioMethod.patch:
+          response = await _dio.patch(
+            endpoint,
+            data: param ?? formData,
+            options: Options(responseType: responseType),
+          );
+          break;
         case DioMethod.delete:
-          return await _dio.delete(
+          response = await _dio.delete(
             endpoint,
             data: param ?? formData,
             options: Options(responseType: responseType),
           );
+          break;
         default:
           throw Exception('Invalid method');
       }

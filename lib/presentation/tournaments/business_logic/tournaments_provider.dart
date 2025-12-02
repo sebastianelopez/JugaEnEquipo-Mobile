@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/datasources/tournaments_use_cases/search_tournaments_use_case.dart';
 
 class TournamentsProvider extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -9,102 +11,74 @@ class TournamentsProvider extends ChangeNotifier {
   }
 
   bool isLoading = false;
-
-  List<TournamentModel> tournamentsMocks = [
-    TournamentModel(
-      id: "asdas353",
-      title: 'Overwatch deathmatch',
-      game: GameModel(id: '1223', name: 'Overwatch', image: ''),
-      isOfficial: true,
-      registeredPlayersIds: [
-        "asda54498",
-        "asda544998",
-      ],
-    ),
-    TournamentModel(
-      id: "asdas343",
-      title: 'CS PVP',
-      game: GameModel(id: '123', name: 'Counter Strike', image: ''),
-      isOfficial: true,
-      registeredPlayersIds: [
-        "asda4544968",
-        "asdau54498",
-        "asda5t4498",
-        "asda54p498",
-      ],
-    ),
-    TournamentModel(
-      id: "asdas343",
-      title: 'CS PVP',
-      game: GameModel(id: '123', name: 'Counter Strike', image: ''),
-      isOfficial: true,
-      registeredPlayersIds: [
-        "asda4544968",
-        "asdau54498",
-        "asda5t4498",
-        "asda54p498",
-      ],
-    ),
-    TournamentModel(
-      id: "asdas343",
-      title: 'CS PVP',
-      game: GameModel(id: '123', name: 'Counter Strike', image: ''),
-      isOfficial: true,
-      registeredPlayersIds: [
-        "asda4544968",
-        "asdau54498",
-        "asda5t4498",
-        "asda54p498",
-      ],
-    )
-  ];
+  String? error;
+  List<TournamentModel> tournaments = [];
 
   Future<void> initData() async {
-    isLoading = true;
     scrollController.addListener(() {
-      if ((scrollController.position.pixels + 500) >=
-          scrollController.position.maxScrollExtent) {
+      if (scrollController.hasClients &&
+          (scrollController.position.pixels + 500) >=
+              scrollController.position.maxScrollExtent) {
         fetchData();
       }
     });
-    isLoading = false;
-    notifyListeners();
+    
+    await fetchData();
   }
 
   Future<void> onRefresh() async {
-    await Future.delayed(const Duration(seconds: 2));
-    /* final lastId = imageIds.last;
-    imageIds.clear();
-    imageIds.add(lastId + 1); */
-    // add5();
+    await fetchData();
   }
 
-  Future fetchData() async {
+  Future<void> fetchData() async {
     if (isLoading) return;
 
     isLoading = true;
-    /* setState(() {}); */
+    error = null;
+    notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 3));
-
-    add5();
-
-    isLoading = false;
-    /* setState(() {}); */
-
-    if (scrollController.position.pixels + 100 <=
-        scrollController.position.maxScrollExtent) {
-      return;
+    try {
+      if (kDebugMode) {
+        debugPrint('TournamentsProvider: Starting to fetch tournaments...');
+      }
+      
+      final tournamentsResult = await searchTournaments();
+      
+      if (kDebugMode) {
+        debugPrint('TournamentsProvider: searchTournaments returned: ${tournamentsResult != null ? "${tournamentsResult.length} tournaments" : "null"}');
+      }
+      
+      if (tournamentsResult != null) {
+        tournaments = tournamentsResult;
+        error = null;
+        
+        if (kDebugMode) {
+          debugPrint('TournamentsProvider: Successfully loaded ${tournaments.length} tournaments');
+        }
+      } else {
+        // Si retorna null, hubo un error en la llamada
+        tournaments = [];
+        error = 'No se pudieron cargar los torneos';
+        if (kDebugMode) {
+          debugPrint('TournamentsProvider: searchTournaments returned null - error occurred');
+        }
+      }
+    } catch (e, stackTrace) {
+      error = 'Error al cargar torneos: ${e.toString()}';
+      tournaments = [];
+      if (kDebugMode) {
+        debugPrint('TournamentsProvider: Error loading tournaments: $e');
+        debugPrint('Stack trace: $stackTrace');
+      }
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
-    scrollController.animateTo(scrollController.position.pixels + 120,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.fastOutSlowIn);
   }
 
-  void add5() {
-    /* final lastId = imageIds.last;
-
-    imageIds.addAll([1, 2, 3, 4, 5].map((e) => lastId + e));
-    setState(() {}); */
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 }

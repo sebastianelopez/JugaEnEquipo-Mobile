@@ -333,18 +333,18 @@ class _SearchResults extends StatelessWidget {
             Row(
               children: [
                 Icon(
-                  team.verified ? Icons.verified : Icons.pending,
+                  (team.verified == true) ? Icons.verified : Icons.pending,
                   size: 16.h,
-                  color: team.verified ? Colors.green : Colors.orange,
+                  color: (team.verified == true) ? Colors.green : Colors.orange,
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  team.verified
+                  (team.verified == true)
                       ? AppLocalizations.of(context)!.verifiedStatus
                       : AppLocalizations.of(context)!.pendingStatus,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: team.verified ? Colors.green : Colors.orange,
+                    color: (team.verified == true) ? Colors.green : Colors.orange,
                   ),
                 ),
               ],

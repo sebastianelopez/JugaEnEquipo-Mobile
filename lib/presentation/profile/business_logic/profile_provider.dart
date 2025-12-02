@@ -5,12 +5,17 @@ import 'package:jugaenequipo/datasources/models/follow/follow_user_model.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/models/post/post_model.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/get_posts_by_user_use_case.dart';
-import 'package:jugaenequipo/datasources/teams_use_cases/get_initial_teams_user_use_case.dart';
+import 'package:jugaenequipo/datasources/teams_use_cases/search_teams_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followers_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followings_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/follow_user_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/unfollow_user_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_user_social_networks_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_user_background_image_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/update_user_description_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/add_social_network_use_case.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/remove_social_network_use_case.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/stats_cards.dart';
 
 enum ModalType { followers, followings, prizes }
@@ -33,9 +38,11 @@ class ProfileProvider extends ChangeNotifier {
   List<PostModel> posts = [];
   List<TeamModel> teams = [];
   String? description;
+  String? backgroundImage;
   int tournamentWins = 0;
   DateTime? memberSince;
   Map<String, String> socialMedia = {};
+  List<SocialNetworkModel> socialNetworks = [];
   List<Map<String, dynamic>> achievements = [];
   List<GameStat> stats = [];
 
@@ -66,8 +73,13 @@ class ProfileProvider extends ChangeNotifier {
         _loadFollowers(),
         _loadPosts(),
         _loadTeams(),
+        _loadSocialNetworks(),
+        _loadBackgroundImage(),
       ]);
 
+      // Load description and memberSince from user model
+      _loadUserData();
+      
       // Load mock data for fields not yet in API
       _loadMockAdditionalData();
     } catch (e) {
@@ -181,14 +193,10 @@ class ProfileProvider extends ChangeNotifier {
     if (profileUser == null) return;
 
     try {
-      // For now, load all teams and filter by user membership
-      // TODO: Implement API endpoint to get teams by user ID
-      final teamsResponse = await getInitialTeams();
+      // Use searchTeams with userId to get teams for this user
+      final teamsResponse = await searchTeams(userId: profileUser!.id);
       if (teamsResponse != null) {
-        // Filter teams where user is a member
-        teams = teamsResponse.where((team) {
-          return team.membersIds.contains(profileUser!.id);
-        }).toList();
+        teams = teamsResponse;
         notifyListeners();
       }
     } catch (e) {
@@ -196,21 +204,79 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> _loadSocialNetworks() async {
+    if (profileUser == null) return;
+
+    try {
+      final socialNetworksResponse = await getUserSocialNetworks(profileUser!.id);
+      if (socialNetworksResponse != null) {
+        socialNetworks = socialNetworksResponse;
+        // Convert social networks to Map for compatibility with existing UI
+        socialMedia = {
+          for (var network in socialNetworksResponse)
+            if (network.fullUrl != null) network.name: network.fullUrl!
+        };
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error loading social networks: $e');
+    }
+  }
+
+  Future<void> _loadBackgroundImage() async {
+    if (profileUser == null) return;
+
+    try {
+      // First check if backgroundImage is already in user model
+      if (profileUser!.backgroundImage != null && profileUser!.backgroundImage!.isNotEmpty) {
+        backgroundImage = profileUser!.backgroundImage;
+        debugPrint('Background image loaded from user model: $backgroundImage');
+        notifyListeners();
+        return;
+      }
+      
+      // If not in user model, try to fetch from API
+      final bgImage = await getUserBackgroundImage(profileUser!.id);
+      if (bgImage != null && bgImage.isNotEmpty) {
+        backgroundImage = bgImage;
+        debugPrint('Background image loaded from API: $backgroundImage');
+        notifyListeners();
+      } else {
+        debugPrint('No background image found for user ${profileUser!.id}');
+      }
+    } catch (e) {
+      debugPrint('Error loading background image: $e');
+    }
+  }
+
+  void _loadUserData() {
+    if (profileUser == null) return;
+
+    // Load description from user model
+    if (profileUser!.description != null) {
+      description = profileUser!.description;
+    }
+
+    // Load memberSince from user model
+    if (profileUser!.createdAt != null) {
+      memberSince = profileUser!.createdAt;
+    }
+
+    notifyListeners();
+  }
+
   void _loadMockAdditionalData() {
     if (profileUser == null) return;
 
     // Mock data - these should come from API eventually
-    description =
-        'Passionate gamer and esports enthusiast. Always looking for new challenges and opportunities to improve.';
+    if (description == null) {
+      description =
+          'Passionate gamer and esports enthusiast. Always looking for new challenges and opportunities to improve.';
+    }
     tournamentWins = 12;
-    memberSince = DateTime.now().subtract(const Duration(days: 365));
-
-    // Mock social media links
-    socialMedia = {
-      'Twitter': 'https://twitter.com/${profileUser!.userName}',
-      'Discord': 'https://discord.gg/${profileUser!.userName}',
-      'Twitch': 'https://twitch.tv/${profileUser!.userName}',
-    };
+    if (memberSince == null) {
+      memberSince = DateTime.now().subtract(const Duration(days: 365));
+    }
 
     // Mock achievements
     achievements = [
@@ -262,5 +328,50 @@ class ProfileProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     await _loadData();
+  }
+
+  // Update description
+  Future<bool> updateDescription(String newDescription) async {
+    try {
+      final success = await updateUserDescription(newDescription);
+      if (success) {
+        description = newDescription;
+        notifyListeners();
+      }
+      return success;
+    } catch (e) {
+      debugPrint('Error updating description: $e');
+      return false;
+    }
+  }
+
+  // Add social network
+  Future<bool> addSocialNetworkToUser(String socialNetworkId, String username) async {
+    try {
+      final success = await addSocialNetwork(socialNetworkId, username);
+      if (success) {
+        // Reload social networks
+        await _loadSocialNetworks();
+      }
+      return success;
+    } catch (e) {
+      debugPrint('Error adding social network: $e');
+      return false;
+    }
+  }
+
+  // Remove social network
+  Future<bool> removeSocialNetworkFromUser(String socialNetworkId) async {
+    try {
+      final success = await removeSocialNetwork(socialNetworkId);
+      if (success) {
+        // Reload social networks
+        await _loadSocialNetworks();
+      }
+      return success;
+    } catch (e) {
+      debugPrint('Error removing social network: $e');
+      return false;
+    }
   }
 }

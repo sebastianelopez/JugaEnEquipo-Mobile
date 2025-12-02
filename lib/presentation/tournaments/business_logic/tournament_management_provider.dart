@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/game_model.dart';
 import 'package:jugaenequipo/datasources/models/tournament_model.dart';
+import 'package:jugaenequipo/datasources/tournaments_use_cases/delete_tournament_use_case.dart'
+    as delete_use_case;
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 class TournamentManagementProvider extends ChangeNotifier {
@@ -74,7 +76,25 @@ class TournamentManagementProvider extends ChangeNotifier {
     tournamentToEdit = tournament;
     titleController.text = tournament.title;
     descriptionController.text = tournament.description ?? '';
-    selectedGameId = tournament.game.id;
+    
+    // Validate that the game ID exists in availableGames before setting it
+    final gameId = tournament.game.id;
+    final gameExists = availableGames.any((game) => game.id == gameId);
+    
+    if (gameExists) {
+      selectedGameId = gameId;
+    } else {
+      // If the game doesn't exist in the list, add it temporarily
+      availableGames.add(
+        GameModel(
+          id: gameId,
+          name: tournament.gameName,
+          image: tournament.image,
+        ),
+      );
+      selectedGameId = gameId;
+    }
+    
     startDate = tournament.startDate;
     endDate = tournament.endDate;
     isOfficial = tournament.isOfficial;
@@ -296,15 +316,13 @@ class TournamentManagementProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
-
-      // TODO: Implement actual API call
-      // final result = await deleteTournamentUseCase(tournamentToEdit!.id);
+      final result = await delete_use_case.deleteTournament(
+        tournamentId: tournamentToEdit!.id,
+      );
 
       isDeleting = false;
       notifyListeners();
-      return true;
+      return result;
     } catch (e) {
       isDeleting = false;
       notifyListeners();
