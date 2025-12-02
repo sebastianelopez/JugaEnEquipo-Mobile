@@ -10,9 +10,8 @@ import 'package:provider/provider.dart';
 class LoginFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  TextEditingController email =
-      TextEditingController(text: 'lopezsebastian.emanuel@gmail.com');
-  TextEditingController password = TextEditingController(text: '123456');
+  TextEditingController email = TextEditingController(text: '');
+  TextEditingController password = TextEditingController(text: '');
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;

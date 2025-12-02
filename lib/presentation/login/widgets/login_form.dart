@@ -77,11 +77,11 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                     hintText: AppLocalizations.of(context)!.loginUserHintText,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: Icons.email_outlined,
-                    textColor: Theme.of(context).colorScheme.onPrimary,
+                    textColor: Theme.of(context).colorScheme.onSurface,
                     hintTextColor: Theme.of(context)
                         .colorScheme
-                        .onPrimary
-                        .withOpacity( 0.7),
+                        .onSurface
+                        .withOpacity(0.6),
                     validator: (value) => value != null
                         ? Validators.isEmail(value: value, context: context)
                         : AppLocalizations.of(context)!
@@ -95,11 +95,11 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                         AppLocalizations.of(context)!.loginPasswordHintText,
                     obscureText: true,
                     prefixIcon: Icons.lock_outline,
-                    textColor: Theme.of(context).colorScheme.onPrimary,
+                    textColor: Theme.of(context).colorScheme.onSurface,
                     hintTextColor: Theme.of(context)
                         .colorScheme
-                        .onPrimary
-                        .withOpacity( 0.7),
+                        .onSurface
+                        .withOpacity(0.6),
                     validator: (value) {
                       return (value != null && value.length >= 6)
                           ? null

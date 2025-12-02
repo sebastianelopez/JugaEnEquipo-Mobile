@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 
 class AnimatedFormField extends StatefulWidget {
   final TextEditingController controller;
@@ -177,7 +178,7 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                 enabled: widget.enabled,
                 style: TextStyle(
                   color: widget.textColor ??
-                      Theme.of(context).colorScheme.onPrimary,
+                      Theme.of(context).colorScheme.onSurface,
                   fontSize: 16.h,
                 ),
                 keyboardType: widget.keyboardType,
@@ -189,8 +190,8 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                     color: widget.hintTextColor ??
                         Theme.of(context)
                             .colorScheme
-                            .onPrimary
-                            .withOpacity( 0.6),
+                            .onSurface
+                            .withOpacity(0.6),
                     fontSize: 16.h,
                   ),
                   prefixIcon: widget.prefixIcon != null
@@ -204,8 +205,8 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                                 : widget.hintTextColor ??
                                     Theme.of(context)
                                         .colorScheme
-                                        .onPrimary
-                                        .withOpacity( 0.6),
+                                        .onSurface
+                                        .withOpacity(0.6),
                           ),
                         )
                       : null,
@@ -222,8 +223,8 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                                   : widget.hintTextColor ??
                                       Theme.of(context)
                                           .colorScheme
-                                          .onPrimary
-                                          .withOpacity( 0.6),
+                                          .onSurface
+                                          .withOpacity(0.6),
                             ),
                           ),
                         )
@@ -249,10 +250,9 @@ class _AnimatedFormFieldState extends State<AnimatedFormField>
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Theme.of(context)
-                      .colorScheme
-                      .surface
-                      .withOpacity( 0.1),
+                  fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white.withOpacity(0.05)
+                      : AppTheme.primary.withOpacity(0.03),
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 16.w,
                     vertical: 16.h,
