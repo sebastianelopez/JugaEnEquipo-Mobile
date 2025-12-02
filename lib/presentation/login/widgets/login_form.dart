@@ -17,6 +17,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
   late AnimationController _formAnimationController;
   late Animation<double> _slideAnimation;
   late Animation<double> _fadeAnimation;
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -82,10 +83,11 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                         .colorScheme
                         .onSurface
                         .withOpacity(0.6),
-                    validator: (value) => value != null
-                        ? Validators.isEmail(value: value, context: context)
-                        : AppLocalizations.of(context)!
-                            .loginUserRequiredValidation,
+                    autovalidateMode: AutovalidateMode.onUnfocus,
+                    validator: (value) => Validators.email(
+                      value: value,
+                      context: context,
+                    ),
                     onChanged: (value) => email.text = value,
                   ),
                   SizedBox(height: 20.h),
@@ -93,18 +95,28 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                     controller: password,
                     hintText:
                         AppLocalizations.of(context)!.loginPasswordHintText,
-                    obscureText: true,
+                    obscureText: _obscurePassword,
                     prefixIcon: Icons.lock_outline,
+                    suffixIcon: _obscurePassword
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    onSuffixIconTap: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
                     textColor: Theme.of(context).colorScheme.onSurface,
                     hintTextColor: Theme.of(context)
                         .colorScheme
                         .onSurface
                         .withOpacity(0.6),
+                    autovalidateMode: AutovalidateMode.onUnfocus,
                     validator: (value) {
-                      return (value != null && value.length >= 6)
-                          ? null
-                          : AppLocalizations.of(context)!
-                              .loginPasswordValidation;
+                      if (value == null || value.isEmpty) {
+                        return AppLocalizations.of(context)!
+                            .loginPasswordValidation;
+                      }
+                      return null;
                     },
                     onChanged: (value) => password.text = value,
                   ),

@@ -11,3 +11,5 @@ export 'package:jugaenequipo/global_widgets/auth_background.dart';
 export 'package:jugaenequipo/global_widgets/card_container.dart';
 export 'package:jugaenequipo/global_widgets/animated_form_field.dart';
 export 'package:jugaenequipo/global_widgets/animated_button.dart';
+export 'package:jugaenequipo/global_widgets/password_requirements.dart';
+export 'package:jugaenequipo/global_widgets/settings_controls.dart';

@@ -7,61 +7,153 @@ import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-        body: AuthBackground(
-            child: SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 60.h,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isDark
+                ? [
+                    AppTheme.darkBg,
+                    AppTheme.primary.withOpacity(0.3),
+                    AppTheme.darkBg,
+                  ]
+                : [
+                    AppTheme.lightBg,
+                    AppTheme.primary.withOpacity(0.1),
+                    AppTheme.accent.withOpacity(0.15),
+                  ],
+            stops: const [0.0, 0.5, 1.0],
           ),
-          Image.asset(
-            'assets/logo_text_bottom.png',
-            width: 500.w,
-            height: 300.h,
-            fit: BoxFit.contain,
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          CardContainer(
-            backgroundColor: Colors.transparent,
-            child: Column(
-              children: [
-                ChangeNotifierProvider(
-                  create: (_) => RegisterFormProvider(),
-                  child: _RegisterForm(),
+        ),
+        child: Stack(
+          children: [
+            // Decorative circles
+            Positioned(
+              top: -100.h,
+              right: -100.w,
+              child: Container(
+                width: 300.w,
+                height: 300.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppTheme.primary.withOpacity(0.2),
+                      Colors.transparent,
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
-          TextButton(
-            child: Text('¿Ya tienes cuenta? Inicia Sesion',
-                style: TextStyle(
-                    fontSize: 18.h,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onPrimary
-                        .withOpacity(0.7))),
-            onPressed: () {
-              //hide keyboard
-              FocusScope.of(context).unfocus();
-              Navigator.pushNamed(context, 'login');
-            },
-          ),
-          SizedBox(
-            height: 50.h,
-          ),
-        ],
+            Positioned(
+              bottom: -150.h,
+              left: -150.w,
+              child: Container(
+                width: 400.w,
+                height: 400.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppTheme.accent.withOpacity(0.15),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // Content
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 30.h),
+                      // Logo sin contenedor, más limpio
+                      Image.asset(
+                        'assets/logo_text_bottom.png',
+                        width: 400.w,
+                        height: 180.h,
+                        fit: BoxFit.contain,
+                      ),
+                      SizedBox(height: 30.h),
+                      // Form con fondo sólido del tema
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(20.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: isDark
+                                  ? Colors.black.withOpacity(0.3)
+                                  : Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(28.w),
+                          child: ChangeNotifierProvider(
+                            create: (_) => RegisterFormProvider(),
+                            child: _RegisterForm(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      TextButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          Navigator.pushNamed(context, 'login');
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24.w,
+                            vertical: 12.h,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(
+                              color: AppTheme.primary.withOpacity(0.5),
+                              width: 2,
+                            ),
+                          ),
+                          child: Text(
+                            AppLocalizations.of(context)!
+                                .registerAlreadyHaveAccount,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.primary,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      SettingsControls(),
+                      SizedBox(height: 40.h),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    )));
+    );
   }
 }
 
@@ -74,6 +166,9 @@ class _RegisterFormState extends State<_RegisterForm>
     with TickerProviderStateMixin {
   late AnimationController _formAnimationController;
   late List<Animation<double>> _fieldAnimations;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+  bool _showPasswordRequirements = false;
 
   @override
   void initState() {
@@ -148,15 +243,15 @@ class _RegisterFormState extends State<_RegisterForm>
             index: 0,
             child: AnimatedFormField(
               controller: firstName,
-              hintText: 'First Name',
+              hintText: AppLocalizations.of(context)!.registerFirstNameHint,
               prefixIcon: Icons.person_outline,
-              textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withOpacity(0.7),
-              validator: (value) {
-                return (value != null && value.length > 2)
-                    ? null
-                    : 'Enter a valid name.';
-              },
+              textColor: Theme.of(context).colorScheme.onSurface,
+              hintTextColor:
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              validator: (value) => Validators.firstName(
+                value: value,
+                context: context,
+              ),
               onChanged: (value) => firstName.text = value,
             ),
           ),
@@ -165,15 +260,15 @@ class _RegisterFormState extends State<_RegisterForm>
             index: 1,
             child: AnimatedFormField(
               controller: lastName,
-              hintText: 'Last Name',
+              hintText: AppLocalizations.of(context)!.registerLastNameHint,
               prefixIcon: Icons.person_outline,
-              textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withOpacity(0.7),
-              validator: (value) {
-                return (value != null && value.isNotEmpty)
-                    ? null
-                    : 'Last name is required';
-              },
+              textColor: Theme.of(context).colorScheme.onSurface,
+              hintTextColor:
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              validator: (value) => Validators.lastName(
+                value: value,
+                context: context,
+              ),
               onChanged: (value) => lastName.text = value,
             ),
           ),
@@ -182,15 +277,15 @@ class _RegisterFormState extends State<_RegisterForm>
             index: 2,
             child: AnimatedFormField(
               controller: userName,
-              hintText: 'Username',
+              hintText: AppLocalizations.of(context)!.registerUsernameHint,
               prefixIcon: Icons.alternate_email,
-              textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withOpacity(0.7),
-              validator: (value) {
-                return (value != null && value.length > 2)
-                    ? null
-                    : 'User name should have at least 3 characters';
-              },
+              textColor: Theme.of(context).colorScheme.onSurface,
+              hintTextColor:
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              validator: (value) => Validators.username(
+                value: value,
+                context: context,
+              ),
               onChanged: (value) => userName.text = value,
             ),
           ),
@@ -199,33 +294,75 @@ class _RegisterFormState extends State<_RegisterForm>
             index: 3,
             child: AnimatedFormField(
               controller: email,
-              hintText: 'Email',
+              hintText: AppLocalizations.of(context)!.registerEmailHint,
               keyboardType: TextInputType.emailAddress,
               prefixIcon: Icons.email_outlined,
-              textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withOpacity(0.7),
-              validator: (value) => value != null
-                  ? Validators.isEmail(value: value, context: context)
-                  : 'Email is required',
+              textColor: Theme.of(context).colorScheme.onSurface,
+              hintTextColor:
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              validator: (value) => Validators.email(
+                value: value,
+                context: context,
+              ),
               onChanged: (value) => email.text = value,
             ),
           ),
           SizedBox(height: 16.h),
           _buildAnimatedField(
             index: 4,
-            child: AnimatedFormField(
-              controller: password,
-              hintText: 'Password',
-              obscureText: true,
-              prefixIcon: Icons.lock_outline,
-              textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withOpacity(0.7),
-              validator: (value) {
-                return (value != null && value.length >= 6)
-                    ? null
-                    : 'The password must be at least six characters.';
-              },
-              onChanged: (value) => password.text = value,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AnimatedFormField(
+                  controller: password,
+                  hintText: AppLocalizations.of(context)!.registerPasswordHint,
+                  obscureText: _obscurePassword,
+                  prefixIcon: Icons.lock_outline,
+                  suffixIcon: _obscurePassword
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                  onSuffixIconTap: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                  textColor: Theme.of(context).colorScheme.onSurface,
+                  hintTextColor:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  validator: (value) {
+                    final error = Validators.password(
+                      value: value,
+                      context: context,
+                    );
+                    // Update requirements visibility based on error
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        setState(() {
+                          _showPasswordRequirements =
+                              password.text.isNotEmpty || error != null;
+                        });
+                      }
+                    });
+                    return error;
+                  },
+                  onChanged: (value) {
+                    password.text = value;
+                    setState(() {
+                      _showPasswordRequirements = value.isNotEmpty;
+                    });
+                  },
+                  onFocusChange: (isFocused) {
+                    setState(() {
+                      _showPasswordRequirements =
+                          isFocused || password.text.isNotEmpty;
+                    });
+                  },
+                ),
+                PasswordRequirements(
+                  password: password.text,
+                  isVisible: _showPasswordRequirements,
+                ),
+              ],
             ),
           ),
           SizedBox(height: 16.h),
@@ -233,20 +370,26 @@ class _RegisterFormState extends State<_RegisterForm>
             index: 5,
             child: AnimatedFormField(
               controller: confirmationPassword,
-              hintText: 'Repeat password',
-              obscureText: true,
+              hintText:
+                  AppLocalizations.of(context)!.registerConfirmPasswordHint,
+              obscureText: _obscureConfirmPassword,
               prefixIcon: Icons.lock_outline,
-              textColor: AppTheme.white,
-              hintTextColor: AppTheme.white.withOpacity(0.7),
-              validator: (value) {
-                if (value == null || value.length < 6) {
-                  return 'The password must be at least six characters.';
-                }
-                if (value != password.text) {
-                  return 'Passwords do not match.';
-                }
-                return null;
+              suffixIcon: _obscureConfirmPassword
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+              onSuffixIconTap: () {
+                setState(() {
+                  _obscureConfirmPassword = !_obscureConfirmPassword;
+                });
               },
+              textColor: Theme.of(context).colorScheme.onSurface,
+              hintTextColor:
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              validator: (value) => Validators.confirmPassword(
+                value: value,
+                passwordValue: password.text,
+                context: context,
+              ),
               onChanged: (value) => confirmationPassword.text = value,
             ),
           ),
@@ -256,7 +399,7 @@ class _RegisterFormState extends State<_RegisterForm>
             child: SizedBox(
               width: double.infinity,
               child: AnimatedButton(
-                text: 'Register',
+                text: AppLocalizations.of(context)!.registerButton,
                 isLoading: isLoading,
                 icon: Icons.person_add,
                 onPressed: isLoading
@@ -284,7 +427,8 @@ class _RegisterFormState extends State<_RegisterForm>
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Error creating account: $e'),
+                                content: Text(
+                                    '${AppLocalizations.of(context)!.registerErrorCreatingAccount}: $e'),
                                 backgroundColor: Colors.red,
                               ),
                             );

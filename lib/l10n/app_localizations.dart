@@ -63,8 +63,7 @@ import 'app_localizations_pt.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -72,8 +71,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -85,8 +83,7 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -127,7 +124,7 @@ abstract class AppLocalizations {
   /// No description provided for @loginPasswordValidation.
   ///
   /// In en, this message translates to:
-  /// **'The password must be at least six characters'**
+  /// **'Password is required'**
   String get loginPasswordValidation;
 
   /// No description provided for @loginUserValidation.
@@ -997,7 +994,7 @@ abstract class AppLocalizations {
   /// No description provided for @tournamentFormOfficial.
   ///
   /// In en, this message translates to:
-  /// **'Official'**
+  /// **'Official Tournament'**
   String get tournamentFormOfficial;
 
   /// No description provided for @tournamentFormOfficialSubtitle.
@@ -1275,10 +1272,159 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please fix the errors in the form'**
   String get tournamentFormPleaseFixErrors;
+
+  /// No description provided for @validationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get validationRequired;
+
+  /// No description provided for @validationFirstNameMin.
+  ///
+  /// In en, this message translates to:
+  /// **'First name must have at least 2 characters'**
+  String get validationFirstNameMin;
+
+  /// No description provided for @validationFirstNameMax.
+  ///
+  /// In en, this message translates to:
+  /// **'First name must have at most 50 characters'**
+  String get validationFirstNameMax;
+
+  /// No description provided for @validationLastNameMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name must have at least 2 characters'**
+  String get validationLastNameMin;
+
+  /// No description provided for @validationLastNameMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name must have at most 50 characters'**
+  String get validationLastNameMax;
+
+  /// No description provided for @validationInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get validationInvalidEmail;
+
+  /// No description provided for @validationUsernameMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must have at least 3 characters'**
+  String get validationUsernameMin;
+
+  /// No description provided for @validationUsernameMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must have at most 20 characters'**
+  String get validationUsernameMax;
+
+  /// No description provided for @validationUsernameInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Username can only contain letters, numbers, underscores and dots'**
+  String get validationUsernameInvalid;
+
+  /// No description provided for @validationPasswordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must have at least 8 characters'**
+  String get validationPasswordMinLength;
+
+  /// No description provided for @validationPasswordHasUpperCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one uppercase letter'**
+  String get validationPasswordHasUpperCase;
+
+  /// No description provided for @validationPasswordHasLowerCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one lowercase letter'**
+  String get validationPasswordHasLowerCase;
+
+  /// No description provided for @validationPasswordHasNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one number'**
+  String get validationPasswordHasNumber;
+
+  /// No description provided for @validationPasswordHasSpecialChar.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one special character'**
+  String get validationPasswordHasSpecialChar;
+
+  /// No description provided for @validationPasswordsDontMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get validationPasswordsDontMatch;
+
+  /// No description provided for @passwordRequirementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Requirements'**
+  String get passwordRequirementsTitle;
+
+  /// No description provided for @registerFirstNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get registerFirstNameHint;
+
+  /// No description provided for @registerLastNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name'**
+  String get registerLastNameHint;
+
+  /// No description provided for @registerUsernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get registerUsernameHint;
+
+  /// No description provided for @registerEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get registerEmailHint;
+
+  /// No description provided for @registerPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get registerPasswordHint;
+
+  /// No description provided for @registerConfirmPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat password'**
+  String get registerConfirmPasswordHint;
+
+  /// No description provided for @registerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get registerButton;
+
+  /// No description provided for @registerAlreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign In'**
+  String get registerAlreadyHaveAccount;
+
+  /// No description provided for @registerErrorCreatingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating account'**
+  String get registerErrorCreatingAccount;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -1287,27 +1433,26 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'es', 'pt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'es', 'pt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
-    case 'pt':
-      return AppLocalizationsPt();
+    case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
+    case 'pt': return AppLocalizationsPt();
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.'
+  );
 }

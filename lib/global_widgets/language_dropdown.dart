@@ -19,53 +19,72 @@ class LanguageDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final internalization = Provider.of<InternalizationProvider>(context);
+    final flagSize = showLabel ? 38.0 : 24.0;
+    final flagWidth = showLabel ? 62.0 : 40.0;
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0.h),
+      padding: EdgeInsets.symmetric(vertical: showLabel ? 10.0.h : 4.0.h),
       alignment: alignment,
-      child: DropdownMenu(
+      child: SizedBox(
         width: 80.0.h,
-        initialSelection: AppLocalizations.supportedLocales[1],
-        textStyle: const TextStyle(
-          color: AppTheme.primary,
-        ),
-        dropdownMenuEntries:
-            AppLocalizations.supportedLocales.asMap().entries.map((entry) {
-          final locale = entry.value;
-          final index = entry.key;
-          return DropdownMenuEntry(
-            value: locale,
-            label: showLabel ? locale.languageCode.toUpperCase() : '',
-            labelWidget: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: CountryFlag.fromCountryCode(
-                internalization.languages[index].countryCode?.toLowerCase() ??
-                    '',
-                height: 38,
-                width: 62,
-              ),
-            ),
-            style: const ButtonStyle(
-              foregroundColor: WidgetStatePropertyAll(AppTheme.primary),
-              textStyle: WidgetStatePropertyAll(
-                TextStyle(
-                  fontWeight: FontWeight.w900,
+        child: DropdownMenu(
+          initialSelection: AppLocalizations.supportedLocales[1],
+          textStyle: TextStyle(
+            color: AppTheme.primary,
+            fontSize: showLabel ? null : 12.sp,
+          ),
+          leadingIcon: showLabel
+              ? null
+              : Icon(
+                  Icons.language,
+                  size: 18.sp,
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                ),
+          dropdownMenuEntries:
+              AppLocalizations.supportedLocales.asMap().entries.map((entry) {
+            final locale = entry.value;
+            final index = entry.key;
+            return DropdownMenuEntry(
+              value: locale,
+              label: showLabel ? locale.languageCode.toUpperCase() : '',
+              labelWidget: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CountryFlag.fromCountryCode(
+                  internalization.languages[index].countryCode?.toLowerCase() ??
+                      '',
+                  height: flagSize,
+                  width: flagWidth,
                 ),
               ),
+              style: const ButtonStyle(
+                foregroundColor: WidgetStatePropertyAll(AppTheme.primary),
+                textStyle: WidgetStatePropertyAll(
+                  TextStyle(
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+          onSelected: (Locale? locale) {
+            final internalization =
+                Provider.of<InternalizationProvider>(context, listen: false);
+            internalization.setLanguage(locale!);
+          },
+          inputDecorationTheme: InputDecorationTheme(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: AppTheme.primary.withOpacity(showLabel ? 1.0 : 0.5),
+                width: showLabel ? 1.0.w : 0.5.w,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
             ),
-          );
-        }).toList(),
-        onSelected: (Locale? locale) {
-          final internalization =
-              Provider.of<InternalizationProvider>(context, listen: false);
-          internalization.setLanguage(locale!);
-        },
-        inputDecorationTheme: InputDecorationTheme(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppTheme.primary, width: 1.0.w),
-            borderRadius: BorderRadius.circular(8.0),
+            contentPadding: EdgeInsets.only(
+              left: showLabel ? 9.0.w : 8.0.w,
+              top: showLabel ? 8.0.w : 4.0.w,
+              bottom: showLabel ? 8.0.w : 4.0.w,
+            ),
           ),
-          contentPadding:
-              EdgeInsets.only(left: 9.0.w, top: 8.0.w, bottom: 8.0.w),
         ),
       ),
     );

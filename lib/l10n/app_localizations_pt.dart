@@ -1,5 +1,3 @@
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -21,12 +19,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get loginPasswordHintText => 'Senha';
 
   @override
-  String get loginPasswordValidation =>
-      'A senha deve ter pelo menos seis caracteres';
+  String get loginPasswordValidation => 'A senha é obrigatória';
 
   @override
-  String get loginUserValidation =>
-      'O valor inserido não se parece com um e-mail';
+  String get loginUserValidation => 'O valor inserido não se parece com um e-mail';
 
   @override
   String get loginUserRequiredValidation => 'O e-mail é obrigatório';
@@ -256,8 +252,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noPostsYet => 'Ainda não há posts';
 
   @override
-  String get followToSeePosts =>
-      'Siga uma equipe ou jogador para ver seus posts.';
+  String get followToSeePosts => 'Siga uma equipe ou jogador para ver seus posts.';
 
   @override
   String get searchUsersTeams => 'Pesquisar usuários ou equipes';
@@ -327,8 +322,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get unauthorizedError => 'Não autorizado';
 
   @override
-  String get unexpectedError =>
-      'Ocorreu um erro inesperado. Por favor, tente novamente.';
+  String get unexpectedError => 'Ocorreu um erro inesperado. Por favor, tente novamente.';
 
   @override
   String get acceptButton => 'Aceitar';
@@ -397,23 +391,19 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tournamentCommunityLabel => 'Torneio da Comunidade';
 
   @override
-  String get tournamentOfficialDescription =>
-      'Organizado por desenvolvedores oficiais ou patrocinadores';
+  String get tournamentOfficialDescription => 'Organizado por desenvolvedores oficiais ou patrocinadores';
 
   @override
   String get tournamentCommunityDescription => 'Organizado pela comunidade';
 
   @override
-  String get tournamentParticipantsListLabel =>
-      'A lista de participantes registrados será exibida aqui';
+  String get tournamentParticipantsListLabel => 'A lista de participantes registrados será exibida aqui';
 
   @override
-  String get tournamentNoParticipantsLabel =>
-      'Ainda não há participantes. Seja o primeiro a se juntar!';
+  String get tournamentNoParticipantsLabel => 'Ainda não há participantes. Seja o primeiro a se juntar!';
 
   @override
-  String get tournamentRegistrationSuccess =>
-      'Registrado com sucesso no torneio!';
+  String get tournamentRegistrationSuccess => 'Registrado com sucesso no torneio!';
 
   @override
   String get tournamentAlreadyRegisteredLabel => 'Já Registrado';
@@ -482,18 +472,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tournamentFormConfiguration => 'Configuração';
 
   @override
-  String get tournamentFormOfficial => 'Oficial';
+  String get tournamentFormOfficial => 'Torneio Oficial';
 
   @override
-  String get tournamentFormOfficialSubtitle =>
-      'Marcar como torneio oficial da plataforma';
+  String get tournamentFormOfficialSubtitle => 'Marcar como torneio oficial da plataforma';
 
   @override
   String get tournamentFormPrivate => 'Torneio Privado';
 
   @override
-  String get tournamentFormPrivateSubtitle =>
-      'Apenas visível para participantes convidados';
+  String get tournamentFormPrivateSubtitle => 'Apenas visível para participantes convidados';
 
   @override
   String get tournamentFormMaxParticipants => 'Máx. Participantes';
@@ -517,8 +505,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tournamentFormDeleteTitle => 'Excluir Torneio';
 
   @override
-  String get tournamentFormDeleteMessage =>
-      'Tem certeza de que deseja excluir este torneio? Esta ação não pode ser desfeita.';
+  String get tournamentFormDeleteMessage => 'Tem certeza de que deseja excluir este torneio? Esta ação não pode ser desfeita.';
 
   @override
   String get tournamentFormDeleteConfirm => 'Excluir';
@@ -548,36 +535,28 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tournamentFormValidationTitleRequired => 'O título é obrigatório';
 
   @override
-  String get tournamentFormValidationTitleMinLength =>
-      'O título deve ter pelo menos 3 caracteres';
+  String get tournamentFormValidationTitleMinLength => 'O título deve ter pelo menos 3 caracteres';
 
   @override
-  String get tournamentFormValidationDescriptionRequired =>
-      'A descrição é obrigatória';
+  String get tournamentFormValidationDescriptionRequired => 'A descrição é obrigatória';
 
   @override
-  String get tournamentFormValidationDescriptionMinLength =>
-      'A descrição deve ter pelo menos 10 caracteres';
+  String get tournamentFormValidationDescriptionMinLength => 'A descrição deve ter pelo menos 10 caracteres';
 
   @override
-  String get tournamentFormValidationGameRequired =>
-      'Você deve selecionar um jogo';
+  String get tournamentFormValidationGameRequired => 'Você deve selecionar um jogo';
 
   @override
-  String get tournamentFormValidationStartDateRequired =>
-      'Você deve selecionar uma data de início';
+  String get tournamentFormValidationStartDateRequired => 'Você deve selecionar uma data de início';
 
   @override
-  String get tournamentFormValidationEndDateRequired =>
-      'Você deve selecionar uma data de fim';
+  String get tournamentFormValidationEndDateRequired => 'Você deve selecionar uma data de fim';
 
   @override
-  String get tournamentFormValidationDateOrder =>
-      'A data de início deve ser anterior à data de fim';
+  String get tournamentFormValidationDateOrder => 'A data de início deve ser anterior à data de fim';
 
   @override
-  String get tournamentFormValidationDatePast =>
-      'A data de início não pode estar no passado';
+  String get tournamentFormValidationDatePast => 'A data de início não pode estar no passado';
 
   @override
   String get tournamentFormTypeSingleElimination => 'Eliminação Simples';
@@ -627,14 +606,86 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tournamentFormLoadingTournaments => 'Carregando torneios...';
 
   @override
-  String get tournamentFormNoTournamentsAvailable =>
-      'Nenhum torneio disponível';
+  String get tournamentFormNoTournamentsAvailable => 'Nenhum torneio disponível';
 
   @override
-  String get tournamentFormCheckBackLater =>
-      'Volte mais tarde para novos torneios';
+  String get tournamentFormCheckBackLater => 'Volte mais tarde para novos torneios';
 
   @override
-  String get tournamentFormPleaseFixErrors =>
-      'Por favor, corrija os erros no formulário';
+  String get tournamentFormPleaseFixErrors => 'Por favor, corrija os erros no formulário';
+
+  @override
+  String get validationRequired => 'Este campo é obrigatório';
+
+  @override
+  String get validationFirstNameMin => 'O nome deve ter pelo menos 2 caracteres';
+
+  @override
+  String get validationFirstNameMax => 'O nome deve ter no máximo 50 caracteres';
+
+  @override
+  String get validationLastNameMin => 'O sobrenome deve ter pelo menos 2 caracteres';
+
+  @override
+  String get validationLastNameMax => 'O sobrenome deve ter no máximo 50 caracteres';
+
+  @override
+  String get validationInvalidEmail => 'Por favor insira um endereço de e-mail válido';
+
+  @override
+  String get validationUsernameMin => 'O nome de usuário deve ter pelo menos 3 caracteres';
+
+  @override
+  String get validationUsernameMax => 'O nome de usuário deve ter no máximo 20 caracteres';
+
+  @override
+  String get validationUsernameInvalid => 'O nome de usuário pode conter apenas letras, números, sublinhados e pontos';
+
+  @override
+  String get validationPasswordMinLength => 'A senha deve ter pelo menos 8 caracteres';
+
+  @override
+  String get validationPasswordHasUpperCase => 'A senha deve conter pelo menos uma letra maiúscula';
+
+  @override
+  String get validationPasswordHasLowerCase => 'A senha deve conter pelo menos uma letra minúscula';
+
+  @override
+  String get validationPasswordHasNumber => 'A senha deve conter pelo menos um número';
+
+  @override
+  String get validationPasswordHasSpecialChar => 'A senha deve conter pelo menos um caractere especial';
+
+  @override
+  String get validationPasswordsDontMatch => 'As senhas não coincidem';
+
+  @override
+  String get passwordRequirementsTitle => 'Requisitos de Senha';
+
+  @override
+  String get registerFirstNameHint => 'Nome';
+
+  @override
+  String get registerLastNameHint => 'Sobrenome';
+
+  @override
+  String get registerUsernameHint => 'Nome de usuário';
+
+  @override
+  String get registerEmailHint => 'E-mail';
+
+  @override
+  String get registerPasswordHint => 'Senha';
+
+  @override
+  String get registerConfirmPasswordHint => 'Repetir senha';
+
+  @override
+  String get registerButton => 'Registrar';
+
+  @override
+  String get registerAlreadyHaveAccount => 'Já tem uma conta? Faça login';
+
+  @override
+  String get registerErrorCreatingAccount => 'Erro ao criar conta';
 }

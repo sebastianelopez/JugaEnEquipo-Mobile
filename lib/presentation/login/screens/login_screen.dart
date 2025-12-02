@@ -138,11 +138,8 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 32.h),
-                      const LanguageDropdown(
-                        showLabel: true,
-                        alignment: Alignment.center,
-                      ),
+                      SizedBox(height: 24.h),
+                      SettingsControls(),
                       SizedBox(height: 40.h),
                     ],
                   ),
