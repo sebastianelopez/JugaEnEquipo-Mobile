@@ -418,6 +418,24 @@ abstract class AppLocalizations {
   /// **'<b>{name}</b> liked your post.'**
   String notificationPostLiked(String name);
 
+  /// Notification about a new follower
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> started following you.'**
+  String notificationNewFollower(String name);
+
+  /// Notification about a user who commented on a post
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> commented on your post.'**
+  String notificationPostCommented(String name);
+
+  /// Notification about a user who shared a post
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> shared your post.'**
+  String notificationPostShared(String name);
+
   /// Notification about a user who invited you to join his team
   ///
   /// In en, this message translates to:

@@ -172,6 +172,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String notificationNewFollower(String name) {
+    return '<b>$name</b> started following you.';
+  }
+
+  @override
+  String notificationPostCommented(String name) {
+    return '<b>$name</b> commented on your post.';
+  }
+
+  @override
+  String notificationPostShared(String name) {
+    return '<b>$name</b> shared your post.';
+  }
+
+  @override
   String notificationInviteToTeam(String name, String team) {
     return '<b>$name</b> has invited you to to join <b>$team</b> team.';
   }

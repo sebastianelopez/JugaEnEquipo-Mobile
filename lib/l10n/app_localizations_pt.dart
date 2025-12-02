@@ -168,7 +168,22 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String notificationPostLiked(String name) {
-    return '<b>$name</b> gostou do seu post.';
+    return '<b>$name</b> curtiu sua publicação.';
+  }
+
+  @override
+  String notificationNewFollower(String name) {
+    return '<b>$name</b> começou a te seguir.';
+  }
+
+  @override
+  String notificationPostCommented(String name) {
+    return '<b>$name</b> comentou na sua publicação.';
+  }
+
+  @override
+  String notificationPostShared(String name) {
+    return '<b>$name</b> compartilhou sua publicação.';
   }
 
   @override

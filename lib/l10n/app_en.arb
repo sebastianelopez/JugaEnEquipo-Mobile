@@ -60,6 +60,33 @@
       }
     }
   },
+  "notificationNewFollower": "<b>{name}</b> started following you.",
+  "@notificationNewFollower": {
+    "description": "Notification about a new follower",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostCommented": "<b>{name}</b> commented on your post.",
+  "@notificationPostCommented": {
+    "description": "Notification about a user who commented on a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostShared": "<b>{name}</b> shared your post.",
+  "@notificationPostShared": {
+    "description": "Notification about a user who shared a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "notificationInviteToTeam":"<b>{name}</b> has invited you to to join <b>{team}</b> team.",
   "@notificationInviteToTeam": {
     "description": "Notification about a user who invited you to join his team",

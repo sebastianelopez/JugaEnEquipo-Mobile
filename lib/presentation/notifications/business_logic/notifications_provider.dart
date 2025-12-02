@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
-import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/datasources/notifications_use_cases/get_notifications_use_case.dart';
 import 'package:jugaenequipo/datasources/notifications_use_cases/mark_notification_as_read_use_case.dart';
 import 'package:jugaenequipo/datasources/notifications_use_cases/notifications_sse_service.dart';
@@ -12,25 +12,57 @@ class NotificationsProvider extends ChangeNotifier {
   bool _hasMore = true;
   int _offset = 0;
   final int _pageSize = 20;
+  String? _errorMessage;
+  bool _isInitialized = false;
 
   final NotificationsSSEService _sseService = NotificationsSSEService();
   StreamSubscription<NotificationModel>? _sseSubscription;
+  final ScrollController scrollController = ScrollController();
 
   List<NotificationModel> get notifications =>
       List.unmodifiable(_notifications);
+
+  // Get filtered notifications excluding "new_message" type
+  List<NotificationModel> get filteredNotifications => List.unmodifiable(
+      _notifications.where((n) => n.type != 'new_message').toList());
+
   bool get isLoading => _isLoading;
   bool get hasMore => _hasMore;
+  String? get errorMessage => _errorMessage;
+  bool get isInitialized => _isInitialized;
+
+  // Get count of unread notifications (excluding "new_message" type)
+  int get unreadCount => _notifications
+      .where((n) => !n.isNotificationRead && n.type != 'new_message')
+      .length;
 
   Future<void> initialize() async {
+    if (_isInitialized) return;
+
+    // Setup scroll listener for infinite scroll
+    scrollController.addListener(_onScroll);
+
+    _isInitialized = true;
+
+    // Only load notifications and subscribe if user is authenticated
+    // This will be checked in the use cases
     if (_notifications.isEmpty) {
       await refresh();
     }
     _subscribeSSE();
   }
 
+  void _onScroll() {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent * 0.8) {
+      loadMore();
+    }
+  }
+
   Future<void> refresh() async {
     _offset = 0;
     _hasMore = true;
+    _errorMessage = null;
     _notifications.clear();
     notifyListeners();
     await loadMore();
@@ -39,6 +71,7 @@ class NotificationsProvider extends ChangeNotifier {
   Future<void> loadMore() async {
     if (_isLoading || !_hasMore) return;
     _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
     try {
       final result = await getNotifications(limit: _pageSize, offset: _offset);
@@ -46,6 +79,13 @@ class NotificationsProvider extends ChangeNotifier {
         _notifications.addAll(result);
         _offset += result.length;
         _hasMore = result.length >= _pageSize;
+      } else {
+        _hasMore = false;
+      }
+    } catch (e) {
+      _errorMessage = 'Error loading notifications';
+      if (_notifications.isEmpty) {
+        // Only show error if we have no notifications
       }
     } finally {
       _isLoading = false;
@@ -56,24 +96,16 @@ class NotificationsProvider extends ChangeNotifier {
   Future<void> markAsRead(String notificationId) async {
     final idx = _notifications.indexWhere((n) => n.id == notificationId);
     if (idx != -1 && _notifications[idx].isNotificationRead == false) {
-      _notifications[idx] = NotificationModel(
-        id: _notifications[idx].id,
-        user: _notifications[idx].user,
-        notificationContent: _notifications[idx].notificationContent,
+      _notifications[idx] = _notifications[idx].copyWith(
         isNotificationRead: true,
-        date: _notifications[idx].date,
       );
       notifyListeners();
     }
     final ok = await markNotificationAsRead(notificationId);
     if (!ok && idx != -1) {
       // rollback
-      _notifications[idx] = NotificationModel(
-        id: _notifications[idx].id,
-        user: _notifications[idx].user,
-        notificationContent: _notifications[idx].notificationContent,
+      _notifications[idx] = _notifications[idx].copyWith(
         isNotificationRead: false,
-        date: _notifications[idx].date,
       );
       notifyListeners();
     }
@@ -87,66 +119,41 @@ class NotificationsProvider extends ChangeNotifier {
           _notifications.any((n) => n.id == incoming.id)) {
         return;
       }
-      _notifications.insert(0, incoming);
-      notifyListeners();
-    }, onError: (_) {
-      // Let it be silent; screen can be opened again to resubscribe
+      // Only add notifications that are not "new_message" type
+      if (incoming.type != 'new_message') {
+        _notifications.insert(0, incoming);
+        notifyListeners();
+      }
+    }, onError: (error) {
+      // Log error for debugging
+      if (kDebugMode) {
+        debugPrint('NotificationsSSE subscription error: $error');
+      }
+      // Try to reconnect after a delay
+      Future.delayed(const Duration(seconds: 5), () {
+        if (_isInitialized) {
+          _subscribeSSE();
+        }
+      });
+    }, onDone: () {
+      // Stream closed, try to reconnect
+      if (kDebugMode) {
+        debugPrint('NotificationsSSE stream closed, reconnecting...');
+      }
+      Future.delayed(const Duration(seconds: 2), () {
+        if (_isInitialized) {
+          _subscribeSSE();
+        }
+      });
     });
   }
 
   @override
   void dispose() {
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
     _sseSubscription?.cancel();
     _sseService.disconnect();
     super.dispose();
   }
-
-  List<NotificationModel> getMockNotifications(BuildContext context) {
-    return [
-      NotificationModel(
-          id: 'op23343',
-          user: UserModel(
-              id: "asda89498",
-              firstName: "Lautaro",
-              lastName: "Rivadeneria",
-              userName: "LGRC",
-              email: "",
-              profileImage:
-                  "https://scontent.cdninstagram.com/v/t51.2885-19/195780402_1055586888183094_99043525364029635_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent.cdninstagram.com&_nc_cat=110&_nc_ohc=XT8Rspy1K-EQ7kNvgGA1T9o&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfD4gI3ZTZvVUa-z2ETq6fOTk6bqrFpoOa8G_hBi8xfz4A&oe=663C6879&_nc_sid=10d13b"),
-          notificationContent:
-              AppLocalizations.of(context)!.notificationPostLiked('Lautaro'),
-          isNotificationRead: false,
-          date: "2024-05-04 15:00:04Z"),
-      NotificationModel(
-          id: 'op233243',
-          user: UserModel(
-              id: "as55sd498",
-              firstName: "Alejandro",
-              lastName: "Minetti",
-              userName: "Aletti",
-              email: "",
-              profileImage:
-                  "https://scontent.cdninstagram.com/v/t51.2885-19/429985363_704173345123485_6621486499715753530_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent.cdninstagram.com&_nc_cat=109&_nc_ohc=K-zt1QFWQX8Q7kNvgGDhGBd&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfCjp7AsUWD1zbcgb-tHrJmlv2wtfymnZ_yap1ebUhVnCQ&oe=663C6418&_nc_sid=10d13b"),
-          notificationContent: AppLocalizations.of(context)!
-              .notificationInviteToTeam("Ale", "Bosteros"),
-          isNotificationRead: true,
-          date: "2024-04-21 19:18:04Z"),
-      NotificationModel(
-          id: 'op2a3343',
-          user: UserModel(
-              id: "a345sd498",
-              firstName: "Kru",
-              lastName: "Sports",
-              userName: "Kru Sports",
-              email: "",
-              profileImage:
-                  "https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/b/b8/KR%C3%9C_Esportslogo_square.png/revision/latest?cb=20220922072349"),
-          notificationContent: AppLocalizations.of(context)!
-              .notificationApplicationAccepted('damage', 'Kru Sports'),
-          isNotificationRead: true,
-          date: "2024-03-21 19:18:04Z"),
-    ];
-  }
-
-  List<NotificationModel> notificationMocks = [];
 }

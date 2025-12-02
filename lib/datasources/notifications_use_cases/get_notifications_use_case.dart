@@ -62,47 +62,6 @@ Future<List<NotificationModel>?> getNotifications({
 }
 
 NotificationModel _notificationFromJsonSafe(Map<String, dynamic> json) {
-  // Try to build a UserModel when possible; otherwise, provide a minimal one
-  UserModel user;
-  final dynamic userJson = json['user'];
-  if (userJson is Map<String, dynamic>) {
-    try {
-      user = UserModel.fromJson(userJson);
-    } catch (_) {
-      user = _fallbackUser(userJson);
-    }
-  } else {
-    user = _fallbackUser(json);
-  }
-
-  final String id = (json['id'] ?? '').toString();
-  final String content =
-      (json['content'] ?? json['message'] ?? json['notificationContent'] ?? '')
-          .toString();
-  final bool isRead = (json['read'] as bool?) ??
-      (json['isRead'] as bool?) ??
-      (json['isNotificationRead'] as bool?) ??
-      false;
-  final String createdAt = (json['createdAt'] ?? json['date'] ?? '').toString();
-
-  return NotificationModel(
-    id: id,
-    user: user,
-    notificationContent: content,
-    isNotificationRead: isRead,
-    date: createdAt,
-  );
-}
-
-UserModel _fallbackUser(Map<String, dynamic> json) {
-  return UserModel(
-    id: (json['userId'] ?? json['id'] ?? '').toString(),
-    firstName: (json['firstname'] ?? json['firstName'] ?? '').toString(),
-    lastName: (json['lastname'] ?? json['lastName'] ?? '').toString(),
-    userName: (json['username'] ?? json['userName'] ?? '').toString(),
-    email: (json['email'] ?? '').toString(),
-    teamId: json['teamId']?.toString(),
-    profileImage: (json['profileImage'] ?? json['avatar'] ?? '').toString(),
-  );
+  return NotificationModel.fromJson(json);
 }
 

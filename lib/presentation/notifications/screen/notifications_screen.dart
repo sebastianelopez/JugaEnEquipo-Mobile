@@ -6,8 +6,25 @@ import 'package:provider/provider.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the provider if not already initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<NotificationsProvider>(context, listen: false);
+      if (!provider.isInitialized) {
+        provider.initialize();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,19 +33,7 @@ class NotificationsScreen extends StatelessWidget {
         label: AppLocalizations.of(context)!.notificationsPageLabel,
         backgroundColor: AppTheme.primary,
       ),
-      body: ChangeNotifierProvider(
-        create: (context) => NotificationsProvider()..initialize(),
-        child: const SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NotificationsList(),
-            ],
-          ),
-        ),
-      ),
+      body: const NotificationsList(),
     );
   }
 }

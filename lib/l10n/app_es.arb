@@ -51,9 +51,36 @@
   "messagesPageLabel": "Mensajes",
   "commentsModalLabel": "Comentarios",
   "notificationsPageLabel": "Notificaciones",
-  "notificationPostLiked": "A <b>{name}</b> le gustó tu publicacion.",
+  "notificationPostLiked": "A <b>{name}</b> le gustó tu publicación.",
   "@notificationPostLiked": {
     "description": "Notification about a user who liked a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationNewFollower": "<b>{name}</b> comenzó a seguirte.",
+  "@notificationNewFollower": {
+    "description": "Notification about a new follower",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostCommented": "<b>{name}</b> comentó en tu publicación.",
+  "@notificationPostCommented": {
+    "description": "Notification about a user who commented on a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostShared": "<b>{name}</b> compartió tu publicación.",
+  "@notificationPostShared": {
+    "description": "Notification about a user who shared a post",
     "placeholders": {
       "name": {
         "type": "String"
@@ -72,7 +99,7 @@
       }
     }
   },
-  "notificationApplicationAccepted":"<b>{team}</b> ha aceptado tu postulacion para el puesto de {role} en Overwatch. Ahora eres miembro del equipo profesional.",
+  "notificationApplicationAccepted":"<b>{team}</b> ha aceptado tu postulación para el puesto de {role} en Overwatch. Ahora eres miembro del equipo profesional.",
   "@notificationApplicationAccepted": {
     "placeholders": {
       "role": {

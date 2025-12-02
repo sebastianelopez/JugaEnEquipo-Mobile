@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
 import 'package:jugaenequipo/global_widgets/create_post.dart';
+import 'package:jugaenequipo/presentation/notifications/business_logic/notifications_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:jugaenequipo/theme/app_theme.dart';
 
 class BottomNavigationBarCustom extends StatefulWidget {
   const BottomNavigationBarCustom({super.key});
@@ -69,6 +71,52 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
       onTap: (i) => onItemTapped(i),
       selectedItemColor: Theme.of(context).colorScheme.primary,
       items: mainNavigationOptions.map((option) {
+        // Check if this is the notifications icon
+        if (option.route == 'notifications') {
+          final notificationsProvider = Provider.of<NotificationsProvider>(context, listen: true);
+          final unreadCount = notificationsProvider.unreadCount;
+          
+          return BottomNavigationBarItem(
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(
+                  size: 24.h,
+                  option.icon,
+                ),
+                if (unreadCount > 0)
+                  Positioned(
+                    right: -6,
+                    top: -6,
+                    child: Container(
+                      padding: EdgeInsets.all(2.w),
+                      decoration: BoxDecoration(
+                        color: AppTheme.error,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 16.w,
+                        minHeight: 16.h,
+                      ),
+                      child: Center(
+                        child: Text(
+                          unreadCount > 99 ? '99+' : unreadCount.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            label: '',
+          );
+        }
+        
         return BottomNavigationBarItem(
           icon: Icon(
             size: 24.h,

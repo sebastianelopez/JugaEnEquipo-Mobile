@@ -51,9 +51,36 @@
   "messagesPageLabel": "Mensagens",
   "commentsModalLabel": "Comentários",
   "notificationsPageLabel": "Notificações",
-  "notificationPostLiked": "<b>{name}</b> gostou do seu post.",
+  "notificationPostLiked": "<b>{name}</b> curtiu sua publicação.",
   "@notificationPostLiked": {
     "description": "Notification about a user who liked a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationNewFollower": "<b>{name}</b> começou a te seguir.",
+  "@notificationNewFollower": {
+    "description": "Notification about a new follower",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostCommented": "<b>{name}</b> comentou na sua publicação.",
+  "@notificationPostCommented": {
+    "description": "Notification about a user who commented on a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostShared": "<b>{name}</b> compartilhou sua publicação.",
+  "@notificationPostShared": {
+    "description": "Notification about a user who shared a post",
     "placeholders": {
       "name": {
         "type": "String"

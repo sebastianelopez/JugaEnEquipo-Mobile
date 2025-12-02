@@ -268,7 +268,8 @@ class _PostCardState extends State<PostCard>
                           if (imagesUrls != null && imagesUrls.isNotEmpty)
                             Container(
                                 margin: const EdgeInsets.only(bottom: 8),
-                                child: ImageGrid(images: imagesUrls)),
+                                child: MediaGrid(
+                                    resources: widget.post.resources ?? [])),
                           if (widget.post.sharedPost != null)
                             Container(
                                 margin: const EdgeInsets.only(bottom: 8),
