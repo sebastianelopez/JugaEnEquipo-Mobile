@@ -6,6 +6,7 @@ export 'package:jugaenequipo/datasources/models/tournament_request_model.dart';
 export 'package:jugaenequipo/datasources/models/notification_model.dart';
 export 'package:jugaenequipo/datasources/models/chat/chat_message_model.dart';
 export 'package:jugaenequipo/datasources/models/chat/chat_user_model.dart';
+export 'package:jugaenequipo/datasources/models/chat/conversation_model.dart';
 export 'package:jugaenequipo/datasources/models/post/comment_model.dart';
 export 'package:jugaenequipo/datasources/models/post/post_model.dart';
 export 'package:jugaenequipo/datasources/models/team_model.dart';

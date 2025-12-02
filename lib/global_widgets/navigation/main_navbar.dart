@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/messages/screens/messages_screen.dart';
 import 'package:jugaenequipo/presentation/search/screens/search_screen.dart';
+import 'package:jugaenequipo/presentation/notifications/business_logic/notifications_provider.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
@@ -91,19 +92,57 @@ class _MainNavbarState extends State<MainNavbar> {
       ),
       shadowColor: AppTheme.black,
       actions: [
-        IconButton(
-          color: Colors.white,
-          icon: const Icon(Icons.message),
-          iconSize: 30.h,
-          onPressed: () {
-            Navigator.push(
-              context,
-              NavigationUtils.slideTransition(
-                const MessagesScreen(),
-                direction: SlideDirection.fromRight,
-                duration: 400,
-                curve: Curves.easeOutExpo,
-              ),
+        Consumer<NotificationsProvider>(
+          builder: (context, notificationsProvider, child) {
+            final unreadMessagesCount = notificationsProvider.unreadMessagesCount;
+            
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                IconButton(
+                  color: Colors.white,
+                  icon: const Icon(Icons.message),
+                  iconSize: 30.h,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      NavigationUtils.slideTransition(
+                        const MessagesScreen(),
+                        direction: SlideDirection.fromRight,
+                        duration: 400,
+                        curve: Curves.easeOutExpo,
+                      ),
+                    );
+                  },
+                ),
+                if (unreadMessagesCount > 0)
+                  Positioned(
+                    right: 4,
+                    top: 4,
+                    child: Container(
+                      padding: EdgeInsets.all(2.w),
+                      decoration: const BoxDecoration(
+                        color: AppTheme.error,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 18.w,
+                        minHeight: 18.h,
+                      ),
+                      child: Center(
+                        child: Text(
+                          unreadMessagesCount > 99 ? '99+' : unreadMessagesCount.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             );
           },
         ),

@@ -8,13 +8,44 @@ class MessagesListItem extends StatelessWidget {
   final String messageText;
   final String time;
   final bool isMessageRead;
+  final String? conversationId;
 
-  const MessagesListItem(
-      {super.key,
-      required this.user,
-      required this.messageText,
-      required this.time,
-      required this.isMessageRead});
+  const MessagesListItem({
+    super.key,
+    required this.user,
+    required this.messageText,
+    required this.time,
+    required this.isMessageRead,
+    this.conversationId,
+  });
+
+  DateTime _parseDateTime(String dateString) {
+    try {
+      // Try parsing ISO8601 format first
+      return DateTime.parse(dateString);
+    } catch (e) {
+      // If that fails, try parsing "YYYY-MM-DD HH:mm:ss" format
+      try {
+        final dateTimeParts = dateString.split(' ');
+        if (dateTimeParts.length == 2) {
+          final dateParts = dateTimeParts[0].split('-');
+          final timeParts = dateTimeParts[1].split(':');
+          if (dateParts.length == 3 && timeParts.length == 3) {
+            return DateTime(
+              int.parse(dateParts[0]),
+              int.parse(dateParts[1]),
+              int.parse(dateParts[2]),
+              int.parse(timeParts[0]),
+              int.parse(timeParts[1]),
+              int.parse(timeParts[2]),
+            );
+          }
+        }
+      } catch (_) {}
+      // If all parsing fails, return current time
+      return DateTime.now();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +53,16 @@ class MessagesListItem extends StatelessWidget {
       onTap: () {
         //hide keyboard
         FocusScope.of(context).unfocus();
-        Navigator.of(context).pushNamed('chat', arguments: user);
+        Navigator.of(context).pushNamed(
+          'chat',
+          arguments: conversationId != null
+              ? {
+                  'conversationId': conversationId,
+                  'otherUserName': user.userName,
+                  'otherUserAvatar': user.profileImage,
+                }
+              : user,
+        );
       },
       child: Container(
         padding:
@@ -114,7 +154,12 @@ class MessagesListItem extends StatelessWidget {
               ),
             ),
             Text(
-              formatTimeElapsed(DateTime.parse(time), context),
+              time.isNotEmpty
+                  ? formatTimeElapsed(
+                      _parseDateTime(time),
+                      context,
+                    )
+                  : '',
               style: TextStyle(
                   fontSize: 12,
                   fontWeight:

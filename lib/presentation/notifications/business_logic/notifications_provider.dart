@@ -36,6 +36,11 @@ class NotificationsProvider extends ChangeNotifier {
       .where((n) => !n.isNotificationRead && n.type != 'new_message')
       .length;
 
+  // Get count of unread message notifications
+  int get unreadMessagesCount => _notifications
+      .where((n) => !n.isNotificationRead && n.type == 'new_message')
+      .length;
+
   Future<void> initialize() async {
     if (_isInitialized) return;
 
@@ -111,6 +116,17 @@ class NotificationsProvider extends ChangeNotifier {
     }
   }
 
+  /// Mark all message notifications as read
+  Future<void> markAllMessagesAsRead() async {
+    final messageNotifications = _notifications
+        .where((n) => n.type == 'new_message' && !n.isNotificationRead)
+        .toList();
+
+    for (final notification in messageNotifications) {
+      await markAsRead(notification.id);
+    }
+  }
+
   void _subscribeSSE() {
     _sseSubscription?.cancel();
     _sseSubscription = _sseService.connect().listen((incoming) {
@@ -119,11 +135,10 @@ class NotificationsProvider extends ChangeNotifier {
           _notifications.any((n) => n.id == incoming.id)) {
         return;
       }
-      // Only add notifications that are not "new_message" type
-      if (incoming.type != 'new_message') {
-        _notifications.insert(0, incoming);
-        notifyListeners();
-      }
+      // Add all notifications, including "new_message" type
+      // They are filtered when displaying but kept for counting
+      _notifications.insert(0, incoming);
+      notifyListeners();
     }, onError: (error) {
       // Log error for debugging
       if (kDebugMode) {
