@@ -75,7 +75,7 @@
 		<!-- Deep Links - Universal Links (Associated Domains) -->
 		<key>com.apple.developer.associated-domains</key>
 		<array>
-			<string>applinks:jugaenequipo.com</string>
+			<string>applinks:www.jugaenequipo.com</string>
 		</array>
 	</dict>
 </plist>

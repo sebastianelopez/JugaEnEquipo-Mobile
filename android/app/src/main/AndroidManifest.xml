@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="jugaenequipo.com"
+                    android:host="www.jugaenequipo.com"
                     android:pathPrefix="/recover" />
             </intent-filter>
         </activity>
