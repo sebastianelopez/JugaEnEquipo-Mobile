@@ -1422,6 +1422,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error creating account'**
   String get registerErrorCreatingAccount;
+
+  /// No description provided for @editTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Team'**
+  String get editTeam;
+
+  /// No description provided for @manageGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Games'**
+  String get manageGames;
+
+  /// No description provided for @teamRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Requests'**
+  String get teamRequests;
+
+  /// No description provided for @requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get requests;
+
+  /// No description provided for @deleteTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Team'**
+  String get deleteTeam;
+
+  /// No description provided for @leaveTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Team'**
+  String get leaveTeam;
+
+  /// No description provided for @requestAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Access'**
+  String get requestAccess;
+
+  /// No description provided for @removeMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Member'**
+  String get removeMember;
+
+  /// No description provided for @acceptRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Request'**
+  String get acceptRequest;
+
+  /// No description provided for @declineRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline Request'**
+  String get declineRequest;
+
+  /// No description provided for @teamUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Team updated successfully'**
+  String get teamUpdatedSuccessfully;
+
+  /// No description provided for @errorUpdatingTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating team'**
+  String get errorUpdatingTeam;
+
+  /// No description provided for @teamDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Team deleted successfully'**
+  String get teamDeletedSuccessfully;
+
+  /// No description provided for @errorDeletingTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting team'**
+  String get errorDeletingTeam;
+
+  /// No description provided for @leftTeamSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Left team successfully'**
+  String get leftTeamSuccessfully;
+
+  /// No description provided for @errorLeavingTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Error leaving team'**
+  String get errorLeavingTeam;
+
+  /// No description provided for @accessRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Access request sent'**
+  String get accessRequestSent;
+
+  /// No description provided for @errorSendingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Error sending request'**
+  String get errorSendingRequest;
+
+  /// No description provided for @requestAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Request accepted'**
+  String get requestAccepted;
+
+  /// No description provided for @errorAcceptingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Error accepting request'**
+  String get errorAcceptingRequest;
+
+  /// No description provided for @requestDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Request declined'**
+  String get requestDeclined;
+
+  /// No description provided for @errorDecliningRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Error declining request'**
+  String get errorDecliningRequest;
+
+  /// No description provided for @memberRemovedFromTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Member removed from team'**
+  String get memberRemovedFromTeam;
+
+  /// No description provided for @errorRemovingMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Error removing member'**
+  String get errorRemovingMember;
+
+  /// No description provided for @gameAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Game added'**
+  String get gameAdded;
+
+  /// No description provided for @errorAddingGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Error adding game'**
+  String get errorAddingGame;
+
+  /// No description provided for @gameRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Game removed'**
+  String get gameRemoved;
+
+  /// No description provided for @errorRemovingGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Error removing game'**
+  String get errorRemovingGame;
+
+  /// No description provided for @noPendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending requests'**
+  String get noPendingRequests;
+
+  /// No description provided for @areYouSureDeleteTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this team? This action cannot be undone.'**
+  String get areYouSureDeleteTeam;
+
+  /// No description provided for @areYouSureLeaveTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave this team?'**
+  String get areYouSureLeaveTeam;
+
+  /// No description provided for @areYouSureRemoveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove {name} from the team?'**
+  String areYouSureRemoveMember(String name);
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leave;
+
+  /// No description provided for @teamName.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Name'**
+  String get teamName;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @waitingForApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for Approval'**
+  String get waitingForApproval;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @profileImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Image'**
+  String get profileImage;
+
+  /// No description provided for @backgroundImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Background Image'**
+  String get backgroundImage;
+
+  /// No description provided for @changeProfileImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change profile image'**
+  String get changeProfileImage;
+
+  /// No description provided for @changeBackgroundImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change background image'**
+  String get changeBackgroundImage;
+
+  /// No description provided for @dangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger Zone'**
+  String get dangerZone;
+
+  /// No description provided for @deleteTeamConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this team? This action cannot be undone.'**
+  String get deleteTeamConfirmation;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password below'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @resetPasswordSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset successfully! You can now log in with your new password.'**
+  String get resetPasswordSuccess;
+
+  /// No description provided for @resetPasswordGoToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Login'**
+  String get resetPasswordGoToLogin;
+
+  /// No description provided for @resetPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordButton;
+
+  /// No description provided for @resetPasswordInvalidToken.
+  ///
+  /// In en, this message translates to:
+  /// **'The token is invalid or has expired'**
+  String get resetPasswordInvalidToken;
+
+  /// No description provided for @resetPasswordError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error resetting password. Please try again.'**
+  String get resetPasswordError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

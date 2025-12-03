@@ -58,5 +58,24 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<!-- Deep Links - Custom URL Scheme -->
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>com.jugaenequipo</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>jugaenequipo</string>
+				</array>
+			</dict>
+		</array>
+		<!-- Deep Links - Universal Links (Associated Domains) -->
+		<key>com.apple.developer.associated-domains</key>
+		<array>
+			<string>applinks:jugaenequipo.com</string>
+		</array>
 	</dict>
 </plist>

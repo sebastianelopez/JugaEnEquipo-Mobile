@@ -688,4 +688,168 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get registerErrorCreatingAccount => 'Error al crear la cuenta';
+
+  @override
+  String get editTeam => 'Editar Equipo';
+
+  @override
+  String get manageGames => 'Gestionar Juegos';
+
+  @override
+  String get teamRequests => 'Solicitudes del Equipo';
+
+  @override
+  String get requests => 'Solicitudes';
+
+  @override
+  String get deleteTeam => 'Eliminar Equipo';
+
+  @override
+  String get leaveTeam => 'Dejar Equipo';
+
+  @override
+  String get requestAccess => 'Solicitar Acceso';
+
+  @override
+  String get removeMember => 'Eliminar Miembro';
+
+  @override
+  String get acceptRequest => 'Aceptar Solicitud';
+
+  @override
+  String get declineRequest => 'Rechazar Solicitud';
+
+  @override
+  String get teamUpdatedSuccessfully => 'Equipo actualizado exitosamente';
+
+  @override
+  String get errorUpdatingTeam => 'Error al actualizar el equipo';
+
+  @override
+  String get teamDeletedSuccessfully => 'Equipo eliminado exitosamente';
+
+  @override
+  String get errorDeletingTeam => 'Error al eliminar el equipo';
+
+  @override
+  String get leftTeamSuccessfully => 'Dejaste el equipo exitosamente';
+
+  @override
+  String get errorLeavingTeam => 'Error al dejar el equipo';
+
+  @override
+  String get accessRequestSent => 'Solicitud de acceso enviada';
+
+  @override
+  String get errorSendingRequest => 'Error al enviar la solicitud';
+
+  @override
+  String get requestAccepted => 'Solicitud aceptada';
+
+  @override
+  String get errorAcceptingRequest => 'Error al aceptar la solicitud';
+
+  @override
+  String get requestDeclined => 'Solicitud rechazada';
+
+  @override
+  String get errorDecliningRequest => 'Error al rechazar la solicitud';
+
+  @override
+  String get memberRemovedFromTeam => 'Miembro eliminado del equipo';
+
+  @override
+  String get errorRemovingMember => 'Error al eliminar el miembro';
+
+  @override
+  String get gameAdded => 'Juego agregado';
+
+  @override
+  String get errorAddingGame => 'Error al agregar el juego';
+
+  @override
+  String get gameRemoved => 'Juego eliminado';
+
+  @override
+  String get errorRemovingGame => 'Error al eliminar el juego';
+
+  @override
+  String get noPendingRequests => 'No hay solicitudes pendientes';
+
+  @override
+  String get areYouSureDeleteTeam => '¿Estás seguro de que quieres eliminar este equipo? Esta acción no se puede deshacer.';
+
+  @override
+  String get areYouSureLeaveTeam => '¿Estás seguro de que quieres dejar este equipo?';
+
+  @override
+  String areYouSureRemoveMember(String name) {
+    return '¿Estás seguro de que quieres eliminar a $name del equipo?';
+  }
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get save => 'Guardar';
+
+  @override
+  String get remove => 'Eliminar';
+
+  @override
+  String get delete => 'Eliminar';
+
+  @override
+  String get leave => 'Dejar';
+
+  @override
+  String get teamName => 'Nombre del Equipo';
+
+  @override
+  String get description => 'Descripción';
+
+  @override
+  String get waitingForApproval => 'Esperando Aprobación';
+
+  @override
+  String get editProfile => 'Editar Perfil';
+
+  @override
+  String get profileImage => 'Imagen de Perfil';
+
+  @override
+  String get backgroundImage => 'Imagen de Fondo';
+
+  @override
+  String get changeProfileImage => 'Toca para cambiar la imagen de perfil';
+
+  @override
+  String get changeBackgroundImage => 'Toca para cambiar la imagen de fondo';
+
+  @override
+  String get dangerZone => 'Zona de Peligro';
+
+  @override
+  String get deleteTeamConfirmation => '¿Estás seguro de que quieres eliminar este equipo? Esta acción no se puede deshacer.';
+
+  @override
+  String get resetPasswordTitle => 'Restablecer Contraseña';
+
+  @override
+  String get resetPasswordSubtitle => 'Ingresa tu nueva contraseña a continuación';
+
+  @override
+  String get resetPasswordSuccess => '¡Contraseña restablecida exitosamente! Ahora puedes iniciar sesión con tu nueva contraseña.';
+
+  @override
+  String get resetPasswordGoToLogin => 'Ir a Iniciar Sesión';
+
+  @override
+  String get resetPasswordButton => 'Restablecer Contraseña';
+
+  @override
+  String get resetPasswordInvalidToken => 'El token es inválido o ha expirado';
+
+  @override
+  String get resetPasswordError => 'Error al restablecer la contraseña. Intenta nuevamente.';
 }

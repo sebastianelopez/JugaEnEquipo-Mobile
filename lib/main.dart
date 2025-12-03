@@ -10,10 +10,15 @@ import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/presentation/notifications/business_logic/notifications_provider.dart';
+import 'package:jugaenequipo/services/deep_link_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Preferences.init();
+
+  // Inicializar el servicio de deep linking
+  await DeepLinkService().initialize();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

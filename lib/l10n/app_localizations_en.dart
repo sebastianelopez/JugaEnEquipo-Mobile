@@ -688,4 +688,168 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registerErrorCreatingAccount => 'Error creating account';
+
+  @override
+  String get editTeam => 'Edit Team';
+
+  @override
+  String get manageGames => 'Manage Games';
+
+  @override
+  String get teamRequests => 'Team Requests';
+
+  @override
+  String get requests => 'Requests';
+
+  @override
+  String get deleteTeam => 'Delete Team';
+
+  @override
+  String get leaveTeam => 'Leave Team';
+
+  @override
+  String get requestAccess => 'Request Access';
+
+  @override
+  String get removeMember => 'Remove Member';
+
+  @override
+  String get acceptRequest => 'Accept Request';
+
+  @override
+  String get declineRequest => 'Decline Request';
+
+  @override
+  String get teamUpdatedSuccessfully => 'Team updated successfully';
+
+  @override
+  String get errorUpdatingTeam => 'Error updating team';
+
+  @override
+  String get teamDeletedSuccessfully => 'Team deleted successfully';
+
+  @override
+  String get errorDeletingTeam => 'Error deleting team';
+
+  @override
+  String get leftTeamSuccessfully => 'Left team successfully';
+
+  @override
+  String get errorLeavingTeam => 'Error leaving team';
+
+  @override
+  String get accessRequestSent => 'Access request sent';
+
+  @override
+  String get errorSendingRequest => 'Error sending request';
+
+  @override
+  String get requestAccepted => 'Request accepted';
+
+  @override
+  String get errorAcceptingRequest => 'Error accepting request';
+
+  @override
+  String get requestDeclined => 'Request declined';
+
+  @override
+  String get errorDecliningRequest => 'Error declining request';
+
+  @override
+  String get memberRemovedFromTeam => 'Member removed from team';
+
+  @override
+  String get errorRemovingMember => 'Error removing member';
+
+  @override
+  String get gameAdded => 'Game added';
+
+  @override
+  String get errorAddingGame => 'Error adding game';
+
+  @override
+  String get gameRemoved => 'Game removed';
+
+  @override
+  String get errorRemovingGame => 'Error removing game';
+
+  @override
+  String get noPendingRequests => 'No pending requests';
+
+  @override
+  String get areYouSureDeleteTeam => 'Are you sure you want to delete this team? This action cannot be undone.';
+
+  @override
+  String get areYouSureLeaveTeam => 'Are you sure you want to leave this team?';
+
+  @override
+  String areYouSureRemoveMember(String name) {
+    return 'Are you sure you want to remove $name from the team?';
+  }
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get leave => 'Leave';
+
+  @override
+  String get teamName => 'Team Name';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get waitingForApproval => 'Waiting for Approval';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get profileImage => 'Profile Image';
+
+  @override
+  String get backgroundImage => 'Background Image';
+
+  @override
+  String get changeProfileImage => 'Tap to change profile image';
+
+  @override
+  String get changeBackgroundImage => 'Tap to change background image';
+
+  @override
+  String get dangerZone => 'Danger Zone';
+
+  @override
+  String get deleteTeamConfirmation => 'Are you sure you want to delete this team? This action cannot be undone.';
+
+  @override
+  String get resetPasswordTitle => 'Reset Password';
+
+  @override
+  String get resetPasswordSubtitle => 'Enter your new password below';
+
+  @override
+  String get resetPasswordSuccess => 'Password reset successfully! You can now log in with your new password.';
+
+  @override
+  String get resetPasswordGoToLogin => 'Go to Login';
+
+  @override
+  String get resetPasswordButton => 'Reset Password';
+
+  @override
+  String get resetPasswordInvalidToken => 'The token is invalid or has expired';
+
+  @override
+  String get resetPasswordError => 'Error resetting password. Please try again.';
 }

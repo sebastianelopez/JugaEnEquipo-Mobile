@@ -9,6 +9,9 @@ import 'package:jugaenequipo/presentation/screens.dart';
 import 'package:jugaenequipo/presentation/settings/screens/settings_screen.dart';
 import 'package:jugaenequipo/presentation/splash/screens/splash_screen.dart';
 import 'package:jugaenequipo/presentation/tabs/screens/tabs_screen.dart';
+import 'package:jugaenequipo/presentation/reset_password/screens/reset_password_screen.dart';
+import 'package:jugaenequipo/presentation/reset_password/business_logic/reset_password_provider.dart';
+import 'package:provider/provider.dart';
 
 class AppRoutes {
   static const initialRoute = 'splash';
@@ -127,6 +130,21 @@ class AppRoutes {
       return MaterialPageRoute(builder: (context) => const ProfileScreen());
     } else if (settings.name == 'my-profile') {
       return MaterialPageRoute(builder: (context) => const ProfileScreen());
+    } else if (settings.name == 'reset-password') {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final token = args?['token'] as String?;
+      if (token != null && token.isNotEmpty) {
+        return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+            create: (_) => ResetPasswordProvider(),
+            child: ResetPasswordScreen(token: token),
+          ),
+        );
+      }
+      // Si no hay token, redirigir al login
+      return MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      );
     }
 
     return MaterialPageRoute(builder: (context) => const SplashScreen());
