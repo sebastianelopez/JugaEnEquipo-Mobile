@@ -28,6 +28,27 @@ class AppLocalizationsPt extends AppLocalizations {
   String get loginUserRequiredValidation => 'O e-mail é obrigatório';
 
   @override
+  String get loginForgotPassword => 'Esqueceu sua senha?';
+
+  @override
+  String get forgotPasswordTitle => 'Recuperar senha';
+
+  @override
+  String get forgotPasswordSubtitle => 'Digite seu e-mail e enviaremos um link para redefinir sua senha';
+
+  @override
+  String get forgotPasswordEmailHint => 'E-mail';
+
+  @override
+  String get forgotPasswordButton => 'Enviar link de recuperação';
+
+  @override
+  String get forgotPasswordSuccess => 'Um e-mail foi enviado com instruções para redefinir sua senha';
+
+  @override
+  String get forgotPasswordError => 'Erro ao enviar e-mail. Verifique se o e-mail está correto.';
+
+  @override
   String get navSearchInputLabel => 'Busca';
 
   @override

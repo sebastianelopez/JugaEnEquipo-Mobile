@@ -28,6 +28,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginUserRequiredValidation => 'Email is required';
 
   @override
+  String get loginForgotPassword => 'Forgot your password?';
+
+  @override
+  String get forgotPasswordTitle => 'Recover password';
+
+  @override
+  String get forgotPasswordSubtitle => 'Enter your email and we\'ll send you a link to reset your password';
+
+  @override
+  String get forgotPasswordEmailHint => 'Email';
+
+  @override
+  String get forgotPasswordButton => 'Send recovery link';
+
+  @override
+  String get forgotPasswordSuccess => 'An email has been sent with instructions to reset your password';
+
+  @override
+  String get forgotPasswordError => 'Error sending email. Please verify that the email is correct.';
+
+  @override
   String get navSearchInputLabel => 'Search';
 
   @override

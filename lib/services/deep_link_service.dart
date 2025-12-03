@@ -1,4 +1,5 @@
 import 'package:app_links/app_links.dart';
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:jugaenequipo/main.dart';
 
@@ -7,7 +8,8 @@ class DeepLinkService {
   factory DeepLinkService() => _instance;
   DeepLinkService._internal();
 
-  final AppLinks _appLinks = AppLinks();
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
   bool _isInitialized = false;
 
   /// Inicializa el servicio de deep linking
@@ -15,10 +17,21 @@ class DeepLinkService {
     if (_isInitialized) return;
     _isInitialized = true;
 
+    _appLinks = AppLinks();
+
+    // Manejar link inicial cuando la app se abre desde un link
+    _checkInitialLink();
+
     // Manejar links cuando la app está abierta o en background
-    _appLinks.uriLinkStream.listen(
+    _linkSubscription = _appLinks.uriLinkStream.listen(
       (Uri uri) {
-        _handleDeepLink(uri);
+        try {
+          _handleDeepLink(uri);
+        } catch (e) {
+          if (kDebugMode) {
+            debugPrint('Error parsing deep link: $e');
+          }
+        }
       },
       onError: (err) {
         if (kDebugMode) {
@@ -26,23 +39,26 @@ class DeepLinkService {
         }
       },
     );
-
-    // Manejar link inicial cuando la app se abre desde un link
-    _checkInitialLink();
   }
 
   /// Verifica si hay un link inicial cuando la app se abre
   Future<void> _checkInitialLink() async {
     try {
-      final initialLink = await _appLinks.getInitialLink();
-      if (initialLink != null) {
-        _handleDeepLink(initialLink);
+      final uri = await _appLinks.getInitialAppLink();
+      if (uri != null) {
+        _handleDeepLink(uri);
       }
     } catch (e) {
       if (kDebugMode) {
         debugPrint('Error checking initial link: $e');
       }
     }
+  }
+
+  /// Dispose del servicio
+  void dispose() {
+    _linkSubscription?.cancel();
+    _isInitialized = false;
   }
 
   /// Maneja el deep link y navega a la pantalla correspondiente
@@ -119,7 +135,7 @@ class DeepLinkService {
   /// Obtiene el link actual (útil para debugging)
   Future<Uri?> getCurrentLink() async {
     try {
-      return await _appLinks.getInitialLink();
+      return await _appLinks.getInitialAppLink();
     } catch (e) {
       if (kDebugMode) {
         debugPrint('Error getting current link: $e');

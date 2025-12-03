@@ -139,6 +139,48 @@ abstract class AppLocalizations {
   /// **'Email is required'**
   String get loginUserRequiredValidation;
 
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email and we\'ll send you a link to reset your password'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @forgotPasswordEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get forgotPasswordEmailHint;
+
+  /// No description provided for @forgotPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send recovery link'**
+  String get forgotPasswordButton;
+
+  /// No description provided for @forgotPasswordSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'An email has been sent with instructions to reset your password'**
+  String get forgotPasswordSuccess;
+
+  /// No description provided for @forgotPasswordError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error sending email. Please verify that the email is correct.'**
+  String get forgotPasswordError;
+
   /// No description provided for @navSearchInputLabel.
   ///
   /// In en, this message translates to:
