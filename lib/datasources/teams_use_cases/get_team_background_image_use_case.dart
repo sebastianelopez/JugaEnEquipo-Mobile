@@ -2,27 +2,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 
-/// Get tournament background image URL
-/// 
+/// Get team background image URL
+///
 /// Parameters:
-/// - [tournamentId]: The ID of the tournament
-/// Returns the image URL or null if not found
-Future<String?> getTournamentBackgroundImage({
-  required String tournamentId,
-}) async {
+/// - [teamId]: The ID of the team
+/// Returns the background image URL or null if not found
+Future<String?> getTeamBackgroundImage(String teamId) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
 
     if (accessToken == null || accessToken.isEmpty) {
       if (kDebugMode) {
-        debugPrint('getTournamentBackgroundImage: No access token found');
+        debugPrint('getTeamBackgroundImage: No access token found');
       }
       return null;
     }
 
     final response = await APIService.instance.request(
-      '/api/tournament/$tournamentId/background-image',
+      '/api/team/$teamId/background-image',
       DioMethod.get,
       headers: {
         'Authorization': 'Bearer $accessToken',
@@ -31,10 +29,13 @@ Future<String?> getTournamentBackgroundImage({
 
     if (response.statusCode == 200) {
       if (kDebugMode) {
-        debugPrint('getTournamentBackgroundImage: API call successful');
+        debugPrint('getTeamBackgroundImage: API call successful');
       }
 
       if (response.data == null) {
+        if (kDebugMode) {
+          debugPrint('getTeamBackgroundImage: Response data is null');
+        }
         return null;
       }
 
@@ -48,22 +49,26 @@ Future<String?> getTournamentBackgroundImage({
         return null;
       } catch (e) {
         if (kDebugMode) {
-          debugPrint('getTournamentBackgroundImage: Error parsing response: $e');
+          debugPrint('getTeamBackgroundImage: Error parsing response: $e');
         }
         return null;
       }
+    } else if (response.statusCode == 404) {
+      if (kDebugMode) {
+        debugPrint('getTeamBackgroundImage: Background image not found');
+      }
+      return null;
     } else {
       if (kDebugMode) {
         debugPrint(
-            'getTournamentBackgroundImage: Failed with status ${response.statusCode}');
+            'getTeamBackgroundImage: API call failed with status ${response.statusCode}: ${response.statusMessage}');
       }
       return null;
     }
   } catch (e) {
     if (kDebugMode) {
-      debugPrint('getTournamentBackgroundImage: Error occurred: $e');
+      debugPrint('getTeamBackgroundImage: Network error occurred: $e');
     }
     return null;
   }
 }
-

@@ -94,8 +94,9 @@ class _MainNavbarState extends State<MainNavbar> {
       actions: [
         Consumer<NotificationsProvider>(
           builder: (context, notificationsProvider, child) {
-            final unreadMessagesCount = notificationsProvider.unreadMessagesCount;
-            
+            final unreadMessagesCount =
+                notificationsProvider.unreadMessagesCount;
+
             return Stack(
               clipBehavior: Clip.none,
               children: [
@@ -131,7 +132,9 @@ class _MainNavbarState extends State<MainNavbar> {
                       ),
                       child: Center(
                         child: Text(
-                          unreadMessagesCount > 99 ? '99+' : unreadMessagesCount.toString(),
+                          unreadMessagesCount > 99
+                              ? '99+'
+                              : unreadMessagesCount.toString(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10.sp,

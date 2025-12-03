@@ -46,23 +46,36 @@ class ProfileElevatedButton extends StatelessWidget {
           onTap: onPressed,
           borderRadius: BorderRadius.circular(16.h),
           child: Container(
-            width: 130.h,
+            constraints: BoxConstraints(
+              minWidth: 130.h,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
             height: 44.h,
+            width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.h),
               border: Border.all(
-                color: Colors.white.withOpacity( 0.3),
+                color: Colors.white.withOpacity(0.3),
                 width: 1,
               ),
             ),
             child: Center(
-              child: Text(
-                label,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.h,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: onPressed == null
+                        ? Colors.white.withOpacity(0.6)
+                        : Colors.white,
+                    fontSize: 14.h,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                    height: 1.2,
+                  ),
                 ),
               ),
             ),

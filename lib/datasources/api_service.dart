@@ -58,8 +58,12 @@ class APIService {
       }
 
       _dio.options.headers = headers;
-      _dio.options.contentType =
-          contentType ?? Headers.formUrlEncodedContentType;
+      if (contentType == 'application/json') {
+        _dio.options.contentType = Headers.jsonContentType;
+      } else {
+        _dio.options.contentType =
+            contentType ?? Headers.formUrlEncodedContentType;
+      }
 
       final Response response;
       switch (method) {

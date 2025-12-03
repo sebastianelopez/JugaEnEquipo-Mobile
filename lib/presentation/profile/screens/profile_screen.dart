@@ -104,10 +104,13 @@ class ProfileScreen extends StatelessWidget {
       return Center(child: Text(AppLocalizations.of(context)!.teamIdRequired));
     }
 
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return ChangeNotifierProvider(
       create: (context) => TeamProfileProvider(
         teamId: teamId!,
         team: team, // Pass the team data
+        currentUserId: userProvider.user?.id,
       ),
       child: Consumer<TeamProfileProvider>(
         builder: (context, provider, _) {
@@ -190,6 +193,8 @@ class ProfileScreen extends StatelessWidget {
             return TeamMemberModal(
               title: AppLocalizations.of(context)!.teamMembersTitle,
               members: provider.teamProfile?.members ?? [],
+              canManageMembers: provider.canManageMembers(),
+              provider: provider,
             );
           },
         );
@@ -236,8 +241,13 @@ class ProfileScreen extends StatelessWidget {
           ),
         );
       },
-      leading: const CircleAvatar(
-        backgroundImage: AssetImage('assets/login.png'),
+      leading: CircleAvatar(
+        backgroundImage: user.profileImage != null &&
+                user.profileImage!.isNotEmpty &&
+                (user.profileImage!.startsWith('http://') ||
+                    user.profileImage!.startsWith('https://'))
+            ? NetworkImage(user.profileImage!)
+            : const AssetImage('assets/user_image.jpg') as ImageProvider,
         radius: 16,
         backgroundColor: Colors.white,
       ),

@@ -11,6 +11,8 @@ export 'package:jugaenequipo/datasources/models/post/comment_model.dart';
 export 'package:jugaenequipo/datasources/models/post/post_model.dart';
 export 'package:jugaenequipo/datasources/models/team_model.dart';
 export 'package:jugaenequipo/datasources/models/team_profile_model.dart';
+export 'package:jugaenequipo/datasources/models/team_request_model.dart';
+export 'package:jugaenequipo/datasources/models/team_game_model.dart';
 export 'package:jugaenequipo/datasources/models/user_model.dart';
 export 'package:jugaenequipo/datasources/models/social_network_model.dart';
 export 'package:jugaenequipo/datasources/models/main_navigation_option_model.dart';

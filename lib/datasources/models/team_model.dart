@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 
 class TeamModel {
@@ -11,7 +12,7 @@ class TeamModel {
   final DateTime updatedAt;
   final DateTime? deletedAt;
   final List<GameModel> games;
-  
+
   // Optional fields for backward compatibility
   final List<String>? membersIds;
   final bool? verified;
@@ -32,42 +33,90 @@ class TeamModel {
   });
 
   factory TeamModel.fromJson(Map<String, dynamic> json) {
-    // Parse games - API returns games with only id and name
+    // Parse games - API returns games with id, name, description, minPlayersQuantity, maxPlayersQuantity, createdAt
     List<GameModel> gamesList = [];
-    if (json['games'] != null && json['games'] is List) {
-      gamesList = (json['games'] as List<dynamic>)
-          .map((game) {
-            // Handle games that may or may not have image field
-            if (game is Map<String, dynamic>) {
-              return GameModel(
-                id: game['id'] as String,
-                name: game['name'] as String,
-                image: game['image'] as String? ?? '',
-              );
+    if (json['games'] != null) {
+      try {
+        if (json['games'] is List) {
+          final gamesData = json['games'] as List<dynamic>;
+          gamesList = [];
+
+          for (var i = 0; i < gamesData.length; i++) {
+            try {
+              final gameData = gamesData[i];
+              if (gameData is Map<String, dynamic>) {
+                // Use GameModel.fromJson to properly parse all fields
+                gamesList.add(GameModel.fromJson(gameData));
+              }
+            } catch (e) {
+              // Skip invalid game entry, log error
+              debugPrint(
+                  'TeamModel.fromJson: Error parsing game at index $i: $e');
+              continue;
             }
-            return null;
-          })
-          .whereType<GameModel>()
-          .toList();
+          }
+        }
+      } catch (e, stackTrace) {
+        // If parsing games fails, use empty list
+        debugPrint('TeamModel.fromJson: Error parsing games list: $e');
+        debugPrint('TeamModel.fromJson: Stack trace: $stackTrace');
+        gamesList = [];
+      }
     }
 
-    return TeamModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String?,
-      image: json['image'] as String?,
-      creatorId: json['creatorId'] as String,
-      leaderId: json['leaderId'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      deletedAt: json['deletedAt'] != null 
-          ? DateTime.parse(json['deletedAt'] as String) 
-          : null,
-      games: gamesList,
-      // Backward compatibility fields
-      membersIds: json['membersIds'] as List<String>?,
-      verified: json['verified'] as bool?,
-    );
+    // Parse membersIds safely - handle various formats
+    List<String>? membersIdsList;
+    if (json['membersIds'] != null) {
+      try {
+        if (json['membersIds'] is List) {
+          membersIdsList = (json['membersIds'] as List<dynamic>)
+              .map((id) {
+                try {
+                  return id.toString();
+                } catch (e) {
+                  return null;
+                }
+              })
+              .whereType<String>()
+              .toList();
+        } else if (json['membersIds'] is Map) {
+          // Handle case where membersIds might be a Map with string keys
+          final membersMap = json['membersIds'] as Map;
+          membersIdsList = membersMap.values.map((v) => v.toString()).toList();
+        }
+      } catch (e) {
+        membersIdsList = null;
+      }
+    }
+
+    try {
+      return TeamModel(
+        id: json['id']?.toString() ?? '',
+        name: json['name']?.toString() ?? '',
+        description: json['description']?.toString(),
+        image: json['image']?.toString(),
+        creatorId: json['creatorId']?.toString() ?? '',
+        leaderId: json['leaderId']?.toString() ?? '',
+        createdAt: DateTime.parse(
+            json['createdAt']?.toString() ?? DateTime.now().toIso8601String()),
+        updatedAt: DateTime.parse(
+            json['updatedAt']?.toString() ?? DateTime.now().toIso8601String()),
+        deletedAt: json['deletedAt'] != null
+            ? DateTime.tryParse(json['deletedAt']?.toString() ?? '')
+            : null,
+        games: gamesList,
+        // Backward compatibility fields
+        membersIds: membersIdsList,
+        verified: json['verified'] is bool ? json['verified'] as bool? : null,
+      );
+    } catch (e, stackTrace) {
+      // Log the error with full context
+      debugPrint('TeamModel.fromJson error: $e');
+      debugPrint('TeamModel.fromJson stackTrace: $stackTrace');
+      debugPrint('TeamModel.fromJson json keys: ${json.keys.toList()}');
+      debugPrint('TeamModel.fromJson json: $json');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {

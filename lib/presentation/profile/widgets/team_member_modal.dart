@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
+import 'package:jugaenequipo/presentation/profile/business_logic/team_profile_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TeamMemberModal extends StatelessWidget {
   final String title;
   final List<UserModel> members;
+  final bool canManageMembers;
+  final TeamProfileProvider provider;
 
   const TeamMemberModal({
     super.key,
     required this.title,
     required this.members,
+    this.canManageMembers = false,
+    required this.provider,
   });
 
   @override
@@ -81,6 +86,10 @@ class TeamMemberModal extends StatelessWidget {
   }
 
   Widget _buildMemberTile(BuildContext context, UserModel member) {
+    final isCreator = provider.teamProfile?.creatorId == member.id;
+    final isLeader = provider.teamProfile?.leaderId == member.id;
+    final canRemove = canManageMembers && !isCreator && !isLeader;
+
     return ListTile(
       onTap: () {
         Navigator.of(context).pop();
@@ -103,12 +112,50 @@ class TeamMemberModal extends StatelessWidget {
                 : AssetImage(member.profileImage!) as ImageProvider)
             : const AssetImage('assets/user_image.jpg'),
       ),
-      title: Text(
-        '${member.firstName} ${member.lastName}',
-        style: TextStyle(
-          fontSize: 16.h,
-          fontWeight: FontWeight.w600,
-        ),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              '${member.firstName} ${member.lastName}',
+              style: TextStyle(
+                fontSize: 16.h,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          if (isCreator)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              decoration: BoxDecoration(
+                color: AppTheme.primary,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                'Creator',
+                style: TextStyle(
+                  fontSize: 10.h,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          else if (isLeader)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              decoration: BoxDecoration(
+                color: AppTheme.accent,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                'Leader',
+                style: TextStyle(
+                  fontSize: 10.h,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ],
       ),
       subtitle: Text(
         '@${member.userName}',
@@ -117,17 +164,65 @@ class TeamMemberModal extends StatelessWidget {
           color: Theme.of(context)
               .colorScheme
               .onSurface
-              .withOpacity( 0.7),
+              .withOpacity(0.7),
         ),
       ),
-      trailing: Icon(
-        Icons.arrow_forward_ios,
-        size: 16.h,
-        color: Theme.of(context)
-            .colorScheme
-            .onSurface
-            .withOpacity( 0.5),
-      ),
+      trailing: canRemove
+          ? IconButton(
+              icon: Icon(Icons.remove_circle, color: Colors.red, size: 24.h),
+              onPressed: provider.isPerformingAction
+                  ? null
+                  : () async {
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Remove Member'),
+                          content: Text(
+                              'Are you sure you want to remove ${member.firstName} ${member.lastName} from the team?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.red,
+                              ),
+                              child: const Text('Remove'),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (confirm == true && context.mounted) {
+                        final success = await provider.removeUser(member.id);
+                        if (context.mounted) {
+                          if (success) {
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      '${member.firstName} removed from team')),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Error removing member')),
+                            );
+                          }
+                        }
+                      }
+                    },
+            )
+          : Icon(
+              Icons.arrow_forward_ios,
+              size: 16.h,
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withOpacity(0.5),
+            ),
     );
   }
 }

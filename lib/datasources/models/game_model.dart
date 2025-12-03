@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class GameModel {
   final String id;
   final String name;
@@ -18,15 +20,30 @@ class GameModel {
   });
 
   factory GameModel.fromJson(Map<String, dynamic> json) {
-    return GameModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      image: json['image'] as String?,
-      description: json['description'] as String?,
-      minPlayersQuantity: json['minPlayersQuantity'] as int?,
-      maxPlayersQuantity: json['maxPlayersQuantity'] as int?,
-      createdAt: json['createdAt'] as String?,
-    );
+    try {
+      return GameModel(
+        id: json['id']?.toString() ?? '',
+        name: json['name']?.toString() ?? '',
+        image: json['image']?.toString(),
+        description: json['description']?.toString(),
+        minPlayersQuantity: json['minPlayersQuantity'] is int
+            ? json['minPlayersQuantity'] as int
+            : (json['minPlayersQuantity'] is String
+                ? int.tryParse(json['minPlayersQuantity'] as String)
+                : null),
+        maxPlayersQuantity: json['maxPlayersQuantity'] is int
+            ? json['maxPlayersQuantity'] as int
+            : (json['maxPlayersQuantity'] is String
+                ? int.tryParse(json['maxPlayersQuantity'] as String)
+                : null),
+        createdAt: json['createdAt']?.toString(),
+      );
+    } catch (e, stackTrace) {
+      debugPrint('GameModel.fromJson error: $e');
+      debugPrint('GameModel.fromJson stackTrace: $stackTrace');
+      debugPrint('GameModel.fromJson json: $json');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {

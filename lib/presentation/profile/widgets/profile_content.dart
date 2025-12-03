@@ -248,78 +248,90 @@ class _ProfileContentState extends State<ProfileContent> {
                 ],
                 Container(
                   margin: EdgeInsets.only(top: 15.h),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      if (isLoggedUser)
-                        ProfileElevatedButton(
-                          label: AppLocalizations.of(context)!
-                              .editProfileButtonLabel,
-                          onPressed: () {
-                            final userId = profileUser.id;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EditProfileScreen(userId: userId),
-                              ),
-                            ).then((_) {
-                              // Refresh profile data when returning from edit screen
-                              profileProvider.refreshData();
-                            });
-                          },
-                        )
-                      else
-                        ProfileElevatedButton(
-                          label: profileProvider.isFollowLoading
-                              ? '...'
-                              : (profileProvider.isFollowing
-                                  ? AppLocalizations.of(context)!
-                                      .profileUnfollowButtonLabel
-                                  : AppLocalizations.of(context)!
-                                      .profileFollowButtonLabel),
-                          onPressed: profileProvider.isFollowLoading
-                              ? null
-                              : () async {
-                                  final currentContext = context;
-                                  final success =
-                                      await profileProvider.toggleFollow();
-                                  if (!success && mounted) {
-                                    _showErrorDialog(currentContext);
-                                  }
-                                },
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 8.w),
+                          child: isLoggedUser
+                              ? ProfileElevatedButton(
+                                  label: AppLocalizations.of(context)!
+                                      .editProfileButtonLabel,
+                                  onPressed: () {
+                                    final userId = profileUser.id;
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditProfileScreen(userId: userId),
+                                      ),
+                                    ).then((_) {
+                                      // Refresh profile data when returning from edit screen
+                                      profileProvider.refreshData();
+                                    });
+                                  },
+                                )
+                              : ProfileElevatedButton(
+                                  label: profileProvider.isFollowLoading
+                                      ? '...'
+                                      : (profileProvider.isFollowing
+                                          ? AppLocalizations.of(context)!
+                                              .profileUnfollowButtonLabel
+                                          : AppLocalizations.of(context)!
+                                              .profileFollowButtonLabel),
+                                  onPressed: profileProvider.isFollowLoading
+                                      ? null
+                                      : () async {
+                                          final currentContext = context;
+                                          final success = await profileProvider
+                                              .toggleFollow();
+                                          if (!success && mounted) {
+                                            _showErrorDialog(currentContext);
+                                          }
+                                        },
+                                ),
                         ),
-                      if (isLoggedUser)
-                        ProfileElevatedButton(
-                          label: AppLocalizations.of(context)!
-                              .profileMessagesButtonLabel,
-                          onPressed: () {},
-                        )
-                      else
-                        ProfileElevatedButton(
-                          label: AppLocalizations.of(context)!
-                              .profileSendMessageButtonLabel,
-                          onPressed: () async {
-                            final userId = profileUser.id;
-                            final navigator = Navigator.of(context);
-                            final conversationId =
-                                await getConversationIdByOtherUser(userId);
-                            if (!mounted) return;
-                            if (conversationId != null &&
-                                conversationId.isNotEmpty) {
-                              navigator.pushNamed('chat', arguments: {
-                                'conversationId': conversationId,
-                                'otherUserName': profileUser.userName,
-                                'otherUserAvatar': profileUser.profileImage,
-                              });
-                            } else {
-                              navigator.pushNamed('chat', arguments: {
-                                'otherUserName': profileUser.userName,
-                                'otherUserAvatar': profileUser.profileImage,
-                              });
-                            }
-                          },
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8.w),
+                          child: isLoggedUser
+                              ? ProfileElevatedButton(
+                                  label: AppLocalizations.of(context)!
+                                      .profileMessagesButtonLabel,
+                                  onPressed: () {},
+                                )
+                              : ProfileElevatedButton(
+                                  label: AppLocalizations.of(context)!
+                                      .profileSendMessageButtonLabel,
+                                  onPressed: () async {
+                                    final userId = profileUser.id;
+                                    final navigator = Navigator.of(context);
+                                    final conversationId =
+                                        await getConversationIdByOtherUser(
+                                            userId);
+                                    if (!mounted) return;
+                                    if (conversationId != null &&
+                                        conversationId.isNotEmpty) {
+                                      navigator.pushNamed('chat', arguments: {
+                                        'conversationId': conversationId,
+                                        'otherUserName': profileUser.userName,
+                                        'otherUserAvatar':
+                                            profileUser.profileImage,
+                                      });
+                                    } else {
+                                      navigator.pushNamed('chat', arguments: {
+                                        'otherUserName': profileUser.userName,
+                                        'otherUserAvatar':
+                                            profileUser.profileImage,
+                                      });
+                                    }
+                                  },
+                                ),
                         ),
+                      ),
                     ],
                   ),
                 ),
