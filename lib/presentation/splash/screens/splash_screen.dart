@@ -119,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Opacity(
                     opacity: value.clamp(0.0, 1.0),
                     child: Image.asset(
-                      'assets/logo_only_text.png',
+                      'assets/juga-en-equipo_violeta-1.png',
                       width: 300.w,
                       height: 100.h,
                       fit: BoxFit.contain,

@@ -4,10 +4,10 @@ flutter_native_splash:
   web: false
 
   color: "#F8F9FA"
-  image: "assets/logo.png"
-  branding: "assets/logo_only_text.png"
+  image: "assets/juga-en-equipo_ISO-1-1.png"
+  branding: "assets/juga-en-equipo_ISO-2-1.png"
 
   android_12:
     color: "#F8F9FA"
-    image: "assets/logo.png"
-    branding: "assets/logo_only_text.png"
+    image: "assets/juga-en-equipo_ISO-1-1.png"
+    branding: "assets/juga-en-equipo_ISO-2-1.png"

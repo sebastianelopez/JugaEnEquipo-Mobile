@@ -80,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(height: 40.h),
                       // Logo sin contenedor, más limpio
                       Image.asset(
-                        'assets/logo_text_bottom.png',
+                        'assets/juga-en-equipo_violeta-1.png',
                         width: 400.w,
                         height: 200.h,
                         fit: BoxFit.contain,

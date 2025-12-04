@@ -106,7 +106,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       SizedBox(height: 20.h),
                       // Logo
                       Image.asset(
-                        'assets/logo_text_bottom.png',
+                        'assets/juga-en-equipo_violeta-1.png',
                         width: 300.w,
                         height: 150.h,
                         fit: BoxFit.contain,

@@ -117,9 +117,9 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/Logo.png"  # Cambia esto al path de tu nuevo logo para el icono de la app
+  image_path: "assets/juga-en-equipo_ISO-1-1.png"
   adaptive_icon_background: "#F8F9FA"  # Color de fondo para iconos adaptativos de Android
-  adaptive_icon_foreground: "assets/logo.png"  # Logo para iconos adaptativos
+  adaptive_icon_foreground: "assets/juga-en-equipo_ISO-1-1.png"  # Logo para iconos adaptativos
   remove_alpha_ios: true  # Elimina transparencia en iOS (requerido por Apple)
 
 # Flutter Native Splash Configuration
@@ -129,9 +129,9 @@ flutter_native_splash:
   ios: true
   web: false
   color: "#F8F9FA"
-  image: "assets/logo.png"
-  branding: "assets/logo_only_text.png"
+  image: "assets/juga-en-equipo_ISO-1-1.png"
+  branding: "assets/juga-en-equipo_violeta-1.png"
   android_12:
     color: "#F8F9FA"
-    image: "assets/logo.png"
-    branding: "assets/logo_only_text.png"
+    image: "assets/juga-en-equipo_ISO-1-1.png"
+    branding: "assets/juga-en-equipo_violeta-1.png"

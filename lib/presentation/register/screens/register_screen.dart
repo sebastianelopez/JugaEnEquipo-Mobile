@@ -83,7 +83,7 @@ class RegisterScreen extends StatelessWidget {
                       SizedBox(height: 30.h),
                       // Logo sin contenedor, más limpio
                       Image.asset(
-                        'assets/logo_text_bottom.png',
+                        'assets/juga-en-equipo_violeta-1.png',
                         width: 400.w,
                         height: 180.h,
                         fit: BoxFit.contain,
