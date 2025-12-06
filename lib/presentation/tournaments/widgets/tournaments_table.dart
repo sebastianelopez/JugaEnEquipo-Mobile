@@ -7,6 +7,7 @@ import 'package:jugaenequipo/presentation/tournaments/screen/tournament_form_scr
 import 'package:jugaenequipo/datasources/tournaments_use_cases/delete_tournament_use_case.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/utils/tournament_role_helper.dart';
+import 'package:jugaenequipo/utils/game_image_helper.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,28 +59,39 @@ class TournamentsTable extends StatelessWidget {
   }
 
   Widget _buildLoadingState(BuildContext context, AppLocalizations l10n) {
-    return SingleChildScrollView(
+    return ListView.builder(
+      padding: EdgeInsets.all(16.w),
       physics: const AlwaysScrollableScrollPhysics(),
-      child: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.6,
-        padding: EdgeInsets.all(24.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+      itemCount: 3,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: 12.h),
+          child: _buildShimmerCard(),
+        );
+      },
+    );
+  }
+
+  Widget _buildShimmerCard() {
+    return Container(
+      height: 240.h,
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.r),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.grey.withOpacity(0.1),
+                Colors.grey.withOpacity(0.05),
+              ],
             ),
-            SizedBox(height: 16.h),
-            Text(
-              l10n.tournamentFormLoadingTournaments,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -101,24 +113,54 @@ class TournamentsTable extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64.w,
-              color: AppTheme.error,
+            Container(
+              padding: EdgeInsets.all(24.w),
+              decoration: BoxDecoration(
+                color: AppTheme.error.withOpacity(0.1),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppTheme.error.withOpacity(0.3),
+                  width: 2,
+                ),
+              ),
+              child: Icon(
+                Icons.error_outline,
+                size: 48.w,
+                color: AppTheme.error,
+              ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 24.h),
+            Text(
+              'Oops!',
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
             Text(
               tournamentsScreen.error ?? 'Error al cargar torneos',
               style: TextStyle(
                 fontSize: 16.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 24.h),
-            ElevatedButton(
+            SizedBox(height: 32.h),
+            ElevatedButton.icon(
               onPressed: () => tournamentsScreen.onRefresh(),
-              child: Text(l10n.tryAgain),
+              icon: const Icon(Icons.refresh),
+              label: Text(l10n.tryAgain),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primary,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+              ),
             ),
           ],
         ),
@@ -139,9 +181,16 @@ class TournamentsTable extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(24.w),
+              padding: EdgeInsets.all(32.w),
               decoration: BoxDecoration(
-                color: AppTheme.primary.withOpacity(0.15),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppTheme.primary.withOpacity(0.2),
+                    AppTheme.accent.withOpacity(0.1),
+                  ],
+                ),
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: AppTheme.primary.withOpacity(0.3),
@@ -150,29 +199,29 @@ class TournamentsTable extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: AppTheme.primary.withOpacity(0.2),
-                    blurRadius: 20,
+                    blurRadius: 30,
                     spreadRadius: 0,
-                    offset: const Offset(0, 8),
+                    offset: const Offset(0, 10),
                   ),
                 ],
               ),
               child: Icon(
                 Icons.emoji_events_outlined,
-                size: 48.w,
+                size: 64.w,
                 color: AppTheme.primary,
               ),
             ),
-            SizedBox(height: 24.h),
+            SizedBox(height: 32.h),
             Text(
               l10n.tournamentFormNoTournamentsAvailable,
               style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w800,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 12.h),
             Text(
               l10n.tournamentFormCheckBackLater,
               style: TextStyle(
@@ -180,6 +229,37 @@ class TournamentsTable extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
               textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 32.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+              decoration: BoxDecoration(
+                color: AppTheme.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: AppTheme.primary.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: AppTheme.primary,
+                    size: 18.w,
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'Crea el primer torneo',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.primary,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -212,275 +292,430 @@ class TournamentsTable extends StatelessWidget {
   ) {
     final currentUser = Provider.of<UserProvider>(context, listen: false).user;
     final canEdit = TournamentRoleHelper.canEdit(tournament, currentUser);
+    final now = DateTime.now();
+    final isUpcoming = tournament.startAt.isAfter(now);
+    final isOngoing =
+        tournament.startAt.isBefore(now) && tournament.endAt.isAfter(now);
+    final isFinished = tournament.endAt.isBefore(now);
+    final progress = tournament.registeredTeams / tournament.maxTeams;
+    final hasImage = tournament.image != null &&
+        tournament.image!.isNotEmpty &&
+        (tournament.image!.startsWith('http://') ||
+            tournament.image!.startsWith('https://'));
 
     return Card(
-      elevation: 2,
-      shadowColor: Colors.black.withOpacity(0.1),
+      elevation: 0,
+      margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(20.r),
       ),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) =>
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
                   TournamentDetailScreen(tournament: tournament),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              transitionDuration: const Duration(milliseconds: 300),
             ),
           );
         },
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(20.r),
         child: Container(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          height: 240.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            gradient: hasImage
+                ? null
+                : LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppTheme.primary.withOpacity(0.1),
+                      AppTheme.accent.withOpacity(0.05),
+                    ],
+                  ),
+          ),
+          child: Stack(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      tournament.title,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).colorScheme.onSurface,
+              // Background Image
+              if (hasImage)
+                Positioned.fill(
+                  child: Image.network(
+                    tournament.image!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(),
+                  ),
+                ),
+              // Gradient Overlay
+              if (hasImage)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.3),
+                          Colors.black.withOpacity(0.7),
+                        ],
+                        stops: const [0.0, 0.5, 1.0],
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  SizedBox(width: 12.w),
-                  if (tournament.isOfficial)
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12.r),
-                        border: Border.all(
-                          color: AppTheme.primary.withOpacity(0.3),
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                ),
+              // Content
+              Positioned.fill(
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header Row
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.verified,
-                            color: AppTheme.primary,
-                            size: 16.w,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Title
+                                Text(
+                                  tournament.title,
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: hasImage
+                                        ? Colors.white
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                    height: 1.2,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 8.h),
+                                // Status Badge
+                                _buildStatusBadge(context, isUpcoming,
+                                    isOngoing, isFinished, l10n),
+                              ],
+                            ),
                           ),
-                          SizedBox(width: 4.w),
-                          Text(
-                            l10n.tournamentFormOfficial,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.primary,
+                          SizedBox(width: 8.w),
+                          // Official Badge & Menu
+                          Column(
+                            children: [
+                              if (tournament.isOfficial)
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.w, vertical: 4.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.verified,
+                                        color: Colors.white,
+                                        size: 14.w,
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        l10n.tournamentFormOfficial,
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              if (canEdit) ...[
+                                SizedBox(height: 8.h),
+                                PopupMenuButton<String>(
+                                  icon: Icon(
+                                    Icons.more_vert,
+                                    color: hasImage
+                                        ? Colors.white
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                            .withOpacity(0.6),
+                                    size: 20.w,
+                                  ),
+                                  color: Theme.of(context).colorScheme.surface,
+                                  onSelected: (value) {
+                                    if (value == 'edit') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              TournamentFormScreen(
+                                                  tournament: tournament),
+                                        ),
+                                      );
+                                    } else if (value == 'delete') {
+                                      _showDeleteConfirmation(
+                                          context, tournament, l10n);
+                                    }
+                                  },
+                                  itemBuilder: (context) => [
+                                    PopupMenuItem(
+                                      value: 'edit',
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.edit,
+                                              color: Colors.blue, size: 18.w),
+                                          SizedBox(width: 8.w),
+                                          Text(l10n.tournamentFormEdit),
+                                        ],
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: 'delete',
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.delete,
+                                              color: Colors.red, size: 18.w),
+                                          SizedBox(width: 8.w),
+                                          Text(l10n.tournamentFormDelete),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      // Game Info & Participants
+                      Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10.r),
+                            child: Container(
+                              width: 48.w,
+                              height: 48.w,
+                              color: Colors.white.withOpacity(0.2),
+                              padding: EdgeInsets.all(8.w),
+                              child: GameImageHelper.buildGameImage(
+                                gameName: tournament.game.name,
+                                width: 32.w,
+                                height: 32.w,
+                                defaultIcon: Icons.sports_esports,
+                                defaultIconColor: Colors.white,
+                                defaultIconSize: 20.w,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  tournament.game.name,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: hasImage
+                                        ? Colors.white
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 4.h),
+                                // Participants Progress
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.people,
+                                      size: 14.w,
+                                      color: hasImage
+                                          ? Colors.white.withOpacity(0.8)
+                                          : AppTheme.primary,
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      '${tournament.registeredTeams}/${tournament.maxTeams}',
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: hasImage
+                                            ? Colors.white.withOpacity(0.9)
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Progress Indicator
+                          Container(
+                            width: 60.w,
+                            height: 60.w,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                CircularProgressIndicator(
+                                  value: progress,
+                                  strokeWidth: 4,
+                                  backgroundColor:
+                                      Colors.white.withOpacity(0.3),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    progress >= 1.0
+                                        ? AppTheme.success
+                                        : Colors.white,
+                                  ),
+                                ),
+                                Center(
+                                  child: Text(
+                                    '${(progress * 100).toStringAsFixed(0)}%',
+                                    style: TextStyle(
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  if (canEdit) ...[
-                    SizedBox(width: 8.w),
-                    PopupMenuButton<String>(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.6),
-                        size: 20.w,
-                      ),
-                      onSelected: (value) {
-                        if (value == 'edit') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  TournamentFormScreen(tournament: tournament),
+                      SizedBox(height: 12.h),
+                      // Date Info
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_today,
+                            size: 14.w,
+                            color: hasImage
+                                ? Colors.white.withOpacity(0.8)
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withOpacity(0.6),
+                          ),
+                          SizedBox(width: 6.w),
+                          Expanded(
+                            child: Text(
+                              _formatDateRange(
+                                  tournament.startAt, tournament.endAt),
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                color: hasImage
+                                    ? Colors.white.withOpacity(0.9)
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withOpacity(0.7),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          );
-                        } else if (value == 'delete') {
-                          _showDeleteConfirmation(context, tournament, l10n);
-                        }
-                      },
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: Row(
-                            children: [
-                              Icon(Icons.edit, color: Colors.blue),
-                              SizedBox(width: 8),
-                              Text(l10n.tournamentFormEdit),
-                            ],
                           ),
-                        ),
-                        PopupMenuItem(
-                          value: 'delete',
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete, color: Colors.red),
-                              SizedBox(width: 8),
-                              Text(l10n.tournamentFormDelete),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ],
-              ),
-              SizedBox(height: 16.h),
-              Row(
-                children: [
-                  Container(
-                    width: 40.w,
-                    height: 40.w,
-                    decoration: BoxDecoration(
-                      color: AppTheme.accent.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: tournament.game.image != null &&
-                            tournament.game.image!.isNotEmpty
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8.r),
-                            child: Image.asset(
-                              tournament.game.image!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  Icons.sports_esports,
-                                  color: AppTheme.accent,
-                                  size: 20.w,
-                                );
-                              },
-                            ),
-                          )
-                        : Icon(
-                            Icons.sports_esports,
-                            color: AppTheme.accent,
-                            size: 20.w,
-                          ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.tournamentFormGame,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.6),
-                          ),
-                        ),
-                        SizedBox(height: 2.h),
-                        Text(
-                          tournament.game.name,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 16.w),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                    decoration: BoxDecoration(
-                      color: AppTheme.success.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: AppTheme.success.withOpacity(0.3),
-                        width: 1,
+                        ],
                       ),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          tournament.registeredPlayersIds?.length.toString() ??
-                              '0',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.success,
-                          ),
-                        ),
-                        Text(
-                          l10n.tournamentFormPlayers,
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.success,
-                          ),
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 44.h,
-                      decoration: BoxDecoration(
-                        color: AppTheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12.r),
-                        border: Border.all(
-                          color: AppTheme.primary.withOpacity(0.3),
-                          width: 1,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          l10n.tournamentFormViewDetails,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.primary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Container(
-                    width: 44.w,
-                    height: 44.h,
-                    decoration: BoxDecoration(
-                      color: AppTheme.accent.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: AppTheme.accent.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppTheme.accent,
-                      size: 20.w,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildStatusBadge(BuildContext context, bool isUpcoming,
+      bool isOngoing, bool isFinished, AppLocalizations l10n) {
+    String text;
+    Color color;
+    IconData icon;
+
+    if (isFinished) {
+      text = 'Finalizado';
+      color = AppTheme.error;
+      icon = Icons.check_circle;
+    } else if (isOngoing) {
+      text = 'En curso';
+      color = AppTheme.success;
+      icon = Icons.play_circle_filled;
+    } else {
+      text = 'Próximo';
+      color = AppTheme.warning;
+      icon = Icons.schedule;
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+          color: color.withOpacity(0.4),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12.w, color: color),
+          SizedBox(width: 4.w),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDateRange(DateTime start, DateTime end) {
+    final isSameDay = start.day == end.day &&
+        start.month == end.month &&
+        start.year == end.year;
+
+    final startStr = isSameDay
+        ? '${start.day.toString().padLeft(2, '0')}/${start.month.toString().padLeft(2, '0')}/${start.year}'
+        : '${start.day.toString().padLeft(2, '0')}/${start.month.toString().padLeft(2, '0')}';
+
+    final endStr =
+        '${end.day.toString().padLeft(2, '0')}/${end.month.toString().padLeft(2, '0')}/${end.year}';
+
+    return '$startStr - $endStr';
   }
 
   Future<void> _showDeleteConfirmation(BuildContext context,

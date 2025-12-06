@@ -421,6 +421,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tournamentParticipantsListLabel => 'La lista de participantes registrados se mostrará aquí';
 
   @override
+  String get tournamentRegisteredTeamsLabel => 'Equipos registrados';
+
+  @override
   String get tournamentNoParticipantsLabel => 'Aún no hay participantes. ¡Sé el primero en unirte!';
 
   @override

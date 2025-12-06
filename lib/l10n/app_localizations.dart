@@ -889,6 +889,12 @@ abstract class AppLocalizations {
   /// **'List of registered participants will be displayed here'**
   String get tournamentParticipantsListLabel;
 
+  /// No description provided for @tournamentRegisteredTeamsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered Teams'**
+  String get tournamentRegisteredTeamsLabel;
+
   /// No description provided for @tournamentNoParticipantsLabel.
   ///
   /// In en, this message translates to:

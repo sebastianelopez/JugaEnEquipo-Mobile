@@ -205,6 +205,7 @@
   "tournamentOfficialDescription": "Organizado por desenvolvedores oficiais ou patrocinadores",
   "tournamentCommunityDescription": "Organizado pela comunidade",
   "tournamentParticipantsListLabel": "A lista de participantes registrados será exibida aqui",
+  "tournamentRegisteredTeamsLabel": "Equipes registrados",
   "tournamentNoParticipantsLabel": "Ainda não há participantes. Seja o primeiro a se juntar!",
   "tournamentRegistrationSuccess": "Registrado com sucesso no torneio!",
   "tournamentAlreadyRegisteredLabel": "Já Registrado",

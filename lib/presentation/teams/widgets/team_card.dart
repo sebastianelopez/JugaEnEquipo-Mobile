@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
-import 'package:jugaenequipo/presentation/teams/business_logic/teams_screen_provider.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/datasources/teams_use_cases/get_team_members_use_case.dart';
-import 'package:provider/provider.dart';
 
 class TeamCard extends StatefulWidget {
   final TeamModel team;
@@ -29,7 +27,7 @@ class _TeamCardState extends State<TeamCard> {
 
   Future<void> _loadMembers() async {
     if (_members != null) return; // Already loaded
-    
+
     setState(() {
       _isLoadingMembers = true;
     });
@@ -53,7 +51,6 @@ class _TeamCardState extends State<TeamCard> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<TeamsScreenProvider>(context, listen: false);
     final l10n = AppLocalizations.of(context)!;
 
     return _buildTeamCard(context, l10n);
@@ -62,11 +59,11 @@ class _TeamCardState extends State<TeamCard> {
   Widget _buildTeamCard(BuildContext context, AppLocalizations l10n) {
     return Card(
       elevation: 12,
-      shadowColor: AppTheme.primary.withOpacity( 0.3),
+      shadowColor: AppTheme.primary.withOpacity(0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
         side: BorderSide(
-          color: Colors.white.withOpacity( 0.3),
+          color: Colors.white.withOpacity(0.3),
           width: 1.5,
         ),
       ),
@@ -110,8 +107,8 @@ class _TeamCardState extends State<TeamCard> {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity( 0.3),
-                        Colors.black.withOpacity( 0.7),
+                        Colors.black.withOpacity(0.3),
+                        Colors.black.withOpacity(0.7),
                       ],
                       stops: const [0.0, 0.5, 1.0],
                     ),
@@ -127,11 +124,11 @@ class _TeamCardState extends State<TeamCard> {
                   child: Container(
                     padding: EdgeInsets.all(8.w),
                     decoration: BoxDecoration(
-                      color: AppTheme.primary.withOpacity( 0.9),
+                      color: AppTheme.primary.withOpacity(0.9),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity( 0.3),
+                          color: Colors.black.withOpacity(0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -171,7 +168,7 @@ class _TeamCardState extends State<TeamCard> {
                           color: Colors.white,
                           shadows: [
                             Shadow(
-                              color: Colors.black.withOpacity( 0.5),
+                              color: Colors.black.withOpacity(0.5),
                               offset: const Offset(0, 1),
                               blurRadius: 3,
                             ),
@@ -190,7 +187,7 @@ class _TeamCardState extends State<TeamCard> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 12.w, vertical: 6.h),
                             decoration: BoxDecoration(
-                              color: AppTheme.success.withOpacity( 0.9),
+                              color: AppTheme.success.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Row(
@@ -215,7 +212,8 @@ class _TeamCardState extends State<TeamCard> {
                           ),
                           SizedBox(width: 12.w),
                           if ((_members != null && _members!.isNotEmpty) ||
-                              (widget.team.membersIds != null && widget.team.membersIds!.isNotEmpty))
+                              (widget.team.membersIds != null &&
+                                  widget.team.membersIds!.isNotEmpty))
                             Expanded(
                               child: _buildMembersAvatars(),
                             ),
@@ -228,11 +226,11 @@ class _TeamCardState extends State<TeamCard> {
                         width: double.infinity,
                         height: 44.h,
                         decoration: BoxDecoration(
-                          color: AppTheme.primary.withOpacity( 0.9),
+                          color: AppTheme.primary.withOpacity(0.9),
                           borderRadius: BorderRadius.circular(12.r),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity( 0.3),
+                              color: Colors.black.withOpacity(0.3),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -276,11 +274,11 @@ class _TeamCardState extends State<TeamCard> {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
         decoration: BoxDecoration(
-          color: AppTheme.accent.withOpacity( 0.9),
+          color: AppTheme.accent.withOpacity(0.9),
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity( 0.3),
+              color: Colors.black.withOpacity(0.3),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -317,11 +315,11 @@ class _TeamCardState extends State<TeamCard> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: AppTheme.accent.withOpacity( 0.9),
+              color: AppTheme.accent.withOpacity(0.9),
               borderRadius: BorderRadius.circular(16.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity( 0.3),
+                  color: Colors.black.withOpacity(0.3),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
@@ -359,7 +357,7 @@ class _TeamCardState extends State<TeamCard> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity( 0.9),
+              color: Colors.white.withOpacity(0.9),
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
@@ -379,8 +377,8 @@ class _TeamCardState extends State<TeamCard> {
   Widget _buildMembersAvatars() {
     final membersToShow = _members ?? [];
     final maxToShow = 4;
-    final totalCount = membersToShow.isNotEmpty 
-        ? membersToShow.length 
+    final totalCount = membersToShow.isNotEmpty
+        ? membersToShow.length
         : (widget.team.membersIds?.length ?? 0);
 
     if (totalCount == 0) {
@@ -419,7 +417,8 @@ class _TeamCardState extends State<TeamCard> {
         // Show placeholder avatars if members are still loading
         if (_isLoadingMembers && membersToShow.isEmpty)
           ...List.generate(
-            widget.team.membersIds != null && widget.team.membersIds!.length > maxToShow
+            widget.team.membersIds != null &&
+                    widget.team.membersIds!.length > maxToShow
                 ? maxToShow
                 : (widget.team.membersIds?.length ?? 0),
             (index) => Container(
@@ -472,7 +471,7 @@ class _TeamCardState extends State<TeamCard> {
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity( 0.1),
+                color: Colors.black.withOpacity(0.1),
               ),
             ),
           ),
@@ -492,15 +491,15 @@ class _TeamCardState extends State<TeamCard> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppTheme.primary.withOpacity( 0.8),
-            AppTheme.accent.withOpacity( 0.6),
+            AppTheme.primary.withOpacity(0.8),
+            AppTheme.accent.withOpacity(0.6),
           ],
         ),
       ),
       child: Center(
         child: Icon(
           Icons.group,
-          color: Colors.white.withOpacity( 0.8),
+          color: Colors.white.withOpacity(0.8),
           size: 60.w,
         ),
       ),

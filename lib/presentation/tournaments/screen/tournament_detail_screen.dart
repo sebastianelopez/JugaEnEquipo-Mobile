@@ -1,21 +1,28 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/tournaments_use_cases/delete_tournament_use_case.dart'
     as delete_use_case;
-import 'package:jugaenequipo/datasources/tournaments_use_cases/request_tournament_access_use_case.dart';
-import 'package:jugaenequipo/datasources/tournaments_use_cases/leave_tournament_use_case.dart';
-import 'package:jugaenequipo/global_widgets/card_container.dart';
+import 'package:jugaenequipo/datasources/teams_use_cases/search_teams_use_case.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/utils/tournament_role_helper.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/presentation/tournaments/screen/tournament_form_screen.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_header.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_background_image.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_description.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_game_info.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_official_status.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_participants_section.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_participating_teams_section.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_registration_button.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_additional_info.dart';
+import 'package:jugaenequipo/presentation/tournaments/widgets/tournament_teams_modal.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
-class TournamentDetailScreen extends StatelessWidget {
+class TournamentDetailScreen extends StatefulWidget {
   final TournamentModel tournament;
 
   const TournamentDetailScreen({
@@ -24,38 +31,126 @@ class TournamentDetailScreen extends StatelessWidget {
   });
 
   @override
+  State<TournamentDetailScreen> createState() => _TournamentDetailScreenState();
+}
+
+class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
+  List<TeamModel>? _participatingTeams;
+  bool _isLoadingTeams = false;
+  String? _teamsError;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadParticipatingTeams();
+  }
+
+  Future<void> _loadParticipatingTeams() async {
+    setState(() {
+      _isLoadingTeams = true;
+      _teamsError = null;
+    });
+
+    try {
+      final teams = await searchTeams(tournamentId: widget.tournament.id);
+      if (mounted) {
+        setState(() {
+          _participatingTeams = teams ?? [];
+          _isLoadingTeams = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _teamsError = 'Error al cargar los equipos';
+          _isLoadingTeams = false;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final currentUser = Provider.of<UserProvider>(context).user;
+    final now = DateTime.now();
+    final isUpcoming = widget.tournament.startAt.isAfter(now);
+    final isOngoing = widget.tournament.startAt.isBefore(now) &&
+        widget.tournament.endAt.isAfter(now);
+    final isFinished = widget.tournament.endAt.isBefore(now);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(l10n.tournamentDetailsTitle),
+        title: Text(
+          l10n.tournamentDetailsTitle,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            shadows: [
+              Shadow(
+                offset: const Offset(0, 1),
+                blurRadius: 3,
+                color: Colors.black.withOpacity(0.3),
+              ),
+            ],
+          ),
+        ),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0,
+        leading: IconButton(
+          icon: Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.arrow_back, size: 20.w),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
-          if (TournamentRoleHelper.canEdit(tournament, currentUser)) ...[
+          if (TournamentRoleHelper.canEdit(widget.tournament, currentUser)) ...[
             IconButton(
-              icon: const Icon(Icons.edit),
+              icon: Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.edit, size: 20.w),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => TournamentFormScreen(
-                      tournament: tournament,
-                    ),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        TournamentFormScreen(tournament: widget.tournament),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
                   ),
                 ).then((result) {
                   if (result == true && context.mounted) {
-                    Navigator.pop(context, true); // Refresh tournament list
+                    _loadParticipatingTeams();
+                    Navigator.pop(context, true);
                   }
                 });
               },
             ),
             PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert),
+              icon: Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.more_vert, size: 20.w),
+              ),
+              color: Theme.of(context).colorScheme.surface,
               onSelected: (value) {
                 if (value == 'delete') {
                   _showDeleteConfirmation(context, l10n);
@@ -66,8 +161,8 @@ class TournamentDetailScreen extends StatelessWidget {
                   value: 'delete',
                   child: Row(
                     children: [
-                      const Icon(Icons.delete, color: Colors.red),
-                      const SizedBox(width: 8),
+                      Icon(Icons.delete, color: Colors.red, size: 18.w),
+                      SizedBox(width: 8.w),
                       Text(l10n.tournamentFormDelete),
                     ],
                   ),
@@ -85,116 +180,15 @@ class TournamentDetailScreen extends StatelessWidget {
           alignment: Alignment.topCenter,
           children: [
             // Background Image
-            if (tournament.image != null && tournament.image!.isNotEmpty)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 250.h,
-                child: _buildBackgroundImage(tournament.image!),
-              )
-            else
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 250.h,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppTheme.primary,
-                        AppTheme.primary.withOpacity(0.8),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+            TournamentBackgroundImage(imageUrl: widget.tournament.image),
             // Tournament Title Overlay
-            Positioned(
-              top: 100.h,
-              left: 20.w,
-              right: 20.w,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          tournament.title,
-                          style: TextStyle(
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(
-                                offset: const Offset(0, 2),
-                                blurRadius: 4,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (tournament.isOfficial)
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12.w, vertical: 6.h),
-                          decoration: BoxDecoration(
-                            color: AppTheme.primary,
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.verified,
-                                color: Colors.white,
-                                size: 18.sp,
-                              ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                'Oficial',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Text(
-                      '${tournament.registeredTeams}/${tournament.maxTeams} equipos',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            TournamentHeader(tournament: widget.tournament),
             // Content
             SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               child: Container(
-                margin: EdgeInsets.only(top: 200.h),
-                padding: EdgeInsets.all(16.w),
+                margin: EdgeInsets.only(top: 250.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
@@ -202,41 +196,51 @@ class TournamentDetailScreen extends StatelessWidget {
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, -5),
+                    ),
+                  ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (tournament.description != null &&
-                        tournament.description!.isNotEmpty) ...[
-                      Container(
-                        padding: EdgeInsets.all(16.w),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surface
-                              .withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Text(
-                          tournament.description!,
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
+                    // Status Badge Section
+                    _buildStatusSection(
+                        context, isUpcoming, isOngoing, isFinished),
+                    SizedBox(height: 24.h),
+                    // Key Info Cards
+                    _buildKeyInfoSection(
+                        context, l10n, isUpcoming, isOngoing, isFinished),
+                    SizedBox(height: 24.h),
+                    TournamentDescription(tournament: widget.tournament),
+                    if (widget.tournament.description != null &&
+                        widget.tournament.description!.isNotEmpty)
                       SizedBox(height: 24.h),
-                    ],
-                    _buildGameInfo(context),
+                    TournamentGameInfo(tournament: widget.tournament),
                     SizedBox(height: 24.h),
-                    _buildOfficialStatus(context),
+                    TournamentOfficialStatus(tournament: widget.tournament),
                     SizedBox(height: 24.h),
-                    _buildParticipantsSection(context),
+                    TournamentParticipantsSection(
+                        tournament: widget.tournament),
                     SizedBox(height: 24.h),
-                    _buildRegistrationButton(context),
+                    TournamentParticipatingTeamsSection(
+                      participatingTeams: _participatingTeams,
+                      isLoading: _isLoadingTeams,
+                      error: _teamsError,
+                      onRetry: _loadParticipatingTeams,
+                      onShowAllTeams: () => _showAllTeamsModal(context),
+                    ),
                     SizedBox(height: 24.h),
-                    _buildAdditionalInfo(context),
+                    TournamentRegistrationButton(
+                      tournament: widget.tournament,
+                      onRegistrationSuccess: _loadParticipatingTeams,
+                      onLeaveSuccess: _loadParticipatingTeams,
+                    ),
+                    SizedBox(height: 24.h),
+                    TournamentAdditionalInfo(tournament: widget.tournament),
                     SizedBox(height: 24.h), // Bottom padding
                   ],
                 ),
@@ -248,130 +252,51 @@ class TournamentDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGameInfo(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return CardContainer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.tournamentGameInfoLabel,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              if (tournament.image != null && tournament.image!.isNotEmpty)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8.r),
-                  child: tournament.image!.startsWith('http://') ||
-                          tournament.image!.startsWith('https://')
-                      ? Image.network(
-                          tournament.image!,
-                          width: 60.w,
-                          height: 60.h,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: 60.w,
-                              height: 60.h,
-                              decoration: BoxDecoration(
-                                color: AppTheme.accent.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Icon(
-                                Icons.sports_esports,
-                                size: 30.sp,
-                                color: AppTheme.accent,
-                              ),
-                            );
-                          },
-                        )
-                      : Image.asset(
-                          tournament.image!,
-                          width: 60.w,
-                          height: 60.h,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: 60.w,
-                              height: 60.h,
-                              decoration: BoxDecoration(
-                                color: AppTheme.accent.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Icon(
-                                Icons.sports_esports,
-                                size: 30.sp,
-                                color: AppTheme.accent,
-                              ),
-                            );
-                          },
-                        ),
-                )
-              else
-                Container(
-                  width: 60.w,
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    color: AppTheme.accent.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.sports_esports,
-                    size: 30.sp,
-                    color: AppTheme.accent,
-                  ),
-                ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tournament.game.name,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      l10n.tournamentGameTypeLabel,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.6),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  void _showAllTeamsModal(BuildContext context) {
+    if (_participatingTeams != null && _participatingTeams!.isNotEmpty) {
+      TournamentTeamsModal.show(context, _participatingTeams!);
+    }
   }
 
-  Widget _buildOfficialStatus(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+  Widget _buildStatusSection(
+      BuildContext context, bool isUpcoming, bool isOngoing, bool isFinished) {
+    String text;
+    Color color;
+    IconData icon;
 
-    return CardContainer(
+    if (isFinished) {
+      text = 'Finalizado';
+      color = AppTheme.error;
+      icon = Icons.check_circle;
+    } else if (isOngoing) {
+      text = 'En curso';
+      color = AppTheme.success;
+      icon = Icons.play_circle_filled;
+    } else {
+      text = 'Próximo';
+      color = AppTheme.warning;
+      icon = Icons.schedule;
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: color.withOpacity(0.3),
+          width: 2,
+        ),
+      ),
       child: Row(
         children: [
-          Icon(
-            tournament.isOfficial ? Icons.verified : Icons.info_outline,
-            color: tournament.isOfficial ? AppTheme.primary : AppTheme.warning,
-            size: 24.sp,
+          Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: color, size: 24.w),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -379,25 +304,22 @@ class TournamentDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  tournament.isOfficial
-                      ? l10n.tournamentOfficialLabel
-                      : l10n.tournamentCommunityLabel,
+                  'Estado del Torneo',
                   style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                Text(
-                  tournament.isOfficial
-                      ? l10n.tournamentOfficialDescription
-                      : l10n.tournamentCommunityDescription,
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withOpacity(0.7),
+                        .withOpacity(0.6),
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w800,
+                    color: color,
                   ),
                 ),
               ],
@@ -408,268 +330,113 @@ class TournamentDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildParticipantsSection(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final participantsCount = tournament.registeredTeams;
-    final progress = participantsCount / tournament.maxTeams;
+  Widget _buildKeyInfoSection(BuildContext context, AppLocalizations l10n,
+      bool isUpcoming, bool isOngoing, bool isFinished) {
+    final dateFormat = DateFormat('dd/MM/yyyy');
+    final timeFormat = DateFormat('HH:mm');
 
-    return CardContainer(
+    return Row(
+      children: [
+        Expanded(
+          child: _buildInfoCard(
+            context,
+            icon: Icons.calendar_today,
+            iconColor: AppTheme.primary,
+            title: 'Inicio',
+            value: dateFormat.format(widget.tournament.startAt),
+            subtitle: timeFormat.format(widget.tournament.startAt),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        Expanded(
+          child: _buildInfoCard(
+            context,
+            icon: Icons.event,
+            iconColor: AppTheme.accent,
+            title: 'Fin',
+            value: dateFormat.format(widget.tournament.endAt),
+            subtitle: timeFormat.format(widget.tournament.endAt),
+          ),
+        ),
+        if (widget.tournament.prize != null &&
+            widget.tournament.prize!.isNotEmpty) ...[
+          SizedBox(width: 12.w),
+          Expanded(
+            child: _buildInfoCard(
+              context,
+              icon: Icons.emoji_events,
+              iconColor: AppTheme.warning,
+              title: 'Premio',
+              value: widget.tournament.prize!,
+              subtitle: null,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildInfoCard(
+    BuildContext context, {
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String value,
+    String? subtitle,
+  }) {
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: iconColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: iconColor.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.people,
-                    color: AppTheme.primary,
-                    size: 20.sp,
-                  ),
-                  SizedBox(width: 8.w),
-                  Text(
-                    l10n.tournamentParticipantsLabel,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: AppTheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Text(
-                  '$participantsCount/${tournament.maxTeams}',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          // Progress Bar
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 8.h,
-              backgroundColor:
-                  Theme.of(context).colorScheme.surface.withOpacity(0.3),
-              valueColor: AlwaysStoppedAnimation<Color>(
-                progress >= 1.0 ? AppTheme.success : AppTheme.primary,
-              ),
+          Container(
+            padding: EdgeInsets.all(6.w),
+            decoration: BoxDecoration(
+              color: iconColor.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8.r),
             ),
+            child: Icon(icon, color: iconColor, size: 18.w),
           ),
           SizedBox(height: 8.h),
           Text(
-            '${(progress * 100).toStringAsFixed(0)}% de capacidad',
+            title,
             style: TextStyle(
-              fontSize: 12.sp,
+              fontSize: 11.sp,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 16.h),
-          if (participantsCount > 0) ...[
-            Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-                ),
-              ),
-              child: Text(
-                l10n.tournamentParticipantsListLabel,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                ),
-              ),
+          SizedBox(height: 2.h),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
-          ] else ...[
-            Container(
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: AppTheme.warning.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.people_outline,
-                    color: AppTheme.warning,
-                    size: 20.sp,
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(
-                      l10n.tournamentNoParticipantsLabel,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: AppTheme.warning,
-                      ),
-                    ),
-                  ),
-                ],
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (subtitle != null) ...[
+            SizedBox(height: 2.h),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 10.sp,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
               ),
             ),
           ],
         ],
       ),
-    );
-  }
-
-  Widget _buildRegistrationButton(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final currentUser = Provider.of<UserProvider>(context, listen: false).user;
-    final isRegistered = tournament.isUserRegistered;
-    final userRole = TournamentRoleHelper.getUserRole(tournament, currentUser);
-
-    // Don't show registration button for creators
-    if (userRole == TournamentUserRole.creator) {
-      return const SizedBox.shrink();
-    }
-
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: isRegistered
-                ? null
-                : () async {
-                    if (currentUser?.teamId == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content:
-                              Text('Debes estar en un equipo para registrarte'),
-                          backgroundColor: AppTheme.error,
-                        ),
-                      );
-                      return;
-                    }
-
-                    final success = await requestTournamentAccess(
-                      tournamentId: tournament.id,
-                      teamId: currentUser!.teamId!,
-                    );
-
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(success
-                              ? l10n.tournamentRegistrationSuccess
-                              : 'Error al solicitar acceso'),
-                          backgroundColor:
-                              success ? AppTheme.success : AppTheme.error,
-                        ),
-                      );
-                      if (success) {
-                        Navigator.pop(context, true); // Refresh
-                      }
-                    }
-                  },
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  isRegistered ? AppTheme.success : AppTheme.primary,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 16.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
-            child: Text(
-              isRegistered
-                  ? l10n.tournamentAlreadyRegisteredLabel
-                  : l10n.tournamentRegisterButtonLabel,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-        if (userRole == TournamentUserRole.member) ...[
-          SizedBox(height: 12.h),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () async {
-                if (currentUser?.teamId == null) return;
-
-                final confirmed = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Abandonar Torneo'),
-                    content: const Text(
-                        '¿Estás seguro de que quieres abandonar este torneo?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text(l10n.tournamentFormDeleteCancel),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        style: TextButton.styleFrom(
-                            foregroundColor: AppTheme.error),
-                        child: const Text('Abandonar'),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (confirmed == true && context.mounted) {
-                  final success = await leaveTournament(
-                    tournamentId: tournament.id,
-                    teamId: currentUser!.teamId!,
-                  );
-
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(success
-                            ? 'Has abandonado el torneo'
-                            : 'Error al abandonar el torneo'),
-                        backgroundColor:
-                            success ? AppTheme.success : AppTheme.error,
-                      ),
-                    );
-                    if (success) {
-                      Navigator.pop(context, true); // Refresh
-                    }
-                  }
-                }
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppTheme.error,
-                side: BorderSide(color: AppTheme.error),
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-              ),
-              child: const Text(
-                'Abandonar Torneo',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ],
     );
   }
 
@@ -696,7 +463,7 @@ class TournamentDetailScreen extends StatelessWidget {
 
     if (confirmed == true && context.mounted) {
       final success = await delete_use_case.deleteTournament(
-        tournamentId: tournament.id,
+        tournamentId: widget.tournament.id,
       );
 
       if (context.mounted) {
@@ -713,158 +480,5 @@ class TournamentDetailScreen extends StatelessWidget {
         }
       }
     }
-  }
-
-  Widget _buildAdditionalInfo(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
-
-    return CardContainer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.tournamentAdditionalInfoLabel,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          SizedBox(height: 16.h),
-          _buildInfoRow(
-            context,
-            Icons.calendar_today,
-            l10n.tournamentStartDateLabel,
-            dateFormat.format(tournament.startAt),
-          ),
-          SizedBox(height: 8.h),
-          _buildInfoRow(
-            context,
-            Icons.event,
-            l10n.tournamentFormEndDate,
-            dateFormat.format(tournament.endAt),
-          ),
-          SizedBox(height: 8.h),
-          _buildInfoRow(
-            context,
-            Icons.location_on,
-            l10n.tournamentLocationLabel,
-            tournament.region,
-          ),
-          if (tournament.prize != null && tournament.prize!.isNotEmpty) ...[
-            SizedBox(height: 8.h),
-            _buildInfoRow(
-              context,
-              Icons.emoji_events,
-              l10n.tournamentPrizePoolLabel,
-              tournament.prize!,
-            ),
-          ],
-          if (tournament.rules != null && tournament.rules!.isNotEmpty) ...[
-            SizedBox(height: 16.h),
-            Text(
-              'Rules',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              tournament.rules!,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(
-      BuildContext context, IconData icon, String label, String value) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: AppTheme.accent.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Icon(
-              icon,
-              size: 20.sp,
-              color: AppTheme.accent,
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.6),
-                  ),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBackgroundImage(String imageUrl) {
-    final isNetworkImage =
-        imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
-
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: isNetworkImage
-              ? NetworkImage(imageUrl)
-              : const AssetImage('assets/login.png') as ImageProvider,
-          fit: BoxFit.cover,
-          onError: (exception, stackTrace) {
-            if (kDebugMode) {
-              debugPrint('Error loading background image: $exception');
-            }
-          },
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.transparent,
-              Colors.black.withOpacity(0.3),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -5,6 +5,7 @@ import 'package:jugaenequipo/presentation/tournaments/business_logic/tournament_
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
+import 'package:jugaenequipo/utils/game_image_helper.dart';
 import 'package:provider/provider.dart';
 
 class TournamentFormScreen extends StatefulWidget {
@@ -535,39 +536,14 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                 value: game.id,
                 child: Row(
                   children: [
-                    if (game.image != null && game.image!.isNotEmpty)
-                      game.image!.startsWith('http://') ||
-                              game.image!.startsWith('https://')
-                          ? Image.network(
-                              game.image!,
-                              width: 24.w,
-                              height: 24.w,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Icon(
-                                Icons.sports_esports,
-                                size: 24.w,
-                                color: AppTheme.accent,
-                              ),
-                            )
-                          : Image.asset(
-                              game.image!,
-                              width: 24.w,
-                              height: 24.w,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Icon(
-                                Icons.sports_esports,
-                                size: 24.w,
-                                color: AppTheme.accent,
-                              ),
-                            )
-                    else
-                      Icon(
-                        Icons.sports_esports,
-                        size: 24.w,
-                        color: AppTheme.accent,
-                      ),
+                    GameImageHelper.buildGameImage(
+                      gameName: game.name,
+                      width: 24.w,
+                      height: 24.w,
+                      defaultIcon: Icons.sports_esports,
+                      defaultIconColor: AppTheme.accent,
+                      defaultIconSize: 24.w,
+                    ),
                     SizedBox(width: 12.w),
                     Text(
                       game.name,
