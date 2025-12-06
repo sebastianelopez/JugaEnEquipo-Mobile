@@ -5,9 +5,9 @@ flutter_native_splash:
 
   color: "#F8F9FA"
   image: "assets/juga-en-equipo_ISO-1-1.png"
-  branding: "assets/juga-en-equipo_ISO-2-1.png"
+  branding: "assets/juga-en-equipo_violeta-1.png"
 
   android_12:
     color: "#F8F9FA"
     image: "assets/juga-en-equipo_ISO-1-1.png"
-    branding: "assets/juga-en-equipo_ISO-2-1.png"
+    branding: "assets/juga-en-equipo_violeta-1.png"
