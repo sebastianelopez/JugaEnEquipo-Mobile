@@ -4,7 +4,7 @@ import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 
 /// Get all tournament requests
-/// 
+///
 /// Optional parameters:
 /// - [tournamentId]: Filter requests by tournament ID
 /// - [teamId]: Filter requests by team ID
@@ -82,4 +82,3 @@ Future<List<TournamentRequestModel>?> getTournamentRequests({
     return null;
   }
 }
-

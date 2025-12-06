@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 
 /// Assign a responsible user to a tournament
-/// 
+///
 /// Parameters:
 /// - [tournamentId]: The ID of the tournament
 /// - [userId]: The ID of the user to assign as responsible
@@ -32,7 +32,8 @@ Future<bool> assignTournamentResponsible({
 
     if (response.statusCode == 200 || response.statusCode == 204) {
       if (kDebugMode) {
-        debugPrint('assignTournamentResponsible: Successfully assigned responsible');
+        debugPrint(
+            'assignTournamentResponsible: Successfully assigned responsible');
       }
       return true;
     } else {
@@ -49,4 +50,3 @@ Future<bool> assignTournamentResponsible({
     return false;
   }
 }
-

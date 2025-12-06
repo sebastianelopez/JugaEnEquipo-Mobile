@@ -61,8 +61,7 @@ Future<List<GameModel>?> searchGames({
 
       try {
         final games = data
-            .map((game) =>
-                GameModel.fromJson(game as Map<String, dynamic>))
+            .map((game) => GameModel.fromJson(game as Map<String, dynamic>))
             .toList();
         return games;
       } catch (e) {
@@ -93,4 +92,3 @@ Future<List<GameModel>?> searchGames({
     return null;
   }
 }
-

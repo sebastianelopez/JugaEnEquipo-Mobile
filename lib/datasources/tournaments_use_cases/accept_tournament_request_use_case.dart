@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 
 /// Accept a tournament request
-/// 
+///
 /// Parameters:
 /// - [requestId]: The ID of the request to accept
 Future<bool> acceptTournamentRequest({
@@ -47,4 +47,3 @@ Future<bool> acceptTournamentRequest({
     return false;
   }
 }
-

@@ -4,7 +4,10 @@ import 'package:jugaenequipo/datasources/models/tournament_model.dart';
 import 'package:jugaenequipo/presentation/tournaments/business_logic/tournaments_provider.dart';
 import 'package:jugaenequipo/presentation/tournaments/screen/tournament_detail_screen.dart';
 import 'package:jugaenequipo/presentation/tournaments/screen/tournament_form_screen.dart';
+import 'package:jugaenequipo/datasources/tournaments_use_cases/delete_tournament_use_case.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/utils/tournament_role_helper.dart';
+import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -207,6 +210,9 @@ class TournamentsTable extends StatelessWidget {
     dynamic tournament,
     AppLocalizations l10n,
   ) {
+    final currentUser = Provider.of<UserProvider>(context, listen: false).user;
+    final canEdit = TournamentRoleHelper.canEdit(tournament, currentUser);
+
     return Card(
       elevation: 2,
       shadowColor: Colors.black.withOpacity(0.1),
@@ -276,52 +282,54 @@ class TournamentsTable extends StatelessWidget {
                         ],
                       ),
                     ),
-                  SizedBox(width: 8.w),
-                  PopupMenuButton<String>(
-                    icon: Icon(
-                      Icons.more_vert,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.6),
-                      size: 20.w,
-                    ),
-                    onSelected: (value) {
-                      if (value == 'edit') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                TournamentFormScreen(tournament: tournament),
+                  if (canEdit) ...[
+                    SizedBox(width: 8.w),
+                    PopupMenuButton<String>(
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.6),
+                        size: 20.w,
+                      ),
+                      onSelected: (value) {
+                        if (value == 'edit') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TournamentFormScreen(tournament: tournament),
+                            ),
+                          );
+                        } else if (value == 'delete') {
+                          _showDeleteConfirmation(context, tournament, l10n);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit, color: Colors.blue),
+                              SizedBox(width: 8),
+                              Text(l10n.tournamentFormEdit),
+                            ],
                           ),
-                        );
-                      } else if (value == 'delete') {
-                        _showDeleteConfirmation(context, tournament, l10n);
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit, color: Colors.blue),
-                            SizedBox(width: 8),
-                            Text(l10n.tournamentFormEdit),
-                          ],
                         ),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete, color: Colors.red),
-                            SizedBox(width: 8),
-                            Text(l10n.tournamentFormDelete),
-                          ],
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, color: Colors.red),
+                              SizedBox(width: 8),
+                              Text(l10n.tournamentFormDelete),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
               SizedBox(height: 16.h),
@@ -497,13 +505,24 @@ class TournamentsTable extends StatelessWidget {
     );
 
     if (confirmed == true && context.mounted) {
-      // TODO: Implement actual delete API call
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.tournamentFormSuccessDelete),
-          backgroundColor: AppTheme.success,
-        ),
-      );
+      final success = await deleteTournament(tournamentId: tournament.id);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(success
+                ? l10n.tournamentFormSuccessDelete
+                : l10n.tournamentFormErrorDelete),
+            backgroundColor: success ? AppTheme.success : AppTheme.error,
+          ),
+        );
+        if (success) {
+          // Refresh the tournaments list
+          final tournamentsProvider =
+              Provider.of<TournamentsProvider>(context, listen: false);
+          tournamentsProvider.onRefresh();
+        }
+      }
     }
   }
 }
