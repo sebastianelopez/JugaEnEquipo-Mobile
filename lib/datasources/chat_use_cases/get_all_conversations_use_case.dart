@@ -3,8 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/chat/conversation_model.dart';
+import 'package:jugaenequipo/datasources/models/chat/conversations_response_model.dart';
 
-Future<List<ConversationModel>> getAllConversations() async {
+Future<ConversationsResponseModel> getAllConversations() async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
@@ -20,34 +21,119 @@ Future<List<ConversationModel>> getAllConversations() async {
 
     if (response.statusCode == 200) {
       final responseData = response.data;
-      if (responseData is Map<String, dynamic> &&
-          responseData.containsKey('data')) {
-        final List<dynamic> data =
-            responseData['data'] as List<dynamic>? ?? [];
-        return data
+      if (kDebugMode) {
+        debugPrint(
+            'getAllConversations response status: ${response.statusCode}');
+        debugPrint(
+            'getAllConversations response data type: ${responseData.runtimeType}');
+        debugPrint('getAllConversations response data: $responseData');
+      }
+
+      List<dynamic>? dataList;
+      Map<String, dynamic>? metadataMap;
+
+      // Try to extract data from different possible response structures
+      if (responseData is Map<String, dynamic>) {
+        if (responseData.containsKey('data')) {
+          final dataValue = responseData['data'];
+          if (dataValue is List) {
+            dataList = dataValue;
+          } else if (dataValue is Map && dataValue.containsKey('data')) {
+            // Nested data structure
+            dataList = dataValue['data'] as List<dynamic>?;
+          }
+        } else if (responseData.containsKey('conversations')) {
+          // Alternative structure with 'conversations' key
+          dataList = responseData['conversations'] as List<dynamic>?;
+        } else if (responseData.values.isNotEmpty &&
+            responseData.values.first is List) {
+          // Data might be directly in the map
+          dataList = responseData.values.first as List<dynamic>?;
+        }
+
+        // Extract metadata
+        if (responseData.containsKey('metadata')) {
+          final metadataValue = responseData['metadata'];
+          if (metadataValue is Map<String, dynamic>) {
+            metadataMap = metadataValue;
+          }
+        }
+      } else if (responseData is List) {
+        // Response is directly a list
+        dataList = responseData;
+      }
+
+      if (dataList != null) {
+        if (kDebugMode) {
+          debugPrint(
+              'getAllConversations: Found ${dataList.length} conversations in data array');
+        }
+
+        final conversations = dataList
             .map((e) {
               try {
-                return ConversationModel.fromJson(e as Map<String, dynamic>);
-              } catch (e) {
+                if (e is Map<String, dynamic>) {
+                  if (kDebugMode) {
+                    debugPrint('Parsing conversation: $e');
+                  }
+                  return ConversationModel.fromJson(e);
+                } else {
+                  if (kDebugMode) {
+                    debugPrint(
+                        'Conversation item is not a Map: ${e.runtimeType}');
+                  }
+                  return null;
+                }
+              } catch (e, stackTrace) {
                 if (kDebugMode) {
                   debugPrint('Error parsing conversation: $e');
+                  debugPrint('Stack trace: $stackTrace');
                 }
                 return null;
               }
             })
             .whereType<ConversationModel>()
             .toList();
+
+        if (kDebugMode) {
+          debugPrint(
+              'getAllConversations: Successfully parsed ${conversations.length} conversations');
+        }
+
+        // Extract metadata
+        final metadata = metadataMap != null
+            ? ConversationsMetadata.fromJson(metadataMap)
+            : ConversationsMetadata(
+                total: conversations.length, totalUnreadMessages: 0);
+
+        return ConversationsResponseModel(
+          conversations: conversations,
+          metadata: metadata,
+        );
       }
+
       if (kDebugMode) {
-        debugPrint('getAllConversations: Unexpected response format');
+        debugPrint(
+            'getAllConversations: Could not extract data list from response');
+        debugPrint('Response data type: ${responseData.runtimeType}');
+        if (responseData is Map) {
+          debugPrint(
+              'Response data keys: ${(responseData as Map).keys.toList()}');
+        }
       }
-      return [];
+      return ConversationsResponseModel(
+        conversations: [],
+        metadata: ConversationsMetadata(total: 0, totalUnreadMessages: 0),
+      );
     }
 
     if (kDebugMode) {
       debugPrint('getAllConversations: status ${response.statusCode}');
     }
-    return [];
+    return ConversationsResponseModel(
+      conversations: [],
+      metadata: ConversationsMetadata(total: 0, totalUnreadMessages: 0),
+    );
   } on DioException catch (e) {
     if (kDebugMode) {
       debugPrint('getAllConversations DioException: ${e.type}');
@@ -59,12 +145,17 @@ Future<List<ConversationModel>> getAllConversations() async {
       }
     }
     // Return empty list on timeout/network errors
-    return [];
+    return ConversationsResponseModel(
+      conversations: [],
+      metadata: ConversationsMetadata(total: 0, totalUnreadMessages: 0),
+    );
   } catch (e) {
     if (kDebugMode) {
       debugPrint('getAllConversations unexpected error: $e');
     }
-    return [];
+    return ConversationsResponseModel(
+      conversations: [],
+      metadata: ConversationsMetadata(total: 0, totalUnreadMessages: 0),
+    );
   }
 }
-

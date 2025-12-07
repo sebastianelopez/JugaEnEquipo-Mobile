@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jugaenequipo/presentation/chat/business_logic/chat_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 class ChatBottomBar extends StatefulWidget {
   const ChatBottomBar({super.key});
@@ -63,7 +64,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
               child: TextField(
                 controller: _controller,
                 decoration: InputDecoration(
-                  hintText: "Write message...",
+                  hintText: AppLocalizations.of(context)!.writeMessageHint,
                   hintStyle: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),

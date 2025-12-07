@@ -7,11 +7,13 @@ class ChatMessage extends StatelessWidget {
     required this.type,
     required this.text,
     required this.timeLabel,
+    this.isRead,
   });
 
   final String type;
   final String text;
   final String timeLabel;
+  final bool? isRead; // Only relevant for sender messages
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +41,36 @@ class ChatMessage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            timeLabel,
-            style: TextStyle(
-              fontSize: 11,
-              color: (type == "receiver"
-                  ? Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withOpacity( 0.6)
-                  : AppTheme.white.withOpacity( 0.6)),
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: type == 'receiver' 
+                ? MainAxisAlignment.start 
+                : MainAxisAlignment.end,
+            children: [
+              Text(
+                timeLabel,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: (type == "receiver"
+                      ? Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity( 0.6)
+                      : AppTheme.white.withOpacity( 0.6)),
+                ),
+              ),
+              // Show read indicator only for sender messages
+              if (type == "sender") ...[
+                const SizedBox(width: 4),
+                Icon(
+                  isRead == true ? Icons.done_all : Icons.done,
+                  size: 14,
+                  color: isRead == true 
+                      ? AppTheme.white.withOpacity(0.9)
+                      : AppTheme.white.withOpacity(0.6),
+                ),
+              ],
+            ],
           ),
         ],
       ),

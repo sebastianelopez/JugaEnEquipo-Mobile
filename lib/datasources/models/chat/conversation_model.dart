@@ -7,6 +7,7 @@ class ConversationModel {
   final String? otherProfileImage;
   final String? lastMessageText;
   final String? lastMessageDate;
+  final int unreadCount;
 
   ConversationModel({
     required this.id,
@@ -17,19 +18,29 @@ class ConversationModel {
     this.otherProfileImage,
     this.lastMessageText,
     this.lastMessageDate,
+    this.unreadCount = 0,
   });
 
   factory ConversationModel.fromJson(Map<String, dynamic> json) {
-    return ConversationModel(
-      id: json['id'] as String,
-      otherUserId: json['otherUserId'] as String,
-      otherUsername: json['otherUsername'] as String,
-      otherFirstname: json['otherFirstname'] as String,
-      otherLastname: json['otherLastname'] as String,
-      otherProfileImage: json['otherProfileImage'] as String?,
-      lastMessageText: json['lastMessageText'] as String?,
-      lastMessageDate: json['lastMessageDate'] as String?,
-    );
+    try {
+      return ConversationModel(
+        id: (json['id'] ?? '').toString(),
+        otherUserId: (json['otherUserId'] ?? '').toString(),
+        otherUsername: (json['otherUsername'] ?? '').toString(),
+        otherFirstname: (json['otherFirstname'] ?? '').toString(),
+        otherLastname: (json['otherLastname'] ?? '').toString(),
+        otherProfileImage: json['otherProfileImage']?.toString(),
+        lastMessageText: json['lastMessageText']?.toString(),
+        lastMessageDate: json['lastMessageDate']?.toString(),
+        unreadCount: json['unreadCount'] is int
+            ? json['unreadCount'] as int
+            : (json['unreadCount'] is num
+                ? (json['unreadCount'] as num).toInt()
+                : 0),
+      );
+    } catch (e) {
+      throw Exception('Error parsing ConversationModel: $e. JSON: $json');
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -42,7 +53,7 @@ class ConversationModel {
       'otherProfileImage': otherProfileImage,
       'lastMessageText': lastMessageText,
       'lastMessageDate': lastMessageDate,
+      'unreadCount': unreadCount,
     };
   }
 }
-

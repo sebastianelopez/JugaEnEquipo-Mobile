@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/presentation/chat/business_logic/chat_provider.dart';
+import 'package:jugaenequipo/presentation/messages/business_logic/messages_provider.dart';
+import 'package:jugaenequipo/presentation/notifications/business_logic/notifications_provider.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/presentation/chat/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +18,13 @@ class _ChatScreenState extends State<ChatScreen> {
   final ChatProvider _provider = ChatProvider();
   String? _appBarName;
   String? _appBarAvatar;
+
+  @override
+  void dispose() {
+    // Close conversation and disconnect SSE when screen is disposed
+    _provider.closeConversation();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -46,7 +55,37 @@ class _ChatScreenState extends State<ChatScreen> {
       }
       if (conversationId != null) {
         _provider.loadConversation(conversationId);
+        
+        // Mark message notifications as read when opening a conversation
+        // Add a small delay to ensure messages are loaded first
+        Future.delayed(const Duration(milliseconds: 500), () {
+          try {
+            final notificationsProvider = Provider.of<NotificationsProvider>(context, listen: false);
+            notificationsProvider.markAllMessagesAsRead();
+          } catch (e) {
+            // NotificationsProvider might not be available
+          }
+        });
       }
+      
+      // Set up callback to update conversations list when a message is sent
+      try {
+        final messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+        _provider.setOnMessageSentCallback(({
+          required String conversationId,
+          required String messageText,
+          required String messageDate,
+        }) {
+          messagesProvider.updateConversationOnNewMessage(
+            conversationId: conversationId,
+            lastMessageText: messageText,
+            lastMessageDate: messageDate,
+          );
+        });
+      } catch (e) {
+        // MessagesProvider might not be available
+      }
+      
       setState(() {
         _appBarName = otherDisplayName;
         _appBarAvatar = otherAvatar;
@@ -57,27 +96,47 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     // Resolve app bar info from initial args or messages as fallback in the app bar itself
-    return ChangeNotifierProvider.value(
-      value: _provider,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: ChatAppbar(
-            displayName: _appBarName,
-            avatarUrl: _appBarAvatar,
+    return PopScope(
+      onPopInvoked: (didPop) {
+        // Close conversation and disconnect SSE when leaving the chat
+        if (didPop) {
+          _provider.closeConversation();
+          
+          // Silently refresh conversations list when leaving the chat
+          // Add a small delay to ensure backend has updated unreadCount
+          Future.delayed(const Duration(milliseconds: 500), () {
+            try {
+              final messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+              messagesProvider.silentRefreshConversations();
+            } catch (e) {
+              // MessagesProvider might not be available in this context
+              // This is okay, the refresh will happen when user navigates back
+            }
+          });
+        }
+      },
+      child: ChangeNotifierProvider.value(
+        value: _provider,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: ChatAppbar(
+              displayName: _appBarName,
+              avatarUrl: _appBarAvatar,
+            ),
           ),
-        ),
-        body: Container(
-          color: Theme.of(context).colorScheme.surface,
-          child: SafeArea(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: const ChatMessagesList(),
-                ),
-                const ChatBottomBar(),
-              ],
+          body: Container(
+            color: Theme.of(context).colorScheme.surface,
+            child: SafeArea(
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    child: const ChatMessagesList(),
+                  ),
+                  const ChatBottomBar(),
+                ],
+              ),
             ),
           ),
         ),

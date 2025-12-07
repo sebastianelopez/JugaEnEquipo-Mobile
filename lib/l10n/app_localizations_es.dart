@@ -1046,4 +1046,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tournamentFormMaxTeams => 'Máximo de Equipos';
+
+  @override
+  String get retryButton => 'Reintentar';
+
+  @override
+  String get noConversations => 'No hay conversaciones';
+
+  @override
+  String get errorLoadingConversations => 'Error al cargar las conversaciones';
+
+  @override
+  String get chatLabel => 'Chat';
+
+  @override
+  String get onlineLabel => 'En línea';
 }

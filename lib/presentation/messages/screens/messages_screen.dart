@@ -26,9 +26,56 @@ class _MessagesScreenState extends State<MessagesScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Silently refresh conversations when screen becomes visible again
+    // Add a small delay to ensure backend has updated unreadCount
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        try {
+          final messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+          // Only do silent refresh if we already have conversations loaded
+          // Otherwise, let the initial load handle it
+          if (messagesProvider.conversations.isNotEmpty) {
+            messagesProvider.silentRefreshConversations();
+            // Do a second silent refresh after a bit more time to ensure backend has updated
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              try {
+                if (messagesProvider.conversations.isNotEmpty) {
+                  messagesProvider.silentRefreshConversations();
+                }
+              } catch (e) {
+                // Provider might not be available
+              }
+            });
+          }
+        } catch (e) {
+          // Provider might not be available yet
+        }
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => MessagesProvider(),
+      create: (_) {
+        final provider = MessagesProvider();
+        // Set up callback to update notifications when unread count changes
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          try {
+            final notificationsProvider = Provider.of<NotificationsProvider>(context, listen: false);
+            provider.setOnUnreadCountChangedCallback(() {
+              // When unread count changes, mark message notifications as read if count is 0
+              // or refresh to sync with backend
+              notificationsProvider.markAllMessagesAsRead();
+            });
+          } catch (e) {
+            // NotificationsProvider might not be available
+          }
+        });
+        return provider;
+      },
       child: Scaffold(
         appBar: BackAppBar(
           label: AppLocalizations.of(context)!.messagesPageLabel,

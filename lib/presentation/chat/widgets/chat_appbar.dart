@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:jugaenequipo/presentation/chat/business_logic/chat_provider.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 class ChatAppbar extends StatelessWidget {
   final String? displayName;
@@ -31,7 +32,7 @@ class ChatAppbar extends StatelessWidget {
       }
     }
     if (resolvedName.isEmpty) {
-      resolvedName = 'Chat';
+      resolvedName = AppLocalizations.of(context)!.chatLabel;
     }
 
     final String? imageUrl =
@@ -93,7 +94,7 @@ class ChatAppbar extends StatelessWidget {
                       height: 6,
                     ),
                     Text(
-                      "Online",
+                      AppLocalizations.of(context)!.onlineLabel,
                       style: TextStyle(
                           color: Theme.of(context)
                               .colorScheme

@@ -2118,6 +2118,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Maximum Teams'**
   String get tournamentFormMaxTeams;
+
+  /// No description provided for @retryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryButton;
+
+  /// No description provided for @noConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations'**
+  String get noConversations;
+
+  /// No description provided for @errorLoadingConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading conversations'**
+  String get errorLoadingConversations;
+
+  /// No description provided for @chatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chatLabel;
+
+  /// No description provided for @onlineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get onlineLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -79,6 +79,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
                 type: chatProvider.messages[index].messageType,
                 text: chatProvider.messages[index].messageContent,
                 timeLabel: _formatTime(chatProvider.messages[index].createdAt),
+                isRead: chatProvider.messages[index].isRead,
               ),
             ),
           );

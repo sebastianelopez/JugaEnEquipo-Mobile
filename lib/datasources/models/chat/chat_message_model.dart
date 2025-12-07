@@ -7,6 +7,7 @@ class ChatMessageModel {
   String? username;
   bool? mine;
   String? createdAt;
+  bool? isRead; // Whether the message has been read by the recipient
 
   ChatMessageModel({
     required this.messageContent,
@@ -15,6 +16,7 @@ class ChatMessageModel {
     this.username,
     this.mine,
     this.createdAt,
+    this.isRead,
   });
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class ChatMessageModel {
         username: json['username'] as String?,
         mine: mineValue,
         createdAt: json['createdAt'] as String?,
+        isRead: json['isRead'] as bool? ?? json['read'] as bool?,
       );
     }
 
@@ -48,6 +51,7 @@ class ChatMessageModel {
       'username': username,
       'mine': mine,
       'createdAt': createdAt,
+      'isRead': isRead,
     };
   }
 }

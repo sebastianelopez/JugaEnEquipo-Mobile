@@ -470,5 +470,10 @@
   "tournamentFormSearchMinChars": "Escribe al menos 3 caracteres para buscar",
   "profileTabPosts": "Posts",
   "profileTabInfo": "Información",
-  "tournamentFormMaxTeams": "Máximo de Equipos"
+  "tournamentFormMaxTeams": "Máximo de Equipos",
+  "retryButton": "Reintentar",
+  "noConversations": "No hay conversaciones",
+  "errorLoadingConversations": "Error al cargar las conversaciones",
+  "chatLabel": "Chat",
+  "onlineLabel": "En línea"
 }

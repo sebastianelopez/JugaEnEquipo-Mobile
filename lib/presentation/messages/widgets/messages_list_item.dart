@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/presentation/messages/business_logic/messages_provider.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class MessagesListItem extends StatelessWidget {
   final UserModel user;
   final String messageText;
   final String time;
   final bool isMessageRead;
+  final int unreadCount;
   final String? conversationId;
 
   const MessagesListItem({
@@ -16,6 +19,7 @@ class MessagesListItem extends StatelessWidget {
     required this.messageText,
     required this.time,
     required this.isMessageRead,
+    this.unreadCount = 0,
     this.conversationId,
   });
 
@@ -50,10 +54,11 @@ class MessagesListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         //hide keyboard
         FocusScope.of(context).unfocus();
-        Navigator.of(context).pushNamed(
+        // Navigate to chat and wait for return
+        await Navigator.of(context).pushNamed(
           'chat',
           arguments: conversationId != null
               ? {
@@ -63,6 +68,17 @@ class MessagesListItem extends StatelessWidget {
                 }
               : user,
         );
+        // Refresh conversations list when returning from chat
+        // Add a small delay to ensure backend has updated unreadCount
+        Future.delayed(const Duration(milliseconds: 500), () {
+          try {
+            final messagesProvider =
+                Provider.of<MessagesProvider>(context, listen: false);
+            messagesProvider.refreshConversations();
+          } catch (e) {
+            // Provider might not be available
+          }
+        });
       },
       child: Container(
         padding:
@@ -70,19 +86,19 @@ class MessagesListItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: isMessageRead
               ? Colors.transparent
-              : AppTheme.primary.withOpacity( 0.08),
+              : AppTheme.primary.withOpacity(0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isMessageRead
                 ? Colors.transparent
-                : Colors.white.withOpacity( 0.2),
+                : Colors.white.withOpacity(0.2),
             width: 1,
           ),
           boxShadow: isMessageRead
               ? null
               : [
                   BoxShadow(
-                    color: AppTheme.primary.withOpacity( 0.1),
+                    color: AppTheme.primary.withOpacity(0.1),
                     blurRadius: 12,
                     spreadRadius: 0,
                     offset: const Offset(0, 4),
@@ -137,14 +153,14 @@ class MessagesListItem extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 13,
                                 color: isMessageRead
-                                    ? AppTheme.primary
-                                    : Theme.of(context)
+                                    ? Theme.of(context)
                                         .colorScheme
                                         .onSurface
-                                        .withOpacity( 0.6),
+                                        .withOpacity(0.6)
+                                    : AppTheme.primary,
                                 fontWeight: isMessageRead
-                                    ? FontWeight.bold
-                                    : FontWeight.normal),
+                                    ? FontWeight.normal
+                                    : FontWeight.bold),
                           ),
                         ],
                       ),
@@ -153,17 +169,49 @@ class MessagesListItem extends StatelessWidget {
                 ],
               ),
             ),
-            Text(
-              time.isNotEmpty
-                  ? formatTimeElapsed(
-                      _parseDateTime(time),
-                      context,
-                    )
-                  : '',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight:
-                      isMessageRead ? FontWeight.bold : FontWeight.normal),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  time.isNotEmpty
+                      ? formatTimeElapsed(
+                          _parseDateTime(time),
+                          context,
+                        )
+                      : '',
+                  style: TextStyle(
+                      color: isMessageRead
+                          ? Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.6)
+                          : AppTheme.primary,
+                      fontSize: 12,
+                      fontWeight:
+                          isMessageRead ? FontWeight.normal : FontWeight.bold),
+                ),
+                if (unreadCount > 0) ...[
+                  const SizedBox(height: 4),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primary,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      unreadCount > 99 ? '99+' : unreadCount.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ],
         ),
