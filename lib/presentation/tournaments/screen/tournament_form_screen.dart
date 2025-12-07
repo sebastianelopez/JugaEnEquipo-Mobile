@@ -817,7 +817,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Máximo de Equipos',
+          l10n.tournamentFormMaxTeams,
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,

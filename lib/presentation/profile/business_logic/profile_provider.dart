@@ -79,7 +79,7 @@ class ProfileProvider extends ChangeNotifier {
 
       // Load description and memberSince from user model
       _loadUserData();
-      
+
       // Load mock data for fields not yet in API
       _loadMockAdditionalData();
     } catch (e) {
@@ -179,10 +179,26 @@ class ProfileProvider extends ChangeNotifier {
     if (profileUser == null) return;
 
     try {
+      if (kDebugMode) {
+        debugPrint(
+            'ProfileProvider: Loading posts for user ${profileUser!.id}');
+      }
       final postsResponse = await getPostsByUserId(profileUser!.id);
+      if (kDebugMode) {
+        debugPrint(
+            'ProfileProvider: Posts response: ${postsResponse?.length ?? 0} posts');
+      }
       if (postsResponse != null) {
         posts = postsResponse;
+        if (kDebugMode) {
+          debugPrint(
+              'ProfileProvider: Posts loaded successfully: ${posts.length}');
+        }
         notifyListeners();
+      } else {
+        if (kDebugMode) {
+          debugPrint('ProfileProvider: Posts response was null');
+        }
       }
     } catch (e) {
       debugPrint('Error loading posts: $e');
@@ -208,7 +224,8 @@ class ProfileProvider extends ChangeNotifier {
     if (profileUser == null) return;
 
     try {
-      final socialNetworksResponse = await getUserSocialNetworks(profileUser!.id);
+      final socialNetworksResponse =
+          await getUserSocialNetworks(profileUser!.id);
       if (socialNetworksResponse != null) {
         socialNetworks = socialNetworksResponse;
         // Convert social networks to Map for compatibility with existing UI
@@ -228,13 +245,14 @@ class ProfileProvider extends ChangeNotifier {
 
     try {
       // First check if backgroundImage is already in user model
-      if (profileUser!.backgroundImage != null && profileUser!.backgroundImage!.isNotEmpty) {
+      if (profileUser!.backgroundImage != null &&
+          profileUser!.backgroundImage!.isNotEmpty) {
         backgroundImage = profileUser!.backgroundImage;
         debugPrint('Background image loaded from user model: $backgroundImage');
         notifyListeners();
         return;
       }
-      
+
       // If not in user model, try to fetch from API
       final bgImage = await getUserBackgroundImage(profileUser!.id);
       if (bgImage != null && bgImage.isNotEmpty) {
@@ -303,9 +321,7 @@ class ProfileProvider extends ChangeNotifier {
     ];
 
     // Mock stats
-    stats = [
-
-    ];
+    stats = [];
 
     notifyListeners();
   }
@@ -333,7 +349,8 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   // Add social network
-  Future<bool> addSocialNetworkToUser(String socialNetworkId, String username) async {
+  Future<bool> addSocialNetworkToUser(
+      String socialNetworkId, String username) async {
     try {
       final success = await addSocialNetwork(socialNetworkId, username);
       if (success) {

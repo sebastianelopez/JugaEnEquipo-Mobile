@@ -1037,4 +1037,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tournamentFormSearchMinChars => 'Type at least 3 characters to search';
+
+  @override
+  String get profileTabPosts => 'Posts';
+
+  @override
+  String get profileTabInfo => 'Information';
+
+  @override
+  String get tournamentFormMaxTeams => 'Maximum Teams';
 }

@@ -2100,6 +2100,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Type at least 3 characters to search'**
   String get tournamentFormSearchMinChars;
+
+  /// No description provided for @profileTabPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get profileTabPosts;
+
+  /// No description provided for @profileTabInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get profileTabInfo;
+
+  /// No description provided for @tournamentFormMaxTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Teams'**
+  String get tournamentFormMaxTeams;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

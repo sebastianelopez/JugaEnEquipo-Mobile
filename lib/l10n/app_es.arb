@@ -467,5 +467,8 @@
   "username": "Username",
   "tournamentFormSearchUsernameHint": "Buscar por username...",
   "tournamentFormNoUsersFound": "No se encontraron usuarios",
-  "tournamentFormSearchMinChars": "Escribe al menos 3 caracteres para buscar"
+  "tournamentFormSearchMinChars": "Escribe al menos 3 caracteres para buscar",
+  "profileTabPosts": "Posts",
+  "profileTabInfo": "Información",
+  "tournamentFormMaxTeams": "Máximo de Equipos"
 }

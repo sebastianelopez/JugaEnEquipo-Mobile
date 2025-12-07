@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/profile_provider.dart';
+import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
@@ -29,13 +30,33 @@ class ProfileContent extends StatefulWidget {
   State<ProfileContent> createState() => _ProfileContentState();
 }
 
-class _ProfileContentState extends State<ProfileContent> {
+class _ProfileContentState extends State<ProfileContent>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  HomeScreenProvider? _homeScreenProvider;
+
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkIfFollowing();
     });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _homeScreenProvider?.dispose();
+    super.dispose();
+  }
+
+  HomeScreenProvider _getHomeScreenProvider() {
+    _homeScreenProvider ??= HomeScreenProvider(context: context);
+    return _homeScreenProvider!;
   }
 
   void _checkIfFollowing() {
@@ -368,30 +389,100 @@ class _ProfileContentState extends State<ProfileContent> {
                     ],
                   ),
                 ),
-                // Stats Cards (replacing StatsTable)
-                if (profileProvider.stats.isNotEmpty)
-                  StatsCards(stats: profileProvider.stats),
-                // Teams Section
-                UserTeamsSection(teams: profileProvider.teams),
-                // Social Media Section
-                if (profileProvider.socialMedia.isNotEmpty)
-                  SocialMediaSection(socialLinks: profileProvider.socialMedia),
-                // Achievements Section
-                if (profileProvider.achievements.isNotEmpty)
-                  AchievementsSection(
-                    achievements: profileProvider.achievements
-                        .map((a) => Achievement.fromMap(a))
-                        .toList(),
+                // Tabs
+                SizedBox(height: 16.h),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outline
+                          .withOpacity(0.1),
+                    ),
                   ),
-                // Posts Section
-                UserPostsSection(
-                  posts: profileProvider.posts,
-                  isLoading: profileProvider.isLoading,
+                  clipBehavior: Clip.antiAlias,
+                  child: TabBar(
+                    controller: _tabController,
+                    labelColor: AppTheme.primary,
+                    unselectedLabelColor: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.6),
+                    indicatorWeight: 4,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    dividerColor: Colors.transparent,
+                    indicator: UnderlineTabIndicator(
+                      borderSide: BorderSide(
+                        color: AppTheme.primary,
+                        width: 4,
+                      ),
+                      insets: EdgeInsets.zero,
+                    ),
+                    tabs: [
+                      Tab(
+                        icon: Icon(Icons.article_outlined, size: 20.w),
+                        text: AppLocalizations.of(context)!.profileTabPosts,
+                      ),
+                      Tab(
+                        icon: Icon(Icons.info_outline, size: 20.w),
+                        text: AppLocalizations.of(context)!.profileTabInfo,
+                      ),
+                    ],
+                  ),
                 ),
+                SizedBox(height: 16.h),
+                // Tab Content - conditional based on selected tab
+                _tabController.index == 0
+                    ? _buildPostsTab(profileProvider)
+                    : _buildInfoTab(profileProvider),
                 SizedBox(height: 20.h),
               ]),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPostsTab(ProfileProvider provider) {
+    return ChangeNotifierProvider.value(
+      value: _getHomeScreenProvider(),
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            UserPostsSection(
+              posts: provider.posts,
+              isLoading: provider.isLoading,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoTab(ProfileProvider provider) {
+    return SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
+      child: Column(
+        children: [
+          // Stats Cards
+          if (provider.stats.isNotEmpty) StatsCards(stats: provider.stats),
+          // Teams Section
+          UserTeamsSection(teams: provider.teams),
+          // Social Media Section
+          if (provider.socialMedia.isNotEmpty)
+            SocialMediaSection(socialLinks: provider.socialMedia),
+          // Achievements Section
+          if (provider.achievements.isNotEmpty)
+            AchievementsSection(
+              achievements: provider.achievements
+                  .map((a) => Achievement.fromMap(a))
+                  .toList(),
+            ),
         ],
       ),
     );

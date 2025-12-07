@@ -324,26 +324,37 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .outline
+                                .withOpacity(0.1),
+                          ),
                         ),
-                        child: TabBar(
-                          controller: _tabController,
-                          labelColor: AppTheme.primary,
-                          unselectedLabelColor: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.6),
-                          indicatorColor: AppTheme.primary,
-                          indicatorWeight: 3,
-                          tabs: [
-                            Tab(
-                              icon: Icon(Icons.info_outline, size: 20.w),
-                              text: l10n.tournamentTabInfo,
-                            ),
-                            Tab(
-                              icon: Icon(Icons.pending_actions, size: 20.w),
-                              text: l10n.tournamentTabRequests,
-                            ),
-                          ],
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.r),
+                          child: TabBar(
+                            controller: _tabController,
+                            labelColor: AppTheme.primary,
+                            unselectedLabelColor: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
+                            indicatorColor: AppTheme.primary,
+                            indicatorWeight: 4,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            dividerColor: Colors.transparent,
+                            tabs: [
+                              Tab(
+                                icon: Icon(Icons.info_outline, size: 20.w),
+                                text: l10n.tournamentTabInfo,
+                              ),
+                              Tab(
+                                icon: Icon(Icons.pending_actions, size: 20.w),
+                                text: l10n.tournamentTabRequests,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 24.h),

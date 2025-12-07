@@ -39,7 +39,7 @@ class UserPostsSection extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(16.r),
                 border: Border.all(
-                  color: AppTheme.primary.withOpacity( 0.2),
+                  color: AppTheme.primary.withOpacity(0.2),
                   width: 1,
                 ),
               ),
@@ -52,7 +52,7 @@ class UserPostsSection extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .onSurface
-                          .withOpacity( 0.3),
+                          .withOpacity(0.3),
                     ),
                     SizedBox(height: 12.h),
                     Text(
@@ -62,7 +62,7 @@ class UserPostsSection extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .onSurface
-                            .withOpacity( 0.5),
+                            .withOpacity(0.5),
                       ),
                     ),
                   ],
@@ -71,7 +71,7 @@ class UserPostsSection extends StatelessWidget {
             )
           else
             Column(
-              children: posts.take(3).map((post) {
+              children: posts.map((post) {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 12.h),
                   child: PostCard(post: post),
