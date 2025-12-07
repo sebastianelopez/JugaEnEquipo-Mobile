@@ -388,5 +388,84 @@
   "resetPasswordGoToLogin": "Ir para Login",
   "resetPasswordButton": "Redefinir Senha",
   "resetPasswordInvalidToken": "O token é inválido ou expirou",
-  "resetPasswordError": "Erro ao redefinir a senha. Por favor, tente novamente."
+  "resetPasswordError": "Erro ao redefinir a senha. Por favor, tente novamente.",
+  "tournamentStatusFinished": "Finalizado",
+  "tournamentStatusOngoing": "Em andamento",
+  "tournamentStatusUpcoming": "Próximo",
+  "tournamentStatusLabel": "Status do Torneio",
+  "tournamentResponsible": "Responsável do Torneio",
+  "tournamentStartDate": "Início",
+  "tournamentEndDate": "Fim",
+  "tournamentPrize": "Prêmio",
+  "tournamentUserNotAvailable": "Usuário não disponível",
+  "tournamentYouAreCreator": "Você é o criador",
+  "tournamentYouAreRole": "Você é {role}",
+  "@tournamentYouAreRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "loading": "Carregando...",
+  "tournamentPendingRequests": "Solicitações Pendentes",
+  "tournamentNoPendingRequests": "Não há solicitações pendentes",
+  "tournamentRequestCountSingular": "1 solicitação",
+  "tournamentRequestCountPlural": "{count} solicitações",
+  "@tournamentRequestCountPlural": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "tournamentRequestRequested": "Solicitado",
+  "tournamentAcceptRequest": "Aceitar",
+  "tournamentDeclineRequest": "Recusar",
+  "tournamentAcceptRequestTitle": "Aceitar Solicitação",
+  "tournamentAcceptRequestMessage": "Tem certeza de que deseja aceitar a solicitação de {teamName}?",
+  "@tournamentAcceptRequestMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String"
+      }
+    }
+  },
+  "tournamentDeclineRequestTitle": "Recusar Solicitação",
+  "tournamentDeclineRequestMessage": "Tem certeza de que deseja recusar a solicitação de {teamName}?",
+  "@tournamentDeclineRequestMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String"
+      }
+    }
+  },
+  "tournamentRequestAccepted": "Solicitação aceita com sucesso",
+  "tournamentRequestDeclined": "Solicitação recusada com sucesso",
+  "tournamentErrorAcceptingRequest": "Erro ao aceitar solicitação",
+  "tournamentErrorDecliningRequest": "Erro ao recusar solicitação",
+  "tournamentTabInfo": "Informação",
+  "tournamentTabRequests": "Solicitações",
+  "optional": "Opcional",
+  "tournamentFormImage": "Imagem do Torneio",
+  "tournamentFormSelectImage": "Selecionar Imagem",
+  "tournamentFormRegion": "Região",
+  "tournamentFormRegionHint": "LATAM",
+  "tournamentFormSearchResponsible": "Buscar Responsável",
+  "tournamentFormSearchResponsibleTitle": "Buscar Usuário Responsável",
+  "tournamentFormSelectMaxTeams": "Selecione o máximo de equipes",
+  "tournamentFormMinRank": "Rank Mínimo",
+  "tournamentFormMaxRank": "Rank Máximo",
+  "tournamentFormRules": "Regras do Torneio",
+  "tournamentFormRulesList": "Lista",
+  "tournamentFormRulesNumberedList": "Lista numerada",
+  "tournamentFormRulesBold": "Negrito",
+  "tournamentFormRulesItalic": "Itálico",
+  "tournamentFormRulesTitle": "Título",
+  "tournamentFormRulesHint": "Escreva as regras do torneio...\n\nExemplo:\n# Regras Gerais\n- Respeitar os outros\n- Pontualidade\n\n# Regras de Jogo\n1. Primeira regra\n2. Segunda regra",
+  "tournamentFormRulesHelp": "Use os botões para adicionar formatação. O texto será exibido como markdown.",
+  "username": "Nome de usuário",
+  "tournamentFormSearchUsernameHint": "Buscar por nome de usuário...",
+  "tournamentFormNoUsersFound": "Nenhum usuário encontrado",
+  "tournamentFormSearchMinChars": "Digite pelo menos 3 caracteres para buscar"
 }

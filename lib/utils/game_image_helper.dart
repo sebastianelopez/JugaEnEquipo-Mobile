@@ -48,30 +48,46 @@ class GameImageHelper {
     if (kDebugMode) {
       debugPrint('GameImageHelper: ✗ No match for Valorant');
     }
-    // Check for League of Legends
-    else if (normalizedName.contains('league') &&
-        normalizedName.contains('legends')) {
+
+    // Check for League of Legends (very flexible matching)
+    if (normalizedName.contains('league') ||
+        normalizedName.contains('lol') ||
+        originalLower.contains('league of legends') ||
+        originalLower == 'lol') {
+      if (kDebugMode) {
+        debugPrint('GameImageHelper: ✓ MATCHED League of Legends!');
+      }
       return 'assets/games/lol.jpg';
     }
-    // Check for LoL abbreviation
-    else if (normalizedName == 'lol' ||
-        normalizedName == 'league of legends' ||
-        normalizedName.startsWith('lol ')) {
-      return 'assets/games/lol.jpg';
-    }
-    // Check for Counter-Strike variations
-    else if (normalizedName.contains('counter') &&
-        normalizedName.contains('strike')) {
-      return 'assets/games/counterstrike.webp';
-    } else if (normalizedName.contains('csgo') ||
+
+    // Check for Counter-Strike variations (including CS2, CS:GO, etc.)
+    if (normalizedName.contains('counter') ||
+        normalizedName.contains('strike') ||
+        normalizedName.contains('csgo') ||
         normalizedName.contains('cs go') ||
         normalizedName.contains('cs2') ||
-        normalizedName == 'cs' ||
-        normalizedName.startsWith('cs ')) {
+        normalizedName.contains('cs 2') ||
+        originalLower.contains('counter-strike') ||
+        originalLower.contains('counter strike') ||
+        originalLower == 'cs' ||
+        originalLower == 'csgo' ||
+        originalLower == 'cs2' ||
+        originalLower == 'cs:go') {
+      if (kDebugMode) {
+        debugPrint('GameImageHelper: ✓ MATCHED Counter-Strike!');
+      }
       return 'assets/games/counterstrike.webp';
     }
-    // Check for Dota
-    else if (normalizedName.contains('dota')) {
+
+    // Check for Dota (including Dota 2)
+    if (normalizedName.contains('dota') ||
+        originalLower.contains('dota') ||
+        originalLower.contains('dota 2') ||
+        originalLower == 'dota' ||
+        originalLower == 'dota2') {
+      if (kDebugMode) {
+        debugPrint('GameImageHelper: ✓ MATCHED Dota!');
+      }
       return 'assets/games/dotalogo.jpg';
     }
 
@@ -106,7 +122,6 @@ class GameImageHelper {
         debugPrint('GameImageHelper: Game name was: "$gameName"');
       }
 
-      // Try to load the asset directly first to verify it exists
       try {
         return Image.asset(
           imageAsset,
@@ -117,8 +132,6 @@ class GameImageHelper {
             if (kDebugMode) {
               debugPrint(
                   'GameImageHelper: Error loading image $imageAsset: $error');
-              debugPrint('GameImageHelper: Error type: ${error.runtimeType}');
-              debugPrint('GameImageHelper: StackTrace: $stackTrace');
             }
             return _buildDefaultIcon(
               width: width,

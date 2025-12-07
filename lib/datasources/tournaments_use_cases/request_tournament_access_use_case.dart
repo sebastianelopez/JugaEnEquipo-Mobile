@@ -22,6 +22,13 @@ Future<bool> requestTournamentAccess({
       return false;
     }
 
+    if (kDebugMode) {
+      debugPrint('requestTournamentAccess: Calling API...');
+      debugPrint('  - Tournament ID: $tournamentId');
+      debugPrint('  - Team ID: $teamId');
+      debugPrint('  - Endpoint: /api/tournament/$tournamentId/team/$teamId/request-access');
+    }
+
     final response = await APIService.instance.request(
       '/api/tournament/$tournamentId/team/$teamId/request-access',
       DioMethod.put,
@@ -30,15 +37,30 @@ Future<bool> requestTournamentAccess({
       },
     );
 
+    if (kDebugMode) {
+      debugPrint('requestTournamentAccess: Response received');
+      debugPrint('  - Status code: ${response.statusCode}');
+      debugPrint('  - Response data: ${response.data}');
+    }
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (kDebugMode) {
         debugPrint('requestTournamentAccess: Successfully requested access');
       }
       return true;
+    } else if (response.statusCode == 409) {
+      // Pending request already exists
+      if (kDebugMode) {
+        debugPrint('requestTournamentAccess: Pending request already exists (409)');
+        debugPrint('  - Response data: ${response.data}');
+      }
+      throw Exception('409: Pending request already exists');
     } else {
       if (kDebugMode) {
         debugPrint(
             'requestTournamentAccess: Failed with status ${response.statusCode}');
+        debugPrint('  - Response message: ${response.statusMessage}');
+        debugPrint('  - Response data: ${response.data}');
       }
       return false;
     }

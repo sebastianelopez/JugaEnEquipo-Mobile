@@ -388,5 +388,84 @@
   "resetPasswordGoToLogin": "Go to Login",
   "resetPasswordButton": "Reset Password",
   "resetPasswordInvalidToken": "The token is invalid or has expired",
-  "resetPasswordError": "Error resetting password. Please try again."
+  "resetPasswordError": "Error resetting password. Please try again.",
+  "tournamentStatusFinished": "Finished",
+  "tournamentStatusOngoing": "Ongoing",
+  "tournamentStatusUpcoming": "Upcoming",
+  "tournamentStatusLabel": "Tournament Status",
+  "tournamentResponsible": "Tournament Responsible",
+  "tournamentStartDate": "Start",
+  "tournamentEndDate": "End",
+  "tournamentPrize": "Prize",
+  "tournamentUserNotAvailable": "User not available",
+  "tournamentYouAreCreator": "You are the creator",
+  "tournamentYouAreRole": "You are {role}",
+  "@tournamentYouAreRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "loading": "Loading...",
+  "tournamentPendingRequests": "Pending Requests",
+  "tournamentNoPendingRequests": "No pending requests",
+  "tournamentRequestCountSingular": "1 request",
+  "tournamentRequestCountPlural": "{count} requests",
+  "@tournamentRequestCountPlural": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "tournamentRequestRequested": "Requested",
+  "tournamentAcceptRequest": "Accept",
+  "tournamentDeclineRequest": "Decline",
+  "tournamentAcceptRequestTitle": "Accept Request",
+  "tournamentAcceptRequestMessage": "Are you sure you want to accept the request from {teamName}?",
+  "@tournamentAcceptRequestMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String"
+      }
+    }
+  },
+  "tournamentDeclineRequestTitle": "Decline Request",
+  "tournamentDeclineRequestMessage": "Are you sure you want to decline the request from {teamName}?",
+  "@tournamentDeclineRequestMessage": {
+    "placeholders": {
+      "teamName": {
+        "type": "String"
+      }
+    }
+  },
+  "tournamentRequestAccepted": "Request accepted successfully",
+  "tournamentRequestDeclined": "Request declined successfully",
+  "tournamentErrorAcceptingRequest": "Error accepting request",
+  "tournamentErrorDecliningRequest": "Error declining request",
+  "tournamentTabInfo": "Information",
+  "tournamentTabRequests": "Requests",
+  "optional": "Optional",
+  "tournamentFormImage": "Tournament Image",
+  "tournamentFormSelectImage": "Select Image",
+  "tournamentFormRegion": "Region",
+  "tournamentFormRegionHint": "LATAM",
+  "tournamentFormSearchResponsible": "Search Responsible",
+  "tournamentFormSearchResponsibleTitle": "Search Responsible User",
+  "tournamentFormSelectMaxTeams": "Select maximum teams",
+  "tournamentFormMinRank": "Minimum Rank",
+  "tournamentFormMaxRank": "Maximum Rank",
+  "tournamentFormRules": "Tournament Rules",
+  "tournamentFormRulesList": "List",
+  "tournamentFormRulesNumberedList": "Numbered List",
+  "tournamentFormRulesBold": "Bold",
+  "tournamentFormRulesItalic": "Italic",
+  "tournamentFormRulesTitle": "Title",
+  "tournamentFormRulesHint": "Write the tournament rules...\n\nExample:\n# General Rules\n- Respect others\n- Punctuality\n\n# Game Rules\n1. First rule\n2. Second rule",
+  "tournamentFormRulesHelp": "Use the buttons to add formatting. The text will be displayed as markdown.",
+  "username": "Username",
+  "tournamentFormSearchUsernameHint": "Search by username...",
+  "tournamentFormNoUsersFound": "No users found",
+  "tournamentFormSearchMinChars": "Type at least 3 characters to search"
 }

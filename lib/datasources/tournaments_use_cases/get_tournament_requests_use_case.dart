@@ -48,10 +48,13 @@ Future<List<TournamentRequestModel>?> getTournamentRequests({
         return null;
       }
 
-      final data = response.data['data'];
+      // The API returns {requests: [...]} instead of {data: [...]}
+      final data = response.data['requests'] ?? response.data['data'];
       if (data == null || data is! List) {
         if (kDebugMode) {
           debugPrint('getTournamentRequests: Response data is not a list');
+          debugPrint(
+              'getTournamentRequests: Response structure: ${response.data}');
         }
         return null;
       }

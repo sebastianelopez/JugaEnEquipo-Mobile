@@ -876,4 +876,165 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetPasswordError => 'Error resetting password. Please try again.';
+
+  @override
+  String get tournamentStatusFinished => 'Finished';
+
+  @override
+  String get tournamentStatusOngoing => 'Ongoing';
+
+  @override
+  String get tournamentStatusUpcoming => 'Upcoming';
+
+  @override
+  String get tournamentStatusLabel => 'Tournament Status';
+
+  @override
+  String get tournamentResponsible => 'Tournament Responsible';
+
+  @override
+  String get tournamentStartDate => 'Start';
+
+  @override
+  String get tournamentEndDate => 'End';
+
+  @override
+  String get tournamentPrize => 'Prize';
+
+  @override
+  String get tournamentUserNotAvailable => 'User not available';
+
+  @override
+  String get tournamentYouAreCreator => 'You are the creator';
+
+  @override
+  String tournamentYouAreRole(String role) {
+    return 'You are $role';
+  }
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get tournamentPendingRequests => 'Pending Requests';
+
+  @override
+  String get tournamentNoPendingRequests => 'No pending requests';
+
+  @override
+  String get tournamentRequestCountSingular => '1 request';
+
+  @override
+  String tournamentRequestCountPlural(num count) {
+    return '$count requests';
+  }
+
+  @override
+  String get tournamentRequestRequested => 'Requested';
+
+  @override
+  String get tournamentAcceptRequest => 'Accept';
+
+  @override
+  String get tournamentDeclineRequest => 'Decline';
+
+  @override
+  String get tournamentAcceptRequestTitle => 'Accept Request';
+
+  @override
+  String tournamentAcceptRequestMessage(String teamName) {
+    return 'Are you sure you want to accept the request from $teamName?';
+  }
+
+  @override
+  String get tournamentDeclineRequestTitle => 'Decline Request';
+
+  @override
+  String tournamentDeclineRequestMessage(String teamName) {
+    return 'Are you sure you want to decline the request from $teamName?';
+  }
+
+  @override
+  String get tournamentRequestAccepted => 'Request accepted successfully';
+
+  @override
+  String get tournamentRequestDeclined => 'Request declined successfully';
+
+  @override
+  String get tournamentErrorAcceptingRequest => 'Error accepting request';
+
+  @override
+  String get tournamentErrorDecliningRequest => 'Error declining request';
+
+  @override
+  String get tournamentTabInfo => 'Information';
+
+  @override
+  String get tournamentTabRequests => 'Requests';
+
+  @override
+  String get optional => 'Optional';
+
+  @override
+  String get tournamentFormImage => 'Tournament Image';
+
+  @override
+  String get tournamentFormSelectImage => 'Select Image';
+
+  @override
+  String get tournamentFormRegion => 'Region';
+
+  @override
+  String get tournamentFormRegionHint => 'LATAM';
+
+  @override
+  String get tournamentFormSearchResponsible => 'Search Responsible';
+
+  @override
+  String get tournamentFormSearchResponsibleTitle => 'Search Responsible User';
+
+  @override
+  String get tournamentFormSelectMaxTeams => 'Select maximum teams';
+
+  @override
+  String get tournamentFormMinRank => 'Minimum Rank';
+
+  @override
+  String get tournamentFormMaxRank => 'Maximum Rank';
+
+  @override
+  String get tournamentFormRules => 'Tournament Rules';
+
+  @override
+  String get tournamentFormRulesList => 'List';
+
+  @override
+  String get tournamentFormRulesNumberedList => 'Numbered List';
+
+  @override
+  String get tournamentFormRulesBold => 'Bold';
+
+  @override
+  String get tournamentFormRulesItalic => 'Italic';
+
+  @override
+  String get tournamentFormRulesTitle => 'Title';
+
+  @override
+  String get tournamentFormRulesHint => 'Write the tournament rules...\n\nExample:\n# General Rules\n- Respect others\n- Punctuality\n\n# Game Rules\n1. First rule\n2. Second rule';
+
+  @override
+  String get tournamentFormRulesHelp => 'Use the buttons to add formatting. The text will be displayed as markdown.';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get tournamentFormSearchUsernameHint => 'Search by username...';
+
+  @override
+  String get tournamentFormNoUsersFound => 'No users found';
+
+  @override
+  String get tournamentFormSearchMinChars => 'Type at least 3 characters to search';
 }

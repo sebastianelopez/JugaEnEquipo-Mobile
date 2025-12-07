@@ -304,20 +304,7 @@ class ProfileProvider extends ChangeNotifier {
 
     // Mock stats
     stats = [
-      GameStat(
-        gameName: 'Overwatch',
-        gameImage: 'assets/overwatchLogo.png',
-        username: profileUser!.userName,
-        rankImage: 'assets/overwatchDiamond.png',
-        roles: ['DPS', 'Tank', 'Support'],
-      ),
-      GameStat(
-        gameName: 'CS:GO',
-        gameImage: 'assets/cSLogo.png',
-        username: '${profileUser!.userName}CS',
-        rankImage: 'assets/cSRank.png',
-        roles: null,
-      ),
+
     ];
 
     notifyListeners();

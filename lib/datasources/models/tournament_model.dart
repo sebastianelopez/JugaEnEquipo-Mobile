@@ -8,6 +8,7 @@ class TournamentModel {
   final String? minGameRankId;
   final String? maxGameRankId;
   final String responsibleId;
+  final String creatorId;
   final String name;
   final String? description;
   final String? rules;
@@ -55,6 +56,7 @@ class TournamentModel {
     this.minGameRankId,
     this.maxGameRankId,
     required this.responsibleId,
+    required this.creatorId,
     required this.name,
     this.description,
     this.rules,
@@ -81,6 +83,8 @@ class TournamentModel {
       minGameRankId: json['minGameRankId'] as String?,
       maxGameRankId: json['maxGameRankId'] as String?,
       responsibleId: json['responsibleId'] as String,
+      creatorId: (json['creatorId'] ?? json['responsibleId'])
+          as String, // Fallback to responsibleId if null
       name: json['name'] as String,
       description: json['description'] as String?,
       rules: json['rules'] as String?,
@@ -112,6 +116,7 @@ class TournamentModel {
       'minGameRankId': minGameRankId,
       'maxGameRankId': maxGameRankId,
       'responsibleId': responsibleId,
+      'creatorId': creatorId,
       'name': name,
       'description': description,
       'rules': rules,

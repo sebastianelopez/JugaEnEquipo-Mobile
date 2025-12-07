@@ -3,9 +3,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 
 /// Decline a tournament request
-/// 
+///
 /// Parameters:
-/// - [requestId]: The ID of the request to decline
+/// - [requestId]: Request ID to decline
 Future<bool> declineTournamentRequest({
   required String requestId,
 }) async {
@@ -20,33 +20,30 @@ Future<bool> declineTournamentRequest({
       return false;
     }
 
+    if (kDebugMode) {
+      debugPrint('declineTournamentRequest: Declining request $requestId');
+    }
+
     final response = await APIService.instance.request(
       '/api/tournament/request/$requestId/decline',
       DioMethod.put,
+      contentType: 'application/json',
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
     );
 
-    if (response.statusCode == 200 || response.statusCode == 204) {
-      if (kDebugMode) {
-        debugPrint('declineTournamentRequest: Successfully declined request');
-      }
-      return true;
-    } else {
-      if (kDebugMode) {
-        debugPrint(
-            'declineTournamentRequest: Failed with status ${response.statusCode}');
-      }
-      return false;
+    if (kDebugMode) {
+      debugPrint('declineTournamentRequest: Response received');
+      debugPrint('  - Status code: ${response.statusCode}');
     }
-  } catch (e) {
+
+    return response.statusCode == 200 || response.statusCode == 201;
+  } catch (e, stackTrace) {
     if (kDebugMode) {
       debugPrint('declineTournamentRequest: Error occurred: $e');
+      debugPrint('declineTournamentRequest: Stack trace: $stackTrace');
     }
     return false;
   }
 }
-
-
-

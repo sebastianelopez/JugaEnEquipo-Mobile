@@ -876,4 +876,165 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get resetPasswordError => 'Erro ao redefinir a senha. Por favor, tente novamente.';
+
+  @override
+  String get tournamentStatusFinished => 'Finalizado';
+
+  @override
+  String get tournamentStatusOngoing => 'Em andamento';
+
+  @override
+  String get tournamentStatusUpcoming => 'Próximo';
+
+  @override
+  String get tournamentStatusLabel => 'Status do Torneio';
+
+  @override
+  String get tournamentResponsible => 'Responsável do Torneio';
+
+  @override
+  String get tournamentStartDate => 'Início';
+
+  @override
+  String get tournamentEndDate => 'Fim';
+
+  @override
+  String get tournamentPrize => 'Prêmio';
+
+  @override
+  String get tournamentUserNotAvailable => 'Usuário não disponível';
+
+  @override
+  String get tournamentYouAreCreator => 'Você é o criador';
+
+  @override
+  String tournamentYouAreRole(String role) {
+    return 'Você é $role';
+  }
+
+  @override
+  String get loading => 'Carregando...';
+
+  @override
+  String get tournamentPendingRequests => 'Solicitações Pendentes';
+
+  @override
+  String get tournamentNoPendingRequests => 'Não há solicitações pendentes';
+
+  @override
+  String get tournamentRequestCountSingular => '1 solicitação';
+
+  @override
+  String tournamentRequestCountPlural(num count) {
+    return '$count solicitações';
+  }
+
+  @override
+  String get tournamentRequestRequested => 'Solicitado';
+
+  @override
+  String get tournamentAcceptRequest => 'Aceitar';
+
+  @override
+  String get tournamentDeclineRequest => 'Recusar';
+
+  @override
+  String get tournamentAcceptRequestTitle => 'Aceitar Solicitação';
+
+  @override
+  String tournamentAcceptRequestMessage(String teamName) {
+    return 'Tem certeza de que deseja aceitar a solicitação de $teamName?';
+  }
+
+  @override
+  String get tournamentDeclineRequestTitle => 'Recusar Solicitação';
+
+  @override
+  String tournamentDeclineRequestMessage(String teamName) {
+    return 'Tem certeza de que deseja recusar a solicitação de $teamName?';
+  }
+
+  @override
+  String get tournamentRequestAccepted => 'Solicitação aceita com sucesso';
+
+  @override
+  String get tournamentRequestDeclined => 'Solicitação recusada com sucesso';
+
+  @override
+  String get tournamentErrorAcceptingRequest => 'Erro ao aceitar solicitação';
+
+  @override
+  String get tournamentErrorDecliningRequest => 'Erro ao recusar solicitação';
+
+  @override
+  String get tournamentTabInfo => 'Informação';
+
+  @override
+  String get tournamentTabRequests => 'Solicitações';
+
+  @override
+  String get optional => 'Opcional';
+
+  @override
+  String get tournamentFormImage => 'Imagem do Torneio';
+
+  @override
+  String get tournamentFormSelectImage => 'Selecionar Imagem';
+
+  @override
+  String get tournamentFormRegion => 'Região';
+
+  @override
+  String get tournamentFormRegionHint => 'LATAM';
+
+  @override
+  String get tournamentFormSearchResponsible => 'Buscar Responsável';
+
+  @override
+  String get tournamentFormSearchResponsibleTitle => 'Buscar Usuário Responsável';
+
+  @override
+  String get tournamentFormSelectMaxTeams => 'Selecione o máximo de equipes';
+
+  @override
+  String get tournamentFormMinRank => 'Rank Mínimo';
+
+  @override
+  String get tournamentFormMaxRank => 'Rank Máximo';
+
+  @override
+  String get tournamentFormRules => 'Regras do Torneio';
+
+  @override
+  String get tournamentFormRulesList => 'Lista';
+
+  @override
+  String get tournamentFormRulesNumberedList => 'Lista numerada';
+
+  @override
+  String get tournamentFormRulesBold => 'Negrito';
+
+  @override
+  String get tournamentFormRulesItalic => 'Itálico';
+
+  @override
+  String get tournamentFormRulesTitle => 'Título';
+
+  @override
+  String get tournamentFormRulesHint => 'Escreva as regras do torneio...\n\nExemplo:\n# Regras Gerais\n- Respeitar os outros\n- Pontualidade\n\n# Regras de Jogo\n1. Primeira regra\n2. Segunda regra';
+
+  @override
+  String get tournamentFormRulesHelp => 'Use os botões para adicionar formatação. O texto será exibido como markdown.';
+
+  @override
+  String get username => 'Nome de usuário';
+
+  @override
+  String get tournamentFormSearchUsernameHint => 'Buscar por nome de usuário...';
+
+  @override
+  String get tournamentFormNoUsersFound => 'Nenhum usuário encontrado';
+
+  @override
+  String get tournamentFormSearchMinChars => 'Digite pelo menos 3 caracteres para buscar';
 }

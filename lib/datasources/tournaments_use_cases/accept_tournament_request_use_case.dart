@@ -5,7 +5,7 @@ import 'package:jugaenequipo/datasources/api_service.dart';
 /// Accept a tournament request
 ///
 /// Parameters:
-/// - [requestId]: The ID of the request to accept
+/// - [requestId]: Request ID to accept
 Future<bool> acceptTournamentRequest({
   required String requestId,
 }) async {
@@ -20,29 +20,29 @@ Future<bool> acceptTournamentRequest({
       return false;
     }
 
+    if (kDebugMode) {
+      debugPrint('acceptTournamentRequest: Accepting request $requestId');
+    }
+
     final response = await APIService.instance.request(
       '/api/tournament/request/$requestId/accept',
       DioMethod.put,
+      contentType: 'application/json',
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
     );
 
-    if (response.statusCode == 200 || response.statusCode == 204) {
-      if (kDebugMode) {
-        debugPrint('acceptTournamentRequest: Successfully accepted request');
-      }
-      return true;
-    } else {
-      if (kDebugMode) {
-        debugPrint(
-            'acceptTournamentRequest: Failed with status ${response.statusCode}');
-      }
-      return false;
+    if (kDebugMode) {
+      debugPrint('acceptTournamentRequest: Response received');
+      debugPrint('  - Status code: ${response.statusCode}');
     }
-  } catch (e) {
+
+    return response.statusCode == 200 || response.statusCode == 201;
+  } catch (e, stackTrace) {
     if (kDebugMode) {
       debugPrint('acceptTournamentRequest: Error occurred: $e');
+      debugPrint('acceptTournamentRequest: Stack trace: $stackTrace');
     }
     return false;
   }

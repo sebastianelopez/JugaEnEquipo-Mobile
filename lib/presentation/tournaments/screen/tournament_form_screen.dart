@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/datasources/models/tournament_model.dart';
+import 'package:jugaenequipo/datasources/models/user_model.dart';
+import 'package:jugaenequipo/datasources/user_use_cases/get_users_by_username_use_case.dart';
 import 'package:jugaenequipo/presentation/tournaments/business_logic/tournament_management_provider.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
@@ -161,11 +164,13 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -179,7 +184,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w700,
-              color: AppTheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 16.h),
@@ -199,8 +204,131 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             maxLines: 4,
             onChanged: (_) => provider.validateDescription(l10n),
           ),
+          SizedBox(height: 16.h),
+          _buildRulesEditor(context, provider, l10n),
+          SizedBox(height: 16.h),
+          _buildImageSelector(context, provider, l10n),
         ],
       ),
+    );
+  }
+
+  Widget _buildImageSelector(
+    BuildContext context,
+    TournamentManagementProvider provider,
+    AppLocalizations l10n,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.tournamentFormImage,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        if (provider.selectedImage != null || provider.selectedImageUrl != null)
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: provider.selectedImage != null
+                    ? Image.file(
+                        File(provider.selectedImage!.path),
+                        height: 200.h,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.network(
+                        provider.selectedImageUrl!,
+                        height: 200.h,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            height: 200.h,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
+                            child: const Icon(Icons.error),
+                          );
+                        },
+                      ),
+              ),
+              Positioned(
+                top: 8.h,
+                right: 8.w,
+                child: IconButton(
+                  icon: Container(
+                    padding: EdgeInsets.all(8.w),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black.withOpacity(0.7)
+                          : Colors.black.withOpacity(0.5),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      size: 20.w,
+                    ),
+                  ),
+                  onPressed: () {
+                    provider.clearImage();
+                  },
+                ),
+              ),
+            ],
+          )
+        else
+          InkWell(
+            onTap: () => provider.selectImage(),
+            child: Container(
+              height: 200.h,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                  style: BorderStyle.solid,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_photo_alternate,
+                    size: 48.w,
+                    color: AppTheme.primary,
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    l10n.tournamentFormSelectImage,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: AppTheme.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    l10n.optional,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -209,11 +337,13 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -227,13 +357,41 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w700,
-              color: AppTheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 16.h),
           _buildGameSelector(context, provider, l10n),
+          if (provider.selectedGameId != null) ...[
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                Flexible(
+                  child: _buildRankSelector(
+                    context,
+                    provider,
+                    l10n,
+                    isMinRank: true,
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Flexible(
+                  child: _buildRankSelector(
+                    context,
+                    provider,
+                    l10n,
+                    isMinRank: false,
+                  ),
+                ),
+              ],
+            ),
+          ],
           SizedBox(height: 16.h),
-          _buildTournamentTypeSelector(context, provider, l10n),
+          _buildTextField(
+            controller: provider.regionController,
+            label: l10n.tournamentFormRegion,
+            hint: l10n.tournamentFormRegionHint,
+          ),
         ],
       ),
     );
@@ -244,11 +402,13 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -262,7 +422,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w700,
-              color: AppTheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 16.h),
@@ -302,9 +462,111 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             ),
           ],
           SizedBox(height: 16.h),
-          _buildRegistrationDeadlineSelector(context, provider, l10n),
+          _buildResponsibleSelector(context, provider, l10n),
         ],
       ),
+    );
+  }
+
+  Widget _buildResponsibleSelector(BuildContext context,
+      TournamentManagementProvider provider, AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.tournamentResponsible,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        if (provider.selectedResponsible != null)
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: AppTheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppTheme.primary.withOpacity(0.3)),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 20.w,
+                  backgroundImage:
+                      provider.selectedResponsible!.profileImage != null
+                          ? NetworkImage(
+                              provider.selectedResponsible!.profileImage!)
+                          : null,
+                  child: provider.selectedResponsible!.profileImage == null
+                      ? Icon(Icons.person, size: 20.w)
+                      : null,
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${provider.selectedResponsible!.firstName} ${provider.selectedResponsible!.lastName}',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        '@${provider.selectedResponsible!.userName}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.close, size: 20.w),
+                  onPressed: () {
+                    provider.clearResponsible();
+                  },
+                ),
+              ],
+            ),
+          )
+        else
+          ElevatedButton.icon(
+            onPressed: () async {
+              final selectedUser = await _showUserSearchDialog(context);
+              if (selectedUser != null) {
+                provider.setResponsible(selectedUser);
+              }
+            },
+            icon: Icon(Icons.person_search, size: 20.w),
+            label: Text(l10n.tournamentFormSearchResponsible),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primary,
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        if (provider.responsibleError != null) ...[
+          SizedBox(height: 8.h),
+          Text(
+            provider.responsibleError!,
+            style: TextStyle(
+              color: AppTheme.error,
+              fontSize: 12.sp,
+            ),
+          ),
+        ],
+      ],
     );
   }
 
@@ -313,11 +575,13 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -331,48 +595,11 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w700,
-              color: AppTheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 16.h),
-          _buildSwitchTile(
-            title: l10n.tournamentFormOfficial,
-            subtitle: l10n.tournamentFormOfficialSubtitle,
-            value: provider.isOfficial,
-            onChanged: provider.setOfficial,
-            icon: Icons.verified,
-            iconColor: AppTheme.primary,
-          ),
-          _buildSwitchTile(
-            title: l10n.tournamentFormPrivate,
-            subtitle: l10n.tournamentFormPrivateSubtitle,
-            value: provider.isPrivate,
-            onChanged: provider.setPrivate,
-            icon: Icons.lock,
-            iconColor: AppTheme.secondary,
-          ),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              Expanded(
-                child: _buildTextField(
-                  controller: provider.maxParticipantsController,
-                  label: l10n.tournamentFormMaxParticipants,
-                  hint: '32',
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: _buildTextField(
-                  controller: provider.prizePoolController,
-                  label: l10n.tournamentFormPrizePool,
-                  hint: '1000',
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-            ],
-          ),
+          _buildMaxTeamsSelector(context, provider, l10n),
         ],
       ),
     );
@@ -462,7 +689,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            color: AppTheme.secondary,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8.h),
@@ -470,8 +697,9 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           controller: controller,
           hintText: hint,
           keyboardType: keyboardType ?? TextInputType.text,
-          textColor: AppTheme.secondary,
-          hintTextColor: Colors.grey.withOpacity(0.6),
+          textColor: Theme.of(context).colorScheme.onSurface,
+          hintTextColor:
+              Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
           errorText: error,
           onChanged: onChanged,
           validator: error != null ? (value) => error : null,
@@ -500,7 +728,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            color: AppTheme.secondary,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8.h),
@@ -509,7 +737,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             border: Border.all(
               color: provider.gameError != null
                   ? AppTheme.error
-                  : Colors.grey.withOpacity(0.3),
+                  : Theme.of(context).colorScheme.outline.withOpacity(0.3),
             ),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -519,6 +747,11 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                         .any((game) => game.id == provider.selectedGameId)
                 ? provider.selectedGameId
                 : null,
+            dropdownColor: Theme.of(context).colorScheme.surface,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 14.sp,
+            ),
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding:
@@ -527,7 +760,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
             hint: Text(
               l10n.tournamentFormSelectGame,
               style: TextStyle(
-                color: Colors.grey.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                 fontSize: 14.sp,
               ),
             ),
@@ -547,7 +780,10 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                     SizedBox(width: 12.w),
                     Text(
                       game.name,
-                      style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ],
                 ),
@@ -575,47 +811,158 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
     );
   }
 
-  Widget _buildTournamentTypeSelector(BuildContext context,
+  Widget _buildMaxTeamsSelector(BuildContext context,
       TournamentManagementProvider provider, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          l10n.tournamentFormType,
+          'Máximo de Equipos',
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            color: AppTheme.secondary,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8.h),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withOpacity(0.3)),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            ),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: DropdownButtonFormField<String>(
-            value: provider.tournamentType,
+          child: DropdownButtonFormField<int>(
+            value: provider.maxTeams,
+            dropdownColor: Theme.of(context).colorScheme.surface,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 14.sp,
+            ),
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             ),
-            items: provider.getTournamentTypes(l10n).map((type) {
+            hint: Text(
+              l10n.tournamentFormSelectMaxTeams,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                fontSize: 14.sp,
+              ),
+            ),
+            items: provider.getAvailableTeamSizes().map((size) {
               return DropdownMenuItem(
-                value: type['value'],
+                value: size,
                 child: Text(
-                  type['label']!,
-                  style: TextStyle(fontSize: 14.sp),
+                  '$size equipos',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               );
             }).toList(),
             onChanged: (value) {
               if (value != null) {
-                provider.setTournamentType(value);
+                provider.setMaxTeams(value);
               }
             },
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRankSelector(
+    BuildContext context,
+    TournamentManagementProvider provider,
+    AppLocalizations l10n, {
+    required bool isMinRank,
+  }) {
+    final selectedValue =
+        isMinRank ? provider.selectedMinRankId : provider.selectedMaxRankId;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          isMinRank ? l10n.tournamentFormMinRank : l10n.tournamentFormMaxRank,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: provider.isLoadingRanks
+              ? Container(
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  child: Center(
+                    child: SizedBox(
+                      height: 20.h,
+                      width: 20.w,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                )
+              : DropdownButtonFormField<String>(
+                  value: selectedValue != null &&
+                          provider.availableRanks
+                              .any((rank) => rank.id == selectedValue)
+                      ? selectedValue
+                      : null,
+                  isExpanded: true,
+                  dropdownColor: Theme.of(context).colorScheme.surface,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 14.sp,
+                  ),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                    isDense: true,
+                  ),
+                  hint: Text(
+                    l10n.optional,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.6),
+                      fontSize: 14.sp,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  items: provider.availableRanks.map((rank) {
+                    return DropdownMenuItem(
+                      value: rank.id,
+                      child: Text(
+                        rank.rankName,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (isMinRank) {
+                      provider.setMinRank(value);
+                    } else {
+                      provider.setMaxRank(value);
+                    }
+                  },
+                ),
         ),
       ],
     );
@@ -648,7 +995,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            color: AppTheme.secondary,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8.h),
@@ -668,7 +1015,9 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.3)),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+              ),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -687,60 +1036,17 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: date != null
-                          ? AppTheme.secondary
-                          : Colors.grey.withOpacity(0.6),
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.6),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRegistrationDeadlineSelector(BuildContext context,
-      TournamentManagementProvider provider, AppLocalizations l10n) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.tournamentFormRegistrationDeadline,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: AppTheme.secondary,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withOpacity(0.3)),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: DropdownButtonFormField<String>(
-            value: provider.registrationDeadline,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            ),
-            items: provider.getRegistrationDeadlines(l10n).map((deadline) {
-              return DropdownMenuItem(
-                value: deadline['value'],
-                child: Text(
-                  deadline['label']!,
-                  style: TextStyle(fontSize: 14.sp),
-                ),
-              );
-            }).toList(),
-            onChanged: (value) {
-              if (value != null) {
-                provider.setRegistrationDeadline(value);
-              }
-            },
           ),
         ),
       ],
@@ -759,7 +1065,7 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.05),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: value ? iconColor.withOpacity(0.3) : Colors.transparent,
@@ -785,14 +1091,17 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.secondary,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   subtitle,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: Colors.grey.withOpacity(0.7),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.7),
                   ),
                 ),
               ],
@@ -824,9 +1133,13 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
       return;
     }
 
+    debugPrint(
+        'FORM: About to ${provider.isEditing ? "update" : "create"} tournament');
     final success = provider.isEditing
         ? await provider.updateTournament()
         : await provider.createTournament();
+
+    debugPrint('FORM: Operation result: $success');
 
     if (success && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -893,6 +1206,368 @@ class _TournamentFormScreenState extends State<TournamentFormScreen>
           ),
         );
       }
+    }
+  }
+
+  Widget _buildRulesEditor(
+    BuildContext context,
+    TournamentManagementProvider provider,
+    AppLocalizations l10n,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.tournamentFormRules,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        // Formatting toolbar
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(12),
+              topRight: Radius.circular(12),
+            ),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            ),
+          ),
+          child: Wrap(
+            spacing: 8.w,
+            children: [
+              _buildFormatButton(
+                icon: Icons.format_list_bulleted,
+                tooltip: l10n.tournamentFormRulesList,
+                onPressed: () =>
+                    _insertFormat(provider.rulesController, '- ', ''),
+              ),
+              _buildFormatButton(
+                icon: Icons.format_list_numbered,
+                tooltip: l10n.tournamentFormRulesNumberedList,
+                onPressed: () =>
+                    _insertFormat(provider.rulesController, '1. ', ''),
+              ),
+              _buildFormatButton(
+                icon: Icons.format_bold,
+                tooltip: l10n.tournamentFormRulesBold,
+                onPressed: () =>
+                    _insertFormat(provider.rulesController, '**', '**'),
+              ),
+              _buildFormatButton(
+                icon: Icons.format_italic,
+                tooltip: l10n.tournamentFormRulesItalic,
+                onPressed: () =>
+                    _insertFormat(provider.rulesController, '*', '*'),
+              ),
+              _buildFormatButton(
+                icon: Icons.title,
+                tooltip: l10n.tournamentFormRulesTitle,
+                onPressed: () =>
+                    _insertFormat(provider.rulesController, '# ', ''),
+              ),
+            ],
+          ),
+        ),
+        // Text field
+        TextField(
+          controller: provider.rulesController,
+          maxLines: 8,
+          decoration: InputDecoration(
+            hintText: l10n.tournamentFormRulesHint,
+            border: OutlineInputBorder(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+              borderSide: BorderSide(color: AppTheme.primary),
+            ),
+            contentPadding: EdgeInsets.all(16.w),
+          ),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Text(
+          l10n.tournamentFormRulesHelp,
+          style: TextStyle(
+            fontSize: 11.sp,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFormatButton({
+    required IconData icon,
+    required String tooltip,
+    required VoidCallback onPressed,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: EdgeInsets.all(8.w),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            ),
+          ),
+          child: Icon(
+            icon,
+            size: 20.w,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _insertFormat(
+      TextEditingController controller, String prefix, String suffix) {
+    final text = controller.text;
+    final selection = controller.selection;
+
+    if (selection.baseOffset == -1) {
+      // No selection, insert at end
+      controller.text = text + prefix + suffix;
+      controller.selection = TextSelection.collapsed(
+        offset: text.length + prefix.length,
+      );
+    } else {
+      // Insert around selection
+      final newText = text.replaceRange(
+        selection.start,
+        selection.end,
+        prefix + selection.textInside(text) + suffix,
+      );
+      controller.text = newText;
+      controller.selection = TextSelection.collapsed(
+        offset:
+            selection.start + prefix.length + selection.textInside(text).length,
+      );
+    }
+  }
+
+  Future<UserModel?> _showUserSearchDialog(BuildContext context) async {
+    return showDialog<UserModel>(
+      context: context,
+      builder: (context) => _UserSearchDialog(),
+    );
+  }
+}
+
+class _UserSearchDialog extends StatefulWidget {
+  @override
+  State<_UserSearchDialog> createState() => _UserSearchDialogState();
+}
+
+class _UserSearchDialogState extends State<_UserSearchDialog> {
+  final searchController = TextEditingController();
+  List<UserModel>? searchResults;
+  bool isSearching = false;
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _performSearch(String value) async {
+    if (value.length < 3) {
+      setState(() {
+        searchResults = null;
+        isSearching = false;
+      });
+      return;
+    }
+
+    setState(() {
+      isSearching = true;
+    });
+
+    try {
+      final results = await getUsersByUsername(value, limit: 10);
+      if (mounted) {
+        setState(() {
+          searchResults = results;
+          isSearching = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error searching users: $e');
+      if (mounted) {
+        setState(() {
+          searchResults = [];
+          isSearching = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Dialog(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+          maxWidth: 400.w,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l10n.tournamentFormSearchResponsibleTitle,
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+            // Search field
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  labelText: l10n.username,
+                  hintText: l10n.tournamentFormSearchUsernameHint,
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onChanged: _performSearch,
+              ),
+            ),
+            SizedBox(height: 16.h),
+            // Results area - scrollable
+            Flexible(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: _buildResultsContent(context, l10n),
+                ),
+              ),
+            ),
+            // Actions
+            Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(l10n.cancel),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResultsContent(BuildContext context, AppLocalizations l10n) {
+    if (isSearching) {
+      return Padding(
+        padding: EdgeInsets.all(16.h),
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    } else if (searchResults != null && searchResults!.isNotEmpty) {
+      return Column(
+        children: searchResults!.map((user) {
+          return ListTile(
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 0.w, vertical: 4.h),
+            leading: CircleAvatar(
+              backgroundImage: user.profileImage != null
+                  ? NetworkImage(user.profileImage!)
+                  : null,
+              child:
+                  user.profileImage == null ? const Icon(Icons.person) : null,
+            ),
+            title: Text(
+              '${user.firstName} ${user.lastName}',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Text('@${user.userName}'),
+            onTap: () {
+              Navigator.pop(context, user);
+            },
+          );
+        }).toList(),
+      );
+    } else if (searchResults != null && searchResults!.isEmpty) {
+      return Padding(
+        padding: EdgeInsets.all(16.h),
+        child: Text(
+          l10n.tournamentFormNoUsersFound,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+        ),
+      );
+    } else {
+      return Padding(
+        padding: EdgeInsets.all(16.h),
+        child: Text(
+          l10n.tournamentFormSearchMinChars,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+        ),
+      );
     }
   }
 }

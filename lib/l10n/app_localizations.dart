@@ -1794,6 +1794,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error resetting password. Please try again.'**
   String get resetPasswordError;
+
+  /// No description provided for @tournamentStatusFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished'**
+  String get tournamentStatusFinished;
+
+  /// No description provided for @tournamentStatusOngoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Ongoing'**
+  String get tournamentStatusOngoing;
+
+  /// No description provided for @tournamentStatusUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get tournamentStatusUpcoming;
+
+  /// No description provided for @tournamentStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Status'**
+  String get tournamentStatusLabel;
+
+  /// No description provided for @tournamentResponsible.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Responsible'**
+  String get tournamentResponsible;
+
+  /// No description provided for @tournamentStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get tournamentStartDate;
+
+  /// No description provided for @tournamentEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get tournamentEndDate;
+
+  /// No description provided for @tournamentPrize.
+  ///
+  /// In en, this message translates to:
+  /// **'Prize'**
+  String get tournamentPrize;
+
+  /// No description provided for @tournamentUserNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'User not available'**
+  String get tournamentUserNotAvailable;
+
+  /// No description provided for @tournamentYouAreCreator.
+  ///
+  /// In en, this message translates to:
+  /// **'You are the creator'**
+  String get tournamentYouAreCreator;
+
+  /// No description provided for @tournamentYouAreRole.
+  ///
+  /// In en, this message translates to:
+  /// **'You are {role}'**
+  String tournamentYouAreRole(String role);
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @tournamentPendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Requests'**
+  String get tournamentPendingRequests;
+
+  /// No description provided for @tournamentNoPendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending requests'**
+  String get tournamentNoPendingRequests;
+
+  /// No description provided for @tournamentRequestCountSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'1 request'**
+  String get tournamentRequestCountSingular;
+
+  /// No description provided for @tournamentRequestCountPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} requests'**
+  String tournamentRequestCountPlural(num count);
+
+  /// No description provided for @tournamentRequestRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested'**
+  String get tournamentRequestRequested;
+
+  /// No description provided for @tournamentAcceptRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get tournamentAcceptRequest;
+
+  /// No description provided for @tournamentDeclineRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get tournamentDeclineRequest;
+
+  /// No description provided for @tournamentAcceptRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Request'**
+  String get tournamentAcceptRequestTitle;
+
+  /// No description provided for @tournamentAcceptRequestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to accept the request from {teamName}?'**
+  String tournamentAcceptRequestMessage(String teamName);
+
+  /// No description provided for @tournamentDeclineRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline Request'**
+  String get tournamentDeclineRequestTitle;
+
+  /// No description provided for @tournamentDeclineRequestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to decline the request from {teamName}?'**
+  String tournamentDeclineRequestMessage(String teamName);
+
+  /// No description provided for @tournamentRequestAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Request accepted successfully'**
+  String get tournamentRequestAccepted;
+
+  /// No description provided for @tournamentRequestDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Request declined successfully'**
+  String get tournamentRequestDeclined;
+
+  /// No description provided for @tournamentErrorAcceptingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Error accepting request'**
+  String get tournamentErrorAcceptingRequest;
+
+  /// No description provided for @tournamentErrorDecliningRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Error declining request'**
+  String get tournamentErrorDecliningRequest;
+
+  /// No description provided for @tournamentTabInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get tournamentTabInfo;
+
+  /// No description provided for @tournamentTabRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get tournamentTabRequests;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
+
+  /// No description provided for @tournamentFormImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Image'**
+  String get tournamentFormImage;
+
+  /// No description provided for @tournamentFormSelectImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Image'**
+  String get tournamentFormSelectImage;
+
+  /// No description provided for @tournamentFormRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get tournamentFormRegion;
+
+  /// No description provided for @tournamentFormRegionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'LATAM'**
+  String get tournamentFormRegionHint;
+
+  /// No description provided for @tournamentFormSearchResponsible.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Responsible'**
+  String get tournamentFormSearchResponsible;
+
+  /// No description provided for @tournamentFormSearchResponsibleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Responsible User'**
+  String get tournamentFormSearchResponsibleTitle;
+
+  /// No description provided for @tournamentFormSelectMaxTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Select maximum teams'**
+  String get tournamentFormSelectMaxTeams;
+
+  /// No description provided for @tournamentFormMinRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Rank'**
+  String get tournamentFormMinRank;
+
+  /// No description provided for @tournamentFormMaxRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Rank'**
+  String get tournamentFormMaxRank;
+
+  /// No description provided for @tournamentFormRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Tournament Rules'**
+  String get tournamentFormRules;
+
+  /// No description provided for @tournamentFormRulesList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get tournamentFormRulesList;
+
+  /// No description provided for @tournamentFormRulesNumberedList.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbered List'**
+  String get tournamentFormRulesNumberedList;
+
+  /// No description provided for @tournamentFormRulesBold.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold'**
+  String get tournamentFormRulesBold;
+
+  /// No description provided for @tournamentFormRulesItalic.
+  ///
+  /// In en, this message translates to:
+  /// **'Italic'**
+  String get tournamentFormRulesItalic;
+
+  /// No description provided for @tournamentFormRulesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get tournamentFormRulesTitle;
+
+  /// No description provided for @tournamentFormRulesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the tournament rules...\n\nExample:\n# General Rules\n- Respect others\n- Punctuality\n\n# Game Rules\n1. First rule\n2. Second rule'**
+  String get tournamentFormRulesHint;
+
+  /// No description provided for @tournamentFormRulesHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the buttons to add formatting. The text will be displayed as markdown.'**
+  String get tournamentFormRulesHelp;
+
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @tournamentFormSearchUsernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by username...'**
+  String get tournamentFormSearchUsernameHint;
+
+  /// No description provided for @tournamentFormNoUsersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get tournamentFormNoUsersFound;
+
+  /// No description provided for @tournamentFormSearchMinChars.
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least 3 characters to search'**
+  String get tournamentFormSearchMinChars;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

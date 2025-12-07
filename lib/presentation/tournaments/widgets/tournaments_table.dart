@@ -9,6 +9,7 @@ import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/utils/tournament_role_helper.dart';
 import 'package:jugaenequipo/utils/game_image_helper.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
+import 'package:jugaenequipo/datasources/tournaments_use_cases/get_tournament_background_image_use_case.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -290,18 +291,66 @@ class TournamentsTable extends StatelessWidget {
     dynamic tournament,
     AppLocalizations l10n,
   ) {
+    return _TournamentCard(
+      tournament: tournament,
+      l10n: l10n,
+    );
+  }
+}
+
+class _TournamentCard extends StatefulWidget {
+  final TournamentModel tournament;
+  final AppLocalizations l10n;
+
+  const _TournamentCard({
+    required this.tournament,
+    required this.l10n,
+  });
+
+  @override
+  State<_TournamentCard> createState() => _TournamentCardState();
+}
+
+class _TournamentCardState extends State<_TournamentCard> {
+  String? _backgroundImageUrl;
+  bool _isLoadingImage = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBackgroundImage();
+  }
+
+  Future<void> _loadBackgroundImage() async {
+    final imageUrl = await getTournamentBackgroundImage(
+      tournamentId: widget.tournament.id,
+    );
+    if (mounted) {
+      setState(() {
+        _backgroundImageUrl = imageUrl;
+        _isLoadingImage = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentUser = Provider.of<UserProvider>(context, listen: false).user;
-    final canEdit = TournamentRoleHelper.canEdit(tournament, currentUser);
+    final canEdit =
+        TournamentRoleHelper.canEdit(widget.tournament, currentUser);
     final now = DateTime.now();
-    final isUpcoming = tournament.startAt.isAfter(now);
-    final isOngoing =
-        tournament.startAt.isBefore(now) && tournament.endAt.isAfter(now);
-    final isFinished = tournament.endAt.isBefore(now);
-    final progress = tournament.registeredTeams / tournament.maxTeams;
-    final hasImage = tournament.image != null &&
-        tournament.image!.isNotEmpty &&
-        (tournament.image!.startsWith('http://') ||
-            tournament.image!.startsWith('https://'));
+    final isUpcoming = widget.tournament.startAt.isAfter(now);
+    final isOngoing = widget.tournament.startAt.isBefore(now) &&
+        widget.tournament.endAt.isAfter(now);
+    final isFinished = widget.tournament.endAt.isBefore(now);
+    final progress =
+        widget.tournament.registeredTeams / widget.tournament.maxTeams;
+
+    final hasImage = _backgroundImageUrl != null &&
+        _backgroundImageUrl!.isNotEmpty &&
+        (_backgroundImageUrl!.startsWith('http://') ||
+            _backgroundImageUrl!.startsWith('https://') ||
+            _backgroundImageUrl!.startsWith('data:image'));
 
     return Card(
       elevation: 0,
@@ -316,7 +365,7 @@ class TournamentsTable extends StatelessWidget {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  TournamentDetailScreen(tournament: tournament),
+                  TournamentDetailScreen(tournament: widget.tournament),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 return FadeTransition(opacity: animation, child: child);
@@ -336,21 +385,33 @@ class TournamentsTable extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppTheme.primary.withOpacity(0.1),
-                      AppTheme.accent.withOpacity(0.05),
+                      AppTheme.primary.withOpacity(0.15),
+                      AppTheme.accent.withOpacity(0.08),
+                      AppTheme.warning.withOpacity(0.05),
                     ],
+                    stops: const [0.0, 0.5, 1.0],
                   ),
           ),
           child: Stack(
             children: [
               // Background Image
-              if (hasImage)
+              if (hasImage && !_isLoadingImage)
                 Positioned.fill(
-                  child: Image.network(
-                    tournament.image!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(),
-                  ),
+                  child: _backgroundImageUrl!.startsWith('data:image')
+                      ? Image.memory(
+                          Uri.parse(_backgroundImageUrl!)
+                              .data!
+                              .contentAsBytes(),
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(),
+                        )
+                      : Image.network(
+                          _backgroundImageUrl!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(),
+                        ),
                 ),
               // Gradient Overlay
               if (hasImage)
@@ -387,7 +448,7 @@ class TournamentsTable extends StatelessWidget {
                               children: [
                                 // Title
                                 Text(
-                                  tournament.title,
+                                  widget.tournament.title,
                                   style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w800,
@@ -403,8 +464,8 @@ class TournamentsTable extends StatelessWidget {
                                 ),
                                 SizedBox(height: 8.h),
                                 // Status Badge
-                                _buildStatusBadge(context, isUpcoming,
-                                    isOngoing, isFinished, l10n),
+                                _buildStatusBadge(
+                                    context, isUpcoming, isOngoing, isFinished),
                               ],
                             ),
                           ),
@@ -412,7 +473,7 @@ class TournamentsTable extends StatelessWidget {
                           // Official Badge & Menu
                           Column(
                             children: [
-                              if (tournament.isOfficial)
+                              if (widget.tournament.isOfficial)
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 8.w, vertical: 4.h),
@@ -434,7 +495,7 @@ class TournamentsTable extends StatelessWidget {
                                       ),
                                       SizedBox(width: 4.w),
                                       Text(
-                                        l10n.tournamentFormOfficial,
+                                        widget.l10n.tournamentFormOfficial,
                                         style: TextStyle(
                                           fontSize: 10.sp,
                                           fontWeight: FontWeight.w700,
@@ -465,12 +526,13 @@ class TournamentsTable extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               TournamentFormScreen(
-                                                  tournament: tournament),
+                                                  tournament:
+                                                      widget.tournament),
                                         ),
                                       );
                                     } else if (value == 'delete') {
                                       _showDeleteConfirmation(
-                                          context, tournament, l10n);
+                                          context, widget.tournament);
                                     }
                                   },
                                   itemBuilder: (context) => [
@@ -481,7 +543,7 @@ class TournamentsTable extends StatelessWidget {
                                           Icon(Icons.edit,
                                               color: Colors.blue, size: 18.w),
                                           SizedBox(width: 8.w),
-                                          Text(l10n.tournamentFormEdit),
+                                          Text(widget.l10n.tournamentFormEdit),
                                         ],
                                       ),
                                     ),
@@ -492,7 +554,8 @@ class TournamentsTable extends StatelessWidget {
                                           Icon(Icons.delete,
                                               color: Colors.red, size: 18.w),
                                           SizedBox(width: 8.w),
-                                          Text(l10n.tournamentFormDelete),
+                                          Text(
+                                              widget.l10n.tournamentFormDelete),
                                         ],
                                       ),
                                     ),
@@ -515,7 +578,7 @@ class TournamentsTable extends StatelessWidget {
                               color: Colors.white.withOpacity(0.2),
                               padding: EdgeInsets.all(8.w),
                               child: GameImageHelper.buildGameImage(
-                                gameName: tournament.game.name,
+                                gameName: widget.tournament.game.name,
                                 width: 32.w,
                                 height: 32.w,
                                 defaultIcon: Icons.sports_esports,
@@ -530,7 +593,7 @@ class TournamentsTable extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  tournament.game.name,
+                                  widget.tournament.game.name,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w700,
@@ -556,7 +619,7 @@ class TournamentsTable extends StatelessWidget {
                                     ),
                                     SizedBox(width: 4.w),
                                     Text(
-                                      '${tournament.registeredTeams}/${tournament.maxTeams}',
+                                      '${widget.tournament.registeredTeams}/${widget.tournament.maxTeams}',
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w600,
@@ -578,7 +641,9 @@ class TournamentsTable extends StatelessWidget {
                             height: 60.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(0.2),
+                              color: hasImage
+                                  ? Colors.white.withOpacity(0.2)
+                                  : AppTheme.primary.withOpacity(0.1),
                             ),
                             child: Stack(
                               fit: StackFit.expand,
@@ -586,12 +651,15 @@ class TournamentsTable extends StatelessWidget {
                                 CircularProgressIndicator(
                                   value: progress,
                                   strokeWidth: 4,
-                                  backgroundColor:
-                                      Colors.white.withOpacity(0.3),
+                                  backgroundColor: hasImage
+                                      ? Colors.white.withOpacity(0.3)
+                                      : AppTheme.primary.withOpacity(0.2),
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                     progress >= 1.0
                                         ? AppTheme.success
-                                        : Colors.white,
+                                        : hasImage
+                                            ? Colors.white
+                                            : AppTheme.primary,
                                   ),
                                 ),
                                 Center(
@@ -600,7 +668,9 @@ class TournamentsTable extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 11.sp,
                                       fontWeight: FontWeight.w800,
-                                      color: Colors.white,
+                                      color: hasImage
+                                          ? Colors.white
+                                          : AppTheme.primary,
                                     ),
                                   ),
                                 ),
@@ -626,8 +696,8 @@ class TournamentsTable extends StatelessWidget {
                           SizedBox(width: 6.w),
                           Expanded(
                             child: Text(
-                              _formatDateRange(
-                                  tournament.startAt, tournament.endAt),
+                              _formatDateRange(widget.tournament.startAt,
+                                  widget.tournament.endAt),
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
@@ -655,22 +725,23 @@ class TournamentsTable extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusBadge(BuildContext context, bool isUpcoming,
-      bool isOngoing, bool isFinished, AppLocalizations l10n) {
+  Widget _buildStatusBadge(
+      BuildContext context, bool isUpcoming, bool isOngoing, bool isFinished) {
+    final l10n = AppLocalizations.of(context)!;
     String text;
     Color color;
     IconData icon;
 
     if (isFinished) {
-      text = 'Finalizado';
+      text = l10n.tournamentStatusFinished;
       color = AppTheme.error;
       icon = Icons.check_circle;
     } else if (isOngoing) {
-      text = 'En curso';
+      text = l10n.tournamentStatusOngoing;
       color = AppTheme.success;
       icon = Icons.play_circle_filled;
     } else {
-      text = 'Próximo';
+      text = l10n.tournamentStatusUpcoming;
       color = AppTheme.warning;
       icon = Icons.schedule;
     }
@@ -718,22 +789,22 @@ class TournamentsTable extends StatelessWidget {
     return '$startStr - $endStr';
   }
 
-  Future<void> _showDeleteConfirmation(BuildContext context,
-      TournamentModel tournament, AppLocalizations l10n) async {
+  Future<void> _showDeleteConfirmation(
+      BuildContext context, TournamentModel tournament) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(l10n.tournamentFormDeleteTitle),
-        content: Text(l10n.tournamentFormDeleteMessage),
+        title: Text(widget.l10n.tournamentFormDeleteTitle),
+        content: Text(widget.l10n.tournamentFormDeleteMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.tournamentFormDeleteCancel),
+            child: Text(widget.l10n.tournamentFormDeleteCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: AppTheme.error),
-            child: Text(l10n.tournamentFormDeleteConfirm),
+            child: Text(widget.l10n.tournamentFormDeleteConfirm),
           ),
         ],
       ),
@@ -746,13 +817,12 @@ class TournamentsTable extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(success
-                ? l10n.tournamentFormSuccessDelete
-                : l10n.tournamentFormErrorDelete),
+                ? widget.l10n.tournamentFormSuccessDelete
+                : widget.l10n.tournamentFormErrorDelete),
             backgroundColor: success ? AppTheme.success : AppTheme.error,
           ),
         );
         if (success) {
-          // Refresh the tournaments list
           final tournamentsProvider =
               Provider.of<TournamentsProvider>(context, listen: false);
           tournamentsProvider.onRefresh();

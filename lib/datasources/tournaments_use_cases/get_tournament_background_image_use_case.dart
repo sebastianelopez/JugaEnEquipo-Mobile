@@ -2,11 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 
-/// Get tournament background image URL
-/// 
+/// Get tournament background image
+///
 /// Parameters:
-/// - [tournamentId]: The ID of the tournament
-/// Returns the image URL or null if not found
+/// - [tournamentId]: Tournament ID
+///
+/// Returns the background image URL or null if not available
 Future<String?> getTournamentBackgroundImage({
   required String tournamentId,
 }) async {
@@ -24,46 +25,31 @@ Future<String?> getTournamentBackgroundImage({
     final response = await APIService.instance.request(
       '/api/tournament/$tournamentId/background-image',
       DioMethod.get,
+      contentType: 'application/json',
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
     );
 
-    if (response.statusCode == 200) {
-      if (kDebugMode) {
-        debugPrint('getTournamentBackgroundImage: API call successful');
-      }
-
-      if (response.data == null) {
-        return null;
-      }
-
-      try {
-        if (response.data is Map<String, dynamic>) {
-          final data = response.data['data'];
-          if (data is Map<String, dynamic>) {
-            return data['backgroundImage'] as String?;
-          }
-        }
-        return null;
-      } catch (e) {
-        if (kDebugMode) {
-          debugPrint('getTournamentBackgroundImage: Error parsing response: $e');
-        }
-        return null;
-      }
-    } else {
-      if (kDebugMode) {
-        debugPrint(
-            'getTournamentBackgroundImage: Failed with status ${response.statusCode}');
-      }
-      return null;
+    if (kDebugMode) {
+      debugPrint('getTournamentBackgroundImage: Response received');
+      debugPrint('  - Status code: ${response.statusCode}');
+      debugPrint('  - Response data: ${response.data}');
     }
-  } catch (e) {
+
+    if (response.statusCode == 200 && response.data != null) {
+      final data = response.data['data'];
+      if (data != null && data['backgroundImage'] != null) {
+        return data['backgroundImage'] as String;
+      }
+    }
+
+    return null;
+  } catch (e, stackTrace) {
     if (kDebugMode) {
       debugPrint('getTournamentBackgroundImage: Error occurred: $e');
+      debugPrint('getTournamentBackgroundImage: Stack trace: $stackTrace');
     }
     return null;
   }
 }
-
