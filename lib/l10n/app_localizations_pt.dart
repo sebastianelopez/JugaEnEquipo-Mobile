@@ -1271,4 +1271,25 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get accountType => 'Tipo de Conta';
+
+  @override
+  String get viewTeamProfile => 'Ver Perfil da Equipe';
+
+  @override
+  String get noGames => 'Sem Jogos';
+
+  @override
+  String get yearSingular => 'ano';
+
+  @override
+  String get yearPlural => 'anos';
+
+  @override
+  String get monthSingular => 'mês';
+
+  @override
+  String get monthPlural => 'meses';
+
+  @override
+  String get newTeam => 'Novo';
 }

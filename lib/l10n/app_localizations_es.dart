@@ -1271,4 +1271,25 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accountType => 'Tipo de Cuenta';
+
+  @override
+  String get viewTeamProfile => 'Ver Perfil del Equipo';
+
+  @override
+  String get noGames => 'Sin Juegos';
+
+  @override
+  String get yearSingular => 'año';
+
+  @override
+  String get yearPlural => 'años';
+
+  @override
+  String get monthSingular => 'mes';
+
+  @override
+  String get monthPlural => 'meses';
+
+  @override
+  String get newTeam => 'Nuevo';
 }

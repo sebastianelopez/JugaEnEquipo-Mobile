@@ -57,451 +57,394 @@ class _TeamCardState extends State<TeamCard> {
   }
 
   Widget _buildTeamCard(BuildContext context, AppLocalizations l10n) {
-    return Card(
-      elevation: 12,
-      shadowColor: AppTheme.primary.withOpacity(0.3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-        side: BorderSide(
-          color: Colors.white.withOpacity(0.3),
-          width: 1.5,
+    final hasImage = widget.team.image != null &&
+        widget.team.image!.isNotEmpty &&
+        (widget.team.image!.startsWith('http://') ||
+            widget.team.image!.startsWith('https://'));
+
+    return Hero(
+      tag: 'team-${widget.team.id}',
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
         ),
-      ),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfileScreen(
-                teamId: widget.team.id,
-                team: widget.team,
-                profileType: ProfileType.team,
-              ),
-            ),
-          );
-        },
-        borderRadius: BorderRadius.circular(20.r),
-        child: SizedBox(
-          height: 200.h,
-          child: Stack(
-            children: [
-              // Background image with overlay
-              Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.r),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: _buildTeamImageWithOverlay(),
-                  ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileScreen(
+                  teamId: widget.team.id,
+                  team: widget.team,
+                  profileType: ProfileType.team,
                 ),
-              ),
-
-              // Content overlay
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.3),
-                        Colors.black.withOpacity(0.7),
-                      ],
-                      stops: const [0.0, 0.5, 1.0],
-                    ),
-                  ),
-                ),
-              ),
-
-              // Top section with verification badge
-              if (widget.team.verified == true)
-                Positioned(
-                  top: 16.h,
-                  right: 16.w,
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primary.withOpacity(0.9),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.verified,
-                      color: Colors.white,
-                      size: 20.w,
-                    ),
-                  ),
-                ),
-
-              // Games badges at top left
-              Positioned(
-                top: 16.h,
-                left: 16.w,
-                right: 16.w,
-                child: _buildGamesBadges(),
-              ),
-
-              // Bottom content section
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.all(20.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.team.name,
-                        style: TextStyle(
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black.withOpacity(0.5),
-                              offset: const Offset(0, 1),
-                              blurRadius: 3,
-                            ),
-                          ],
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-
-                      SizedBox(height: 12.h),
-
-                      // Stats row
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12.w, vertical: 6.h),
-                            decoration: BoxDecoration(
-                              color: AppTheme.success.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.people,
-                                  color: Colors.white,
-                                  size: 16.w,
-                                ),
-                                SizedBox(width: 6.w),
-                                Text(
-                                  '${_members?.length ?? widget.team.membersIds?.length ?? 0}',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          if ((_members != null && _members!.isNotEmpty) ||
-                              (widget.team.membersIds != null &&
-                                  widget.team.membersIds!.isNotEmpty))
-                            Expanded(
-                              child: _buildMembersAvatars(),
-                            ),
-                        ],
-                      ),
-
-                      SizedBox(height: 16.h),
-
-                      Container(
-                        width: double.infinity,
-                        height: 44.h,
-                        decoration: BoxDecoration(
-                          color: AppTheme.primary.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(12.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'View Team Profile',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(width: 8.w),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 16.w,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGamesBadges() {
-    if (widget.team.games.isEmpty) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-        decoration: BoxDecoration(
-          color: AppTheme.accent.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.sports_esports,
-              color: Colors.white,
-              size: 14.w,
-            ),
-            SizedBox(width: 4.w),
-            Text(
-              'No Games',
-              style: TextStyle(
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // Show first game as main badge with additional indicator
-    final mainGame = widget.team.games.first;
-    return Row(
-      children: [
-        // Main game badge - flexible to prevent overflow
-        Flexible(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: AppTheme.accent.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.sports_esports,
-                  color: Colors.white,
-                  size: 14.w,
-                ),
-                SizedBox(width: 4.w),
-                Flexible(
-                  child: Text(
-                    mainGame.name,
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        // Additional games indicator - fixed size
-        if (widget.team.games.length > 1) ...[
-          SizedBox(width: 6.w),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            child: Text(
-              '+${widget.team.games.length - 1}',
-              style: TextStyle(
-                fontSize: 9.sp,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.primary,
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildMembersAvatars() {
-    final membersToShow = _members ?? [];
-    final maxToShow = 4;
-    final totalCount = membersToShow.isNotEmpty
-        ? membersToShow.length
-        : (widget.team.membersIds?.length ?? 0);
-
-    if (totalCount == 0) {
-      return const SizedBox.shrink();
-    }
-
-    return Row(
-      children: [
-        ...List.generate(
-          membersToShow.length > maxToShow ? maxToShow : membersToShow.length,
-          (index) {
-            final member = membersToShow[index];
-            return Container(
-              margin: EdgeInsets.only(right: 6.w),
-              child: CircleAvatar(
-                radius: 14.r,
-                backgroundColor: Colors.white.withOpacity(0.9),
-                backgroundImage: member.profileImage != null &&
-                        (member.profileImage!.startsWith('http://') ||
-                            member.profileImage!.startsWith('https://'))
-                    ? NetworkImage(member.profileImage!)
-                    : null,
-                child: member.profileImage == null ||
-                        (!member.profileImage!.startsWith('http://') &&
-                            !member.profileImage!.startsWith('https://'))
-                    ? Icon(
-                        Icons.person,
-                        color: AppTheme.primary,
-                        size: 16.w,
-                      )
-                    : null,
               ),
             );
           },
-        ),
-        // Show placeholder avatars if members are still loading
-        if (_isLoadingMembers && membersToShow.isEmpty)
-          ...List.generate(
-            widget.team.membersIds != null &&
-                    widget.team.membersIds!.length > maxToShow
-                ? maxToShow
-                : (widget.team.membersIds?.length ?? 0),
-            (index) => Container(
-              margin: EdgeInsets.only(right: 6.w),
-              child: CircleAvatar(
-                radius: 14.r,
-                backgroundColor: Colors.white.withOpacity(0.9),
-                child: Icon(
-                  Icons.person,
-                  color: AppTheme.primary,
-                  size: 16.w,
+          borderRadius: BorderRadius.circular(20.r),
+          child: Container(
+            height: 220.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.r),
+              gradient: hasImage
+                  ? null
+                  : LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppTheme.primary.withOpacity(0.15),
+                        AppTheme.accent.withOpacity(0.08),
+                        AppTheme.success.withOpacity(0.05),
+                      ],
+                      stops: const [0.0, 0.5, 1.0],
+                    ),
+            ),
+            child: Stack(
+              children: [
+                // Background Image
+                if (hasImage)
+                  Positioned.fill(
+                    child: Image.network(
+                      widget.team.image!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(),
+                    ),
+                  ),
+
+                // Gradient Overlay
+                if (hasImage)
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.3),
+                            Colors.black.withOpacity(0.7),
+                          ],
+                          stops: const [0.0, 0.5, 1.0],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                // Content
+                Positioned.fill(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Header Row
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Team Name
+                                  Text(
+                                    widget.team.name,
+                                    style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w800,
+                                      color: hasImage
+                                          ? Colors.white
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                      height: 1.2,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  // Founded Badge
+                                  _buildFoundedBadge(context, hasImage),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            // Verified Badge
+                            if (widget.team.verified == true)
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w, vertical: 4.h),
+                                decoration: BoxDecoration(
+                                  color: hasImage
+                                      ? Colors.white.withOpacity(0.2)
+                                      : AppTheme.primary.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  border: Border.all(
+                                    color: hasImage
+                                        ? Colors.white.withOpacity(0.3)
+                                        : AppTheme.primary.withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.verified,
+                                      color: hasImage
+                                          ? Colors.white
+                                          : AppTheme.primary,
+                                      size: 14.w,
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      l10n.verifiedStatus,
+                                      style: TextStyle(
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w700,
+                                        color: hasImage
+                                            ? Colors.white
+                                            : AppTheme.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                        const Spacer(),
+                        // Game & Members Info
+                        Row(
+                          children: [
+                            // Game Icon Container
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: Container(
+                                width: 48.w,
+                                height: 48.w,
+                                color: hasImage
+                                    ? Colors.white.withOpacity(0.2)
+                                    : AppTheme.primary.withOpacity(0.1),
+                                padding: EdgeInsets.all(8.w),
+                                child: Icon(
+                                  Icons.sports_esports,
+                                  color: hasImage
+                                      ? Colors.white
+                                      : AppTheme.primary,
+                                  size: 24.w,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Games Display
+                                  _buildGamesText(context, hasImage),
+                                  SizedBox(height: 4.h),
+                                  // Members Count
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.people,
+                                        size: 14.w,
+                                        color: hasImage
+                                            ? Colors.white.withOpacity(0.8)
+                                            : AppTheme.primary,
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        '${_members?.length ?? widget.team.membersIds?.length ?? 0} ${l10n.membersLabel}',
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: hasImage
+                                              ? Colors.white.withOpacity(0.9)
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Members Avatars
+                            if ((_members != null && _members!.isNotEmpty) ||
+                                (widget.team.membersIds != null &&
+                                    widget.team.membersIds!.isNotEmpty))
+                              _buildMembersAvatarsCompact(hasImage),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
-        if (totalCount > maxToShow)
-          Container(
-            margin: EdgeInsets.only(left: 4.w),
-            child: Text(
-              '+${totalCount - maxToShow}',
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-          ),
-      ],
+        ),
+      ),
     );
   }
 
-  Widget _buildTeamImageWithOverlay() {
-    if (widget.team.image != null &&
-        widget.team.image!.isNotEmpty &&
-        (widget.team.image!.startsWith('http://') ||
-            widget.team.image!.startsWith('https://'))) {
-      return Stack(
+  Widget _buildFoundedBadge(BuildContext context, bool hasImage) {
+    final l10n = AppLocalizations.of(context)!;
+    final now = DateTime.now();
+    final difference = now.difference(widget.team.createdAt);
+    final years = (difference.inDays / 365).floor();
+    final months = ((difference.inDays % 365) / 30).floor();
+
+    String ageText;
+    IconData icon;
+    Color color;
+
+    if (years > 0) {
+      ageText =
+          years == 1 ? '1 ${l10n.yearSingular}' : '$years ${l10n.yearPlural}';
+      icon = Icons.emoji_events;
+      color = AppTheme.warning;
+    } else if (months > 0) {
+      ageText = months == 1
+          ? '1 ${l10n.monthSingular}'
+          : '$months ${l10n.monthPlural}';
+      icon = Icons.schedule;
+      color = AppTheme.accent;
+    } else {
+      ageText = l10n.newTeam;
+      icon = Icons.fiber_new;
+      color = AppTheme.success;
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withOpacity(hasImage ? 0.3 : 0.15),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+          color: color.withOpacity(0.4),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Positioned.fill(
-            child: Image.network(
-              widget.team.image!,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-              errorBuilder: (context, error, stackTrace) =>
-                  _buildDefaultTeamBackground(),
-            ),
-          ),
-          // Subtle overlay for better text readability
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.1),
-              ),
+          Icon(icon, size: 12.w, color: hasImage ? Colors.white : color),
+          SizedBox(width: 4.w),
+          Text(
+            ageText,
+            style: TextStyle(
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w700,
+              color: hasImage ? Colors.white : color,
             ),
           ),
         ],
-      );
-    } else {
-      return _buildDefaultTeamBackground();
-    }
+      ),
+    );
   }
 
-  Widget _buildDefaultTeamBackground() {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppTheme.primary.withOpacity(0.8),
-            AppTheme.accent.withOpacity(0.6),
-          ],
+  Widget _buildGamesText(BuildContext context, bool hasImage) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (widget.team.games.isEmpty) {
+      return Text(
+        l10n.noGames,
+        style: TextStyle(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w700,
+          color:
+              hasImage ? Colors.white : Theme.of(context).colorScheme.onSurface,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    final gamesText = widget.team.games.length == 1
+        ? widget.team.games.first.name
+        : '${widget.team.games.first.name} +${widget.team.games.length - 1}';
+
+    return Text(
+      gamesText,
+      style: TextStyle(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w700,
+        color:
+            hasImage ? Colors.white : Theme.of(context).colorScheme.onSurface,
       ),
-      child: Center(
-        child: Icon(
-          Icons.group,
-          color: Colors.white.withOpacity(0.8),
-          size: 60.w,
-        ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _buildMembersAvatarsCompact(bool hasImage) {
+    final membersToShow = _members ?? [];
+    final maxToShow = 3;
+
+    if (membersToShow.isEmpty && !_isLoadingMembers) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      width: 60.w,
+      height: 60.w,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: hasImage
+            ? Colors.white.withOpacity(0.2)
+            : AppTheme.primary.withOpacity(0.1),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (membersToShow.isNotEmpty)
+            ...List.generate(
+              membersToShow.length > maxToShow
+                  ? maxToShow
+                  : membersToShow.length,
+              (index) {
+                final member = membersToShow[index];
+                final radius = 12.w;
+                return Positioned(
+                  left: 30.w +
+                      (radius * (index == 0 ? 0 : (index == 1 ? 1 : -0.5))),
+                  top: 30.w +
+                      (radius * (index == 0 ? -1 : (index == 1 ? 0.5 : 0.5))),
+                  child: CircleAvatar(
+                    radius: 8.r,
+                    backgroundColor: Colors.white,
+                    backgroundImage: member.profileImage != null &&
+                            (member.profileImage!.startsWith('http://') ||
+                                member.profileImage!.startsWith('https://'))
+                        ? NetworkImage(member.profileImage!)
+                        : null,
+                    child: member.profileImage == null ||
+                            (!member.profileImage!.startsWith('http://') &&
+                                !member.profileImage!.startsWith('https://'))
+                        ? Icon(
+                            Icons.person,
+                            color: AppTheme.primary,
+                            size: 10.w,
+                          )
+                        : null,
+                  ),
+                );
+              },
+            )
+          else
+            Icon(
+              Icons.people,
+              color: hasImage
+                  ? Colors.white.withOpacity(0.6)
+                  : AppTheme.primary.withOpacity(0.6),
+              size: 24.w,
+            ),
+        ],
       ),
     );
   }

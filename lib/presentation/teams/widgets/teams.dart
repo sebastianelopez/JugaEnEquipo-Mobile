@@ -3,7 +3,6 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/teams/business_logic/teams_screen_provider.dart';
 import 'package:jugaenequipo/presentation/teams/widgets/team_card.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
-import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:provider/provider.dart';
 
@@ -13,14 +12,13 @@ class Teams extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final teamProvider = Provider.of<TeamsScreenProvider>(context);
-    final size = MediaQuery.of(context).size;
 
     final teams = teamProvider.isLoading
         ? List.filled(
-            7,
+            5,
             TeamModel(
                 id: '',
-                name: 'Loading...',
+                name: 'Team Name Placeholder',
                 creatorId: '',
                 leaderId: '',
                 createdAt: DateTime.now(),
@@ -28,7 +26,7 @@ class Teams extends StatelessWidget {
                 games: [
                   GameModel(
                     id: '',
-                    name: 'Loading...',
+                    name: 'Game',
                   ),
                 ]))
         : teamProvider.teams;
@@ -42,7 +40,7 @@ class Teams extends StatelessWidget {
       child: Skeletonizer(
         enabled: teamProvider.isLoading && teams.isEmpty,
         child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           controller: teamProvider.scrollController,
           itemCount: itemCount,
           itemBuilder: (BuildContext context, int index) {
@@ -64,8 +62,12 @@ class Teams extends StatelessWidget {
               );
             }
 
-            return TeamCard(
-              team: teams[index],
+            return Padding(
+              padding: EdgeInsets.only(
+                  bottom: index < teams.length - 1 ? 20.0 : 0.0),
+              child: TeamCard(
+                team: teams[index],
+              ),
             );
           },
         ),

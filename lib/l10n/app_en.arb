@@ -616,5 +616,12 @@
   "addPlayerProfile": "Add Player Profile",
   "editPlayerProfile": "Edit Player Profile",
   "gameLabel": "Game",
-  "accountType": "Account Type"
+  "accountType": "Account Type",
+  "viewTeamProfile": "View Team Profile",
+  "noGames": "No Games",
+  "yearSingular": "year",
+  "yearPlural": "years",
+  "monthSingular": "month",
+  "monthPlural": "months",
+  "newTeam": "New"
 }

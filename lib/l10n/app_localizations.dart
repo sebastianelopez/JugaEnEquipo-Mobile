@@ -2532,6 +2532,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account Type'**
   String get accountType;
+
+  /// No description provided for @viewTeamProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View Team Profile'**
+  String get viewTeamProfile;
+
+  /// No description provided for @noGames.
+  ///
+  /// In en, this message translates to:
+  /// **'No Games'**
+  String get noGames;
+
+  /// No description provided for @yearSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'year'**
+  String get yearSingular;
+
+  /// No description provided for @yearPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'years'**
+  String get yearPlural;
+
+  /// No description provided for @monthSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get monthSingular;
+
+  /// No description provided for @monthPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get monthPlural;
+
+  /// No description provided for @newTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newTeam;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

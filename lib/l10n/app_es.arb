@@ -616,5 +616,12 @@
   "addPlayerProfile": "Agregar Perfil de Juego",
   "editPlayerProfile": "Editar Perfil de Juego",
   "gameLabel": "Juego",
-  "accountType": "Tipo de Cuenta"
+  "accountType": "Tipo de Cuenta",
+  "viewTeamProfile": "Ver Perfil del Equipo",
+  "noGames": "Sin Juegos",
+  "yearSingular": "año",
+  "yearPlural": "años",
+  "monthSingular": "mes",
+  "monthPlural": "meses",
+  "newTeam": "Nuevo"
 }
