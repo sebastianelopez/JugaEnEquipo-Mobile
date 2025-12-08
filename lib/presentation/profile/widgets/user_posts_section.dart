@@ -74,7 +74,10 @@ class UserPostsSection extends StatelessWidget {
               children: posts.map((post) {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 12.h),
-                  child: PostCard(post: post),
+                  child: PostCard(
+                    post: post,
+                    contextId: 'profile',
+                  ),
                 );
               }).toList(),
             ),

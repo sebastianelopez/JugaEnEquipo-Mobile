@@ -89,7 +89,10 @@ class SharedPost extends StatelessWidget {
                         if (mediaResources != null && mediaResources.isNotEmpty)
                           Container(
                               margin: const EdgeInsets.only(bottom: 8),
-                              child: MediaGrid(resources: mediaResources)),
+                              child: MediaGrid(
+                                  resources: mediaResources,
+                                  heroTagPrefix: post.id,
+                                  contextId: 'shared')),
                       ],
                     ),
                   ],

@@ -5,9 +5,16 @@ import 'package:jugaenequipo/global_widgets/widgets.dart';
 class ImageDetailScreen extends StatelessWidget {
   final List<String> imageUrls;
   final int currentIndex;
+  final String? heroTagPrefix;
+  final String? contextId;
 
-  const ImageDetailScreen(
-      {super.key, required this.imageUrls, required this.currentIndex});
+  const ImageDetailScreen({
+    super.key,
+    required this.imageUrls,
+    required this.currentIndex,
+    this.heroTagPrefix,
+    this.contextId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +24,17 @@ class ImageDetailScreen extends StatelessWidget {
         label: "",
       ),
       body: CarouselSlider(
-        items: imageUrls.map((imageUrl) {
+        items: imageUrls.asMap().entries.map((entry) {
+          final int index = entry.key;
+          final String imageUrl = entry.value;
           final bool isValidUrl =
               imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+          final prefix = heroTagPrefix ?? 'media';
+          final context = contextId ?? 'default';
+          final heroTag = '$context-$prefix-$index-$imageUrl';
           return Builder(
             builder: (context) => Hero(
-              tag: imageUrl,
+              tag: heroTag,
               child: isValidUrl
                   ? Image.network(
                       imageUrl,

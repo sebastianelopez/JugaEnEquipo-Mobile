@@ -19,8 +19,13 @@ enum Menu { delete }
 
 class PostCard extends StatefulWidget {
   final PostModel post;
+  final String? contextId;
 
-  const PostCard({super.key, required this.post});
+  const PostCard({
+    super.key,
+    required this.post,
+    this.contextId,
+  });
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -263,7 +268,9 @@ class _PostCardState extends State<PostCard>
                             Container(
                                 margin: const EdgeInsets.only(bottom: 8),
                                 child: MediaGrid(
-                                    resources: widget.post.resources ?? [])),
+                                    resources: widget.post.resources ?? [],
+                                    heroTagPrefix: widget.post.id,
+                                    contextId: widget.contextId ?? 'home')),
                           if (widget.post.sharedPost != null)
                             Container(
                                 margin: const EdgeInsets.only(bottom: 8),

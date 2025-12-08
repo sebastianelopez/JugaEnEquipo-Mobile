@@ -23,7 +23,7 @@ class AnimatedPostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return PostCard(post: post);
+      return PostCard(post: post, contextId: 'home');
     }
 
     return TweenAnimationBuilder<double>(
@@ -35,7 +35,7 @@ class AnimatedPostCard extends StatelessWidget {
           offset: Offset(0, 30 * (1 - value)),
           child: Opacity(
             opacity: value,
-            child: PostCard(post: post),
+            child: PostCard(post: post, contextId: 'home'),
           ),
         );
       },

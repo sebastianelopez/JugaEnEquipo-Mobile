@@ -6,8 +6,15 @@ import 'package:jugaenequipo/presentation/home/widgets/custom_video_player.dart'
 
 class MediaGrid extends StatelessWidget {
   final List<ResourceModel> resources;
+  final String? heroTagPrefix;
+  final String? contextId;
 
-  const MediaGrid({super.key, required this.resources});
+  const MediaGrid({
+    super.key,
+    required this.resources,
+    this.heroTagPrefix,
+    this.contextId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +92,14 @@ class MediaGrid extends StatelessWidget {
     }
   }
 
+  String _getHeroTag(String url, int index) {
+    final prefix = heroTagPrefix ?? 'media';
+    final context = contextId ?? 'default';
+    // Create a unique tag that includes context to avoid conflicts
+    // when same post appears in different screens
+    return '$context-$prefix-$index-$url';
+  }
+
   Widget _buildSingleMedia(
       BuildContext context, ResourceModel resource, double size) {
     if (_isVideo(resource)) {
@@ -101,7 +116,7 @@ class MediaGrid extends StatelessWidget {
       return GestureDetector(
         onTap: () => _openImageDetail(context, 0),
         child: Hero(
-          tag: resource.url,
+          tag: _getHeroTag(resource.url, 0),
           child: FadeInImage(
             placeholder: const AssetImage('assets/placeholder.png'),
             image: _getImageProvider(resource.url),
@@ -132,7 +147,7 @@ class MediaGrid extends StatelessWidget {
       return GestureDetector(
         onTap: () => _openImageDetail(context, index),
         child: Hero(
-          tag: resource.url,
+          tag: _getHeroTag(resource.url, index),
           child: FadeInImage(
             placeholder: const AssetImage('assets/placeholder.png'),
             image: _getImageProvider(resource.url),
@@ -181,7 +196,7 @@ class MediaGrid extends StatelessWidget {
           Opacity(
             opacity: 0.3,
             child: Hero(
-              tag: resource.url,
+              tag: _getHeroTag(resource.url, index),
               child: mediaWidget,
             ),
           ),
@@ -274,6 +289,8 @@ class MediaGrid extends StatelessWidget {
           builder: (context) => ImageDetailScreen(
             imageUrls: imageUrls,
             currentIndex: imageIndex.clamp(0, imageUrls.length - 1),
+            heroTagPrefix: heroTagPrefix,
+            contextId: contextId,
           ),
         ),
       );
