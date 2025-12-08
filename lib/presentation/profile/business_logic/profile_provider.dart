@@ -16,6 +16,7 @@ import 'package:jugaenequipo/datasources/user_use_cases/get_user_background_imag
 import 'package:jugaenequipo/datasources/user_use_cases/update_user_description_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/add_social_network_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/remove_social_network_use_case.dart';
+import 'package:jugaenequipo/datasources/player_use_cases/get_players_by_user_id_use_case.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/stats_cards.dart';
 
 enum ModalType { followers, followings, prizes }
@@ -45,6 +46,7 @@ class ProfileProvider extends ChangeNotifier {
   List<SocialNetworkModel> socialNetworks = [];
   List<Map<String, dynamic>> achievements = [];
   List<GameStat> stats = [];
+  List<PlayerModel> playerProfiles = [];
 
   ProfileProvider({
     this.userId,
@@ -75,6 +77,7 @@ class ProfileProvider extends ChangeNotifier {
         _loadTeams(),
         _loadSocialNetworks(),
         _loadBackgroundImage(),
+        _loadPlayerProfiles(),
       ]);
 
       // Load description and memberSince from user model
@@ -377,5 +380,24 @@ class ProfileProvider extends ChangeNotifier {
       debugPrint('Error removing social network: $e');
       return false;
     }
+  }
+
+  Future<void> _loadPlayerProfiles() async {
+    if (profileUser == null) return;
+
+    try {
+      final playersResponse = await getPlayersByUserId(profileUser!.id);
+      if (playersResponse != null) {
+        playerProfiles = playersResponse;
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error loading player profiles: $e');
+    }
+  }
+
+  // Refresh player profiles only
+  Future<void> refreshPlayerProfiles() async {
+    await _loadPlayerProfiles();
   }
 }

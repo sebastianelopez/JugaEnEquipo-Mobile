@@ -10,6 +10,8 @@ export 'package:jugaenequipo/presentation/profile/widgets/user_teams_section.dar
 export 'package:jugaenequipo/presentation/profile/widgets/social_media_section.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/achievements_section.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/user_posts_section.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/player_profiles_section.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/add_edit_player_profile_dialog.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/edit_team_dialog.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/edit_team_profile_dialog.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/manage_team_games_dialog.dart';

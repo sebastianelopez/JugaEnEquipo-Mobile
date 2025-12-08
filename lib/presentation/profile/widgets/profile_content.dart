@@ -465,10 +465,22 @@ class _ProfileContentState extends State<ProfileContent>
   }
 
   Widget _buildInfoTab(ProfileProvider provider) {
+    final loggedUser = Provider.of<UserProvider>(context, listen: false).user;
+    final profileUser = provider.profileUser;
+    final isOwnProfile = loggedUser?.id == profileUser?.id;
+
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       child: Column(
         children: [
+          // Player Profiles Section
+          PlayerProfilesSection(
+            playerProfiles: provider.playerProfiles,
+            isOwnProfile: isOwnProfile,
+            onProfileChanged: () {
+              provider.refreshPlayerProfiles();
+            },
+          ),
           // Stats Cards
           if (provider.stats.isNotEmpty) StatsCards(stats: provider.stats),
           // Teams Section

@@ -28,6 +28,7 @@ class SocialMediaSection extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           Wrap(
+            alignment: WrapAlignment.start,
             spacing: 12.w,
             runSpacing: 12.h,
             children: socialLinks.entries.map((entry) {
@@ -60,7 +61,7 @@ class SocialMediaSection extends StatelessWidget {
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: color.withOpacity( 0.3),
+            color: color.withOpacity(0.3),
             width: 1,
           ),
         ),
