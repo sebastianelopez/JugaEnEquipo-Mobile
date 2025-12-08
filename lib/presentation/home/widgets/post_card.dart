@@ -398,7 +398,7 @@ class _PostCardState extends State<PostCard>
                                         context,
                                         postId: widget.post.id,
                                         onCommentAdded: () {
-                                          provider.getCommentsQuantity(
+                                          provider.refreshCommentsQuantity(
                                               widget.post.id);
                                         },
                                       );
@@ -523,7 +523,7 @@ class _PostCardState extends State<PostCard>
                                         autofocus: true,
                                         postId: widget.post.id,
                                         onCommentAdded: () {
-                                          homeProvider.getCommentsQuantity(
+                                          homeProvider.refreshCommentsQuantity(
                                               widget.post.id);
                                         },
                                       );

@@ -24,6 +24,9 @@ class HomeScreenProvider extends ChangeNotifier {
   // Comments count management (shared across all posts)
   final Map<String, int> _commentsCountMap = {};
 
+  // Track which posts have already fetched their comment count
+  final Set<String> _fetchedCommentCounts = {};
+
   @override
   void dispose() {
     _mounted = false;
@@ -89,6 +92,9 @@ class HomeScreenProvider extends ChangeNotifier {
       _currentOffset = 0;
       _hasMorePosts = true;
       posts.clear();
+      // Clear comment count cache on refresh
+      _fetchedCommentCounts.clear();
+      _commentsCountMap.clear();
     }
 
     isLoading = true;
@@ -241,20 +247,36 @@ class HomeScreenProvider extends ChangeNotifier {
 
   Future<void> getCommentsQuantity(String postId) async {
     try {
-      if (postId.isNotEmpty) {
-        final fetchedComments = await getPostComments(postId);
-        _commentsCountMap[postId] = fetchedComments?.length ?? 0;
-        notifyListeners();
+      if (postId.isEmpty) return;
+
+      // Skip if we've already fetched comments for this post
+      if (_fetchedCommentCounts.contains(postId)) {
+        return;
       }
+
+      // Mark as fetched to prevent duplicate requests
+      _fetchedCommentCounts.add(postId);
+
+      final fetchedComments = await getPostComments(postId);
+      _commentsCountMap[postId] = fetchedComments?.length ?? 0;
+      notifyListeners();
     } catch (e) {
       if (kDebugMode) {
         debugPrint('Error fetching comment quantity: $e');
       }
+      // Remove from fetched set on error to allow retry
+      _fetchedCommentCounts.remove(postId);
     }
   }
 
   int getCommentsCountForPost(String postId) {
     return _commentsCountMap[postId] ?? 0;
+  }
+
+  // Force refresh comment count (used after adding a comment)
+  Future<void> refreshCommentsQuantity(String postId) async {
+    _fetchedCommentCounts.remove(postId);
+    await getCommentsQuantity(postId);
   }
 
   Future<dynamic> openCommentsModal(BuildContext context,

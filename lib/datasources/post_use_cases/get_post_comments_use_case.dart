@@ -8,10 +8,6 @@ Future<List<CommentModel>?> getPostComments(String postId) async {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
 
-    if (kDebugMode) {
-      debugPrint('getPostComments - Fetching comments for postId: $postId');
-    }
-
     final response = await APIService.instance.request(
       '/api/post/$postId/comments',
       DioMethod.get,
@@ -23,13 +19,6 @@ Future<List<CommentModel>?> getPostComments(String postId) async {
         'Authorization': 'Bearer $accessToken',
       },
     );
-
-    if (kDebugMode) {
-      debugPrint('getPostComments - Response status: ${response.statusCode}');
-      debugPrint(
-          'getPostComments - Response data type: ${response.data.runtimeType}');
-      debugPrint('getPostComments - Full response: ${response.data}');
-    }
 
     // Handle the response
     if (response.statusCode == 200) {
@@ -43,33 +32,16 @@ Future<List<CommentModel>?> getPostComments(String postId) async {
 
       final data = response.data['data'];
 
-      if (kDebugMode) {
-        debugPrint('getPostComments - Data type: ${data.runtimeType}');
-        debugPrint('getPostComments - Data content: $data');
-      }
-
-      // Debug: Check if data is a list
+      // Check if data is a list
       if (data is List) {
-        if (kDebugMode) {
-          debugPrint('getPostComments - Found ${data.length} comments');
-        }
-
         final comments = data.map((comment) {
-          if (kDebugMode) {
-            debugPrint('getPostComments - Parsing comment: $comment');
-          }
           return CommentModel.fromJson(comment);
         }).toList();
-
-        if (kDebugMode) {
-          debugPrint(
-              'getPostComments - Successfully parsed ${comments.length} comments');
-        }
         return comments;
       } else {
         if (kDebugMode) {
           debugPrint(
-              'getPostComments - Data is not a list, returning empty list');
+              'getPostComments - Unexpected data format, expected List but got ${data.runtimeType}');
         }
         return [];
       }
