@@ -11,6 +11,7 @@ import 'package:jugaenequipo/presentation/splash/screens/splash_screen.dart';
 import 'package:jugaenequipo/presentation/tabs/screens/tabs_screen.dart';
 import 'package:jugaenequipo/presentation/reset_password/screens/reset_password_screen.dart';
 import 'package:jugaenequipo/presentation/reset_password/business_logic/reset_password_provider.dart';
+import 'package:jugaenequipo/presentation/home/screens/post_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class AppRoutes {
@@ -130,6 +131,18 @@ class AppRoutes {
       return MaterialPageRoute(builder: (context) => const ProfileScreen());
     } else if (settings.name == 'my-profile') {
       return MaterialPageRoute(builder: (context) => const ProfileScreen());
+    } else if (settings.name == 'post-detail') {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final postId = args?['postId'] as String?;
+      if (postId != null && postId.isNotEmpty) {
+        return MaterialPageRoute(
+          builder: (context) => PostDetailScreen(postId: postId),
+        );
+      }
+      // If no postId, redirect to home
+      return MaterialPageRoute(
+        builder: (context) => const TabsScreen(),
+      );
     } else if (settings.name == 'reset-password') {
       final args = settings.arguments as Map<String, dynamic>?;
       final token = args?['token'] as String?;

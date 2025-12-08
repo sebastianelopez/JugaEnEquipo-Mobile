@@ -117,6 +117,42 @@
       }
     }
   },
+  "notificationTournamentRequestReceived": "<b>{name}</b> sent a tournament registration request.",
+  "@notificationTournamentRequestReceived": {
+    "description": "Notification about a tournament registration request",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationUserMentioned": "<b>{name}</b> mentioned you in a post.",
+  "@notificationUserMentioned": {
+    "description": "Notification about being mentioned in a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationTeamRequestReceived": "<b>{name}</b> sent a team join request.",
+  "@notificationTeamRequestReceived": {
+    "description": "Notification about a team join request",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostModerated": "Your post has been moderated by <b>{name}</b>.",
+  "@notificationPostModerated": {
+    "description": "Notification about a post being moderated",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "errorTitle": "Error",
   "errorMessage": "An error has occurred. Please try again.",
   "okButton": "OK",

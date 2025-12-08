@@ -487,6 +487,30 @@ abstract class AppLocalizations {
   /// **'<b>{team}</b> has accepted your application for the {role} position in Overwatch. You are now a member of the professional team.'**
   String notificationApplicationAccepted(String role, String team);
 
+  /// Notification about a tournament registration request
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> sent a tournament registration request.'**
+  String notificationTournamentRequestReceived(String name);
+
+  /// Notification about being mentioned in a post
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> mentioned you in a post.'**
+  String notificationUserMentioned(String name);
+
+  /// Notification about a team join request
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> sent a team join request.'**
+  String notificationTeamRequestReceived(String name);
+
+  /// Notification about a post being moderated
+  ///
+  /// In en, this message translates to:
+  /// **'Your post has been moderated by <b>{name}</b>.'**
+  String notificationPostModerated(String name);
+
   /// No description provided for @errorTitle.
   ///
   /// In en, this message translates to:

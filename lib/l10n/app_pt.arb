@@ -117,6 +117,42 @@
       }
     }
   },
+  "notificationTournamentRequestReceived": "<b>{name}</b> enviou uma solicitação de inscrição no torneio.",
+  "@notificationTournamentRequestReceived": {
+    "description": "Notification about a tournament registration request",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationUserMentioned": "<b>{name}</b> mencionou você em uma publicação.",
+  "@notificationUserMentioned": {
+    "description": "Notification about being mentioned in a post",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationTeamRequestReceived": "<b>{name}</b> enviou uma solicitação para entrar na equipe.",
+  "@notificationTeamRequestReceived": {
+    "description": "Notification about a team join request",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationPostModerated": "Sua publicação foi moderada por <b>{name}</b>.",
+  "@notificationPostModerated": {
+    "description": "Notification about a post being moderated",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "errorTitle": "Erro",
   "errorMessage": "Ocorreu um erro. Por favor, tente novamente.",
   "okButton": "OK",

@@ -214,6 +214,26 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String notificationTournamentRequestReceived(String name) {
+    return '<b>$name</b> enviou uma solicitação de inscrição no torneio.';
+  }
+
+  @override
+  String notificationUserMentioned(String name) {
+    return '<b>$name</b> mencionou você em uma publicação.';
+  }
+
+  @override
+  String notificationTeamRequestReceived(String name) {
+    return '<b>$name</b> enviou uma solicitação para entrar na equipe.';
+  }
+
+  @override
+  String notificationPostModerated(String name) {
+    return 'Sua publicação foi moderada por <b>$name</b>.';
+  }
+
+  @override
   String get errorTitle => 'Erro';
 
   @override

@@ -68,10 +68,8 @@ class NotificationsList extends StatelessWidget {
                   return false; // keep item, only mark read
                 },
                 child: NotificationsListItem(
-                  user: n.user,
+                  notification: n,
                   notificationContent: _formatNotificationContent(n, context),
-                  date: n.date,
-                  isNotificationRead: n.isNotificationRead,
                 ),
               );
             },
@@ -175,6 +173,15 @@ class NotificationsList extends StatelessWidget {
         return l10n.notificationInviteToTeam(notification.username, 'team');
       case 'application_accepted':
         return l10n.notificationApplicationAccepted('role', 'team');
+      case 'tournament_request_received':
+        return l10n
+            .notificationTournamentRequestReceived(notification.username);
+      case 'user_mentioned':
+        return l10n.notificationUserMentioned(notification.username);
+      case 'team_request_received':
+        return l10n.notificationTeamRequestReceived(notification.username);
+      case 'post_moderated':
+        return l10n.notificationPostModerated(notification.username);
       default:
         return 'New notification from <b>${notification.username}</b>.';
     }

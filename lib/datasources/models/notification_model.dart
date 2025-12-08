@@ -6,6 +6,8 @@ class NotificationModel {
   final String userId;
   final String username;
   final String? postId;
+  final String? tournamentId;
+  final String? teamId;
   final String? message;
   final String date;
   final bool isNotificationRead;
@@ -16,6 +18,8 @@ class NotificationModel {
     required this.userId,
     required this.username,
     this.postId,
+    this.tournamentId,
+    this.teamId,
     this.message,
     required this.date,
     this.isNotificationRead = false,
@@ -46,6 +50,8 @@ class NotificationModel {
       userId: json['userId'] as String? ?? '',
       username: json['username'] as String? ?? '',
       postId: json['postId'] as String?,
+      tournamentId: json['tournamentId'] as String?,
+      teamId: json['teamId'] as String?,
       message: json['message'] as String?,
       date: json['date'] as String? ?? '',
       isNotificationRead: json['read'] as bool? ??
@@ -61,6 +67,8 @@ class NotificationModel {
     String? userId,
     String? username,
     String? postId,
+    String? tournamentId,
+    String? teamId,
     String? message,
     String? date,
     bool? isNotificationRead,
@@ -71,6 +79,8 @@ class NotificationModel {
       userId: userId ?? this.userId,
       username: username ?? this.username,
       postId: postId ?? this.postId,
+      tournamentId: tournamentId ?? this.tournamentId,
+      teamId: teamId ?? this.teamId,
       message: message ?? this.message,
       date: date ?? this.date,
       isNotificationRead: isNotificationRead ?? this.isNotificationRead,
@@ -84,6 +94,8 @@ class NotificationModel {
       'userId': userId,
       'username': username,
       'postId': postId,
+      'tournamentId': tournamentId,
+      'teamId': teamId,
       'message': message,
       'date': date,
       'isNotificationRead': isNotificationRead,
