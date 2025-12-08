@@ -16,7 +16,7 @@ class TournamentsProvider extends ChangeNotifier {
   bool hasMoreData = true;
   String? error;
   List<TournamentModel> tournaments = [];
-  
+
   static const int _pageSize = 10;
   int _currentOffset = 0;
 
@@ -39,13 +39,14 @@ class TournamentsProvider extends ChangeNotifier {
     } else {
       isLoadingMore = true;
     }
-    
+
     error = null;
     notifyListeners();
 
     try {
       if (kDebugMode) {
-        debugPrint('TournamentsProvider: Starting to fetch tournaments... (offset: $_currentOffset, limit: $_pageSize)');
+        debugPrint(
+            'TournamentsProvider: Starting to fetch tournaments... (offset: $_currentOffset, limit: $_pageSize)');
       }
 
       final tournamentsResult = await searchTournaments(
@@ -64,14 +65,14 @@ class TournamentsProvider extends ChangeNotifier {
         } else {
           tournaments.addAll(tournamentsResult);
         }
-        
+
         // Si recibimos menos torneos que el límite, no hay más datos
         if (tournamentsResult.length < _pageSize) {
           hasMoreData = false;
         } else {
           _currentOffset += tournamentsResult.length;
         }
-        
+
         error = null;
 
         if (kDebugMode) {

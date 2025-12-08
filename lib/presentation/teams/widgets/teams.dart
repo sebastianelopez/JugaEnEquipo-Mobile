@@ -56,13 +56,14 @@ class Teams extends StatelessWidget {
                     height: 30,
                     child: CircularProgressIndicator(
                       strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(AppTheme.primary),
                     ),
                   ),
                 ),
               );
             }
-            
+
             return TeamCard(
               team: teams[index],
             );
