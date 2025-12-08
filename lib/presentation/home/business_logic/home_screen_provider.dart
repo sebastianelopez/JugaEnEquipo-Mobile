@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/delete_post_use_case.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/get_feed_by_user_use_case.dart';
+import 'package:jugaenequipo/datasources/post_use_cases/get_post_comments_use_case.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,9 @@ class HomeScreenProvider extends ChangeNotifier {
   bool _hasMorePosts = true;
   bool _isLoadingMore = false;
   bool _mounted = true;
+
+  // Comments count management (shared across all posts)
+  final Map<String, int> _commentsCountMap = {};
 
   @override
   void dispose() {
@@ -233,6 +237,24 @@ class HomeScreenProvider extends ChangeNotifier {
         }
         break;
     }
+  }
+
+  Future<void> getCommentsQuantity(String postId) async {
+    try {
+      if (postId.isNotEmpty) {
+        final fetchedComments = await getPostComments(postId);
+        _commentsCountMap[postId] = fetchedComments?.length ?? 0;
+        notifyListeners();
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Error fetching comment quantity: $e');
+      }
+    }
+  }
+
+  int getCommentsCountForPost(String postId) {
+    return _commentsCountMap[postId] ?? 0;
   }
 
   Future<dynamic> openCommentsModal(BuildContext context,
