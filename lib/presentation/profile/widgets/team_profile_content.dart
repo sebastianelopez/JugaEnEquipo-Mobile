@@ -671,7 +671,7 @@ class TeamProfileContent extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: ProfileElevatedButton(
-          label: 'Leave Team',
+          label: AppLocalizations.of(context)!.leaveTeam,
           onPressed: () => _showLeaveTeamDialog(context, provider),
         ),
       );
@@ -747,15 +747,16 @@ class TeamProfileContent extends StatelessWidget {
 
   void _showLeaveTeamDialog(
       BuildContext context, TeamProfileProvider provider) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Leave Team'),
-        content: const Text('Are you sure you want to leave this team?'),
+        title: Text(l10n.leaveTeam),
+        content: Text(l10n.leaveTeamConfirmation),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -765,17 +766,17 @@ class TeamProfileContent extends StatelessWidget {
                 if (success) {
                   Navigator.of(context).pop(); // Go back to previous screen
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Left team successfully')),
+                    SnackBar(content: Text(l10n.leftTeamSuccessfully)),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Error leaving team')),
+                    SnackBar(content: Text(l10n.errorLeavingTeam)),
                   );
                 }
               }
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Leave'),
+            child: Text(l10n.leave),
           ),
         ],
       ),

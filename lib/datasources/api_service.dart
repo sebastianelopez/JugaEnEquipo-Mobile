@@ -49,8 +49,8 @@ class APIService {
     try {
       debugPrint('Starting request to: $baseUrl$endpoint');
 
-      final connectivity = await Connectivity().checkConnectivity();
-      if (connectivity == ConnectivityResult.none) {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult.contains(ConnectivityResult.none)) {
         throw DioException(
           requestOptions: RequestOptions(path: endpoint),
           error: 'No internet connection',

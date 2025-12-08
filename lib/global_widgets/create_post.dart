@@ -320,6 +320,7 @@ class _CreatePostState extends State<CreatePost> {
                           : await createPost(postText, mediaFiles, postId);
                       if (result == Result.success) {
                         // Add optimistic post to the feed
+                        if (!context.mounted) return;
                         final userProvider =
                             Provider.of<UserProvider>(context, listen: false);
                         final currentUser = userProvider.user;

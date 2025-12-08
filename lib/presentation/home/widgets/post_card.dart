@@ -235,13 +235,6 @@ class _PostCardState extends State<PostCard>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // TODO: getTeamById()
-                              /*  
-                              if (post.user.teamId != null)
-                              Text(
-                                post.user.team!.name,
-                                style: const TextStyle(fontSize: 13),
-                              ), */
                               Text(
                                   formatTimeElapsed(
                                       DateTime.parse(widget.post.createdAt),

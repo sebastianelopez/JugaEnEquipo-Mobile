@@ -149,9 +149,7 @@ class TeamProfileProvider extends ChangeNotifier {
       // If we already have team data, use it; otherwise fetch from API
       TeamModel? teamData = team;
 
-      if (teamData == null) {
-        teamData = await getTeamById(teamId);
-      }
+      teamData ??= await getTeamById(teamId);
 
       if (teamData == null) {
         error = 'No se pudo cargar el equipo';

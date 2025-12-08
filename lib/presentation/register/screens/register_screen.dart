@@ -425,6 +425,7 @@ class _RegisterFormState extends State<_RegisterForm>
                               Navigator.pushReplacementNamed(context, 'home');
                             }
                           } catch (e) {
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
-import 'package:jugaenequipo/datasources/models/tournament_request_model.dart';
 import 'package:jugaenequipo/datasources/tournaments_use_cases/delete_tournament_use_case.dart'
     as delete_use_case;
 import 'package:jugaenequipo/datasources/teams_use_cases/search_teams_use_case.dart';
@@ -630,6 +629,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
     final l10n = AppLocalizations.of(context)!;
     final isCreator =
         currentUser != null && widget.tournament.creatorId == currentUser.id;
+    final isResponsible = currentUser != null &&
+        widget.tournament.responsibleId == currentUser.id;
     final userRole =
         TournamentRoleHelper.getUserRole(widget.tournament, currentUser);
 
@@ -740,7 +741,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
               ),
             ],
           ),
-          if (isCreator || userRole == 'Organizador') ...[
+          if (isCreator || isResponsible) ...[
             SizedBox(height: 12.h),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -764,8 +765,10 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
                   Text(
                     isCreator
                         ? l10n.tournamentYouAreCreator
-                        : l10n.tournamentYouAreRole(
-                            userRole.toString().split('.').last),
+                        : isResponsible
+                            ? l10n.tournamentYouAreRole('responsable')
+                            : l10n.tournamentYouAreRole(
+                                userRole.toString().split('.').last),
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600,

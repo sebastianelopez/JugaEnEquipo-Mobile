@@ -55,6 +55,7 @@ class _TournamentRegistrationButtonState
       });
     }
 
+    if (!mounted) return;
     final currentUser = Provider.of<UserProvider>(context, listen: false).user;
     if (currentUser == null) {
       debugPrint('_checkPendingRequests: No current user');
@@ -172,7 +173,7 @@ class _TournamentRegistrationButtonState
                   )
                 : Text(
                     _hasPendingRequest
-                        ? 'Esperando Aprobación'
+                        ? l10n.waitingForApproval
                         : (isRegistered
                             ? l10n.tournamentAlreadyRegisteredLabel
                             : l10n.tournamentRegisterButtonLabel),
@@ -240,14 +241,14 @@ class _TournamentRegistrationButtonState
     }
 
     if (userTeams == null || userTeams.isEmpty) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Debes estar en un equipo para registrarte'),
-            backgroundColor: AppTheme.error,
-          ),
-        );
-      }
+      if (!context.mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.mustBeInTeamToRegister),
+          backgroundColor: AppTheme.error,
+        ),
+      );
       return;
     }
 
@@ -289,6 +290,7 @@ class _TournamentRegistrationButtonState
     debugPrint('Number of eligible teams: ${eligibleTeams.length}');
     if (eligibleTeams.length > 1) {
       debugPrint('Showing team selection dialog');
+      if (!context.mounted) return;
       selectedTeamId = await _showTeamSelectionDialog(
         context,
         eligibleTeams,
@@ -365,14 +367,14 @@ class _TournamentRegistrationButtonState
 
     if (userTeamsInTournament == null || userTeamsInTournament.isEmpty) {
       debugPrint('No teams found for user in this tournament');
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('No tienes equipos en este torneo'),
-            backgroundColor: AppTheme.error,
-          ),
-        );
-      }
+      if (!context.mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.noTeamsInTournament),
+          backgroundColor: AppTheme.error,
+        ),
+      );
       return;
     }
 
@@ -381,6 +383,7 @@ class _TournamentRegistrationButtonState
     // If user has multiple teams, let them choose which one to remove
     String? selectedTeamId;
     if (userTeamsInTournament.length > 1) {
+      if (!context.mounted) return;
       selectedTeamId = await _showTeamSelectionDialog(
         context,
         userTeamsInTournament,
@@ -395,22 +398,24 @@ class _TournamentRegistrationButtonState
 
     debugPrint('Selected team ID: $selectedTeamId');
 
+    if (!context.mounted) return;
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Abandonar Torneo'),
+        title: Text(l10n.leaveTournament),
         content: Text(userTeamsInTournament.length > 1
             ? '¿Estás seguro de que quieres sacar a "${userTeamsInTournament.firstWhere((t) => t.id == selectedTeamId).name}" de este torneo?'
-            : '¿Estás seguro de que quieres abandonar este torneo?'),
+            : l10n.leaveTournamentConfirmation),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.tournamentFormDeleteCancel),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: AppTheme.error),
-            child: const Text('Abandonar'),
+            child: Text(l10n.leave),
           ),
         ],
       ),
@@ -485,10 +490,12 @@ class _TournamentRegistrationButtonState
     BuildContext context,
     List<TeamModel> teams,
   ) async {
+    if (!context.mounted) return null;
+    final l10n = AppLocalizations.of(context)!;
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Selecciona el equipo'),
+        title: Text(l10n.selectTeam),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: teams.map((team) {
@@ -508,7 +515,7 @@ class _TournamentRegistrationButtonState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
         ],
       ),

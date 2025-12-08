@@ -4,6 +4,7 @@ import 'package:jugaenequipo/datasources/user_use_cases/update_password_use_case
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/utils/utils.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -34,9 +35,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Future<void> _changePassword() async {
     if (!_formKey.currentState!.validate()) return;
 
+    final l10n = AppLocalizations.of(context)!;
     if (_newPasswordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('New passwords do not match')),
+        SnackBar(content: Text(l10n.passwordsDoNotMatch)),
       );
       return;
     }
@@ -60,24 +62,24 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         _confirmPasswordController.text,
       );
 
-      if (mounted) {
-        if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password changed successfully')),
-          );
-          Navigator.pop(context);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to change password. Please check your old password.')),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(l10n.passwordChangedSuccessfully)),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.failedToChangePassword)),
         );
       }
+    } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${l10n.errorMessage}: $e')),
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -89,10 +91,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppTheme.primary,
-      appBar: const BackAppBar(
-        label: 'Change Password',
+      appBar: BackAppBar(
+        label: l10n.changePasswordTitle,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -108,7 +111,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       controller: _oldPasswordController,
                       obscureText: _obscureOldPassword,
                       decoration: InputDecoration(
-                        labelText: 'Current Password',
+                        labelText: l10n.currentPassword,
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -125,7 +128,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your current password';
+                          return l10n.pleaseEnterCurrentPassword;
                         }
                         return null;
                       },
@@ -135,7 +138,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       controller: _newPasswordController,
                       obscureText: _obscureNewPassword,
                       decoration: InputDecoration(
-                        labelText: 'New Password',
+                        labelText: l10n.newPassword,
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -152,10 +155,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a new password';
+                          return l10n.pleaseEnterNewPassword;
                         }
                         if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
+                          return l10n.passwordMinLength;
                         }
                         return null;
                       },
@@ -165,7 +168,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       controller: _confirmPasswordController,
                       obscureText: _obscureConfirmPassword,
                       decoration: InputDecoration(
-                        labelText: 'Confirm New Password',
+                        labelText: l10n.confirmNewPassword,
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -175,17 +178,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword;
                             });
                           },
                         ),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please confirm your new password';
+                          return l10n.pleaseConfirmNewPassword;
                         }
                         if (value != _newPasswordController.text) {
-                          return 'Passwords do not match';
+                          return l10n.passwordsDoNotMatchValidation;
                         }
                         return null;
                       },
@@ -198,7 +202,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                       ),
-                      child: const Text('Change Password'),
+                      child: Text(l10n.changePasswordTitle),
                     ),
                   ],
                 ),
@@ -207,4 +211,3 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 }
-

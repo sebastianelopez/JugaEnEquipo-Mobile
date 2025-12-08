@@ -475,5 +475,142 @@
   "noConversations": "No hay conversaciones",
   "errorLoadingConversations": "Error al cargar las conversaciones",
   "chatLabel": "Chat",
-  "onlineLabel": "En línea"
+  "onlineLabel": "En línea",
+  "editProfileTitle": "Editar Perfil",
+  "errorLoadingSocialNetworks": "Error al cargar redes sociales: {error}",
+  "@errorLoadingSocialNetworks": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPickingImage": "Error al seleccionar imagen: {error}",
+  "@errorPickingImage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "backgroundImageUpdatedSuccessfully": "Imagen de fondo actualizada exitosamente",
+  "failedToUpdateBackgroundImage": "Error al actualizar la imagen de fondo",
+  "descriptionUpdatedSuccessfully": "Descripción actualizada exitosamente",
+  "failedToUpdateDescription": "Error al actualizar la descripción",
+  "addSocialNetwork": "Agregar {networkName}",
+  "@addSocialNetwork": {
+    "placeholders": {
+      "networkName": {
+        "type": "String"
+      }
+    }
+  },
+  "usernameLabel": "Nombre de usuario",
+  "enterSocialNetworkUsername": "Ingresa tu nombre de usuario de {networkName}",
+  "@enterSocialNetworkUsername": {
+    "placeholders": {
+      "networkName": {
+        "type": "String"
+      }
+    }
+  },
+  "addButton": "Agregar",
+  "socialNetworkAddedSuccessfully": "{networkName} agregado exitosamente",
+  "@socialNetworkAddedSuccessfully": {
+    "placeholders": {
+      "networkName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToAddSocialNetwork": "Error al agregar {networkName}",
+  "@failedToAddSocialNetwork": {
+    "placeholders": {
+      "networkName": {
+        "type": "String"
+      }
+    }
+  },
+  "removeNetwork": "Eliminar Red",
+  "areYouSureRemoveNetwork": "¿Estás seguro de que quieres eliminar {networkName}?",
+  "@areYouSureRemoveNetwork": {
+    "placeholders": {
+      "networkName": {
+        "type": "String"
+      }
+    }
+  },
+  "socialNetworkRemoved": "{networkName} eliminado",
+  "@socialNetworkRemoved": {
+    "placeholders": {
+      "networkName": {
+        "type": "String"
+      }
+    }
+  },
+  "backgroundImageLabel": "Imagen de Fondo",
+  "changeBackgroundImage": "Cambiar Imagen de Fondo",
+  "descriptionLabel": "Descripción",
+  "tellUsAboutYourself": "Cuéntanos sobre ti...",
+  "saveDescription": "Guardar Descripción",
+  "socialNetworksLabel": "Redes Sociales",
+  "yourNetworks": "Tus Redes:",
+  "addNetwork": "Agregar Red:",
+  "mustBeInTeamToRegister": "Debes estar en un equipo para registrarte",
+  "noTeamsInTournament": "No tienes equipos en este torneo",
+  "leaveTournament": "Abandonar Torneo",
+  "leaveTournamentConfirmation": "¿Estás seguro de que quieres abandonar este torneo?",
+  "selectTeam": "Selecciona el equipo",
+  "waitingForApproval": "Esperando Aprobación",
+  "changePasswordTitle": "Cambiar Contraseña",
+  "currentPassword": "Contraseña Actual",
+  "newPassword": "Nueva Contraseña",
+  "confirmNewPassword": "Confirmar Nueva Contraseña",
+  "passwordsDoNotMatch": "Las contraseñas nuevas no coinciden",
+  "passwordChangedSuccessfully": "Contraseña cambiada exitosamente",
+  "failedToChangePassword": "Error al cambiar la contraseña. Por favor verifica tu contraseña actual.",
+  "pleaseEnterCurrentPassword": "Por favor ingresa tu contraseña actual",
+  "pleaseEnterNewPassword": "Por favor ingresa una nueva contraseña",
+  "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+  "pleaseConfirmNewPassword": "Por favor confirma tu nueva contraseña",
+  "passwordsDoNotMatchValidation": "Las contraseñas no coinciden",
+  "dangerZone": "Zona de Peligro",
+  "deleteAccount": "Eliminar Cuenta",
+  "deleteAccountConfirmation": "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
+  "accountDeletedSuccessfully": "Cuenta eliminada exitosamente",
+  "failedToDeleteAccount": "Error al eliminar la cuenta",
+  "deletePlayerProfile": "Eliminar Perfil de Juego",
+  "deletePlayerProfileConfirmation": "¿Estás seguro de que deseas eliminar tu perfil de {gameName}?",
+  "@deletePlayerProfileConfirmation": {
+    "placeholders": {
+      "gameName": {
+        "type": "String"
+      }
+    }
+  },
+  "playerProfileDeletedSuccessfully": "Perfil de juego eliminado exitosamente",
+  "errorDeletingPlayerProfile": "Error al eliminar el perfil de juego",
+  "pleaseSelectGame": "Por favor selecciona un juego",
+  "playerProfileAddedSuccessfully": "Perfil de juego agregado exitosamente",
+  "playerProfileUpdatedSuccessfully": "Perfil de juego actualizado exitosamente",
+  "errorSavingPlayerProfile": "Error al guardar el perfil de juego",
+  "steamId": "Steam ID",
+  "riotUsername": "Nombre de Usuario (RIOT)",
+  "riotTag": "Tag (RIOT)",
+  "riotRegion": "Región",
+  "steam": "Steam",
+  "riot": "RIOT",
+  "selectGame": "Selecciona un juego",
+  "leaveTeam": "Abandonar Equipo",
+  "leaveTeamConfirmation": "¿Estás seguro de que quieres abandonar este equipo?",
+  "leftTeamSuccessfully": "Has abandonado el equipo exitosamente",
+  "errorLeavingTeam": "Error al abandonar el equipo",
+  "removeMember": "Eliminar Miembro",
+  "errorRemovingMember": "Error al eliminar el miembro",
+  "teamUpdatedSuccessfully": "Equipo actualizado exitosamente",
+  "errorUpdatingTeam": "Error al actualizar el equipo",
+  "requestAccepted": "Solicitud aceptada",
+  "errorAcceptingRequest": "Error al aceptar la solicitud",
+  "requestDeclined": "Solicitud rechazada",
+  "errorDecliningRequest": "Error al rechazar la solicitud"
 }

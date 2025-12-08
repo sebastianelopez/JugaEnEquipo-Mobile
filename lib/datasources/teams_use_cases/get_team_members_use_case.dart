@@ -84,7 +84,7 @@ Future<List<UserModel>?> getTeamMembers(String teamId) async {
       try {
         final members = <UserModel>[];
         
-        for (var memberData in membersData as List<dynamic>) {
+        for (var memberData in membersData) {
           try {
             if (kDebugMode) {
               debugPrint('getTeamMembers: Parsing member: $memberData');

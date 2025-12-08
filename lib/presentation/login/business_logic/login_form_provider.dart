@@ -5,6 +5,7 @@ import 'package:jugaenequipo/datasources/user_use_cases/get_user_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/login_use_case.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/utils/utils.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class LoginFormProvider extends ChangeNotifier {
@@ -69,18 +70,19 @@ class LoginFormProvider extends ChangeNotifier {
       case Result.unauthorized:
         isLoading = false;
         if (!context.mounted) return;
+        final l10n = AppLocalizations.of(context)!;
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Error'),
-              content: const Text('El mail o la contraseña no son correctas'),
+              title: Text(l10n.errorTitle),
+              content: Text(l10n.incorrectCredentials),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Aceptar'),
+                  child: Text(l10n.acceptButton),
                 ),
               ],
             );
@@ -90,19 +92,19 @@ class LoginFormProvider extends ChangeNotifier {
       case Result.error:
         isLoading = false;
         if (!context.mounted) return;
+        final l10n = AppLocalizations.of(context)!;
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Error'),
-              content: const Text(
-                  'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.'),
+              title: Text(l10n.errorTitle),
+              content: Text(l10n.unexpectedError),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Aceptar'),
+                  child: Text(l10n.acceptButton),
                 ),
               ],
             );

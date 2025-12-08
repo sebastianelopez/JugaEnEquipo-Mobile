@@ -7,6 +7,7 @@ import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/providers/theme_provider.dart';
 import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -14,10 +15,11 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-        appBar: const BackAppBar(
+        appBar: BackAppBar(
           backgroundColor: AppTheme.primary,
-          label: 'Settings',
+          label: l10n.settingsLabel,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -32,8 +34,8 @@ class SettingsScreen extends StatelessWidget {
                         value: Preferences.isDarkmode,
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
-                        title: const Text('Darkmode',
-                            style: TextStyle(fontSize: 16)),
+                        title: Text(l10n.darkmodeLabel,
+                            style: const TextStyle(fontSize: 16)),
                         onChanged: (value) {
                           Preferences.isDarkmode = value;
 
@@ -44,13 +46,14 @@ class SettingsScreen extends StatelessWidget {
                   },
                 ),
                 const Divider(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Language', style: TextStyle(fontSize: 16)),
-                      LanguageDropdown(showLabel: true),
+                      Text(l10n.languageLabel,
+                          style: const TextStyle(fontSize: 16)),
+                      const LanguageDropdown(showLabel: true),
                     ],
                   ),
                 ),
@@ -58,7 +61,7 @@ class SettingsScreen extends StatelessWidget {
                 // Account Section
                 ListTile(
                   leading: const Icon(Icons.lock),
-                  title: const Text('Change Password'),
+                  title: Text(l10n.changePasswordTitle),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -71,9 +74,10 @@ class SettingsScreen extends StatelessWidget {
                 const Divider(),
                 // Danger Zone
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   child: Text(
-                    'Danger Zone',
+                    l10n.dangerZone,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
@@ -83,30 +87,33 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.delete_forever, color: Colors.red),
-                  title: const Text('Delete Account', style: TextStyle(color: Colors.red)),
+                  title: Text(l10n.deleteAccount,
+                      style: const TextStyle(color: Colors.red)),
                   onTap: () async {
                     final confirm = await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('Delete Account'),
-                        content: const Text(
-                          'Are you sure you want to delete your account? This action cannot be undone.',
+                        title: Text(l10n.deleteAccount),
+                        content: Text(
+                          l10n.deleteAccountConfirmation,
                         ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
+                            child: Text(l10n.cancel),
                           ),
                           TextButton(
                             onPressed: () => Navigator.pop(context, true),
-                            style: TextButton.styleFrom(foregroundColor: Colors.red),
-                            child: const Text('Delete'),
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.red),
+                            child: Text(l10n.delete),
                           ),
                         ],
                       ),
                     );
 
                     if (confirm == true) {
+                      if (!context.mounted) return;
                       showDialog(
                         context: context,
                         barrierDismissible: false,
@@ -121,18 +128,23 @@ class SettingsScreen extends StatelessWidget {
                           Navigator.pop(context); // Close loading dialog
                           if (success) {
                             // Clear user data and navigate to login
-                            final userProvider = Provider.of<UserProvider>(context, listen: false);
+                            final userProvider = Provider.of<UserProvider>(
+                                context,
+                                listen: false);
                             userProvider.clearUser();
                             Navigator.of(context).pushNamedAndRemoveUntil(
                               'login',
                               (route) => false,
                             );
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Account deleted successfully')),
+                              SnackBar(
+                                  content:
+                                      Text(l10n.accountDeletedSuccessfully)),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Failed to delete account')),
+                              SnackBar(
+                                  content: Text(l10n.failedToDeleteAccount)),
                             );
                           }
                         }
@@ -140,7 +152,7 @@ class SettingsScreen extends StatelessWidget {
                         if (context.mounted) {
                           Navigator.pop(context); // Close loading dialog
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Error: $e')),
+                            SnackBar(content: Text('${l10n.errorMessage}: $e')),
                           );
                         }
                       }

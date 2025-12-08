@@ -106,9 +106,9 @@ class _ManageTeamGamesDialogState extends State<ManageTeamGamesDialog> {
                               onPressed: widget.provider.isPerformingAction
                                   ? null
                                   : () async {
-                                      final success =
-                                          await widget.provider.removeGame(game.id);
-                                      if (mounted) {
+                                      final success = await widget.provider
+                                          .removeGame(game.id);
+                                      if (context.mounted) {
                                         if (success) {
                                           setState(() {});
                                           ScaffoldMessenger.of(context)
@@ -121,7 +121,8 @@ class _ManageTeamGamesDialogState extends State<ManageTeamGamesDialog> {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
-                                                content: Text('Error removing game')),
+                                                content: Text(
+                                                    'Error removing game')),
                                           );
                                         }
                                       }
@@ -133,22 +134,23 @@ class _ManageTeamGamesDialogState extends State<ManageTeamGamesDialog> {
                               onPressed: widget.provider.isPerformingAction
                                   ? null
                                   : () async {
-                                      final success =
-                                          await widget.provider.addGame(game.id);
-                                      if (mounted) {
+                                      final success = await widget.provider
+                                          .addGame(game.id);
+                                      if (context.mounted) {
                                         if (success) {
                                           setState(() {});
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
-                                                content: Text(
-                                                    '${game.name} added')),
+                                                content:
+                                                    Text('${game.name} added')),
                                           );
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
-                                                content: Text('Error adding game')),
+                                                content:
+                                                    Text('Error adding game')),
                                           );
                                         }
                                       }
@@ -165,4 +167,3 @@ class _ManageTeamGamesDialogState extends State<ManageTeamGamesDialog> {
     );
   }
 }
-

@@ -308,7 +308,7 @@ class _ProfileContentState extends State<ProfileContent>
                                           final currentContext = context;
                                           final success = await profileProvider
                                               .toggleFollow();
-                                          if (!success && mounted) {
+                                          if (!success && context.mounted) {
                                             _showErrorDialog(currentContext);
                                           }
                                         },

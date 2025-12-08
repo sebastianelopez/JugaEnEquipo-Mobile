@@ -118,7 +118,7 @@ Future<ConversationsResponseModel> getAllConversations() async {
         debugPrint('Response data type: ${responseData.runtimeType}');
         if (responseData is Map) {
           debugPrint(
-              'Response data keys: ${(responseData as Map).keys.toList()}');
+              'Response data keys: ${(responseData).keys.toList()}');
         }
       }
       return ConversationsResponseModel(

@@ -1,21 +1,20 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/chat_use_cases/get_all_conversations_use_case.dart';
-import 'package:jugaenequipo/datasources/models/chat/conversations_response_model.dart';
 import 'package:jugaenequipo/datasources/notifications_use_cases/notifications_sse_service.dart';
 
 class MessagesProvider extends ChangeNotifier {
   List<ConversationModel> conversations = [];
-  ConversationsMetadata metadata = ConversationsMetadata(total: 0, totalUnreadMessages: 0);
+  ConversationsMetadata metadata =
+      ConversationsMetadata(total: 0, totalUnreadMessages: 0);
   bool isLoading = false;
   String? errorMessage;
-  
+
   final NotificationsSSEService _sseService = NotificationsSSEService();
   StreamSubscription<NotificationModel>? _sseSubscription;
   bool _isInitialized = false;
-  
+
   // Callback to notify when unread count changes (for updating notifications)
   void Function()? _onUnreadCountChanged;
 
@@ -23,7 +22,7 @@ class MessagesProvider extends ChangeNotifier {
     loadConversations();
     _subscribeToNotifications();
   }
-  
+
   void setOnUnreadCountChangedCallback(void Function() callback) {
     _onUnreadCountChanged = callback;
   }
@@ -31,7 +30,7 @@ class MessagesProvider extends ChangeNotifier {
   void _subscribeToNotifications() {
     if (_isInitialized) return;
     _isInitialized = true;
-    
+
     _sseSubscription?.cancel();
     _sseSubscription = _sseService.connect().listen((notification) {
       // Listen for new_message notifications to update conversations list
@@ -77,21 +76,23 @@ class MessagesProvider extends ChangeNotifier {
       final response = await getAllConversations();
       // Save previous unread count before updating
       final previousUnreadCount = metadata.totalUnreadMessages;
-      
+
       conversations = response.conversations;
       metadata = response.metadata;
-      
+
       // Sort conversations by lastMessageDate (most recent first)
       _sortConversations();
-      
+
       // Notify if unread count changed (for updating notifications badge)
       if (metadata.totalUnreadMessages != previousUnreadCount) {
         _onUnreadCountChanged?.call();
       }
-      
+
       if (kDebugMode) {
-        debugPrint('MessagesProvider: Loaded ${conversations.length} conversations');
-        debugPrint('MessagesProvider: Metadata - total: ${metadata.total}, unread: ${metadata.totalUnreadMessages}');
+        debugPrint(
+            'MessagesProvider: Loaded ${conversations.length} conversations');
+        debugPrint(
+            'MessagesProvider: Metadata - total: ${metadata.total}, unread: ${metadata.totalUnreadMessages}');
       }
       if (conversations.isEmpty && errorMessage == null) {
         // No error occurred, just empty list
@@ -122,26 +123,27 @@ class MessagesProvider extends ChangeNotifier {
       final oldConversations = List<ConversationModel>.from(conversations);
       // Save previous unread count before updating
       final previousUnreadCount = metadata.totalUnreadMessages;
-      
+
       conversations = response.conversations;
       metadata = response.metadata;
-      
+
       // Sort conversations by lastMessageDate (most recent first)
       _sortConversations();
-      
+
       // Check if order changed to trigger animation
       final orderChanged = _hasOrderChanged(oldConversations, conversations);
-      
+
       // Notify if unread count changed (for updating notifications badge)
       if (metadata.totalUnreadMessages != previousUnreadCount) {
         _onUnreadCountChanged?.call();
       }
-      
+
       if (kDebugMode) {
-        debugPrint('MessagesProvider: Silent refresh - ${conversations.length} conversations');
+        debugPrint(
+            'MessagesProvider: Silent refresh - ${conversations.length} conversations');
         debugPrint('MessagesProvider: Order changed: $orderChanged');
       }
-      
+
       notifyListeners();
     } catch (e) {
       if (kDebugMode) {
@@ -155,7 +157,8 @@ class MessagesProvider extends ChangeNotifier {
   }
 
   /// Check if the order of conversations has changed
-  bool _hasOrderChanged(List<ConversationModel> oldList, List<ConversationModel> newList) {
+  bool _hasOrderChanged(
+      List<ConversationModel> oldList, List<ConversationModel> newList) {
     if (oldList.length != newList.length) return true;
     for (int i = 0; i < oldList.length; i++) {
       if (oldList[i].id != newList[i].id) return true;
@@ -190,14 +193,14 @@ class MessagesProvider extends ChangeNotifier {
       refreshConversations();
       return;
     }
-    
+
     // Re-sort conversations
     _sortConversations();
     notifyListeners();
   }
 
   void _sortConversations() {
-    DateTime? _parseDate(String? dateString) {
+    DateTime? parseDate(String? dateString) {
       if (dateString == null || dateString.isEmpty) return null;
       try {
         // Try parsing ISO8601 format first
@@ -226,18 +229,18 @@ class MessagesProvider extends ChangeNotifier {
     }
 
     conversations.sort((a, b) {
-      final dateA = _parseDate(a.lastMessageDate);
-      final dateB = _parseDate(b.lastMessageDate);
-      
+      final dateA = parseDate(a.lastMessageDate);
+      final dateB = parseDate(b.lastMessageDate);
+
       // If both have dates, sort by date (most recent first)
       if (dateA != null && dateB != null) {
         return dateB.compareTo(dateA); // Reverse order (newest first)
       }
-      
+
       // If only one has a date, prioritize it
       if (dateA != null) return -1;
       if (dateB != null) return 1;
-      
+
       // If neither has a date, maintain current order
       return 0;
     });

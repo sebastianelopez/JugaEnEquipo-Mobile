@@ -7,6 +7,7 @@ import 'package:jugaenequipo/presentation/profile/business_logic/profile_provide
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -51,15 +52,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _availableSocialNetworks = networks;
       });
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error loading social networks: $e'),
-            behavior: SnackBarBehavior.fixed,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.errorLoadingSocialNetworks(e.toString())),
+          behavior: SnackBarBehavior.fixed,
+          duration: const Duration(seconds: 3),
+        ),
+      );
     } finally {
       setState(() {
         _loadingSocialNetworks = false;
@@ -80,15 +82,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final mimeType = pickedFile.mimeType ?? 'image/png';
       return 'data:$mimeType;base64,$base64Image';
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error picking image: $e'),
-            behavior: SnackBarBehavior.fixed,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
+      if (!mounted) return null;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return null;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.errorPickingImage(e.toString())),
+          behavior: SnackBarBehavior.fixed,
+          duration: const Duration(seconds: 3),
+        ),
+      );
       return null;
     }
   }
@@ -103,38 +106,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     try {
       final success = await updateUserBackgroundImage(base64Image);
-      if (mounted) {
-        if (success) {
-          final profileProvider =
-              Provider.of<ProfileProvider>(context, listen: false);
-          await profileProvider.refreshData();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Background image updated successfully'),
-              behavior: SnackBarBehavior.fixed,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Failed to update background image'),
-              behavior: SnackBarBehavior.fixed,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
+      if (success) {
+        final profileProvider =
+            Provider.of<ProfileProvider>(context, listen: false);
+        await profileProvider.refreshData();
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text(l10n.backgroundImageUpdatedSuccessfully),
             behavior: SnackBarBehavior.fixed,
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.failedToUpdateBackgroundImage),
+            behavior: SnackBarBehavior.fixed,
+            duration: const Duration(seconds: 2),
           ),
         );
       }
+    } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.errorPickingImage(e.toString())),
+          behavior: SnackBarBehavior.fixed,
+          duration: const Duration(seconds: 3),
+        ),
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -155,36 +161,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final success = await profileProvider.updateDescription(
         _descriptionController.text,
       );
-      if (mounted) {
-        if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Description updated successfully'),
-              behavior: SnackBarBehavior.fixed,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-          Navigator.pop(context);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Failed to update description'),
-              behavior: SnackBarBehavior.fixed,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text(l10n.descriptionUpdatedSuccessfully),
             behavior: SnackBarBehavior.fixed,
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.failedToUpdateDescription),
+            behavior: SnackBarBehavior.fixed,
+            duration: const Duration(seconds: 2),
           ),
         );
       }
+    } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.errorPickingImage(e.toString())),
+          behavior: SnackBarBehavior.fixed,
+          duration: const Duration(seconds: 3),
+        ),
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -195,16 +203,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _addSocialNetwork(SocialNetworkModel network) async {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     final usernameController = TextEditingController();
     final result = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add ${network.name}'),
+        title: Text(l10n.addSocialNetwork(network.name)),
         content: TextField(
           controller: usernameController,
           decoration: InputDecoration(
-            labelText: 'Username',
-            hintText: 'Enter your ${network.name} username',
+            labelText: l10n.usernameLabel,
+            hintText: l10n.enterSocialNetworkUsername(network.name),
           ),
         ),
         actions: [
@@ -213,14 +224,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.onSurface,
             ),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, usernameController.text),
             style: TextButton.styleFrom(
               foregroundColor: AppTheme.primary,
             ),
-            child: const Text('Add'),
+            child: Text(l10n.addButton),
           ),
         ],
       ),
@@ -233,41 +244,44 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
 
     try {
+      if (!mounted) return;
       final profileProvider =
           Provider.of<ProfileProvider>(context, listen: false);
       final success = await profileProvider.addSocialNetworkToUser(
         network.id,
         result,
       );
-      if (mounted) {
-        if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${network.name} added successfully'),
-              behavior: SnackBarBehavior.fixed,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to add ${network.name}'),
-              behavior: SnackBarBehavior.fixed,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text(l10n.socialNetworkAddedSuccessfully(network.name)),
             behavior: SnackBarBehavior.fixed,
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.failedToAddSocialNetwork(network.name)),
+            behavior: SnackBarBehavior.fixed,
+            duration: const Duration(seconds: 2),
           ),
         );
       }
+    } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.errorPickingImage(e.toString())),
+          behavior: SnackBarBehavior.fixed,
+          duration: const Duration(seconds: 3),
+        ),
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -288,11 +302,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final userId = widget.userId ?? userProvider.user?.id;
 
+    final l10n = AppLocalizations.of(context)!;
     if (userId == null) {
       return Scaffold(
         backgroundColor: AppTheme.primary,
-        appBar: const BackAppBar(label: 'Edit Profile'),
-        body: const Center(child: Text('User not found')),
+        appBar: BackAppBar(label: l10n.editProfileTitle),
+        body: Center(child: Text(l10n.userNotFound)),
       );
     }
 
@@ -313,10 +328,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
           final userSocialNetworks = profileProvider.socialNetworks;
 
+          final l10n = AppLocalizations.of(context)!;
           return Scaffold(
             backgroundColor: AppTheme.primary,
             appBar: BackAppBar(
-              label: 'Edit Profile',
+              label: l10n.editProfileTitle,
             ),
             body: (_isLoading || profileProvider.isLoading)
                 ? const Center(child: CircularProgressIndicator())
@@ -333,7 +349,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Background Image',
+                                  l10n.backgroundImageLabel,
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold,
@@ -347,7 +363,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   icon: const Icon(Icons.image,
                                       color: Colors.white),
                                   label: Text(
-                                    'Change Background Image',
+                                    l10n.changeBackgroundImage,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14.sp,
@@ -377,7 +393,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Description',
+                                  l10n.descriptionLabel,
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold,
@@ -389,9 +405,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 TextField(
                                   controller: _descriptionController,
                                   maxLines: 5,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Tell us about yourself...',
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    hintText: l10n.tellUsAboutYourself,
+                                    border: const OutlineInputBorder(),
                                   ),
                                 ),
                                 SizedBox(height: 12.h),
@@ -407,7 +423,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Save Description',
+                                    l10n.saveDescription,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14.sp,
@@ -428,7 +444,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Social Networks',
+                                  l10n.socialNetworksLabel,
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold,
@@ -440,7 +456,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 // Current social networks
                                 if (userSocialNetworks.isNotEmpty) ...[
                                   Text(
-                                    'Your Networks:',
+                                    l10n.yourNetworks,
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w600,
@@ -461,14 +477,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           icon: const Icon(Icons.delete,
                                               color: Colors.red),
                                           onPressed: () async {
+                                            if (!context.mounted) return;
+                                            final l10n =
+                                                AppLocalizations.of(context);
+                                            if (l10n == null) return;
                                             final confirm =
                                                 await showDialog<bool>(
                                               context: context,
                                               builder: (context) => AlertDialog(
-                                                title: const Text(
-                                                    'Remove Network'),
-                                                content: Text(
-                                                    'Are you sure you want to remove ${network.name}?'),
+                                                title: Text(l10n.removeNetwork),
+                                                content: Text(l10n
+                                                    .areYouSureRemoveNetwork(
+                                                        network.name)),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () =>
@@ -480,7 +500,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                               .colorScheme
                                                               .onSurface,
                                                     ),
-                                                    child: const Text('Cancel'),
+                                                    child: Text(l10n.cancel),
                                                   ),
                                                   TextButton(
                                                     onPressed: () =>
@@ -490,7 +510,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                       foregroundColor:
                                                           Colors.red,
                                                     ),
-                                                    child: const Text('Remove'),
+                                                    child: Text(l10n.remove),
                                                   ),
                                                 ],
                                               ),
@@ -500,6 +520,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                 _isLoading = true;
                                               });
                                               try {
+                                                if (!context.mounted) return;
                                                 final profileProvider = Provider
                                                     .of<ProfileProvider>(
                                                         context,
@@ -508,23 +529,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                     await profileProvider
                                                         .removeSocialNetworkFromUser(
                                                             network.id);
-                                                if (mounted) {
-                                                  if (success) {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                            '${network.name} removed'),
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .fixed,
-                                                        duration:
-                                                            const Duration(
-                                                                seconds: 2),
-                                                      ),
-                                                    );
-                                                  }
+                                                if (!context.mounted) return;
+                                                final l10n =
+                                                    AppLocalizations.of(
+                                                        context);
+                                                if (l10n == null) return;
+                                                if (success) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(l10n
+                                                          .socialNetworkRemoved(
+                                                              network.name)),
+                                                      behavior: SnackBarBehavior
+                                                          .fixed,
+                                                      duration: const Duration(
+                                                          seconds: 2),
+                                                    ),
+                                                  );
                                                 }
                                               } finally {
                                                 if (mounted) {
@@ -545,7 +567,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       child: CircularProgressIndicator())
                                 else if (_availableSocialNetworks != null) ...[
                                   Text(
-                                    'Add Network:',
+                                    l10n.addNetwork,
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w600,

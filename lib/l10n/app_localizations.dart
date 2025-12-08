@@ -1738,7 +1738,7 @@ abstract class AppLocalizations {
   /// No description provided for @changeBackgroundImage.
   ///
   /// In en, this message translates to:
-  /// **'Tap to change background image'**
+  /// **'Change Background Image'**
   String get changeBackgroundImage;
 
   /// No description provided for @dangerZone.
@@ -2148,6 +2148,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Online'**
   String get onlineLabel;
+
+  /// No description provided for @editProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfileTitle;
+
+  /// No description provided for @errorLoadingSocialNetworks.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading social networks: {error}'**
+  String errorLoadingSocialNetworks(String error);
+
+  /// No description provided for @errorPickingImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error picking image: {error}'**
+  String errorPickingImage(String error);
+
+  /// No description provided for @backgroundImageUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Background image updated successfully'**
+  String get backgroundImageUpdatedSuccessfully;
+
+  /// No description provided for @failedToUpdateBackgroundImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update background image'**
+  String get failedToUpdateBackgroundImage;
+
+  /// No description provided for @descriptionUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Description updated successfully'**
+  String get descriptionUpdatedSuccessfully;
+
+  /// No description provided for @failedToUpdateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update description'**
+  String get failedToUpdateDescription;
+
+  /// No description provided for @addSocialNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {networkName}'**
+  String addSocialNetwork(String networkName);
+
+  /// No description provided for @usernameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get usernameLabel;
+
+  /// No description provided for @enterSocialNetworkUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your {networkName} username'**
+  String enterSocialNetworkUsername(String networkName);
+
+  /// No description provided for @addButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get addButton;
+
+  /// No description provided for @socialNetworkAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'{networkName} added successfully'**
+  String socialNetworkAddedSuccessfully(String networkName);
+
+  /// No description provided for @failedToAddSocialNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to add {networkName}'**
+  String failedToAddSocialNetwork(String networkName);
+
+  /// No description provided for @removeNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Network'**
+  String get removeNetwork;
+
+  /// No description provided for @areYouSureRemoveNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove {networkName}?'**
+  String areYouSureRemoveNetwork(String networkName);
+
+  /// No description provided for @socialNetworkRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{networkName} removed'**
+  String socialNetworkRemoved(String networkName);
+
+  /// No description provided for @backgroundImageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Background Image'**
+  String get backgroundImageLabel;
+
+  /// No description provided for @descriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get descriptionLabel;
+
+  /// No description provided for @tellUsAboutYourself.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about yourself...'**
+  String get tellUsAboutYourself;
+
+  /// No description provided for @saveDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Description'**
+  String get saveDescription;
+
+  /// No description provided for @socialNetworksLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Social Networks'**
+  String get socialNetworksLabel;
+
+  /// No description provided for @yourNetworks.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Networks:'**
+  String get yourNetworks;
+
+  /// No description provided for @addNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Network:'**
+  String get addNetwork;
+
+  /// No description provided for @mustBeInTeamToRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be in a team to register'**
+  String get mustBeInTeamToRegister;
+
+  /// No description provided for @noTeamsInTournament.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have teams in this tournament'**
+  String get noTeamsInTournament;
+
+  /// No description provided for @leaveTournament.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Tournament'**
+  String get leaveTournament;
+
+  /// No description provided for @leaveTournamentConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave this tournament?'**
+  String get leaveTournamentConfirmation;
+
+  /// No description provided for @selectTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Team'**
+  String get selectTeam;
+
+  /// No description provided for @changePasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePasswordTitle;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// No description provided for @confirmNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirmNewPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'New passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @passwordChangedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get passwordChangedSuccessfully;
+
+  /// No description provided for @failedToChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to change password. Please check your old password.'**
+  String get failedToChangePassword;
+
+  /// No description provided for @pleaseEnterCurrentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your current password'**
+  String get pleaseEnterCurrentPassword;
+
+  /// No description provided for @pleaseEnterNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a new password'**
+  String get pleaseEnterNewPassword;
+
+  /// No description provided for @passwordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// No description provided for @pleaseConfirmNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your new password'**
+  String get pleaseConfirmNewPassword;
+
+  /// No description provided for @passwordsDoNotMatchValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatchValidation;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? This action cannot be undone.'**
+  String get deleteAccountConfirmation;
+
+  /// No description provided for @accountDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted successfully'**
+  String get accountDeletedSuccessfully;
+
+  /// No description provided for @failedToDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete account'**
+  String get failedToDeleteAccount;
+
+  /// No description provided for @deletePlayerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Player Profile'**
+  String get deletePlayerProfile;
+
+  /// No description provided for @deletePlayerProfileConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your {gameName} profile?'**
+  String deletePlayerProfileConfirmation(String gameName);
+
+  /// No description provided for @playerProfileDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Player profile deleted successfully'**
+  String get playerProfileDeletedSuccessfully;
+
+  /// No description provided for @errorDeletingPlayerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting player profile'**
+  String get errorDeletingPlayerProfile;
+
+  /// No description provided for @pleaseSelectGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a game'**
+  String get pleaseSelectGame;
+
+  /// No description provided for @playerProfileAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Player profile added successfully'**
+  String get playerProfileAddedSuccessfully;
+
+  /// No description provided for @playerProfileUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Player profile updated successfully'**
+  String get playerProfileUpdatedSuccessfully;
+
+  /// No description provided for @errorSavingPlayerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving player profile'**
+  String get errorSavingPlayerProfile;
+
+  /// No description provided for @steamId.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam ID'**
+  String get steamId;
+
+  /// No description provided for @riotUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username (RIOT)'**
+  String get riotUsername;
+
+  /// No description provided for @riotTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag (RIOT)'**
+  String get riotTag;
+
+  /// No description provided for @riotRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get riotRegion;
+
+  /// No description provided for @steam.
+  ///
+  /// In en, this message translates to:
+  /// **'Steam'**
+  String get steam;
+
+  /// No description provided for @riot.
+  ///
+  /// In en, this message translates to:
+  /// **'RIOT'**
+  String get riot;
+
+  /// No description provided for @selectGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a game'**
+  String get selectGame;
+
+  /// No description provided for @leaveTeamConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave this team?'**
+  String get leaveTeamConfirmation;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

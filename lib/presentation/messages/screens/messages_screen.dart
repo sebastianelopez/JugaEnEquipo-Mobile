@@ -20,7 +20,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
     super.initState();
     // Mark all messages as read when screen is opened
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final notificationsProvider = Provider.of<NotificationsProvider>(context, listen: false);
+      final notificationsProvider =
+          Provider.of<NotificationsProvider>(context, listen: false);
       notificationsProvider.markAllMessagesAsRead();
     });
   }
@@ -33,7 +34,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         try {
-          final messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+          if (!mounted) return;
+          final messagesProvider =
+              Provider.of<MessagesProvider>(context, listen: false);
           // Only do silent refresh if we already have conversations loaded
           // Otherwise, let the initial load handle it
           if (messagesProvider.conversations.isNotEmpty) {
@@ -64,7 +67,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
         // Set up callback to update notifications when unread count changes
         WidgetsBinding.instance.addPostFrameCallback((_) {
           try {
-            final notificationsProvider = Provider.of<NotificationsProvider>(context, listen: false);
+            final notificationsProvider =
+                Provider.of<NotificationsProvider>(context, listen: false);
             provider.setOnUnreadCountChangedCallback(() {
               // When unread count changes, mark message notifications as read if count is 0
               // or refresh to sync with backend

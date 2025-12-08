@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/follow/follow_model.dart';
 import 'package:jugaenequipo/datasources/models/follow/follow_user_model.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
-import 'package:jugaenequipo/datasources/models/post/post_model.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/get_posts_by_user_use_case.dart';
 import 'package:jugaenequipo/datasources/teams_use_cases/search_teams_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_followers_use_case.dart';
@@ -290,14 +288,9 @@ class ProfileProvider extends ChangeNotifier {
     if (profileUser == null) return;
 
     // Mock data - these should come from API eventually
-    if (description == null) {
-      description =
-          'Passionate gamer and esports enthusiast. Always looking for new challenges and opportunities to improve.';
-    }
+    description ??= 'Passionate gamer and esports enthusiast. Always looking for new challenges and opportunities to improve.';
     tournamentWins = 12;
-    if (memberSince == null) {
-      memberSince = DateTime.now().subtract(const Duration(days: 365));
-    }
+    memberSince ??= DateTime.now().subtract(const Duration(days: 365));
 
     // Mock achievements
     achievements = [

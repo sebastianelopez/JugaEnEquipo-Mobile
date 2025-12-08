@@ -88,7 +88,7 @@ class MediaGrid extends StatelessWidget {
   Widget _buildSingleMedia(
       BuildContext context, ResourceModel resource, double size) {
     if (_isVideo(resource)) {
-      return Container(
+      return SizedBox(
         width: size,
         height: size,
         child: CustomVideoPlayer(
@@ -119,7 +119,7 @@ class MediaGrid extends StatelessWidget {
   Widget _buildMedia(BuildContext context, ResourceModel resource,
       double? width, double? height, int index) {
     if (_isVideo(resource)) {
-      return Container(
+      return SizedBox(
         width: width,
         height: height,
         child: CustomVideoPlayer(
@@ -152,7 +152,7 @@ class MediaGrid extends StatelessWidget {
     Widget mediaWidget;
 
     if (_isVideo(resource)) {
-      mediaWidget = Container(
+      mediaWidget = SizedBox(
         width: size,
         height: size,
         child: CustomVideoPlayer(

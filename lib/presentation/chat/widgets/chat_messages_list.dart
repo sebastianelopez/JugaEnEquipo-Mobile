@@ -92,7 +92,7 @@ class _ChatMessagesListState extends State<ChatMessagesList> {
     if (isoString == null || isoString.isEmpty) return '';
     final dt = DateTime.tryParse(isoString);
     if (dt == null) return '';
-    final two = (int n) => n.toString().padLeft(2, '0');
+    two(int n) => n.toString().padLeft(2, '0');
     return '${two(dt.hour)}:${two(dt.minute)}';
   }
 }

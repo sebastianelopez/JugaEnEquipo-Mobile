@@ -72,6 +72,7 @@ class MessagesListItem extends StatelessWidget {
         // Add a small delay to ensure backend has updated unreadCount
         Future.delayed(const Duration(milliseconds: 500), () {
           try {
+            if (!context.mounted) return;
             final messagesProvider =
                 Provider.of<MessagesProvider>(context, listen: false);
             messagesProvider.refreshConversations();

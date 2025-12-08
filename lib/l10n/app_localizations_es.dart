@@ -729,7 +729,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deleteTeam => 'Eliminar Equipo';
 
   @override
-  String get leaveTeam => 'Dejar Equipo';
+  String get leaveTeam => 'Abandonar Equipo';
 
   @override
   String get requestAccess => 'Solicitar Acceso';
@@ -756,10 +756,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorDeletingTeam => 'Error al eliminar el equipo';
 
   @override
-  String get leftTeamSuccessfully => 'Dejaste el equipo exitosamente';
+  String get leftTeamSuccessfully => 'Has abandonado el equipo exitosamente';
 
   @override
-  String get errorLeavingTeam => 'Error al dejar el equipo';
+  String get errorLeavingTeam => 'Error al abandonar el equipo';
 
   @override
   String get accessRequestSent => 'Solicitud de acceso enviada';
@@ -848,7 +848,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get changeProfileImage => 'Toca para cambiar la imagen de perfil';
 
   @override
-  String get changeBackgroundImage => 'Toca para cambiar la imagen de fondo';
+  String get changeBackgroundImage => 'Cambiar Imagen de Fondo';
 
   @override
   String get dangerZone => 'Zona de Peligro';
@@ -1061,4 +1061,202 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get onlineLabel => 'En línea';
+
+  @override
+  String get editProfileTitle => 'Editar Perfil';
+
+  @override
+  String errorLoadingSocialNetworks(String error) {
+    return 'Error al cargar redes sociales: $error';
+  }
+
+  @override
+  String errorPickingImage(String error) {
+    return 'Error al seleccionar imagen: $error';
+  }
+
+  @override
+  String get backgroundImageUpdatedSuccessfully => 'Imagen de fondo actualizada exitosamente';
+
+  @override
+  String get failedToUpdateBackgroundImage => 'Error al actualizar la imagen de fondo';
+
+  @override
+  String get descriptionUpdatedSuccessfully => 'Descripción actualizada exitosamente';
+
+  @override
+  String get failedToUpdateDescription => 'Error al actualizar la descripción';
+
+  @override
+  String addSocialNetwork(String networkName) {
+    return 'Agregar $networkName';
+  }
+
+  @override
+  String get usernameLabel => 'Nombre de usuario';
+
+  @override
+  String enterSocialNetworkUsername(String networkName) {
+    return 'Ingresa tu nombre de usuario de $networkName';
+  }
+
+  @override
+  String get addButton => 'Agregar';
+
+  @override
+  String socialNetworkAddedSuccessfully(String networkName) {
+    return '$networkName agregado exitosamente';
+  }
+
+  @override
+  String failedToAddSocialNetwork(String networkName) {
+    return 'Error al agregar $networkName';
+  }
+
+  @override
+  String get removeNetwork => 'Eliminar Red';
+
+  @override
+  String areYouSureRemoveNetwork(String networkName) {
+    return '¿Estás seguro de que quieres eliminar $networkName?';
+  }
+
+  @override
+  String socialNetworkRemoved(String networkName) {
+    return '$networkName eliminado';
+  }
+
+  @override
+  String get backgroundImageLabel => 'Imagen de Fondo';
+
+  @override
+  String get descriptionLabel => 'Descripción';
+
+  @override
+  String get tellUsAboutYourself => 'Cuéntanos sobre ti...';
+
+  @override
+  String get saveDescription => 'Guardar Descripción';
+
+  @override
+  String get socialNetworksLabel => 'Redes Sociales';
+
+  @override
+  String get yourNetworks => 'Tus Redes:';
+
+  @override
+  String get addNetwork => 'Agregar Red:';
+
+  @override
+  String get mustBeInTeamToRegister => 'Debes estar en un equipo para registrarte';
+
+  @override
+  String get noTeamsInTournament => 'No tienes equipos en este torneo';
+
+  @override
+  String get leaveTournament => 'Abandonar Torneo';
+
+  @override
+  String get leaveTournamentConfirmation => '¿Estás seguro de que quieres abandonar este torneo?';
+
+  @override
+  String get selectTeam => 'Selecciona el equipo';
+
+  @override
+  String get changePasswordTitle => 'Cambiar Contraseña';
+
+  @override
+  String get currentPassword => 'Contraseña Actual';
+
+  @override
+  String get newPassword => 'Nueva Contraseña';
+
+  @override
+  String get confirmNewPassword => 'Confirmar Nueva Contraseña';
+
+  @override
+  String get passwordsDoNotMatch => 'Las contraseñas nuevas no coinciden';
+
+  @override
+  String get passwordChangedSuccessfully => 'Contraseña cambiada exitosamente';
+
+  @override
+  String get failedToChangePassword => 'Error al cambiar la contraseña. Por favor verifica tu contraseña actual.';
+
+  @override
+  String get pleaseEnterCurrentPassword => 'Por favor ingresa tu contraseña actual';
+
+  @override
+  String get pleaseEnterNewPassword => 'Por favor ingresa una nueva contraseña';
+
+  @override
+  String get passwordMinLength => 'La contraseña debe tener al menos 6 caracteres';
+
+  @override
+  String get pleaseConfirmNewPassword => 'Por favor confirma tu nueva contraseña';
+
+  @override
+  String get passwordsDoNotMatchValidation => 'Las contraseñas no coinciden';
+
+  @override
+  String get deleteAccount => 'Eliminar Cuenta';
+
+  @override
+  String get deleteAccountConfirmation => '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.';
+
+  @override
+  String get accountDeletedSuccessfully => 'Cuenta eliminada exitosamente';
+
+  @override
+  String get failedToDeleteAccount => 'Error al eliminar la cuenta';
+
+  @override
+  String get deletePlayerProfile => 'Eliminar Perfil de Juego';
+
+  @override
+  String deletePlayerProfileConfirmation(String gameName) {
+    return '¿Estás seguro de que deseas eliminar tu perfil de $gameName?';
+  }
+
+  @override
+  String get playerProfileDeletedSuccessfully => 'Perfil de juego eliminado exitosamente';
+
+  @override
+  String get errorDeletingPlayerProfile => 'Error al eliminar el perfil de juego';
+
+  @override
+  String get pleaseSelectGame => 'Por favor selecciona un juego';
+
+  @override
+  String get playerProfileAddedSuccessfully => 'Perfil de juego agregado exitosamente';
+
+  @override
+  String get playerProfileUpdatedSuccessfully => 'Perfil de juego actualizado exitosamente';
+
+  @override
+  String get errorSavingPlayerProfile => 'Error al guardar el perfil de juego';
+
+  @override
+  String get steamId => 'Steam ID';
+
+  @override
+  String get riotUsername => 'Nombre de Usuario (RIOT)';
+
+  @override
+  String get riotTag => 'Tag (RIOT)';
+
+  @override
+  String get riotRegion => 'Región';
+
+  @override
+  String get steam => 'Steam';
+
+  @override
+  String get riot => 'RIOT';
+
+  @override
+  String get selectGame => 'Selecciona un juego';
+
+  @override
+  String get leaveTeamConfirmation => '¿Estás seguro de que quieres abandonar este equipo?';
 }

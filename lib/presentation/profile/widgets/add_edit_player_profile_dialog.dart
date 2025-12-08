@@ -7,6 +7,7 @@ import 'package:jugaenequipo/datasources/games_use_cases/search_games_use_case.d
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/utils/game_image_helper.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:uuid/uuid.dart';
 
 class AddEditPlayerProfileDialog extends StatefulWidget {
@@ -104,10 +105,11 @@ class _AddEditPlayerProfileDialogState
       return;
     }
 
+    final l10n = AppLocalizations.of(context)!;
     if (_selectedGame == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor selecciona un juego'),
+        SnackBar(
+          content: Text(l10n.pleaseSelectGame),
           backgroundColor: AppTheme.error,
         ),
       );
@@ -154,39 +156,39 @@ class _AddEditPlayerProfileDialogState
         if (widget.onSaved != null) {
           widget.onSaved!();
         }
-        if (mounted) {
-          Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(widget.player == null
-                  ? 'Perfil de juego agregado exitosamente'
-                  : 'Perfil de juego actualizado exitosamente'),
-              backgroundColor: AppTheme.success,
-            ),
-          );
-        }
+        if (!mounted) return;
+        final l10n = AppLocalizations.of(context)!;
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(widget.player == null
+                ? l10n.playerProfileAddedSuccessfully
+                : l10n.playerProfileUpdatedSuccessfully),
+            backgroundColor: AppTheme.success,
+          ),
+        );
       } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Error al guardar el perfil de juego'),
-              backgroundColor: AppTheme.error,
-            ),
-          );
-        }
+        if (!mounted) return;
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.errorSavingPlayerProfile),
+            backgroundColor: AppTheme.error,
+          ),
+        );
       }
     } catch (e) {
       if (kDebugMode) {
         debugPrint('Error saving player: $e');
       }
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error al guardar el perfil de juego'),
-            backgroundColor: AppTheme.error,
-          ),
-        );
-      }
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.errorSavingPlayerProfile),
+          backgroundColor: AppTheme.error,
+        ),
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -263,7 +265,7 @@ class _AddEditPlayerProfileDialogState
                           vertical: 12.h,
                         ),
                       ),
-                      hint: const Text('Selecciona un juego'),
+                      hint: Text(AppLocalizations.of(context)!.selectGame),
                       items: _games.map((game) {
                         return DropdownMenuItem<GameModel>(
                           value: game,
@@ -298,7 +300,7 @@ class _AddEditPlayerProfileDialogState
                       },
                       validator: (value) {
                         if (value == null) {
-                          return 'Por favor selecciona un juego';
+                          return AppLocalizations.of(context)!.pleaseSelectGame;
                         }
                         return null;
                       },
@@ -306,113 +308,131 @@ class _AddEditPlayerProfileDialogState
               SizedBox(height: 20.h),
 
               // Account type selection
-              Text(
-                'Tipo de Cuenta',
-                style: TextStyle(
-                  fontSize: 14.h,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile<String>(
-                      title: const Text('Steam'),
-                      value: 'steam',
-                      groupValue: _accountType,
-                      onChanged: (value) {
-                        setState(() {
-                          _accountType = value!;
-                        });
-                      },
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  Expanded(
-                    child: RadioListTile<String>(
-                      title: const Text('RIOT'),
-                      value: 'riot',
-                      groupValue: _accountType,
-                      onChanged: (value) {
-                        setState(() {
-                          _accountType = value!;
-                        });
-                      },
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                ],
+              Builder(
+                builder: (context) {
+                  final l10n = AppLocalizations.of(context)!;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Tipo de Cuenta', // TODO: Add translation key
+                        style: TextStyle(
+                          fontSize: 14.h,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: Text(l10n.steam),
+                              value: 'steam',
+                              groupValue: _accountType,
+                              onChanged: (value) {
+                                setState(() {
+                                  _accountType = value!;
+                                });
+                              },
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: Text(l10n.riot),
+                              value: 'riot',
+                              groupValue: _accountType,
+                              onChanged: (value) {
+                                setState(() {
+                                  _accountType = value!;
+                                });
+                              },
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
               ),
               SizedBox(height: 20.h),
 
               // Account data fields
-              if (_accountType == 'steam') ...[
-                TextFormField(
-                  controller: _steamIdController,
-                  decoration: InputDecoration(
-                    labelText: 'Steam ID',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 12.h,
-                    ),
-                  ),
-                ),
-              ] else ...[
-                TextFormField(
-                  controller: _riotUsernameController,
-                  decoration: InputDecoration(
-                    labelText: 'Username (RIOT)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 12.h,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: _riotTagController,
-                        decoration: InputDecoration(
-                          labelText: 'Tag (RIOT)',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 12.h,
+              Builder(
+                builder: (context) {
+                  final l10n = AppLocalizations.of(context)!;
+                  return Column(
+                    children: [
+                      if (_accountType == 'steam') ...[
+                        TextFormField(
+                          controller: _steamIdController,
+                          decoration: InputDecoration(
+                            labelText: l10n.steamId,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 12.h,
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _riotRegionController,
-                        decoration: InputDecoration(
-                          labelText: 'Región',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 12.h,
+                      ] else ...[
+                        TextFormField(
+                          controller: _riotUsernameController,
+                          decoration: InputDecoration(
+                            labelText: l10n.riotUsername,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 12.h,
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-
+                        SizedBox(height: 12.h),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: _riotTagController,
+                                decoration: InputDecoration(
+                                  labelText: l10n.riotTag,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 12.h,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _riotRegionController,
+                                decoration: InputDecoration(
+                                  labelText: l10n.riotRegion,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 12.h,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
               SizedBox(height: 24.h),
 
               // Save button

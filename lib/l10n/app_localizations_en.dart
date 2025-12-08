@@ -848,7 +848,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changeProfileImage => 'Tap to change profile image';
 
   @override
-  String get changeBackgroundImage => 'Tap to change background image';
+  String get changeBackgroundImage => 'Change Background Image';
 
   @override
   String get dangerZone => 'Danger Zone';
@@ -1061,4 +1061,202 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onlineLabel => 'Online';
+
+  @override
+  String get editProfileTitle => 'Edit Profile';
+
+  @override
+  String errorLoadingSocialNetworks(String error) {
+    return 'Error loading social networks: $error';
+  }
+
+  @override
+  String errorPickingImage(String error) {
+    return 'Error picking image: $error';
+  }
+
+  @override
+  String get backgroundImageUpdatedSuccessfully => 'Background image updated successfully';
+
+  @override
+  String get failedToUpdateBackgroundImage => 'Failed to update background image';
+
+  @override
+  String get descriptionUpdatedSuccessfully => 'Description updated successfully';
+
+  @override
+  String get failedToUpdateDescription => 'Failed to update description';
+
+  @override
+  String addSocialNetwork(String networkName) {
+    return 'Add $networkName';
+  }
+
+  @override
+  String get usernameLabel => 'Username';
+
+  @override
+  String enterSocialNetworkUsername(String networkName) {
+    return 'Enter your $networkName username';
+  }
+
+  @override
+  String get addButton => 'Add';
+
+  @override
+  String socialNetworkAddedSuccessfully(String networkName) {
+    return '$networkName added successfully';
+  }
+
+  @override
+  String failedToAddSocialNetwork(String networkName) {
+    return 'Failed to add $networkName';
+  }
+
+  @override
+  String get removeNetwork => 'Remove Network';
+
+  @override
+  String areYouSureRemoveNetwork(String networkName) {
+    return 'Are you sure you want to remove $networkName?';
+  }
+
+  @override
+  String socialNetworkRemoved(String networkName) {
+    return '$networkName removed';
+  }
+
+  @override
+  String get backgroundImageLabel => 'Background Image';
+
+  @override
+  String get descriptionLabel => 'Description';
+
+  @override
+  String get tellUsAboutYourself => 'Tell us about yourself...';
+
+  @override
+  String get saveDescription => 'Save Description';
+
+  @override
+  String get socialNetworksLabel => 'Social Networks';
+
+  @override
+  String get yourNetworks => 'Your Networks:';
+
+  @override
+  String get addNetwork => 'Add Network:';
+
+  @override
+  String get mustBeInTeamToRegister => 'You must be in a team to register';
+
+  @override
+  String get noTeamsInTournament => 'You don\'t have teams in this tournament';
+
+  @override
+  String get leaveTournament => 'Leave Tournament';
+
+  @override
+  String get leaveTournamentConfirmation => 'Are you sure you want to leave this tournament?';
+
+  @override
+  String get selectTeam => 'Select Team';
+
+  @override
+  String get changePasswordTitle => 'Change Password';
+
+  @override
+  String get currentPassword => 'Current Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get confirmNewPassword => 'Confirm New Password';
+
+  @override
+  String get passwordsDoNotMatch => 'New passwords do not match';
+
+  @override
+  String get passwordChangedSuccessfully => 'Password changed successfully';
+
+  @override
+  String get failedToChangePassword => 'Failed to change password. Please check your old password.';
+
+  @override
+  String get pleaseEnterCurrentPassword => 'Please enter your current password';
+
+  @override
+  String get pleaseEnterNewPassword => 'Please enter a new password';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 6 characters';
+
+  @override
+  String get pleaseConfirmNewPassword => 'Please confirm your new password';
+
+  @override
+  String get passwordsDoNotMatchValidation => 'Passwords do not match';
+
+  @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get deleteAccountConfirmation => 'Are you sure you want to delete your account? This action cannot be undone.';
+
+  @override
+  String get accountDeletedSuccessfully => 'Account deleted successfully';
+
+  @override
+  String get failedToDeleteAccount => 'Failed to delete account';
+
+  @override
+  String get deletePlayerProfile => 'Delete Player Profile';
+
+  @override
+  String deletePlayerProfileConfirmation(String gameName) {
+    return 'Are you sure you want to delete your $gameName profile?';
+  }
+
+  @override
+  String get playerProfileDeletedSuccessfully => 'Player profile deleted successfully';
+
+  @override
+  String get errorDeletingPlayerProfile => 'Error deleting player profile';
+
+  @override
+  String get pleaseSelectGame => 'Please select a game';
+
+  @override
+  String get playerProfileAddedSuccessfully => 'Player profile added successfully';
+
+  @override
+  String get playerProfileUpdatedSuccessfully => 'Player profile updated successfully';
+
+  @override
+  String get errorSavingPlayerProfile => 'Error saving player profile';
+
+  @override
+  String get steamId => 'Steam ID';
+
+  @override
+  String get riotUsername => 'Username (RIOT)';
+
+  @override
+  String get riotTag => 'Tag (RIOT)';
+
+  @override
+  String get riotRegion => 'Region';
+
+  @override
+  String get steam => 'Steam';
+
+  @override
+  String get riot => 'RIOT';
+
+  @override
+  String get selectGame => 'Select a game';
+
+  @override
+  String get leaveTeamConfirmation => 'Are you sure you want to leave this team?';
 }

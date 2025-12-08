@@ -70,7 +70,8 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
       final bytes = await _selectedProfileImage!.readAsBytes();
       final base64Image = base64Encode(bytes);
       String mimeType = 'image/png';
-      final extension = _selectedProfileImage!.path.split('.').last.toLowerCase();
+      final extension =
+          _selectedProfileImage!.path.split('.').last.toLowerCase();
       if (extension == 'jpg' || extension == 'jpeg') {
         mimeType = 'image/jpeg';
       } else if (extension == 'gif') {
@@ -88,13 +89,14 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
       image: imageBase64,
     );
 
-    if (mounted && success) {
+    if (context.mounted && success) {
       // Update background image if selected
       if (_selectedBackgroundImage != null) {
         final bytes = await _selectedBackgroundImage!.readAsBytes();
         final base64Image = base64Encode(bytes);
         String mimeType = 'image/png';
-        final extension = _selectedBackgroundImage!.path.split('.').last.toLowerCase();
+        final extension =
+            _selectedBackgroundImage!.path.split('.').last.toLowerCase();
         if (extension == 'jpg' || extension == 'jpeg') {
           mimeType = 'image/jpeg';
         } else if (extension == 'gif') {
@@ -103,7 +105,7 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
         final backgroundBase64 = 'data:$mimeType;base64,$base64Image';
         await widget.provider.updateBackgroundImageFromBase64(backgroundBase64);
       }
-
+      if (!mounted) return;
       Navigator.of(context).pop(true);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -153,7 +155,8 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
           Navigator.of(context).pop(true); // Close profile screen
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.teamDeletedSuccessfully),
+              content:
+                  Text(AppLocalizations.of(context)!.teamDeletedSuccessfully),
               backgroundColor: AppTheme.success,
             ),
           );
@@ -172,7 +175,7 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -266,9 +269,11 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
                                     child: Image.network(
                                       widget.team.image!,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          Icon(Icons.add_photo_alternate,
-                                              size: 48.h, color: AppTheme.primary),
+                                      errorBuilder:
+                                          (context, error, stackTrace) => Icon(
+                                              Icons.add_photo_alternate,
+                                              size: 48.h,
+                                              color: AppTheme.primary),
                                     ),
                                   )
                                 : Column(
@@ -320,15 +325,18 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
                                 ),
                               )
                             : widget.provider.backgroundImageUrl != null &&
-                                    widget.provider.backgroundImageUrl!.isNotEmpty
+                                    widget
+                                        .provider.backgroundImageUrl!.isNotEmpty
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(14),
                                     child: Image.network(
                                       widget.provider.backgroundImageUrl!,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          Icon(Icons.image,
-                                              size: 48.h, color: AppTheme.accent),
+                                      errorBuilder:
+                                          (context, error, stackTrace) => Icon(
+                                              Icons.image,
+                                              size: 48.h,
+                                              color: AppTheme.accent),
                                     ),
                                   )
                                 : Column(
@@ -360,7 +368,8 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: AppTheme.primary, width: 2),
+                          borderSide:
+                              BorderSide(color: AppTheme.primary, width: 2),
                         ),
                       ),
                     ),
@@ -370,13 +379,15 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
                       controller: _descriptionController,
                       decoration: InputDecoration(
                         labelText: localizations.description,
-                        prefixIcon: Icon(Icons.description, color: AppTheme.primary),
+                        prefixIcon:
+                            Icon(Icons.description, color: AppTheme.primary),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: AppTheme.primary, width: 2),
+                          borderSide:
+                              BorderSide(color: AppTheme.primary, width: 2),
                         ),
                       ),
                       maxLines: 4,
@@ -421,7 +432,8 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
                         ),
                         SizedBox(width: 12.w),
                         ElevatedButton(
-                          onPressed: widget.provider.isPerformingAction ? null : _save,
+                          onPressed:
+                              widget.provider.isPerformingAction ? null : _save,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.primary,
                             padding: EdgeInsets.symmetric(
@@ -438,8 +450,8 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
                                   height: 20.h,
                                   child: const CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    valueColor:
-                                        AlwaysStoppedAnimation<Color>(Colors.white),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
                                   ),
                                 )
                               : Text(localizations.save),
@@ -456,4 +468,3 @@ class _EditTeamProfileDialogState extends State<EditTeamProfileDialog> {
     );
   }
 }
-

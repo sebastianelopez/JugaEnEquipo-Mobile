@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/chat_use_cases/chat_sse_service.dart';
 import 'package:jugaenequipo/datasources/chat_use_cases/get_conversation_messages_use_case.dart';
@@ -32,6 +31,7 @@ class ChatProvider extends ChangeNotifier {
     _onMessageSent = callback;
   }
 
+  @override
   void dispose() {
     closeConversation();
     super.dispose();
@@ -244,14 +244,14 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void _sortMessagesAscending() {
-    DateTime _parseDate(String? value) {
+    DateTime parseDate(String? value) {
       return DateTime.tryParse(value ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0);
     }
 
     messages.sort((a, b) {
-      final da = _parseDate(a.createdAt);
-      final db = _parseDate(b.createdAt);
+      final da = parseDate(a.createdAt);
+      final db = parseDate(b.createdAt);
       final cmp = da.compareTo(db);
       if (cmp != 0) return cmp;
       // Tie-breaker by id to keep order stable when timestamps equal/missing

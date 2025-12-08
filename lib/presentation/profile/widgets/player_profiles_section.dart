@@ -8,6 +8,7 @@ import 'package:jugaenequipo/utils/game_image_helper.dart';
 import 'package:jugaenequipo/utils/rank_image_helper.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/add_edit_player_profile_dialog.dart';
 import 'package:jugaenequipo/datasources/player_use_cases/delete_player_use_case.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 class PlayerProfilesSection extends StatelessWidget {
   final List<PlayerModel> playerProfiles;
@@ -114,24 +115,25 @@ class PlayerProfilesSection extends StatelessWidget {
   }
 
   Future<void> _deletePlayer(BuildContext context, PlayerModel player) async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Eliminar Perfil de Juego'),
+        title: Text(l10n.deletePlayerProfile),
         content: Text(
-          '¿Estás seguro de que deseas eliminar tu perfil de ${player.gameName}?',
+          l10n.deletePlayerProfileConfirmation(player.gameName),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(
               foregroundColor: AppTheme.error,
             ),
-            child: const Text('Eliminar'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -145,8 +147,8 @@ class PlayerProfilesSection extends StatelessWidget {
         }
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Perfil de juego eliminado exitosamente'),
+            SnackBar(
+              content: Text(l10n.playerProfileDeletedSuccessfully),
               backgroundColor: AppTheme.success,
             ),
           );
@@ -154,8 +156,8 @@ class PlayerProfilesSection extends StatelessWidget {
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Error al eliminar el perfil de juego'),
+            SnackBar(
+              content: Text(l10n.errorDeletingPlayerProfile),
               backgroundColor: AppTheme.error,
             ),
           );

@@ -65,13 +65,6 @@ class SharedPost extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // TODO: getTeamById()
-                            /*  
-                            if (post.user.teamId != null)
-                            Text(
-                              post.user.team!.name,
-                              style: const TextStyle(fontSize: 13),
-                            ), */
                             Text(
                                 formatTimeElapsed(
                                     DateTime.parse(post.createdAt), context),
