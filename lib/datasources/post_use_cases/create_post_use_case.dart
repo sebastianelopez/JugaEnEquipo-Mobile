@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
-import 'package:mime/mime.dart';
 
 Future<Result> createPost(String text, List<File>? files, String id) async {
   try {
@@ -17,17 +15,18 @@ Future<Result> createPost(String text, List<File>? files, String id) async {
       'body': text,
     };
 
-    // Convert files (images/videos) to base64 and add to form data
+    // Add files as MultipartFile objects
     if (files != null && files.isNotEmpty) {
-      final List<String> base64Files = [];
+      final List<MultipartFile> multipartFiles = [];
       for (final file in files) {
-        final bytes = await file.readAsBytes();
-        final base64File = base64Encode(bytes);
-        final mimeType = lookupMimeType(file.path) ?? 'image/jpeg';
-        final dataUri = 'data:$mimeType;base64,$base64File';
-        base64Files.add(dataUri);
+        final fileName = file.path.split('/').last;
+        final multipartFile = await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+        );
+        multipartFiles.add(multipartFile);
       }
-      formDataMap['files'] = base64Files;
+      formDataMap['files'] = multipartFiles;
     }
 
     final FormData formData = FormData.fromMap(formDataMap);

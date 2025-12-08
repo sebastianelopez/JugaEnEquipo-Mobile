@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
@@ -10,6 +11,7 @@ import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:mime/mime.dart';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key, this.sharedPost, this.onPostCreated});
@@ -120,7 +122,7 @@ class _CreatePostState extends State<CreatePost> {
     if (atIndex != -1) {
       // Extract the query after @
       final query = text.substring(atIndex + 1, cursorPosition);
-      
+
       // Check if query doesn't contain spaces (valid mention)
       if (!query.contains(' ') && !query.contains('\n')) {
         _mentionStartIndex = atIndex;
@@ -141,7 +143,7 @@ class _CreatePostState extends State<CreatePost> {
 
   void _searchUsers(String query) {
     _debounceTimer?.cancel();
-    
+
     // Search when there's at least one character after @
     if (query.isNotEmpty) {
       setState(() {
@@ -195,7 +197,8 @@ class _CreatePostState extends State<CreatePost> {
           Positioned.fill(
             child: IgnorePointer(
               child: Padding(
-                padding: const EdgeInsets.only(left: 0, right: 0, top: 16, bottom: 16),
+                padding: const EdgeInsets.only(
+                    left: 0, right: 0, top: 16, bottom: 16),
                 child: SingleChildScrollView(
                   controller: _scrollController,
                   physics: const NeverScrollableScrollPhysics(),
@@ -222,7 +225,8 @@ class _CreatePostState extends State<CreatePost> {
           style: TextStyle(
             fontSize: 16.h,
             height: 1.5,
-            color: Colors.transparent, // Make text transparent so formatted text shows through
+            color: Colors
+                .transparent, // Make text transparent so formatted text shows through
           ),
           decoration: InputDecoration(
             filled: true,
@@ -230,7 +234,8 @@ class _CreatePostState extends State<CreatePost> {
             border: const OutlineInputBorder(
               borderSide: BorderSide.none,
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
           ),
           cursorColor: Theme.of(context).colorScheme.primary,
         ),
@@ -241,22 +246,22 @@ class _CreatePostState extends State<CreatePost> {
   void _selectUser(UserModel user) {
     final text = _controller.text;
     final selection = _controller.selection;
-    
+
     if (_mentionStartIndex == -1) return;
 
     // Replace the mention query with the selected username
     final beforeMention = text.substring(0, _mentionStartIndex + 1);
     final afterMention = text.substring(selection.baseOffset);
     final newText = '$beforeMention${user.userName} $afterMention';
-    
+
     // Calculate new cursor position
     final newCursorPosition = _mentionStartIndex + 1 + user.userName.length + 1;
-    
+
     _controller.value = TextEditingValue(
       text: newText,
       selection: TextSelection.collapsed(offset: newCursorPosition),
     );
-    
+
     setState(() {
       _showSuggestions = false;
       _mentionStartIndex = -1;
@@ -269,7 +274,7 @@ class _CreatePostState extends State<CreatePost> {
     final imageProvider = Provider.of<ImagePickerProvider>(context);
     final mediaFiles = imageProvider.mediaFileList;
     final postId = postProvider.postId;
-    
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
@@ -295,40 +300,70 @@ class _CreatePostState extends State<CreatePost> {
                   ],
                 ),
                 TextButton(
-                      onPressed: () async {
-                        if (postId != null) {
-                          final postText = _controller.text.toString();
-                          final Result result = widget.sharedPost != null
-                              ? await sharePost(postText,
-                                  mediaFiles, postId, widget.sharedPost!.id)
-                              : await createPost(postText, mediaFiles, postId);
-                          if (result == Result.success) {
-                            // Add optimistic post to the feed
-                            final userProvider = Provider.of<UserProvider>(context, listen: false);
-                            final currentUser = userProvider.user;
-                            if (currentUser != null && widget.onPostCreated != null) {
-                              final optimisticPost = PostModel(
-                                id: postId,
-                                user: currentUser.userName,
-                                copy: postText,
-                                createdAt: DateTime.now().toIso8601String(),
-                                likes: 0,
-                                comments: 0,
-                                resources: null, // Will be updated when feed refreshes
-                                urlProfileImage: currentUser.profileImage,
-                                sharedPost: widget.sharedPost,
+                  onPressed: () async {
+                    if (postId != null) {
+                      final postText = _controller.text.toString();
+                      // Debug: Check if mediaFiles is null or empty
+                      if (kDebugMode) {
+                        debugPrint(
+                            'Creating post with ${mediaFiles?.length ?? 0} files');
+                        if (mediaFiles != null && mediaFiles.isNotEmpty) {
+                          for (var file in mediaFiles) {
+                            debugPrint(
+                                'File: ${file.path}, exists: ${file.existsSync()}');
+                          }
+                        }
+                      }
+                      final Result result = widget.sharedPost != null
+                          ? await sharePost(postText, mediaFiles, postId,
+                              widget.sharedPost!.id)
+                          : await createPost(postText, mediaFiles, postId);
+                      if (result == Result.success) {
+                        // Add optimistic post to the feed
+                        final userProvider =
+                            Provider.of<UserProvider>(context, listen: false);
+                        final currentUser = userProvider.user;
+                        if (currentUser != null &&
+                            widget.onPostCreated != null) {
+                          // Create resources list from media files for optimistic post
+                          List<ResourceModel>? optimisticResources;
+                          if (mediaFiles != null && mediaFiles.isNotEmpty) {
+                            optimisticResources = mediaFiles.map((file) {
+                              final mimeType = lookupMimeType(file.path);
+                              final isVideo =
+                                  mimeType?.startsWith('video/') ?? false;
+                              // Use file path as temporary URL for local display
+                              return ResourceModel(
+                                id: 'temp-${DateTime.now().millisecondsSinceEpoch}-${file.path.hashCode}',
+                                type: isVideo ? 'video' : 'image',
+                                url: file
+                                    .path, // Local file path for immediate display
                               );
-                              widget.onPostCreated!(optimisticPost);
-                            }
-                            
-                            postProvider.clearPostId();
-                            imageProvider.clearMediaFileList();
+                            }).toList();
                           }
 
-                          // ignore: use_build_context_synchronously
-                          Navigator.pop(context);
+                          final optimisticPost = PostModel(
+                            id: postId,
+                            user: currentUser.userName,
+                            copy: postText,
+                            createdAt: DateTime.now().toIso8601String(),
+                            likes: 0,
+                            comments: 0,
+                            resources: optimisticResources,
+                            urlProfileImage: currentUser.profileImage,
+                            sharedPost: widget.sharedPost,
+                          );
+                          widget.onPostCreated!(optimisticPost);
                         }
-                      },
+
+                        postProvider.clearPostId();
+                        imageProvider.clearMediaFileList();
+                      }
+
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                    }
+                  },
                   style: ButtonStyle(
                     backgroundColor:
                         const WidgetStatePropertyAll(AppTheme.primary),
@@ -378,14 +413,16 @@ class _CreatePostState extends State<CreatePost> {
                       child: _isLoadingSuggestions
                           ? Padding(
                               padding: EdgeInsets.all(16.h),
-                              child: const Center(child: CircularProgressIndicator()),
+                              child: const Center(
+                                  child: CircularProgressIndicator()),
                             )
                           : _userSuggestions.isEmpty
                               ? Padding(
                                   padding: EdgeInsets.all(16.h),
                                   child: Text(
-                                    _mentionStartIndex != -1 && 
-                                    _controller.text.length > _mentionStartIndex + 1
+                                    _mentionStartIndex != -1 &&
+                                            _controller.text.length >
+                                                _mentionStartIndex + 1
                                         ? 'No users found'
                                         : 'Start typing to search users...',
                                     style: TextStyle(fontSize: 14.h),
@@ -400,12 +437,17 @@ class _CreatePostState extends State<CreatePost> {
                                       dense: true,
                                       leading: CircleAvatar(
                                         radius: 16.h,
-                                        backgroundImage: (user.profileImage != null &&
+                                        backgroundImage: (user.profileImage !=
+                                                    null &&
                                                 user.profileImage!.isNotEmpty &&
-                                                (user.profileImage!.startsWith('http://') ||
-                                                    user.profileImage!.startsWith('https://')))
+                                                (user.profileImage!.startsWith(
+                                                        'http://') ||
+                                                    user.profileImage!
+                                                        .startsWith(
+                                                            'https://')))
                                             ? NetworkImage(user.profileImage!)
-                                            : const AssetImage('assets/user_image.jpg')
+                                            : const AssetImage(
+                                                    'assets/user_image.jpg')
                                                 as ImageProvider,
                                       ),
                                       title: Text(

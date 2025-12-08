@@ -49,8 +49,10 @@ class ImagePickerProvider extends ChangeNotifier {
 
           if (pickedFileList.isEmpty) return;
 
-          mediaFileList =
-              pickedFileList.map((xfile) => File(xfile.path)).toList();
+          // Initialize mediaFileList if null, or append to existing list
+          mediaFileList ??= [];
+          final newFiles = pickedFileList.map((xfile) => File(xfile.path)).toList();
+          mediaFileList!.addAll(newFiles);
           notifyListeners();
         } else {
           // For profile images, only allow images
@@ -58,8 +60,10 @@ class ImagePickerProvider extends ChangeNotifier {
 
           if (pickedFileList.isEmpty) return;
 
-          mediaFileList =
-              pickedFileList.map((xfile) => File(xfile.path)).toList();
+          // Initialize mediaFileList if null, or append to existing list
+          mediaFileList ??= [];
+          final newFiles = pickedFileList.map((xfile) => File(xfile.path)).toList();
+          mediaFileList!.addAll(newFiles);
           notifyListeners();
         }
       } else {
@@ -77,7 +81,7 @@ class ImagePickerProvider extends ChangeNotifier {
     }
   }
 
-  Future getImageFromCamera() async {
+  Future getImageFromCamera({ImageType? imageType}) async {
     try {
       final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.camera,
@@ -85,7 +89,16 @@ class ImagePickerProvider extends ChangeNotifier {
       if (pickedFile == null) return;
 
       final File cleanFile = File(pickedFile.path);
-      _setImageFile(cleanFile);
+      
+      if (imageType == ImageType.post) {
+        // For posts, add to mediaFileList
+        mediaFileList ??= [];
+        mediaFileList!.add(cleanFile);
+        notifyListeners();
+      } else {
+        // For profile images, use profileImage
+        _setImageFile(cleanFile);
+      }
     } catch (e) {
       _pickImageError = e;
     }
@@ -121,11 +134,21 @@ class ImagePickerProvider extends ChangeNotifier {
           ),
           SimpleDialogOption(
             child: Text(AppLocalizations.of(context)!.cameraOption),
-            onPressed: () {
+            onPressed: () async {
               // close the options modal
               Navigator.of(context).pop();
               // get image from camera
-              getImageFromCamera();
+              if (imageType == ImageType.post) {
+                await getImageFromCamera(imageType: ImageType.post);
+              } else if (imageType == ImageType.imageProfile) {
+                await getImageFromCamera(imageType: ImageType.imageProfile);
+                if (profileImage != null) {
+                  final result = await updateUserProfileImage(profileImage!);
+                  profileImage = null;
+                  // ignore: use_build_context_synchronously
+                  _handleImageSelection(result, savedContext);
+                }
+              }
             },
           ),
         ],

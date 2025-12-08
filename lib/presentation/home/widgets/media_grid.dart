@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/resource_model.dart';
 import 'package:jugaenequipo/presentation/imageDetail/screens/image_detail_screen.dart';
@@ -211,6 +212,20 @@ class MediaGrid extends StatelessWidget {
   ImageProvider _getImageProvider(String url) {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return NetworkImage(url);
+    } else if (url.startsWith('/') ||
+        url.contains('\\') ||
+        url.contains('/storage/') ||
+        url.contains('/data/')) {
+      // Local file path - use FileImage
+      try {
+        final file = File(url);
+        if (file.existsSync()) {
+          return FileImage(file);
+        }
+      } catch (e) {
+        // If file doesn't exist or can't be accessed, fall back to error image
+      }
+      return const AssetImage('assets/error.png');
     } else {
       return const AssetImage('assets/error.png');
     }
