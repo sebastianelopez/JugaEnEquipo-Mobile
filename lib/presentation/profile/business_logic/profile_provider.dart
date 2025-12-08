@@ -46,6 +46,13 @@ class ProfileProvider extends ChangeNotifier {
   List<GameStat> stats = [];
   List<PlayerModel> playerProfiles = [];
 
+  // Loading states for secondary data
+  bool isLoadingPosts = false;
+  bool isLoadingTeams = false;
+  bool isLoadingSocialNetworks = false;
+  bool isLoadingBackgroundImage = false;
+  bool isLoadingPlayerProfiles = false;
+
   ProfileProvider({
     this.userId,
     this.initialUser,
@@ -55,6 +62,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> _loadData() async {
     try {
+      // Step 1: Load critical user data first
       if (userId == null && initialUser != null) {
         profileUser = initialUser;
       } else if (userId != null) {
@@ -68,28 +76,40 @@ class ProfileProvider extends ChangeNotifier {
         return;
       }
 
-      await Future.wait([
-        _loadFollowings(),
-        _loadFollowers(),
-        _loadPosts(),
-        _loadTeams(),
-        _loadSocialNetworks(),
-        _loadBackgroundImage(),
-        _loadPlayerProfiles(),
-      ]);
-
-      // Load description and memberSince from user model
+      // Load description and memberSince from user model immediately
       _loadUserData();
 
       // Load mock data for fields not yet in API
       _loadMockAdditionalData();
+
+      // Step 2: Load essential counts first (for UI display)
+      await Future.wait([
+        _loadFollowings(),
+        _loadFollowers(),
+      ]);
+
+      // Step 3: Mark as loaded so UI can render
+      isLoading = false;
+      notifyListeners();
+
+      // Step 4: Load secondary data asynchronously (non-blocking)
+      _loadSecondaryData();
     } catch (e) {
       error = 'Error: ${e.toString()}';
       debugPrint('Error loading profile: $e');
-    } finally {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> _loadSecondaryData() async {
+    // Load these in background without blocking UI
+    // Don't wait for all, let them load independently
+    _loadPosts();
+    _loadTeams();
+    _loadSocialNetworks();
+    _loadBackgroundImage();
+    _loadPlayerProfiles();
   }
 
   Future<void> _loadFollowings() async {
@@ -125,6 +145,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> checkIfFollowing(UserModel currentUser) async {
     if (profileUser == null) return;
 
+    // Don't block UI, check in background
     try {
       // Get current user's followings to check if they're following the profile user
       final currentUserFollowings = await getFollowings(currentUser.id);
@@ -179,6 +200,9 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> _loadPosts() async {
     if (profileUser == null) return;
 
+    isLoadingPosts = true;
+    notifyListeners();
+
     try {
       if (kDebugMode) {
         debugPrint(
@@ -195,7 +219,6 @@ class ProfileProvider extends ChangeNotifier {
           debugPrint(
               'ProfileProvider: Posts loaded successfully: ${posts.length}');
         }
-        notifyListeners();
       } else {
         if (kDebugMode) {
           debugPrint('ProfileProvider: Posts response was null');
@@ -203,26 +226,37 @@ class ProfileProvider extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint('Error loading posts: $e');
+    } finally {
+      isLoadingPosts = false;
+      notifyListeners();
     }
   }
 
   Future<void> _loadTeams() async {
     if (profileUser == null) return;
 
+    isLoadingTeams = true;
+    notifyListeners();
+
     try {
       // Use searchTeams with userId to get teams for this user
       final teamsResponse = await searchTeams(userId: profileUser!.id);
       if (teamsResponse != null) {
         teams = teamsResponse;
-        notifyListeners();
       }
     } catch (e) {
       debugPrint('Error loading teams: $e');
+    } finally {
+      isLoadingTeams = false;
+      notifyListeners();
     }
   }
 
   Future<void> _loadSocialNetworks() async {
     if (profileUser == null) return;
+
+    isLoadingSocialNetworks = true;
+    notifyListeners();
 
     try {
       final socialNetworksResponse =
@@ -234,15 +268,20 @@ class ProfileProvider extends ChangeNotifier {
           for (var network in socialNetworksResponse)
             if (network.fullUrl != null) network.name: network.fullUrl!
         };
-        notifyListeners();
       }
     } catch (e) {
       debugPrint('Error loading social networks: $e');
+    } finally {
+      isLoadingSocialNetworks = false;
+      notifyListeners();
     }
   }
 
   Future<void> _loadBackgroundImage() async {
     if (profileUser == null) return;
+
+    isLoadingBackgroundImage = true;
+    notifyListeners();
 
     try {
       // First check if backgroundImage is already in user model
@@ -250,6 +289,7 @@ class ProfileProvider extends ChangeNotifier {
           profileUser!.backgroundImage!.isNotEmpty) {
         backgroundImage = profileUser!.backgroundImage;
         debugPrint('Background image loaded from user model: $backgroundImage');
+        isLoadingBackgroundImage = false;
         notifyListeners();
         return;
       }
@@ -259,12 +299,14 @@ class ProfileProvider extends ChangeNotifier {
       if (bgImage != null && bgImage.isNotEmpty) {
         backgroundImage = bgImage;
         debugPrint('Background image loaded from API: $backgroundImage');
-        notifyListeners();
       } else {
         debugPrint('No background image found for user ${profileUser!.id}');
       }
     } catch (e) {
       debugPrint('Error loading background image: $e');
+    } finally {
+      isLoadingBackgroundImage = false;
+      notifyListeners();
     }
   }
 
@@ -288,7 +330,8 @@ class ProfileProvider extends ChangeNotifier {
     if (profileUser == null) return;
 
     // Mock data - these should come from API eventually
-    description ??= 'Passionate gamer and esports enthusiast. Always looking for new challenges and opportunities to improve.';
+    description ??=
+        'Passionate gamer and esports enthusiast. Always looking for new challenges and opportunities to improve.';
     tournamentWins = 12;
     memberSince ??= DateTime.now().subtract(const Duration(days: 365));
 
@@ -378,14 +421,19 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> _loadPlayerProfiles() async {
     if (profileUser == null) return;
 
+    isLoadingPlayerProfiles = true;
+    notifyListeners();
+
     try {
       final playersResponse = await getPlayersByUserId(profileUser!.id);
       if (playersResponse != null) {
         playerProfiles = playersResponse;
-        notifyListeners();
       }
     } catch (e) {
       debugPrint('Error loading player profiles: $e');
+    } finally {
+      isLoadingPlayerProfiles = false;
+      notifyListeners();
     }
   }
 
