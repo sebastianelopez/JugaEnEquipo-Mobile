@@ -128,16 +128,17 @@ class _PostCardState extends State<PostCard>
             opacity: widget.post.isVisible ? 1.0 : 0.0,
             curve: Curves.easeInOut,
             child: Card(
-              margin: EdgeInsets.only(
-                top: 8.0.w,
+              margin: EdgeInsets.symmetric(
+                horizontal: 12.w,
+                vertical: 8.h,
               ),
-              elevation: 12,
-              shadowColor: AppTheme.primary.withOpacity(0.3),
+              elevation: 4,
+              shadowColor: Theme.of(context).shadowColor.withOpacity(0.1),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16.r),
                 side: BorderSide(
-                  color: Colors.white.withOpacity(0.3),
-                  width: 1.5,
+                  color: Theme.of(context).dividerColor.withOpacity(0.5),
+                  width: 1,
                 ),
               ),
               child: LayoutBuilder(
@@ -145,78 +146,125 @@ class _PostCardState extends State<PostCard>
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      ListTile(
-                        leading: GestureDetector(
-                          onTapDown: (_) {
-                            setState(() {
-                              _isAvatarPressed = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _isAvatarPressed = false;
-                            });
-                            _navigateToUserProfile(
-                                context, widget.post.user ?? '');
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _isAvatarPressed = false;
-                            });
-                          },
-                          child: AnimatedScale(
-                            scale: _isAvatarPressed ? 0.9 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            child: Container(
-                              height: 50.h,
-                              width: 50.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: _isAvatarPressed
-                                    ? []
-                                    : [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
-                              ),
-                              child: CircleAvatar(
-                                maxRadius: 25.h,
-                                backgroundImage: (widget.post.urlProfileImage !=
-                                            null &&
-                                        widget
-                                            .post.urlProfileImage!.isNotEmpty &&
-                                        (widget.post.urlProfileImage!
-                                                .startsWith('http://') ||
-                                            widget.post.urlProfileImage!
-                                                .startsWith('https://')))
-                                    ? NetworkImage(widget.post.urlProfileImage!)
-                                    : const AssetImage('assets/user_image.jpg')
-                                        as ImageProvider,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 8.h,
+                        ),
+                        child: Row(
+                          children: [
+                            Semantics(
+                              label:
+                                  'View ${widget.post.user ?? 'user'}\'s profile',
+                              button: true,
+                              child: GestureDetector(
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _isAvatarPressed = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _isAvatarPressed = false;
+                                  });
+                                  _navigateToUserProfile(
+                                      context, widget.post.user ?? '');
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _isAvatarPressed = false;
+                                  });
+                                },
+                                child: AnimatedScale(
+                                  scale: _isAvatarPressed ? 0.9 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  child: Container(
+                                    height: 48.h,
+                                    width: 48.h,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: _isAvatarPressed
+                                          ? []
+                                          : [
+                                              BoxShadow(
+                                                color: Theme.of(context)
+                                                    .shadowColor
+                                                    .withOpacity(0.15),
+                                                blurRadius: 8,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ],
+                                    ),
+                                    child: CircleAvatar(
+                                      maxRadius: 24.h,
+                                      backgroundImage: (widget
+                                                      .post.urlProfileImage !=
+                                                  null &&
+                                              widget.post.urlProfileImage!
+                                                  .isNotEmpty &&
+                                              (widget.post.urlProfileImage!
+                                                      .startsWith('http://') ||
+                                                  widget.post.urlProfileImage!
+                                                      .startsWith('https://')))
+                                          ? NetworkImage(
+                                              widget.post.urlProfileImage!)
+                                          : const AssetImage(
+                                                  'assets/user_image.jpg')
+                                              as ImageProvider,
+                                      onBackgroundImageError:
+                                          (exception, stackTrace) {
+                                        // Error handling for image loading
+                                      },
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () => _navigateToUserProfile(
-                                  context, widget.post.user ?? ''),
-                              child: Text(
-                                widget.post.user ?? 'user',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 15.h,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => _navigateToUserProfile(
+                                        context, widget.post.user ?? ''),
+                                    child: Text(
+                                      widget.post.user ?? 'user',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15.sp,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    formatTimeElapsed(
+                                        DateTime.parse(widget.post.createdAt),
+                                        context),
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.color
+                                          ?.withOpacity(0.7),
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             if (isLoggedUserPost)
                               PopupMenuButton(
-                                icon: const Icon(Icons.more_vert),
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  size: 20.sp,
+                                ),
                                 onSelected: (Menu item) {
                                   homeProvider.handlePostMenuOptionClick(
                                       item, widget.post.id);
@@ -232,54 +280,56 @@ class _PostCardState extends State<PostCard>
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
                           ],
-                        ),
-                        subtitle: SizedBox(
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  formatTimeElapsed(
-                                      DateTime.parse(widget.post.createdAt),
-                                      context),
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 13.h)),
-                            ],
-                          ),
                         ),
                       ),
                       Column(
                         children: <Widget>[
                           if (widget.post.copy != null &&
                               widget.post.copy!.isNotEmpty)
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 8),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 18),
-                              width: double.infinity,
-                              child: MentionText(
-                                text: widget.post.copy!,
-                                style: TextStyle(fontSize: 13.h),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 8.h,
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: MentionText(
+                                  text: widget.post.copy!,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    height: 1.5,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
+                                  ),
+                                ),
                               ),
                             ),
                           if (imagesUrls != null && imagesUrls.isNotEmpty)
-                            Container(
-                                margin: const EdgeInsets.only(bottom: 8),
-                                child: MediaGrid(
-                                    resources: widget.post.resources ?? [],
-                                    heroTagPrefix: widget.post.id,
-                                    contextId: widget.contextId ?? 'home')),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 8.h),
+                              child: MediaGrid(
+                                  resources: widget.post.resources ?? [],
+                                  heroTagPrefix: widget.post.id,
+                                  contextId: widget.contextId ?? 'home'),
+                            ),
                           if (widget.post.sharedPost != null)
-                            Container(
-                                margin: const EdgeInsets.only(bottom: 8),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 18),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 8.h,
+                              ),
+                              child: SizedBox(
                                 width: double.infinity,
                                 child: SharedPost(
                                   post: widget.post.sharedPost!,
-                                )),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                       Consumer<PostProvider>(
@@ -289,60 +339,79 @@ class _PostCardState extends State<PostCard>
                           if ((widget.post.likes != null &&
                                   widget.post.likes! > 0) ||
                               commentsCount > 0) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                if (widget.post.likes != null &&
-                                    widget.post.likes! > 0)
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.favorite,
-                                        size: 15.0.h,
-                                        color:
-                                            Theme.of(context).colorScheme.error,
-                                      ),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      TweenAnimationBuilder<int>(
-                                        tween: IntTween(
-                                          begin: widget.post.likes ?? 0,
-                                          end: widget.post.likes ?? 0,
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 8.h,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  if (widget.post.likes != null &&
+                                      widget.post.likes! > 0)
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.favorite,
+                                          size: 16.sp,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error,
                                         ),
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        builder: (context, value, child) {
-                                          return AnimatedSwitcher(
-                                            duration: const Duration(
-                                                milliseconds: 200),
-                                            child: Text(
-                                              value.toString(),
-                                              key: ValueKey(value),
-                                              style: TextStyle(
-                                                fontSize: 14.h,
-                                                fontWeight: FontWeight.w600,
+                                        SizedBox(width: 6.w),
+                                        TweenAnimationBuilder<int>(
+                                          tween: IntTween(
+                                            begin: widget.post.likes ?? 0,
+                                            end: widget.post.likes ?? 0,
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          builder: (context, value, child) {
+                                            return AnimatedSwitcher(
+                                              duration: const Duration(
+                                                  milliseconds: 200),
+                                              child: Text(
+                                                value.toString(),
+                                                key: ValueKey(value),
+                                                style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.color,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  else
+                                    const SizedBox.shrink(),
+                                  if (commentsCount > 0)
+                                    TextButton(
+                                      onPressed: () {
+                                        homeProvider.openCommentsModal(context,
+                                            postId: widget.post.id);
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8.w,
+                                          vertical: 4.h,
+                                        ),
                                       ),
-                                    ],
-                                  )
-                                else
-                                  const SizedBox.shrink(),
-                                if (commentsCount > 0)
-                                  TextButton(
-                                    onPressed: () {
-                                      homeProvider.openCommentsModal(context,
-                                          postId: widget.post.id);
-                                    },
-                                    child: Text(
-                                      "$commentsCount ${AppLocalizations.of(context)!.commentsLabel}",
-                                      style: TextStyle(fontSize: 14.h),
+                                      child: Text(
+                                        "$commentsCount ${AppLocalizations.of(context)!.commentsLabel}",
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                              ],
+                                ],
+                              ),
                             );
                           }
                           return const SizedBox.shrink();
@@ -350,172 +419,196 @@ class _PostCardState extends State<PostCard>
                       ),
                       Divider(
                         color: Theme.of(context).dividerColor,
-                        height: 5,
-                        indent: 10,
-                        endIndent: 10,
+                        height: 1,
+                        thickness: 0.5,
+                        indent: 16.w,
+                        endIndent: 16.w,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          // Botón de Like Animado
-                          AnimatedBuilder(
-                            animation: _likeScaleAnimation,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: _likeScaleAnimation.value,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: IconButton(
-                                    icon: AnimatedSwitcher(
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      child: Icon(
-                                        _isLiked
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        key: ValueKey(_isLiked),
-                                        color: AppTheme.primary,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 4.h,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            // Botón de Like Animado
+                            Semantics(
+                              label: _isLiked ? 'Unlike post' : 'Like post',
+                              button: true,
+                              child: AnimatedBuilder(
+                                animation: _likeScaleAnimation,
+                                builder: (context, child) {
+                                  return Transform.scale(
+                                    scale: _likeScaleAnimation.value,
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
+                                        onTap: _handleLike,
+                                        child: Container(
+                                          padding: EdgeInsets.all(8.w),
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(12.r),
+                                          ),
+                                          child: AnimatedSwitcher(
+                                            duration: const Duration(
+                                                milliseconds: 200),
+                                            child: Icon(
+                                              _isLiked
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border,
+                                              key: ValueKey(_isLiked),
+                                              color: _isLiked
+                                                  ? Theme.of(context)
+                                                      .colorScheme
+                                                      .error
+                                                  : Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.color
+                                                      ?.withOpacity(0.7),
+                                              size: 24.sp,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    iconSize: 24.h,
-                                    onPressed: _handleLike,
-                                    style: IconButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      foregroundColor: AppTheme.primary,
-                                      elevation: 0,
-                                      padding: EdgeInsets.all(8.h),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          // Botón de Comentarios Animado
-                          GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                _showComments = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              Future.delayed(const Duration(milliseconds: 100),
-                                  () {
-                                setState(() {
-                                  _showComments = false;
-                                });
-                              });
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _showComments = false;
-                              });
-                            },
-                            child: AnimatedScale(
-                              scale: _showComments ? 0.9 : 1.0,
-                              duration: const Duration(milliseconds: 100),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(Icons.message),
-                                  iconSize: 24.h,
-                                  color: AppTheme.accent,
-                                  onPressed: () {
-                                    homeProvider.openCommentsModal(context,
-                                        autofocus: true,
-                                        postId: widget.post.id);
-                                  },
-                                  style: IconButton.styleFrom(
-                                    backgroundColor: Colors.transparent,
-                                    foregroundColor: AppTheme.accent,
-                                    elevation: 0,
-                                    padding: EdgeInsets.all(8.h),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                ),
+                                  );
+                                },
                               ),
                             ),
-                          ),
-                          // Botón de Share Animado
-                          GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                _isSharePressed = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              Future.delayed(const Duration(milliseconds: 100),
-                                  () {
-                                setState(() {
-                                  _isSharePressed = false;
-                                });
-                              });
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _isSharePressed = false;
-                              });
-                            },
-                            child: AnimatedScale(
-                              scale: _isSharePressed ? 0.9 : 1.0,
-                              duration: const Duration(milliseconds: 100),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: IconButton(
-                                  icon: AnimatedRotation(
-                                    turns: _isSharePressed ? 0.1 : 0.0,
-                                    duration: const Duration(milliseconds: 100),
-                                    child: const Icon(Icons.share),
-                                  ),
-                                  iconSize: 24.h,
-                                  color: AppTheme.success,
-                                  onPressed: () {
-                                    postProvider.generatePostId();
-                                    showModalBottomSheet(
-                                      context: context,
-                                      constraints: BoxConstraints(
-                                        maxHeight: 600.h,
-                                        maxWidth: 1200,
-                                      ),
-                                      isScrollControlled: true,
-                                      useSafeArea: true,
-                                      builder: (BuildContext context) {
-                                        return CreatePost(
-                                          sharedPost: widget.post,
-                                        );
-                                      },
-                                    ).then((value) {
-                                      postProvider.clearPostId();
-                                      imageProvider.clearMediaFileList();
+                            // Botón de Comentarios Animado
+                            Semantics(
+                              label: 'Add comment',
+                              button: true,
+                              child: GestureDetector(
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _showComments = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  Future.delayed(
+                                      const Duration(milliseconds: 100), () {
+                                    setState(() {
+                                      _showComments = false;
                                     });
-                                  },
-                                  style: IconButton.styleFrom(
-                                    backgroundColor: Colors.transparent,
-                                    foregroundColor: AppTheme.success,
-                                    elevation: 0,
-                                    padding: EdgeInsets.all(8.h),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                  });
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _showComments = false;
+                                  });
+                                },
+                                child: AnimatedScale(
+                                  scale: _showComments ? 0.9 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      onTap: () {
+                                        homeProvider.openCommentsModal(context,
+                                            autofocus: true,
+                                            postId: widget.post.id);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(8.w),
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(12.r),
+                                        ),
+                                        child: Icon(
+                                          Icons.message_outlined,
+                                          size: 24.sp,
+                                          color: AppTheme.accent,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                            // Botón de Share Animado
+                            Semantics(
+                              label: 'Share post',
+                              button: true,
+                              child: GestureDetector(
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _isSharePressed = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  Future.delayed(
+                                      const Duration(milliseconds: 100), () {
+                                    setState(() {
+                                      _isSharePressed = false;
+                                    });
+                                  });
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _isSharePressed = false;
+                                  });
+                                },
+                                child: AnimatedScale(
+                                  scale: _isSharePressed ? 0.9 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      onTap: () {
+                                        postProvider.generatePostId();
+                                        showModalBottomSheet(
+                                          context: context,
+                                          constraints: BoxConstraints(
+                                            maxHeight: 600.h,
+                                            maxWidth: 1200,
+                                          ),
+                                          isScrollControlled: true,
+                                          useSafeArea: true,
+                                          builder: (BuildContext context) {
+                                            return CreatePost(
+                                              sharedPost: widget.post,
+                                            );
+                                          },
+                                        ).then((value) {
+                                          postProvider.clearPostId();
+                                          imageProvider.clearMediaFileList();
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(8.w),
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(12.r),
+                                        ),
+                                        child: AnimatedRotation(
+                                          turns: _isSharePressed ? 0.1 : 0.0,
+                                          duration:
+                                              const Duration(milliseconds: 100),
+                                          child: Icon(
+                                            Icons.share_outlined,
+                                            size: 24.sp,
+                                            color: AppTheme.success,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   );
