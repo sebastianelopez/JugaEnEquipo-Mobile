@@ -114,6 +114,12 @@ class HomeScreenProvider extends ChangeNotifier {
     }
   }
 
+  void addOptimisticPost(PostModel post) {
+    // Add post at the beginning of the list (most recent first)
+    posts.insert(0, post);
+    notifyListeners();
+  }
+
   void handlePostMenuOptionClick(Menu option, String postId) async {
     switch (option) {
       case Menu.delete:

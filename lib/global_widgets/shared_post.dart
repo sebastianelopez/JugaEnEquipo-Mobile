@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/post/post_model.dart';
+import 'package:jugaenequipo/global_widgets/mention_text.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jugaenequipo/providers/providers.dart';
@@ -25,7 +26,7 @@ class SharedPost extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).shadowColor.withOpacity( 0.2),
+                  color: Theme.of(context).shadowColor.withOpacity(0.2),
                 ),
                 BoxShadow(
                   color: Theme.of(context).colorScheme.surface,
@@ -87,8 +88,8 @@ class SharedPost extends StatelessWidget {
                             margin: const EdgeInsets.only(bottom: 8),
                             padding: const EdgeInsets.symmetric(horizontal: 18),
                             width: double.infinity,
-                            child: Text(
-                              post.copy!,
+                            child: MentionText(
+                              text: post.copy!,
                               style: TextStyle(fontSize: 13.h),
                             ),
                           ),

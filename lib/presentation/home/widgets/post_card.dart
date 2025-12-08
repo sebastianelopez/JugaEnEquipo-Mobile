@@ -4,6 +4,7 @@ import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/add_like_post_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/get_users_by_username_use_case.dart';
 import 'package:jugaenequipo/global_widgets/create_post.dart';
+import 'package:jugaenequipo/global_widgets/mention_text.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
@@ -260,8 +261,8 @@ class _PostCardState extends State<PostCard>
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 18),
                               width: double.infinity,
-                              child: Text(
-                                widget.post.copy!,
+                              child: MentionText(
+                                text: widget.post.copy!,
                                 style: TextStyle(fontSize: 13.h),
                               ),
                             ),

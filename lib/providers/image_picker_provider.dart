@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
-import 'package:jugaenequipo/datasources/post_use_cases/add_post_resource_use_case.dart';
 import 'package:jugaenequipo/datasources/user_use_cases/update_user_profile_image.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/providers/providers.dart';
@@ -39,16 +38,30 @@ class ImagePickerProvider extends ChangeNotifier {
     return mimeType?.startsWith('video/') ?? false;
   }
 
-  Future getImageFromGallery(bool isMulti) async {
+  Future getImageFromGallery(bool isMulti, {bool allowVideo = false}) async {
     try {
       if (isMulti) {
-        final List<XFile> pickedFileList = await _picker.pickMultiImage();
+        if (allowVideo) {
+          // For posts, allow both images and videos using pickMultipleMedia
+          final List<XFile> pickedFileList = await _picker.pickMultipleMedia(
+            imageQuality: 85,
+          );
 
-        if (pickedFileList.isEmpty) return;
+          if (pickedFileList.isEmpty) return;
 
-        mediaFileList =
-            pickedFileList.map((xfile) => File(xfile.path)).toList();
-        notifyListeners();
+          mediaFileList =
+              pickedFileList.map((xfile) => File(xfile.path)).toList();
+          notifyListeners();
+        } else {
+          // For profile images, only allow images
+          final List<XFile> pickedFileList = await _picker.pickMultiImage();
+
+          if (pickedFileList.isEmpty) return;
+
+          mediaFileList =
+              pickedFileList.map((xfile) => File(xfile.path)).toList();
+          notifyListeners();
+        }
       } else {
         final XFile? pickedFile = await _picker.pickImage(
           source: ImageSource.gallery,
@@ -91,20 +104,10 @@ class ImagePickerProvider extends ChangeNotifier {
             onPressed: () async {
               Navigator.of(context).pop();
 
-              // get image from gallery
+              // get image/video from gallery
               if (imageType == ImageType.post) {
-                await getImageFromGallery(true).then((_) async {
-                  if ((mediaFileList != null && mediaFileList!.isEmpty) ||
-                      postId == null) {
-                    return;
-                  }
-                  mediaFileList?.forEach((file) async {
-                    var mediaId = uuid.v4();
-                    mediaFileListIds?.add(mediaId);
-                    final isVideo = this.isVideo(file.path);
-                    await addPostResource(postId, mediaId, file, isVideo);
-                  });
-                });
+                await getImageFromGallery(true, allowVideo: true);
+                // Files (images/videos) are now sent directly in the create post request, no need to upload separately
               } else if (imageType == ImageType.imageProfile) {
                 getImageFromGallery(false).then((_) async {
                   if (profileImage == null) return;

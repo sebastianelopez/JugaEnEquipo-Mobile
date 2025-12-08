@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jugaenequipo/main.dart';
+import 'package:jugaenequipo/datasources/models/models.dart';
+import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/router/app_routes.dart';
 import 'package:jugaenequipo/global_widgets/create_post.dart';
@@ -30,6 +33,53 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
   Future<void> _showCreatePostModal() async {
     try {
       postProvider.generatePostId();
+
+      // Create a callback to add optimistic post
+      void Function(PostModel)? onPostCreated;
+      try {
+        // Try to find HomeScreenProvider in the widget tree
+        final navigatorContext = navigatorKey.currentContext;
+        if (navigatorContext != null) {
+          try {
+            final homeProvider = Provider.of<HomeScreenProvider>(
+                navigatorContext,
+                listen: false);
+            onPostCreated = (PostModel post) {
+              homeProvider.addOptimisticPost(post);
+            };
+          } catch (e) {
+            // Provider not found in navigator context, try searching in the element tree
+            HomeScreenProvider? foundProvider;
+            void visitElement(Element element) {
+              if (foundProvider != null) return;
+
+              try {
+                final provider =
+                    Provider.of<HomeScreenProvider>(element, listen: false);
+                foundProvider = provider;
+              } catch (e) {
+                // Continue searching
+                element.visitChildElements(visitElement);
+              }
+            }
+
+            try {
+              navigatorContext.visitChildElements(visitElement);
+            } catch (e) {
+              // Could not visit elements
+            }
+
+            if (foundProvider != null) {
+              onPostCreated = (PostModel post) {
+                foundProvider!.addOptimisticPost(post);
+              };
+            }
+          }
+        }
+      } catch (e) {
+        debugPrint('Could not find HomeScreenProvider: $e');
+      }
+
       await showModalBottomSheet(
         context: context,
         constraints: BoxConstraints(
@@ -38,7 +88,9 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
         ),
         isScrollControlled: true,
         useSafeArea: true,
-        builder: (BuildContext context) => CreatePost(),
+        builder: (BuildContext context) => CreatePost(
+          onPostCreated: onPostCreated,
+        ),
       );
     } catch (e) {
       debugPrint('Error showing modal: $e');
@@ -73,9 +125,10 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
       items: mainNavigationOptions.map((option) {
         // Check if this is the notifications icon
         if (option.route == 'notifications') {
-          final notificationsProvider = Provider.of<NotificationsProvider>(context, listen: true);
+          final notificationsProvider =
+              Provider.of<NotificationsProvider>(context, listen: true);
           final unreadCount = notificationsProvider.unreadCount;
-          
+
           return BottomNavigationBarItem(
             icon: Stack(
               clipBehavior: Clip.none,
@@ -116,7 +169,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
             label: '',
           );
         }
-        
+
         return BottomNavigationBarItem(
           icon: Icon(
             size: 24.h,
