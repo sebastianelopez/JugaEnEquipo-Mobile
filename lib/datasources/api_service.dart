@@ -82,21 +82,30 @@ class APIService {
           response = await _dio.post(
             endpoint,
             data: param ?? formData,
-            options: Options(responseType: responseType),
+            options: Options(
+              responseType: responseType,
+              contentType: _dio.options.contentType,
+            ),
           );
           break;
         case DioMethod.put:
           response = await _dio.put(
             endpoint,
             data: param ?? formData,
-            options: Options(responseType: responseType),
+            options: Options(
+              responseType: responseType,
+              contentType: _dio.options.contentType,
+            ),
           );
           break;
         case DioMethod.patch:
           response = await _dio.patch(
             endpoint,
             data: param ?? formData,
-            options: Options(responseType: responseType),
+            options: Options(
+              responseType: responseType,
+              contentType: _dio.options.contentType,
+            ),
           );
           break;
         case DioMethod.delete:

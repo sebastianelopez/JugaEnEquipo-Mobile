@@ -111,14 +111,13 @@ class _PostCardState extends State<PostCard>
   @override
   Widget build(BuildContext context) {
     final homeProvider = Provider.of<HomeScreenProvider>(context);
-    final postProvider = Provider.of<PostProvider>(context);
     final imageProvider = Provider.of<ImagePickerProvider>(context);
     UserModel? user = Provider.of<UserProvider>(context).user;
     final isLoggedUserPost = user?.userName == widget.post.user;
     final imagesUrls = widget.post.resources?.map((e) => e.url).toList();
 
-    return ChangeNotifierProvider.value(
-      value: PostProvider()..getCommentsQuantity(widget.post.id),
+    return ChangeNotifierProvider(
+      create: (_) => PostProvider()..getCommentsQuantity(widget.post.id),
       child: Center(
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
@@ -393,8 +392,17 @@ class _PostCardState extends State<PostCard>
                                   if (commentsCount > 0)
                                     TextButton(
                                       onPressed: () {
-                                        homeProvider.openCommentsModal(context,
-                                            postId: widget.post.id);
+                                        final postProv =
+                                            Provider.of<PostProvider>(context,
+                                                listen: false);
+                                        homeProvider.openCommentsModal(
+                                          context,
+                                          postId: widget.post.id,
+                                          onCommentAdded: () {
+                                            postProv.getCommentsQuantity(
+                                                widget.post.id);
+                                          },
+                                        );
                                       },
                                       style: TextButton.styleFrom(
                                         padding: EdgeInsets.symmetric(
@@ -512,9 +520,18 @@ class _PostCardState extends State<PostCard>
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(12.r),
                                       onTap: () {
-                                        homeProvider.openCommentsModal(context,
-                                            autofocus: true,
-                                            postId: widget.post.id);
+                                        final postProv =
+                                            Provider.of<PostProvider>(context,
+                                                listen: false);
+                                        homeProvider.openCommentsModal(
+                                          context,
+                                          autofocus: true,
+                                          postId: widget.post.id,
+                                          onCommentAdded: () {
+                                            postProv.getCommentsQuantity(
+                                                widget.post.id);
+                                          },
+                                        );
                                       },
                                       child: Container(
                                         padding: EdgeInsets.all(8.w),
@@ -565,7 +582,10 @@ class _PostCardState extends State<PostCard>
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(12.r),
                                       onTap: () {
-                                        postProvider.generatePostId();
+                                        final postProv =
+                                            Provider.of<PostProvider>(context,
+                                                listen: false);
+                                        postProv.generatePostId();
                                         showModalBottomSheet(
                                           context: context,
                                           constraints: BoxConstraints(
@@ -580,7 +600,7 @@ class _PostCardState extends State<PostCard>
                                             );
                                           },
                                         ).then((value) {
-                                          postProvider.clearPostId();
+                                          postProv.clearPostId();
                                           imageProvider.clearMediaFileList();
                                         });
                                       },

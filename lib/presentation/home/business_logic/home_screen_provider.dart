@@ -236,7 +236,9 @@ class HomeScreenProvider extends ChangeNotifier {
   }
 
   Future<dynamic> openCommentsModal(BuildContext context,
-      {bool? autofocus = false, required String postId}) {
+      {bool? autofocus = false,
+      required String postId,
+      VoidCallback? onCommentAdded}) {
     return showModalBottomSheet(
       enableDrag: true,
       context: context,
@@ -255,6 +257,7 @@ class HomeScreenProvider extends ChangeNotifier {
               key: Key(postId),
               autofocus: autofocus ?? false,
               postId: postId,
+              onCommentAdded: onCommentAdded,
             ),
           ),
         );

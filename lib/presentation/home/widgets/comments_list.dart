@@ -20,8 +20,9 @@ class CommentsList extends StatelessWidget {
             7,
             CommentModel(
               id: '',
-              user: 'user',
-              copy: 'aaaaaaaaaaaaaaaaa',
+              userId: '',
+              username: 'user',
+              comment: 'aaaaaaaaaaaaaaaaa',
               createdAt: '2024-04-20 20:18:04Z',
             ))
         : postProvider.comments;
@@ -32,7 +33,9 @@ class CommentsList extends StatelessWidget {
         enabled: postProvider.isLoading,
         child: Column(
           children: List.generate(comments.length, (index) {
-            final isLoggedUser = comments[index].id == user?.id;
+            final comment = comments[index];
+            final isLoggedUser = comment.userId == user?.id;
+
             return Container(
               padding: const EdgeInsets.only(
                   left: 16, right: 16, top: 10, bottom: 10),
@@ -40,14 +43,11 @@ class CommentsList extends StatelessWidget {
                 alignment:
                     (!isLoggedUser ? Alignment.topLeft : Alignment.topRight),
                 child: Column(
-                  crossAxisAlignment: comments[index].id != user?.id
+                  crossAxisAlignment: !isLoggedUser
                       ? CrossAxisAlignment.start
                       : CrossAxisAlignment.end,
                   children: [
-                    Text(
-                        (user?.firstName != null && user?.lastName != null)
-                            ? '${user!.firstName} ${user.lastName}'
-                            : '',
+                    Text(comment.username ?? '',
                         style: TextStyle(
                             fontSize: 15.h, fontWeight: FontWeight.bold)),
                     Row(
@@ -57,8 +57,11 @@ class CommentsList extends StatelessWidget {
                       children: [
                         if (!isLoggedUser)
                           CircleAvatar(
-                            backgroundImage:
-                                const AssetImage('assets/login.png'),
+                            backgroundImage: comment.profileImage != null &&
+                                    comment.profileImage!.isNotEmpty
+                                ? NetworkImage(comment.profileImage!)
+                                : const AssetImage('assets/login.png')
+                                    as ImageProvider,
                             radius: 16.w,
                             backgroundColor:
                                 Theme.of(context).colorScheme.surface,
@@ -71,7 +74,7 @@ class CommentsList extends StatelessWidget {
                                 : Theme.of(context)
                                     .colorScheme
                                     .secondary
-                                    .withOpacity( 0.2)),
+                                    .withOpacity(0.2)),
                           ),
                           margin: EdgeInsets.only(
                               left: isLoggedUser ? 0 : 10,
@@ -80,14 +83,17 @@ class CommentsList extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 16),
                           child: Text(
-                            comments[index].copy ?? '',
+                            comment.comment ?? '',
                             style: TextStyle(fontSize: 15.h),
                           ),
                         ),
                         if (isLoggedUser)
                           CircleAvatar(
-                            backgroundImage:
-                                const AssetImage('assets/login.png'),
+                            backgroundImage: comment.profileImage != null &&
+                                    comment.profileImage!.isNotEmpty
+                                ? NetworkImage(comment.profileImage!)
+                                : const AssetImage('assets/login.png')
+                                    as ImageProvider,
                             radius: 16.w,
                             backgroundColor:
                                 Theme.of(context).colorScheme.surface,

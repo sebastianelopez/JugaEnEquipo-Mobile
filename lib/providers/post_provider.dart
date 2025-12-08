@@ -30,9 +30,31 @@ class PostProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addComment(String postId, String comment) async {
-    await addPostComment(postId, comment);
+  Future<bool> addComment(String postId, String comment) async {
+    final success = await addPostComment(postId, comment);
     notifyListeners();
+    return success;
+  }
+
+  void addOptimisticComment(CommentModel comment) {
+    comments.add(comment);
+    comments.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    notifyListeners();
+
+    if (kDebugMode) {
+      debugPrint(
+          'PostProvider.addOptimisticComment - Added optimistic comment, now has ${comments.length} comments');
+    }
+  }
+
+  void removeComment(CommentModel comment) {
+    comments.remove(comment);
+    notifyListeners();
+
+    if (kDebugMode) {
+      debugPrint(
+          'PostProvider.removeComment - Removed comment, now has ${comments.length} comments');
+    }
   }
 
   Future<void> getCommentsQuantity(String postId) async {
@@ -56,24 +78,57 @@ class PostProvider with ChangeNotifier {
   }
 
   Future fetchData(String postId) async {
-    if (isLoading) return;
+    if (isLoading) {
+      if (kDebugMode) {
+        debugPrint('PostProvider.fetchData - Already loading, skipping');
+      }
+      return;
+    }
+
+    if (kDebugMode) {
+      debugPrint('PostProvider.fetchData - Starting for postId: $postId');
+    }
 
     isLoading = true;
     notifyListeners();
+
     try {
       final fetchedComments = await getPostComments(postId);
+
+      if (kDebugMode) {
+        debugPrint(
+            'PostProvider.fetchData - Fetched ${fetchedComments?.length ?? 0} comments');
+      }
+
       if (fetchedComments != null) {
         comments = fetchedComments
           ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+        if (kDebugMode) {
+          debugPrint(
+              'PostProvider.fetchData - Updated comments list, now has ${comments.length} comments');
+        }
+        notifyListeners();
+      } else {
+        if (kDebugMode) {
+          debugPrint('PostProvider.fetchData - fetchedComments is null');
+        }
+        comments = [];
         notifyListeners();
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (kDebugMode) {
-        debugPrint('Error fetching comments: $e');
+        debugPrint('PostProvider.fetchData - Error fetching comments: $e');
+        debugPrint('PostProvider.fetchData - Stack trace: $stackTrace');
       }
+      comments = [];
     } finally {
       isLoading = false;
       notifyListeners();
+
+      if (kDebugMode) {
+        debugPrint('PostProvider.fetchData - Finished, isLoading: $isLoading');
+      }
     }
   }
 }

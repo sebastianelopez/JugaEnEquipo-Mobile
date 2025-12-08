@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 var uuid = const Uuid();
 
-Future<void> addPostComment(String postId, String comment) async {
+Future<bool> addPostComment(String postId, String comment) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
@@ -27,17 +27,20 @@ Future<void> addPostComment(String postId, String comment) async {
       if (kDebugMode) {
         debugPrint('addPostComment - API call successful: ${response.data}');
       }
+      return true;
     } else {
       // Error: Handle the error response
       if (kDebugMode) {
         debugPrint(
             'addPostComment - API call failed: ${response.statusMessage}');
       }
+      return false;
     }
   } catch (e) {
     // Error: Handle network errors
     if (kDebugMode) {
-      debugPrint('addPostResource - Network error occurred: $e');
+      debugPrint('addPostComment - Network error occurred: $e');
     }
+    return false;
   }
 }

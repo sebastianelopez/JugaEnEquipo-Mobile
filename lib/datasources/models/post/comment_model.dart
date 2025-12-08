@@ -1,44 +1,55 @@
+import 'package:flutter/foundation.dart';
+
 class CommentModel {
   final String id;
-  final String? user;
-  //final String? userImage;
-  final String? copy;
-  //final String? image;
+  final String? userId;
+  final String? username;
+  final String? profileImage;
+  final String? comment;
   final String createdAt;
   final String? updatedAt;
   final String? deletedAt;
 
   CommentModel({
     required this.id,
-    required this.user,
-    this.copy,
-    //this.image,
+    this.userId,
+    this.username,
+    this.profileImage,
+    this.comment,
     required this.createdAt,
     this.updatedAt,
     this.deletedAt,
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
-    return CommentModel(
-      id: json['id'] as String,
-      user: json['user'] as String,
-      copy: json['comment'] as String,
-      //image: json['image'] as String,
-      createdAt: json['createdAt'] as String,
-      // updatedAt: json['updatedAt'] as String,
-      // deletedAt: json['deletedAt'] as String
-    );
+    try {
+      return CommentModel(
+        id: json['id']?.toString() ?? '',
+        userId: json['userId']?.toString(),
+        username: json['username']?.toString(),
+        profileImage: json['profileImage']?.toString(),
+        comment: json['comment']?.toString(),
+        createdAt: json['createdAt']?.toString() ?? '',
+        updatedAt: json['updatedAt']?.toString(),
+        deletedAt: json['deletedAt']?.toString(),
+      );
+    } catch (e) {
+      debugPrint('Error parsing CommentModel: $e');
+      debugPrint('JSON data: $json');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'user': user,
-      'comment': copy,
-      //'image': image,
+      'userId': userId,
+      'username': username,
+      'profileImage': profileImage,
+      'comment': comment,
       'createdAt': createdAt,
-      //'updatedAt': updatedAt,
-      //'deletedAt': deletedAt
+      'updatedAt': updatedAt,
+      'deletedAt': deletedAt,
     };
   }
 }
