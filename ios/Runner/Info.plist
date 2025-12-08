@@ -77,5 +77,11 @@
 		<array>
 			<string>applinks:www.jugaenequipo.com</string>
 		</array>
+		<!-- URL Launcher - Allow opening external URLs -->
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>https</string>
+			<string>http</string>
+		</array>
 	</dict>
 </plist>
