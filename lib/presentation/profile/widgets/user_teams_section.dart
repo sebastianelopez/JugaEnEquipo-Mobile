@@ -17,15 +17,18 @@ class UserTeamsSection extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(vertical: 10.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.profileTeamsLabel,
-            style: TextStyle(
-              fontSize: 16.h,
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Text(
+              AppLocalizations.of(context)!.profileTeamsLabel,
+              style: TextStyle(
+                fontSize: 16.h,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           SizedBox(height: 12.h),
@@ -33,10 +36,12 @@ class UserTeamsSection extends StatelessWidget {
             height: 120.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              clipBehavior: Clip.none,
               itemCount: teams.length,
               itemBuilder: (context, index) {
                 final team = teams[index];
-                return _buildTeamCard(context, team);
+                return _buildTeamCard(context, team, index == teams.length - 1);
               },
             ),
           ),
@@ -45,7 +50,7 @@ class UserTeamsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamCard(BuildContext context, TeamModel team) {
+  Widget _buildTeamCard(BuildContext context, TeamModel team, bool isLast) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -61,17 +66,19 @@ class UserTeamsSection extends StatelessWidget {
       },
       child: Container(
         width: 200.w,
-        margin: EdgeInsets.only(right: 12.w),
+        margin: EdgeInsets.only(
+          right: isLast ? 0 : 12.w,
+        ),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: AppTheme.primary.withOpacity( 0.2),
+            color: AppTheme.primary.withOpacity(0.2),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.primary.withOpacity( 0.05),
+              color: AppTheme.primary.withOpacity(0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -86,7 +93,7 @@ class UserTeamsSection extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppTheme.primary.withOpacity( 0.2),
+                  color: AppTheme.primary.withOpacity(0.2),
                   width: 2,
                 ),
               ),
@@ -147,7 +154,7 @@ class UserTeamsSection extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(
-                      color: AppTheme.accent.withOpacity( 0.1),
+                      color: AppTheme.accent.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Text(
