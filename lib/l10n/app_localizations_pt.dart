@@ -1259,4 +1259,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get leaveTeamConfirmation => 'Tem certeza de que deseja deixar esta equipe?';
+
+  @override
+  String get addPlayerProfile => 'Adicionar Perfil de Jogador';
+
+  @override
+  String get editPlayerProfile => 'Editar Perfil de Jogador';
+
+  @override
+  String get gameLabel => 'Jogo';
+
+  @override
+  String get accountType => 'Tipo de Conta';
 }

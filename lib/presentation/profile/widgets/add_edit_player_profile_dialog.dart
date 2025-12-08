@@ -200,6 +200,7 @@ class _AddEditPlayerProfileDialogState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
@@ -222,8 +223,8 @@ class _AddEditPlayerProfileDialogState
                   Expanded(
                     child: Text(
                       widget.player == null
-                          ? 'Agregar Perfil de Juego'
-                          : 'Editar Perfil de Juego',
+                          ? l10n.addPlayerProfile
+                          : l10n.editPlayerProfile,
                       style: TextStyle(
                         fontSize: 20.h,
                         fontWeight: FontWeight.bold,
@@ -245,7 +246,7 @@ class _AddEditPlayerProfileDialogState
 
               // Game selection
               Text(
-                'Juego *',
+                '${l10n.gameLabel} *',
                 style: TextStyle(
                   fontSize: 14.h,
                   fontWeight: FontWeight.w600,
@@ -315,7 +316,7 @@ class _AddEditPlayerProfileDialogState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Tipo de Cuenta', // TODO: Add translation key
+                        l10n.accountType,
                         style: TextStyle(
                           fontSize: 14.h,
                           fontWeight: FontWeight.w600,
@@ -457,7 +458,9 @@ class _AddEditPlayerProfileDialogState
                         ),
                       )
                     : Text(
-                        widget.player == null ? 'Agregar' : 'Guardar',
+                        widget.player == null
+                            ? l10n.addPlayerProfile
+                            : l10n.save,
                         style: TextStyle(
                           fontSize: 16.h,
                           fontWeight: FontWeight.w600,

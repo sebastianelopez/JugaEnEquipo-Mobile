@@ -612,5 +612,9 @@
   "requestAccepted": "Request accepted",
   "errorAcceptingRequest": "Error accepting request",
   "requestDeclined": "Request declined",
-  "errorDecliningRequest": "Error declining request"
+  "errorDecliningRequest": "Error declining request",
+  "addPlayerProfile": "Add Player Profile",
+  "editPlayerProfile": "Edit Player Profile",
+  "gameLabel": "Game",
+  "accountType": "Account Type"
 }

@@ -2508,6 +2508,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to leave this team?'**
   String get leaveTeamConfirmation;
+
+  /// No description provided for @addPlayerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Player Profile'**
+  String get addPlayerProfile;
+
+  /// No description provided for @editPlayerProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Player Profile'**
+  String get editPlayerProfile;
+
+  /// No description provided for @gameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Game'**
+  String get gameLabel;
+
+  /// No description provided for @accountType.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Type'**
+  String get accountType;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

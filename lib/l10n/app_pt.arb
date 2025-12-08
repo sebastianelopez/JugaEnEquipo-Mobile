@@ -612,5 +612,9 @@
   "requestAccepted": "Solicitação aceita",
   "errorAcceptingRequest": "Erro ao aceitar a solicitação",
   "requestDeclined": "Solicitação recusada",
-  "errorDecliningRequest": "Erro ao recusar a solicitação"
+  "errorDecliningRequest": "Erro ao recusar a solicitação",
+  "addPlayerProfile": "Adicionar Perfil de Jogador",
+  "editPlayerProfile": "Editar Perfil de Jogador",
+  "gameLabel": "Jogo",
+  "accountType": "Tipo de Conta"
 }
