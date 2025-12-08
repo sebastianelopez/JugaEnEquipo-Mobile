@@ -63,8 +63,10 @@ class DrawerNav extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.w900, fontSize: 15.sp)),
                   onTap: () {
-                    // Hide keyboard
                     FocusScope.of(context).unfocus();
+
+                    Navigator.of(context).pop();
+
                     Navigator.of(context).pushNamed(option.route);
                   },
                 );
@@ -86,6 +88,8 @@ class DrawerNav extends StatelessWidget {
             iconAlignment: IconAlignment.start,
             onPressed: () async {
               if (context.mounted) {
+                // Close drawer
+                Navigator.of(context).pop();
                 await storage.delete(key: 'access_token');
                 // ignore: use_build_context_synchronously
                 Navigator.pushReplacementNamed(context, 'login');
