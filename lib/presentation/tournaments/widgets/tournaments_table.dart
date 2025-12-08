@@ -273,13 +273,41 @@ class TournamentsTable extends StatelessWidget {
     TournamentsProvider tournamentsScreen,
     AppLocalizations l10n,
   ) {
+    // Add 1 to itemCount if loading more data to show loading indicator
+    final itemCount = tournamentsScreen.tournaments.length +
+        (tournamentsScreen.isLoadingMore ? 1 : 0);
+
     return ListView.separated(
       controller: tournamentsScreen.scrollController,
       padding: EdgeInsets.all(16.w),
       physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: tournamentsScreen.tournaments.length,
-      separatorBuilder: (context, index) => SizedBox(height: 12.h),
+      itemCount: itemCount,
+      separatorBuilder: (context, index) {
+        // Don't add separator after the last tournament (before loading indicator)
+        if (tournamentsScreen.isLoadingMore &&
+            index == tournamentsScreen.tournaments.length - 1) {
+          return SizedBox(height: 0.h);
+        }
+        return SizedBox(height: 12.h);
+      },
       itemBuilder: (context, index) {
+        // Show loading indicator at the end
+        if (index >= tournamentsScreen.tournaments.length) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 24.h),
+            child: Center(
+              child: SizedBox(
+                width: 36.w,
+                height: 36.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+                ),
+              ),
+            ),
+          );
+        }
+
         final tournament = tournamentsScreen.tournaments[index];
         return _buildTournamentCard(context, tournament, l10n);
       },

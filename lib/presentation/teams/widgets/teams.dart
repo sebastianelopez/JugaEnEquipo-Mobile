@@ -33,31 +33,42 @@ class Teams extends StatelessWidget {
                 ]))
         : teamProvider.teams;
 
-    return Stack(
-      children: [
-        RefreshIndicator(
-          color: AppTheme.primary,
-          onRefresh: teamProvider.onRefresh,
-          child: Skeletonizer(
-            enabled: teamProvider.isLoading,
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              controller: teamProvider.scrollController,
-              itemCount: teams.length,
-              itemBuilder: (BuildContext context, int index) {
-                return TeamCard(
-                  team: teams[index],
-                );
-              },
-            ),
-          ),
+    // Add 1 to itemCount if loading more data to show loading indicator
+    final itemCount = teams.length + (teamProvider.isLoadingMore ? 1 : 0);
+
+    return RefreshIndicator(
+      color: AppTheme.primary,
+      onRefresh: teamProvider.onRefresh,
+      child: Skeletonizer(
+        enabled: teamProvider.isLoading && teams.isEmpty,
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          controller: teamProvider.scrollController,
+          itemCount: itemCount,
+          itemBuilder: (BuildContext context, int index) {
+            // Show loading indicator at the end
+            if (index >= teams.length) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Center(
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+                    ),
+                  ),
+                ),
+              );
+            }
+            
+            return TeamCard(
+              team: teams[index],
+            );
+          },
         ),
-        if (teamProvider.isLoading)
-          Positioned(
-              bottom: 40,
-              left: size.width * 0.5 - 30,
-              child: const LoadingIcon())
-      ],
+      ),
     );
   }
 }

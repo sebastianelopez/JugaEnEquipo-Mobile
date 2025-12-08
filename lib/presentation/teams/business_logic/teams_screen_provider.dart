@@ -29,7 +29,7 @@ class TeamsScreenProvider extends ChangeNotifier {
 
     if ((scrollController.position.pixels + 500) >=
         scrollController.position.maxScrollExtent) {
-      fetchData();
+      loadMoreTeams();
     }
   }
 
@@ -41,45 +41,82 @@ class TeamsScreenProvider extends ChangeNotifier {
   }
 
   bool isLoading = false;
+  bool isLoadingMore = false;
+  bool hasMoreData = true;
   String? error;
   List<TeamModel> teams = [];
 
+  static const int _pageSize = 10;
+  int _currentOffset = 0;
+
   Future<void> initData() async {
-    await fetchData();
-
     scrollController.addListener(_scrollListener);
-
+    await fetchData(isRefresh: true);
     notifyListeners();
   }
 
   Future<void> onRefresh() async {
-    await fetchData();
+    await fetchData(isRefresh: true);
   }
 
-  Future<void> fetchData() async {
-    if (isLoading) return;
+  Future<void> fetchData({bool isRefresh = false}) async {
+    if (isLoading || isLoadingMore) return;
 
-    isLoading = true;
+    if (isRefresh) {
+      _currentOffset = 0;
+      hasMoreData = true;
+      isLoading = true;
+    } else {
+      isLoadingMore = true;
+    }
+
     error = null;
     notifyListeners();
 
     try {
-      final fetchedTeams = await getInitialTeams();
+      final fetchedTeams = await getInitialTeams(
+        limit: _pageSize,
+        offset: _currentOffset,
+      );
 
       if (fetchedTeams != null) {
-        teams = fetchedTeams;
+        if (isRefresh) {
+          teams = fetchedTeams;
+        } else {
+          teams.addAll(fetchedTeams);
+        }
+
+        // Si recibimos menos equipos que el límite, no hay más datos
+        if (fetchedTeams.length < _pageSize) {
+          hasMoreData = false;
+        } else {
+          _currentOffset += fetchedTeams.length;
+        }
+
         error = null;
       } else {
         error = 'No se pudieron cargar los equipos';
+        if (!isRefresh) {
+          hasMoreData = false;
+        }
       }
     } catch (e) {
       if (kDebugMode) {
         debugPrint('Error fetching teams: $e');
       }
       error = 'Error al cargar equipos: ${e.toString()}';
+      if (!isRefresh) {
+        hasMoreData = false;
+      }
     } finally {
       isLoading = false;
+      isLoadingMore = false;
       notifyListeners();
     }
+  }
+
+  Future<void> loadMoreTeams() async {
+    if (!hasMoreData || isLoadingMore || isLoading) return;
+    await fetchData(isRefresh: false);
   }
 }
