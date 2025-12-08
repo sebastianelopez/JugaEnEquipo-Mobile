@@ -13,10 +13,26 @@ class HomeScreenProvider extends ChangeNotifier {
   late UserModel? user;
   var posts = <PostModel>[];
 
+  // Pagination variables
+  int _currentOffset = 0;
+  final int _pageSize = 10;
+  bool _hasMorePosts = true;
+  bool _isLoadingMore = false;
+  bool _mounted = true;
+
   @override
   void dispose() {
+    _mounted = false;
+    scrollController.removeListener(_scrollListener);
     scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
   }
 
   HomeScreenProvider({required this.context}) {
@@ -29,6 +45,8 @@ class HomeScreenProvider extends ChangeNotifier {
   bool _hasFocus = false;
 
   bool get hasFocus => _hasFocus;
+  bool get isLoadingMore => _isLoadingMore;
+  bool get hasMorePosts => _hasMorePosts;
 
   void setFocus(bool hasFocus) {
     _hasFocus = hasFocus;
@@ -36,38 +54,76 @@ class HomeScreenProvider extends ChangeNotifier {
   }
 
   Future<void> initData() async {
-    fetchData();
-    if (posts.isNotEmpty) {
-      scrollController.addListener(() {
-        if ((scrollController.position.pixels + 500) >=
-            scrollController.position.maxScrollExtent) {
-          fetchData();
-        }
-      });
-    }
+    await fetchData(refresh: true);
+
+    // Add scroll listener for pagination
+    scrollController.addListener(_scrollListener);
 
     notifyListeners();
+  }
+
+  void _scrollListener() {
+    if (!_mounted || !scrollController.hasClients) return;
+
+    // Load more when user is 300px from the bottom
+    if (!_isLoadingMore &&
+        _hasMorePosts &&
+        scrollController.position.pixels >=
+            scrollController.position.maxScrollExtent - 300) {
+      _loadMorePosts();
+    }
   }
 
   Future<void> onRefresh() async {
-    await fetchData();
+    await fetchData(refresh: true);
   }
 
-  Future fetchData() async {
+  Future fetchData({bool refresh = false}) async {
     if (isLoading) return;
+
+    if (refresh) {
+      _currentOffset = 0;
+      _hasMorePosts = true;
+      posts.clear();
+    }
 
     isLoading = true;
     notifyListeners();
+
     try {
       if (user == null) {
         debugPrint('User is null');
         return;
       }
-      final fetchedPosts = await getFeedByUserId();
+
+      if (kDebugMode) {
+        debugPrint(
+            'Fetching posts with offset: $_currentOffset, limit: $_pageSize');
+      }
+
+      final fetchedPosts = await getFeedByUserId(
+        limit: _pageSize,
+        offset: _currentOffset,
+      );
+
       if (fetchedPosts != null) {
-        posts = fetchedPosts
-          ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-        notifyListeners();
+        if (fetchedPosts.length < _pageSize) {
+          _hasMorePosts = false;
+        }
+
+        if (refresh) {
+          posts = fetchedPosts;
+        } else {
+          posts.addAll(fetchedPosts);
+        }
+
+        posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        _currentOffset += fetchedPosts.length;
+
+        if (kDebugMode) {
+          debugPrint(
+              'Loaded ${fetchedPosts.length} posts. Total: ${posts.length}');
+        }
       }
     } catch (e) {
       if (kDebugMode) {
@@ -78,13 +134,54 @@ class HomeScreenProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    add5();
-
-    isLoading = false;
-
-    // Only handle scroll animation if controller is attached
-    if (scrollController.hasClients) {
+    // Only handle scroll animation if controller is attached and mounted
+    if (_mounted && scrollController.hasClients && !refresh) {
       _handleScrollAnimation();
+    }
+  }
+
+  Future<void> _loadMorePosts() async {
+    if (_isLoadingMore || !_hasMorePosts) return;
+
+    _isLoadingMore = true;
+    notifyListeners();
+
+    try {
+      if (user == null) {
+        debugPrint('User is null');
+        return;
+      }
+
+      if (kDebugMode) {
+        debugPrint('Loading more posts with offset: $_currentOffset');
+      }
+
+      final fetchedPosts = await getFeedByUserId(
+        limit: _pageSize,
+        offset: _currentOffset,
+      );
+
+      if (fetchedPosts != null) {
+        if (fetchedPosts.length < _pageSize) {
+          _hasMorePosts = false;
+        }
+
+        posts.addAll(fetchedPosts);
+        posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        _currentOffset += fetchedPosts.length;
+
+        if (kDebugMode) {
+          debugPrint(
+              'Loaded ${fetchedPosts.length} more posts. Total: ${posts.length}');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Error loading more posts: $e');
+      }
+    } finally {
+      _isLoadingMore = false;
+      notifyListeners();
     }
   }
 
@@ -96,7 +193,7 @@ class HomeScreenProvider extends ChangeNotifier {
   }
 
   void _handleScrollAnimation() {
-    if (!scrollController.hasClients) return;
+    if (!_mounted || !scrollController.hasClients) return;
 
     final position = scrollController.position;
     if (position.pixels + 100 <= position.maxScrollExtent) return;

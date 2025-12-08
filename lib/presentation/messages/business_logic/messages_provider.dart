@@ -14,6 +14,7 @@ class MessagesProvider extends ChangeNotifier {
   final NotificationsSSEService _sseService = NotificationsSSEService();
   StreamSubscription<NotificationModel>? _sseSubscription;
   bool _isInitialized = false;
+  bool _mounted = true;
 
   // Callback to notify when unread count changes (for updating notifications)
   void Function()? _onUnreadCountChanged;
@@ -248,9 +249,17 @@ class MessagesProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _mounted = false;
     _sseSubscription?.cancel();
     _sseService.disconnect();
     _isInitialized = false;
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
   }
 }

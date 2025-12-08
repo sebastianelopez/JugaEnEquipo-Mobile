@@ -53,6 +53,29 @@ class ProfileProvider extends ChangeNotifier {
   bool isLoadingBackgroundImage = false;
   bool isLoadingPlayerProfiles = false;
 
+  // Pagination for posts
+  int _postsOffset = 0;
+  final int _postsPageSize = 10;
+  bool _hasMorePosts = true;
+  bool _isLoadingMorePosts = false;
+  bool _mounted = true;
+
+  bool get hasMorePosts => _hasMorePosts;
+  bool get isLoadingMorePosts => _isLoadingMorePosts;
+
+  @override
+  void dispose() {
+    _mounted = false;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
+  }
+
   ProfileProvider({
     this.userId,
     this.initialUser,
@@ -198,9 +221,11 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> _loadPosts() async {
-    if (profileUser == null) return;
+    if (profileUser == null || !_mounted) return;
 
     isLoadingPosts = true;
+    _postsOffset = 0;
+    _hasMorePosts = true;
     notifyListeners();
 
     try {
@@ -208,13 +233,23 @@ class ProfileProvider extends ChangeNotifier {
         debugPrint(
             'ProfileProvider: Loading posts for user ${profileUser!.id}');
       }
-      final postsResponse = await getPostsByUserId(profileUser!.id);
+      final postsResponse = await getPostsByUserId(
+        profileUser!.id,
+        limit: _postsPageSize,
+        offset: _postsOffset,
+      );
       if (kDebugMode) {
         debugPrint(
             'ProfileProvider: Posts response: ${postsResponse?.length ?? 0} posts');
       }
       if (postsResponse != null) {
         posts = postsResponse;
+        _postsOffset += postsResponse.length;
+
+        if (postsResponse.length < _postsPageSize) {
+          _hasMorePosts = false;
+        }
+
         if (kDebugMode) {
           debugPrint(
               'ProfileProvider: Posts loaded successfully: ${posts.length}');
@@ -232,8 +267,50 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> loadMorePosts() async {
+    if (profileUser == null ||
+        _isLoadingMorePosts ||
+        !_hasMorePosts ||
+        !_mounted) return;
+
+    _isLoadingMorePosts = true;
+    notifyListeners();
+
+    try {
+      if (kDebugMode) {
+        debugPrint(
+            'ProfileProvider: Loading more posts with offset: $_postsOffset');
+      }
+
+      final postsResponse = await getPostsByUserId(
+        profileUser!.id,
+        limit: _postsPageSize,
+        offset: _postsOffset,
+      );
+
+      if (postsResponse != null) {
+        posts.addAll(postsResponse);
+        _postsOffset += postsResponse.length;
+
+        if (postsResponse.length < _postsPageSize) {
+          _hasMorePosts = false;
+        }
+
+        if (kDebugMode) {
+          debugPrint(
+              'ProfileProvider: Loaded ${postsResponse.length} more posts. Total: ${posts.length}');
+        }
+      }
+    } catch (e) {
+      debugPrint('Error loading more posts: $e');
+    } finally {
+      _isLoadingMorePosts = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> _loadTeams() async {
-    if (profileUser == null) return;
+    if (profileUser == null || !_mounted) return;
 
     isLoadingTeams = true;
     notifyListeners();
@@ -253,7 +330,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> _loadSocialNetworks() async {
-    if (profileUser == null) return;
+    if (profileUser == null || !_mounted) return;
 
     isLoadingSocialNetworks = true;
     notifyListeners();
@@ -278,7 +355,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> _loadBackgroundImage() async {
-    if (profileUser == null) return;
+    if (profileUser == null || !_mounted) return;
 
     isLoadingBackgroundImage = true;
     notifyListeners();
@@ -419,7 +496,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> _loadPlayerProfiles() async {
-    if (profileUser == null) return;
+    if (profileUser == null || !_mounted) return;
 
     isLoadingPlayerProfiles = true;
     notifyListeners();

@@ -5,6 +5,7 @@ import 'package:jugaenequipo/datasources/tournaments_use_cases/search_tournament
 
 class TournamentsProvider extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
+  bool _mounted = true;
 
   TournamentsProvider() {
     initData();
@@ -15,14 +16,8 @@ class TournamentsProvider extends ChangeNotifier {
   List<TournamentModel> tournaments = [];
 
   Future<void> initData() async {
-    scrollController.addListener(() {
-      if (scrollController.hasClients &&
-          (scrollController.position.pixels + 500) >=
-              scrollController.position.maxScrollExtent) {
-        fetchData();
-      }
-    });
-    
+    scrollController.addListener(_scrollListener);
+
     await fetchData();
   }
 
@@ -41,26 +36,29 @@ class TournamentsProvider extends ChangeNotifier {
       if (kDebugMode) {
         debugPrint('TournamentsProvider: Starting to fetch tournaments...');
       }
-      
+
       final tournamentsResult = await searchTournaments();
-      
+
       if (kDebugMode) {
-        debugPrint('TournamentsProvider: searchTournaments returned: ${tournamentsResult != null ? "${tournamentsResult.length} tournaments" : "null"}');
+        debugPrint(
+            'TournamentsProvider: searchTournaments returned: ${tournamentsResult != null ? "${tournamentsResult.length} tournaments" : "null"}');
       }
-      
+
       if (tournamentsResult != null) {
         tournaments = tournamentsResult;
         error = null;
-        
+
         if (kDebugMode) {
-          debugPrint('TournamentsProvider: Successfully loaded ${tournaments.length} tournaments');
+          debugPrint(
+              'TournamentsProvider: Successfully loaded ${tournaments.length} tournaments');
         }
       } else {
         // Si retorna null, hubo un error en la llamada
         tournaments = [];
         error = 'No se pudieron cargar los torneos';
         if (kDebugMode) {
-          debugPrint('TournamentsProvider: searchTournaments returned null - error occurred');
+          debugPrint(
+              'TournamentsProvider: searchTournaments returned null - error occurred');
         }
       }
     } catch (e, stackTrace) {
@@ -78,7 +76,25 @@ class TournamentsProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _mounted = false;
+    scrollController.removeListener(_scrollListener);
     scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
+  }
+
+  void _scrollListener() {
+    if (!_mounted || !scrollController.hasClients) return;
+
+    if ((scrollController.position.pixels + 500) >=
+        scrollController.position.maxScrollExtent) {
+      fetchData();
+    }
   }
 }

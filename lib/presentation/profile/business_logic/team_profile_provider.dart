@@ -36,6 +36,7 @@ class TeamProfileProvider extends ChangeNotifier {
   String? backgroundImageUrl;
   bool isLoadingRequests = false;
   bool isPerformingAction = false;
+  bool _mounted = true;
 
   TeamProfileProvider({
     required this.teamId,
@@ -43,6 +44,19 @@ class TeamProfileProvider extends ChangeNotifier {
     this.currentUserId,
   }) {
     _loadData();
+  }
+
+  @override
+  void dispose() {
+    _mounted = false;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
   }
 
   // Determine user role in the team

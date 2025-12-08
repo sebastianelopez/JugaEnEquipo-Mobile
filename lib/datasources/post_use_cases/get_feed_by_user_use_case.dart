@@ -3,15 +3,27 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 
-Future<List<PostModel>?> getFeedByUserId() async {
+Future<List<PostModel>?> getFeedByUserId({
+  int limit = 10,
+  int offset = 0,
+}) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
+
+    if (kDebugMode) {
+      debugPrint(
+          'getFeedByUserId - Fetching feed with limit: $limit, offset: $offset');
+    }
 
     final response = await APIService.instance.request(
       '/api/my-feed',
       DioMethod.get,
       contentType: 'application/json',
+      param: {
+        'limit': limit.toString(),
+        'offset': offset.toString(),
+      },
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
@@ -20,7 +32,8 @@ Future<List<PostModel>?> getFeedByUserId() async {
     // Manejar la respuesta
     if (response.statusCode == 200) {
       if (kDebugMode) {
-        debugPrint('getFeedByUserId - API call successful: ${response.data['data']}');
+        debugPrint(
+            'getFeedByUserId - API call successful: ${response.data['data']}');
       }
       final data = response.data['data'];
 
@@ -41,7 +54,8 @@ Future<List<PostModel>?> getFeedByUserId() async {
     } else {
       // Error: Manejar la respuesta de error
       if (kDebugMode) {
-        debugPrint('getFeedByUserId - API call failed: ${response.statusMessage}');
+        debugPrint(
+            'getFeedByUserId - API call failed: ${response.statusMessage}');
       }
       return null;
     }

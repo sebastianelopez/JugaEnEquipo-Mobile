@@ -34,6 +34,7 @@ class _ProfileContentState extends State<ProfileContent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   HomeScreenProvider? _homeScreenProvider;
+  final ScrollController _postsScrollController = ScrollController();
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _ProfileContentState extends State<ProfileContent>
     _tabController.addListener(() {
       setState(() {});
     });
+    _postsScrollController.addListener(_onPostsScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkIfFollowing();
     });
@@ -50,8 +52,25 @@ class _ProfileContentState extends State<ProfileContent>
   @override
   void dispose() {
     _tabController.dispose();
+    _postsScrollController.removeListener(_onPostsScroll);
+    _postsScrollController.dispose();
     _homeScreenProvider?.dispose();
     super.dispose();
+  }
+
+  void _onPostsScroll() {
+    if (!mounted) return;
+
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+
+    // Load more when user is 300px from the bottom
+    if (!profileProvider.isLoadingMorePosts &&
+        profileProvider.hasMorePosts &&
+        _postsScrollController.position.pixels >=
+            _postsScrollController.position.maxScrollExtent - 300) {
+      profileProvider.loadMorePosts();
+    }
   }
 
   HomeScreenProvider _getHomeScreenProvider() {
@@ -451,12 +470,14 @@ class _ProfileContentState extends State<ProfileContent>
     return ChangeNotifierProvider.value(
       value: _getHomeScreenProvider(),
       child: SingleChildScrollView(
+        controller: _postsScrollController,
         physics: const ClampingScrollPhysics(),
         child: Column(
           children: [
             UserPostsSection(
               posts: provider.posts,
-              isLoading: provider.isLoading,
+              isLoading: provider.isLoadingPosts,
+              isLoadingMore: provider.isLoadingMorePosts,
             ),
           ],
         ),

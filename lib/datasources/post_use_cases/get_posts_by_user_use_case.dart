@@ -3,14 +3,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jugaenequipo/datasources/api_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 
-Future<List<PostModel>?> getPostsByUserId(String id) async {
+Future<List<PostModel>?> getPostsByUserId(
+  String id, {
+  int limit = 10,
+  int offset = 0,
+}) async {
   try {
     const storage = FlutterSecureStorage();
     final accessToken = await storage.read(key: 'access_token');
 
     if (kDebugMode) {
       debugPrint('getPostsByUserId - Requesting posts for user: $id');
-      debugPrint('getPostsByUserId - Endpoint: /api/posts?userId=$id');
+      debugPrint(
+          'getPostsByUserId - Endpoint: /api/posts?userId=$id&limit=$limit&offset=$offset');
     }
 
     final response = await APIService.instance.request(
@@ -19,6 +24,8 @@ Future<List<PostModel>?> getPostsByUserId(String id) async {
       contentType: 'application/json',
       param: {
         "userId": id,
+        "limit": limit.toString(),
+        "offset": offset.toString(),
       },
       headers: {
         'Authorization': 'Bearer $accessToken',

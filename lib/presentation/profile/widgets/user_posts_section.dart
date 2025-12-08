@@ -8,11 +8,15 @@ import 'package:jugaenequipo/l10n/app_localizations.dart';
 class UserPostsSection extends StatelessWidget {
   final List<PostModel> posts;
   final bool isLoading;
+  final bool isLoadingMore;
+  final VoidCallback? onLoadMore;
 
   const UserPostsSection({
     super.key,
     required this.posts,
     this.isLoading = false,
+    this.isLoadingMore = false,
+    this.onLoadMore,
   });
 
   @override
@@ -71,15 +75,33 @@ class UserPostsSection extends StatelessWidget {
             )
           else
             Column(
-              children: posts.map((post) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
-                  child: PostCard(
-                    post: post,
-                    contextId: 'profile',
+              children: [
+                ...posts.map((post) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 12.h),
+                    child: PostCard(
+                      post: post,
+                      contextId: 'profile',
+                    ),
+                  );
+                }).toList(),
+                if (isLoadingMore)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: Center(
+                      child: SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppTheme.primary,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              }).toList(),
+              ],
             ),
         ],
       ),

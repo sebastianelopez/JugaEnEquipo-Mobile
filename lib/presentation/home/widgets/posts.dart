@@ -76,8 +76,28 @@ class Posts extends StatelessWidget {
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     controller: homeScreen.scrollController,
-                    itemCount: posts.length,
+                    itemCount:
+                        posts.length + (homeScreen.isLoadingMore ? 1 : 0),
                     itemBuilder: (BuildContext context, int index) {
+                      // Show loading indicator at the end
+                      if (index == posts.length) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child: SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppTheme.primary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+
                       return AnimatedPostCard(
                         post: posts[index],
                         index: index,

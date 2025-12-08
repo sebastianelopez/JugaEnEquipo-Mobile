@@ -9,10 +9,35 @@ class TeamsScreenProvider extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
   BuildContext context;
   late UserModel? user;
+  bool _mounted = true;
 
   TeamsScreenProvider({required this.context}) {
     user = Provider.of<UserProvider>(context, listen: false).user;
     initData();
+  }
+
+  @override
+  void dispose() {
+    _mounted = false;
+    scrollController.removeListener(_scrollListener);
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (!_mounted || !scrollController.hasClients) return;
+
+    if ((scrollController.position.pixels + 500) >=
+        scrollController.position.maxScrollExtent) {
+      fetchData();
+    }
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
   }
 
   bool isLoading = false;
@@ -22,13 +47,7 @@ class TeamsScreenProvider extends ChangeNotifier {
   Future<void> initData() async {
     await fetchData();
 
-    scrollController.addListener(() {
-      if (scrollController.hasClients &&
-          (scrollController.position.pixels + 500) >=
-              scrollController.position.maxScrollExtent) {
-        fetchData();
-      }
-    });
+    scrollController.addListener(_scrollListener);
 
     notifyListeners();
   }

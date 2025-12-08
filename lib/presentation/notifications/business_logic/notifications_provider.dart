@@ -14,6 +14,7 @@ class NotificationsProvider extends ChangeNotifier {
   final int _pageSize = 20;
   String? _errorMessage;
   bool _isInitialized = false;
+  bool _mounted = true;
 
   final NotificationsSSEService _sseService = NotificationsSSEService();
   StreamSubscription<NotificationModel>? _sseSubscription;
@@ -58,6 +59,8 @@ class NotificationsProvider extends ChangeNotifier {
   }
 
   void _onScroll() {
+    if (!_mounted || !scrollController.hasClients) return;
+
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent * 0.8) {
       loadMore();
@@ -165,10 +168,18 @@ class NotificationsProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _mounted = false;
     scrollController.removeListener(_onScroll);
     scrollController.dispose();
     _sseSubscription?.cancel();
     _sseService.disconnect();
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
   }
 }

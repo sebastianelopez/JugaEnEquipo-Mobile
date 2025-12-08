@@ -14,6 +14,7 @@ class ChatProvider extends ChangeNotifier {
   String? _currentUsername;
   Stream<ChatMessageModel>? _inboundStream;
   StreamSubscription<ChatMessageModel>? _inboundSubscription;
+  bool _mounted = true;
 
   // Callback to notify when a message is sent (for updating conversations list)
   void Function({
@@ -33,8 +34,16 @@ class ChatProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _mounted = false;
     closeConversation();
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_mounted) {
+      super.notifyListeners();
+    }
   }
 
   /// Close the conversation and disconnect SSE
