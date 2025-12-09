@@ -291,18 +291,16 @@ class HomeScreenProvider extends ChangeNotifier {
       ),
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (BuildContext context) {
-        return ChangeNotifierProvider(
-          create: (context) => HomeScreenProvider(context: context),
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Comments(
-              key: Key(postId),
-              autofocus: autofocus ?? false,
-              postId: postId,
-              onCommentAdded: onCommentAdded,
-            ),
+      builder: (BuildContext modalContext) {
+        // Use the global HomeScreenProvider instead of creating a new one
+        return Padding(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(modalContext).viewInsets.bottom),
+          child: Comments(
+            key: Key(postId),
+            autofocus: autofocus ?? false,
+            postId: postId,
+            onCommentAdded: onCommentAdded,
           ),
         );
       },

@@ -34,50 +34,26 @@ class _BottomNavigationBarState extends State<BottomNavigationBarCustom> {
     try {
       postProvider.generatePostId();
 
-      // Create a callback to add optimistic post
+      // Create a callback to add optimistic post using global HomeScreenProvider
       void Function(PostModel)? onPostCreated;
       try {
-        // Try to find HomeScreenProvider in the widget tree
         final navigatorContext = navigatorKey.currentContext;
         if (navigatorContext != null) {
-          try {
-            final homeProvider = Provider.of<HomeScreenProvider>(
-                navigatorContext,
-                listen: false);
-            onPostCreated = (PostModel post) {
-              homeProvider.addOptimisticPost(post);
-            };
-          } catch (e) {
-            // Provider not found in navigator context, try searching in the element tree
-            HomeScreenProvider? foundProvider;
-            void visitElement(Element element) {
-              if (foundProvider != null) return;
-
-              try {
-                final provider =
-                    Provider.of<HomeScreenProvider>(element, listen: false);
-                foundProvider = provider;
-              } catch (e) {
-                // Continue searching
-                element.visitChildElements(visitElement);
-              }
-            }
-
-            try {
-              navigatorContext.visitChildElements(visitElement);
-            } catch (e) {
-              // Could not visit elements
-            }
-
-            if (foundProvider != null) {
-              onPostCreated = (PostModel post) {
-                foundProvider!.addOptimisticPost(post);
-              };
-            }
-          }
+          final homeProvider = Provider.of<HomeScreenProvider>(
+            navigatorContext,
+            listen: false,
+          );
+          onPostCreated = (PostModel post) {
+            debugPrint('Adding optimistic post: ${post.id}');
+            homeProvider.addOptimisticPost(post);
+          };
+        } else {
+          debugPrint(
+              '⚠️ Navigator context is null, cannot add optimistic post');
         }
       } catch (e) {
-        debugPrint('Could not find HomeScreenProvider: $e');
+        debugPrint(
+            '❌ Could not find HomeScreenProvider for optimistic post: $e');
       }
 
       await showModalBottomSheet(

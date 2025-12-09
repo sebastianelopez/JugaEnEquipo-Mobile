@@ -144,7 +144,7 @@
       }
     }
   },
-  "notificationPostModerated": "Your post has been moderated by <b>{name}</b>.",
+  "notificationPostModerated": "Your post has been moderated and not published due to inappropriate content. Please review our community policies.",
   "@notificationPostModerated": {
     "description": "Notification about a post being moderated",
     "placeholders": {

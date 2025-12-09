@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/post_use_cases/get_post_by_id_use_case.dart';
 import 'package:jugaenequipo/presentation/home/widgets/post_card.dart';
-import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
-import 'package:jugaenequipo/providers/providers.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 /// Screen that displays the details of a single post
 class PostDetailScreen extends StatefulWidget {
@@ -28,31 +25,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   PostModel? _post;
   bool _isLoading = false;
   String? _errorMessage;
-  HomeScreenProvider? _homeScreenProvider;
 
   @override
   void initState() {
     super.initState();
-    // Initialize HomeScreenProvider
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {
-          _homeScreenProvider = HomeScreenProvider(context: context);
-        });
-      }
-    });
-    
+
     if (widget.initialPost != null) {
       _post = widget.initialPost;
     } else {
       _loadPost();
     }
-  }
-
-  @override
-  void dispose() {
-    _homeScreenProvider?.dispose();
-    super.dispose();
   }
 
   Future<void> _loadPost() async {
@@ -112,7 +94,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   }
 
   Widget _buildBody(BuildContext context, AppLocalizations? localizations) {
-    if (_isLoading || _homeScreenProvider == null) {
+    if (_isLoading) {
       return Center(
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
@@ -157,18 +139,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       onRefresh: _loadPost,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: ChangeNotifierProvider.value(
-          value: _homeScreenProvider!,
-          child: Column(
-            children: [
-              // Post card with full details
-              PostCard(
-                post: _post!,
-                contextId: 'post_detail',
-              ),
-              SizedBox(height: 16.h),
-            ],
-          ),
+        child: Column(
+          children: [
+            // Post card with full details (uses global HomeScreenProvider)
+            PostCard(
+              post: _post!,
+              contextId: 'post_detail',
+            ),
+            SizedBox(height: 16.h),
+          ],
         ),
       ),
     );

@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/user_model.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/profile_provider.dart';
-import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
 import 'package:jugaenequipo/presentation/profile/widgets/widgets.dart';
 import 'package:jugaenequipo/providers/user_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
@@ -33,7 +32,6 @@ class ProfileContent extends StatefulWidget {
 class _ProfileContentState extends State<ProfileContent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  HomeScreenProvider? _homeScreenProvider;
   final ScrollController _postsScrollController = ScrollController();
 
   @override
@@ -54,7 +52,6 @@ class _ProfileContentState extends State<ProfileContent>
     _tabController.dispose();
     _postsScrollController.removeListener(_onPostsScroll);
     _postsScrollController.dispose();
-    _homeScreenProvider?.dispose();
     super.dispose();
   }
 
@@ -71,11 +68,6 @@ class _ProfileContentState extends State<ProfileContent>
             _postsScrollController.position.maxScrollExtent - 300) {
       profileProvider.loadMorePosts();
     }
-  }
-
-  HomeScreenProvider _getHomeScreenProvider() {
-    _homeScreenProvider ??= HomeScreenProvider(context: context);
-    return _homeScreenProvider!;
   }
 
   void _checkIfFollowing() {
@@ -467,20 +459,18 @@ class _ProfileContentState extends State<ProfileContent>
   }
 
   Widget _buildPostsTab(ProfileProvider provider) {
-    return ChangeNotifierProvider.value(
-      value: _getHomeScreenProvider(),
-      child: SingleChildScrollView(
-        controller: _postsScrollController,
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          children: [
-            UserPostsSection(
-              posts: provider.posts,
-              isLoading: provider.isLoadingPosts,
-              isLoadingMore: provider.isLoadingMorePosts,
-            ),
-          ],
-        ),
+    // Uses global HomeScreenProvider from main.dart
+    return SingleChildScrollView(
+      controller: _postsScrollController,
+      physics: const ClampingScrollPhysics(),
+      child: Column(
+        children: [
+          UserPostsSection(
+            posts: provider.posts,
+            isLoading: provider.isLoadingPosts,
+            isLoadingMore: provider.isLoadingMorePosts,
+          ),
+        ],
       ),
     );
   }

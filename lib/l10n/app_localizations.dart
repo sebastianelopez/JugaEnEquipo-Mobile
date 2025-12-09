@@ -508,7 +508,7 @@ abstract class AppLocalizations {
   /// Notification about a post being moderated
   ///
   /// In en, this message translates to:
-  /// **'Your post has been moderated by <b>{name}</b>.'**
+  /// **'Your post has been moderated and not published due to inappropriate content. Please review our community policies.'**
   String notificationPostModerated(String name);
 
   /// No description provided for @errorTitle.

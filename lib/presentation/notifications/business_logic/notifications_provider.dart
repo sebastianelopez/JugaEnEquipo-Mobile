@@ -20,21 +20,29 @@ class NotificationsProvider extends ChangeNotifier {
   StreamSubscription<NotificationModel>? _sseSubscription;
   final ScrollController scrollController = ScrollController();
 
+  // Callback for post moderation notifications
+  void Function(NotificationModel)? onPostModerated;
+
   List<NotificationModel> get notifications =>
       List.unmodifiable(_notifications);
 
-  // Get filtered notifications excluding "new_message" type
-  List<NotificationModel> get filteredNotifications => List.unmodifiable(
-      _notifications.where((n) => n.type != 'new_message').toList());
+  // Get filtered notifications excluding "new_message" and "post_moderated" types
+  List<NotificationModel> get filteredNotifications =>
+      List.unmodifiable(_notifications
+          .where((n) => n.type != 'new_message' && n.type != 'post_moderated')
+          .toList());
 
   bool get isLoading => _isLoading;
   bool get hasMore => _hasMore;
   String? get errorMessage => _errorMessage;
   bool get isInitialized => _isInitialized;
 
-  // Get count of unread notifications (excluding "new_message" type)
+  // Get count of unread notifications (excluding "new_message" and "post_moderated" types)
   int get unreadCount => _notifications
-      .where((n) => !n.isNotificationRead && n.type != 'new_message')
+      .where((n) =>
+          !n.isNotificationRead &&
+          n.type != 'new_message' &&
+          n.type != 'post_moderated')
       .length;
 
   // Get count of unread message notifications
@@ -133,6 +141,15 @@ class NotificationsProvider extends ChangeNotifier {
   void _subscribeSSE() {
     _sseSubscription?.cancel();
     _sseSubscription = _sseService.connect().listen((incoming) {
+      // Handle post_moderated notifications specially
+      if (incoming.type == 'post_moderated') {
+        // Don't add to notifications list, trigger callback instead
+        if (onPostModerated != null) {
+          onPostModerated!(incoming);
+        }
+        return;
+      }
+
       // Avoid duplicates by id if provided
       if (incoming.id.isNotEmpty &&
           _notifications.any((n) => n.id == incoming.id)) {

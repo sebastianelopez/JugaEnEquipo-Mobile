@@ -230,7 +230,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String notificationPostModerated(String name) {
-    return 'Tu publicación ha sido moderada por <b>$name</b>.';
+    return 'Tu publicación ha sido moderada y no se ha publicado debido a contenido inapropiado. Por favor, revisa nuestras políticas de comunidad.';
   }
 
   @override
