@@ -141,6 +141,7 @@ class NotificationsListItem extends StatelessWidget {
       case 'user_mentioned':
       case 'post_liked':
       case 'post_commented':
+      case 'post_shared':
         // Navigate to post detail if postId is available
         if (notification.postId != null && notification.postId!.isNotEmpty) {
           _navigateToPostDetail(context, notification.postId!);
@@ -154,7 +155,6 @@ class NotificationsListItem extends StatelessWidget {
         _navigateToUserProfile(context, notification.userId);
         break;
 
-      case 'post_shared':
       case 'post_moderated':
         // Navigate to user profile
         _navigateToUserProfile(context, notification.userId);
