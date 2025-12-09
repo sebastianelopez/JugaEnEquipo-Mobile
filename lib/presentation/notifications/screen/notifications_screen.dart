@@ -14,16 +14,43 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  NotificationsProvider? _provider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Save reference to provider when dependencies change
+    _provider = Provider.of<NotificationsProvider>(context, listen: false);
+  }
+
   @override
   void initState() {
     super.initState();
     // Initialize the provider if not already initialized
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<NotificationsProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+
+      final provider =
+          Provider.of<NotificationsProvider>(context, listen: false);
+
       if (!provider.isInitialized) {
-        provider.initialize();
+        await provider.initialize();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    // Mark all unread notifications as read when leaving the screen
+    // Execute asynchronously after dispose to avoid widget tree lock
+    final provider = _provider;
+    if (provider != null && provider.unreadCount > 0) {
+      // Schedule the operation to run after the current frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        provider.markAllUnreadAsRead();
+      });
+    }
+    super.dispose();
   }
 
   @override

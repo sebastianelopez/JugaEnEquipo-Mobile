@@ -64,4 +64,3 @@ Future<List<NotificationModel>?> getNotifications({
 NotificationModel _notificationFromJsonSafe(Map<String, dynamic> json) {
   return NotificationModel.fromJson(json);
 }
-

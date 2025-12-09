@@ -138,6 +138,20 @@ class NotificationsProvider extends ChangeNotifier {
     }
   }
 
+  /// Mark all unread notifications as read (excluding "new_message" and "post_moderated" types)
+  Future<void> markAllUnreadAsRead() async {
+    final unreadNotifications = _notifications
+        .where((n) =>
+            !n.isNotificationRead &&
+            n.type != 'new_message' &&
+            n.type != 'post_moderated')
+        .toList();
+
+    for (final notification in unreadNotifications) {
+      await markAsRead(notification.id);
+    }
+  }
+
   void _subscribeSSE() {
     _sseSubscription?.cancel();
     _sseSubscription = _sseService.connect().listen((incoming) {
