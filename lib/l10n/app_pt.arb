@@ -144,6 +144,24 @@
       }
     }
   },
+  "notificationTeamRequestAccepted": "<b>{name}</b> aceitou sua solicitação para entrar na equipe.",
+  "@notificationTeamRequestAccepted": {
+    "description": "Notification about a team join request being accepted",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationTournamentRequestAccepted": "<b>{name}</b> aceitou sua solicitação de inscrição no torneio.",
+  "@notificationTournamentRequestAccepted": {
+    "description": "Notification about a tournament registration request being accepted",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "notificationPostModerated": "Sua publicação foi moderada e não foi publicada devido a conteúdo inadequado. Por favor, revise nossas políticas de comunidade.",
   "@notificationPostModerated": {
     "description": "Notification about a post being moderated",

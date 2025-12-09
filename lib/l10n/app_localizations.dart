@@ -505,6 +505,18 @@ abstract class AppLocalizations {
   /// **'<b>{name}</b> sent a team join request.'**
   String notificationTeamRequestReceived(String name);
 
+  /// Notification about a team join request being accepted
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> accepted your team join request.'**
+  String notificationTeamRequestAccepted(String name);
+
+  /// Notification about a tournament registration request being accepted
+  ///
+  /// In en, this message translates to:
+  /// **'<b>{name}</b> accepted your tournament registration request.'**
+  String notificationTournamentRequestAccepted(String name);
+
   /// Notification about a post being moderated
   ///
   /// In en, this message translates to:

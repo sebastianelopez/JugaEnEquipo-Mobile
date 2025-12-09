@@ -124,6 +124,7 @@ class NotificationsListItem extends StatelessWidget {
 
     switch (notification.type) {
       case 'tournament_request_received':
+      case 'tournament_request_accepted':
         // Navigate to tournament detail
         if (notification.tournamentId != null &&
             notification.tournamentId!.isNotEmpty) {
@@ -132,6 +133,7 @@ class NotificationsListItem extends StatelessWidget {
         break;
 
       case 'team_request_received':
+      case 'team_request_accepted':
         // Navigate to team profile
         if (notification.teamId != null && notification.teamId!.isNotEmpty) {
           await _navigateToTeam(context, notification.teamId!);

@@ -5,6 +5,7 @@ class NotificationModel {
   final String type;
   final String userId;
   final String username;
+  final String? profileImage;
   final String? postId;
   final String? tournamentId;
   final String? teamId;
@@ -17,6 +18,7 @@ class NotificationModel {
     required this.type,
     required this.userId,
     required this.username,
+    this.profileImage,
     this.postId,
     this.tournamentId,
     this.teamId,
@@ -33,7 +35,7 @@ class NotificationModel {
       lastName: '',
       userName: username,
       email: '',
-      profileImage: null,
+      profileImage: profileImage,
     );
   }
 
@@ -49,6 +51,7 @@ class NotificationModel {
       type: json['type'] as String? ?? '',
       userId: json['userId'] as String? ?? '',
       username: json['username'] as String? ?? '',
+      profileImage: json['profileImage'] as String?,
       postId: json['postId'] as String?,
       tournamentId: json['tournamentId'] as String?,
       teamId: json['teamId'] as String?,
@@ -66,6 +69,7 @@ class NotificationModel {
     String? type,
     String? userId,
     String? username,
+    String? profileImage,
     String? postId,
     String? tournamentId,
     String? teamId,
@@ -78,6 +82,7 @@ class NotificationModel {
       type: type ?? this.type,
       userId: userId ?? this.userId,
       username: username ?? this.username,
+      profileImage: profileImage ?? this.profileImage,
       postId: postId ?? this.postId,
       tournamentId: tournamentId ?? this.tournamentId,
       teamId: teamId ?? this.teamId,
@@ -93,6 +98,7 @@ class NotificationModel {
       'type': type,
       'userId': userId,
       'username': username,
+      'profileImage': profileImage,
       'postId': postId,
       'tournamentId': tournamentId,
       'teamId': teamId,

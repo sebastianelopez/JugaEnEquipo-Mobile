@@ -229,6 +229,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String notificationTeamRequestAccepted(String name) {
+    return '<b>$name</b> aceptó tu solicitud para unirte al equipo.';
+  }
+
+  @override
+  String notificationTournamentRequestAccepted(String name) {
+    return '<b>$name</b> aceptó tu solicitud de inscripción al torneo.';
+  }
+
+  @override
   String notificationPostModerated(String name) {
     return 'Tu publicación ha sido moderada y no se ha publicado debido a contenido inapropiado. Por favor, revisa nuestras políticas de comunidad.';
   }

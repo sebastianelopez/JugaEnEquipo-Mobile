@@ -180,6 +180,11 @@ class NotificationsList extends StatelessWidget {
         return l10n.notificationUserMentioned(notification.username);
       case 'team_request_received':
         return l10n.notificationTeamRequestReceived(notification.username);
+      case 'team_request_accepted':
+        return l10n.notificationTeamRequestAccepted(notification.username);
+      case 'tournament_request_accepted':
+        return l10n
+            .notificationTournamentRequestAccepted(notification.username);
       case 'post_moderated':
         return l10n.notificationPostModerated(notification.username);
       default:
