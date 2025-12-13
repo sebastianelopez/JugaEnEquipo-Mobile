@@ -140,7 +140,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 5.h),
                   SizedBox(
                     width: double.infinity,
                     child: AnimatedButton(
