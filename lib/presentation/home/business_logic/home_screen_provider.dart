@@ -21,6 +21,9 @@ class HomeScreenProvider extends ChangeNotifier {
   bool _isLoadingMore = false;
   bool _mounted = true;
 
+  // Track loaded post IDs to prevent duplicates
+  final Set<String> _loadedPostIds = {};
+
   // Comments count management (shared across all posts)
   final Map<String, int> _commentsCountMap = {};
 
@@ -71,12 +74,20 @@ class HomeScreenProvider extends ChangeNotifier {
 
   void _scrollListener() {
     if (!_mounted || !scrollController.hasClients) return;
+    if (_isLoadingMore || !_hasMorePosts) return;
+
+    final position = scrollController.position;
+
+    // Check if we can scroll (has content beyond viewport)
+    if (!position.hasContentDimensions || position.maxScrollExtent <= 0) {
+      return;
+    }
+
+    // Calculate distance from bottom
+    final distanceFromBottom = position.maxScrollExtent - position.pixels;
 
     // Load more when user is 300px from the bottom
-    if (!_isLoadingMore &&
-        _hasMorePosts &&
-        scrollController.position.pixels >=
-            scrollController.position.maxScrollExtent - 300) {
+    if (distanceFromBottom <= 300) {
       _loadMorePosts();
     }
   }
@@ -92,6 +103,7 @@ class HomeScreenProvider extends ChangeNotifier {
       _currentOffset = 0;
       _hasMorePosts = true;
       posts.clear();
+      _loadedPostIds.clear();
       // Clear comment count cache on refresh
       _fetchedCommentCounts.clear();
       _commentsCountMap.clear();
@@ -116,23 +128,50 @@ class HomeScreenProvider extends ChangeNotifier {
         offset: _currentOffset,
       );
 
-      if (fetchedPosts != null) {
-        if (fetchedPosts.length < _pageSize) {
-          _hasMorePosts = false;
-        }
+      if (fetchedPosts != null && fetchedPosts.isNotEmpty) {
+        // Filter out duplicate posts
+        final newPosts = fetchedPosts
+            .where((post) => !_loadedPostIds.contains(post.id))
+            .toList();
 
-        if (refresh) {
-          posts = fetchedPosts;
-        } else {
-          posts.addAll(fetchedPosts);
-        }
-
-        posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        // Update offset with total fetched posts (API expects this)
         _currentOffset += fetchedPosts.length;
 
+        if (newPosts.isEmpty) {
+          // All posts are duplicates, no more new posts available
+          _hasMorePosts = false;
+          if (kDebugMode) {
+            debugPrint(
+                'All fetched posts are duplicates, no more posts available');
+          }
+        } else {
+          // Add new post IDs to the set
+          for (final post in newPosts) {
+            _loadedPostIds.add(post.id);
+          }
+
+          if (fetchedPosts.length < _pageSize) {
+            _hasMorePosts = false;
+          }
+
+          if (refresh) {
+            posts = newPosts;
+          } else {
+            posts.addAll(newPosts);
+          }
+
+          posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+          if (kDebugMode) {
+            debugPrint(
+                'Loaded ${newPosts.length} new posts (${fetchedPosts.length - newPosts.length} duplicates filtered). Total: ${posts.length}, Offset: $_currentOffset');
+          }
+        }
+      } else if (fetchedPosts != null && fetchedPosts.isEmpty) {
+        // Empty response means no more posts
+        _hasMorePosts = false;
         if (kDebugMode) {
-          debugPrint(
-              'Loaded ${fetchedPosts.length} posts. Total: ${posts.length}');
+          debugPrint('No more posts to load (empty response)');
         }
       }
     } catch (e) {
@@ -171,18 +210,45 @@ class HomeScreenProvider extends ChangeNotifier {
         offset: _currentOffset,
       );
 
-      if (fetchedPosts != null) {
-        if (fetchedPosts.length < _pageSize) {
-          _hasMorePosts = false;
-        }
+      if (fetchedPosts != null && fetchedPosts.isNotEmpty) {
+        // Filter out duplicate posts
+        final newPosts = fetchedPosts
+            .where((post) => !_loadedPostIds.contains(post.id))
+            .toList();
 
-        posts.addAll(fetchedPosts);
-        posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        // Update offset with total fetched posts (API expects this)
         _currentOffset += fetchedPosts.length;
 
+        if (newPosts.isEmpty) {
+          // All posts are duplicates, no more new posts available
+          _hasMorePosts = false;
+          if (kDebugMode) {
+            debugPrint(
+                'All fetched posts are duplicates, no more posts available');
+          }
+        } else {
+          // Add new post IDs to the set
+          for (final post in newPosts) {
+            _loadedPostIds.add(post.id);
+          }
+
+          if (fetchedPosts.length < _pageSize) {
+            _hasMorePosts = false;
+          }
+
+          posts.addAll(newPosts);
+          posts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+          if (kDebugMode) {
+            debugPrint(
+                'Loaded ${newPosts.length} more posts (${fetchedPosts.length - newPosts.length} duplicates filtered). Total: ${posts.length}, Offset: $_currentOffset');
+          }
+        }
+      } else {
+        // No more posts available
+        _hasMorePosts = false;
         if (kDebugMode) {
-          debugPrint(
-              'Loaded ${fetchedPosts.length} more posts. Total: ${posts.length}');
+          debugPrint('No more posts to load');
         }
       }
     } catch (e) {
@@ -223,8 +289,12 @@ class HomeScreenProvider extends ChangeNotifier {
 
   void addOptimisticPost(PostModel post) {
     // Add post at the beginning of the list (most recent first)
-    posts.insert(0, post);
-    notifyListeners();
+    // Only add if not already present
+    if (!_loadedPostIds.contains(post.id)) {
+      _loadedPostIds.add(post.id);
+      posts.insert(0, post);
+      notifyListeners();
+    }
   }
 
   void handlePostMenuOptionClick(Menu option, String postId) async {
@@ -239,6 +309,7 @@ class HomeScreenProvider extends ChangeNotifier {
           _setPostHeight(postId, 0);
           await deletePost(postId);
           posts.removeAt(postIndex);
+          _loadedPostIds.remove(postId);
           notifyListeners();
         }
         break;
