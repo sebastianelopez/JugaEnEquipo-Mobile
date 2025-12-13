@@ -466,6 +466,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tournamentRegisterButtonLabel => 'Registrarse para el Torneo';
 
   @override
+  String get tournamentStartDatePassed => 'El torneo ya comenzó, no puedes inscribirte';
+
+  @override
   String get tournamentAdditionalInfoLabel => 'Información Adicional';
 
   @override

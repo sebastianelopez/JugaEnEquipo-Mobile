@@ -264,6 +264,7 @@
   "tournamentRegistrationSuccess": "Successfully registered for tournament!",
   "tournamentAlreadyRegisteredLabel": "Already Registered",
   "tournamentRegisterButtonLabel": "Register for Tournament",
+  "tournamentStartDatePassed": "The tournament has already started, you cannot register",
   "tournamentAdditionalInfoLabel": "Additional Information",
   "tournamentStartDateLabel": "Start Date",
   "tournamentStartDatePlaceholder": "To be announced",

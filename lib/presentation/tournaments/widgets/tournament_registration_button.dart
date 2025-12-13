@@ -132,11 +132,18 @@ class _TournamentRegistrationButtonState
         (_hasRegistered || widget.tournament.isUserRegistered) && !_hasLeft;
     final userRole =
         TournamentRoleHelper.getUserRole(widget.tournament, currentUser);
+    
+    // Check if tournament start date has passed
+    final now = DateTime.now();
+    final hasStarted = widget.tournament.startAt.isBefore(now) || 
+        widget.tournament.startAt.isAtSameMomentAs(now);
 
     debugPrint(
         'TournamentRegistrationButton: userRole=$userRole, isRegistered=$isRegistered, hasLeft=$_hasLeft');
     debugPrint(
         'TournamentRegistrationButton: currentUser.teamId=${currentUser?.teamId}');
+    debugPrint(
+        'TournamentRegistrationButton: hasStarted=$hasStarted, startAt=${widget.tournament.startAt}');
 
     // Don't show registration button for creators
     if (userRole == TournamentUserRole.creator) {
@@ -145,19 +152,22 @@ class _TournamentRegistrationButtonState
 
     return Column(
       children: [
-        SizedBox(
-          width: double.infinity,
+        Center(
           child: ElevatedButton(
             onPressed:
-                (isRegistered || _hasPendingRequest || _isCheckingRequests)
+                (isRegistered || _hasPendingRequest || _isCheckingRequests || hasStarted)
                     ? null
                     : () => _handleRegistration(context, l10n, currentUser),
             style: ElevatedButton.styleFrom(
               backgroundColor: _hasPendingRequest
                   ? AppTheme.warning
-                  : (isRegistered ? AppTheme.success : AppTheme.primary),
+                  : (isRegistered 
+                      ? AppTheme.success 
+                      : (hasStarted 
+                          ? Colors.grey 
+                          : AppTheme.primary)),
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 16.h),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
@@ -176,7 +186,9 @@ class _TournamentRegistrationButtonState
                         ? l10n.waitingForApproval
                         : (isRegistered
                             ? l10n.tournamentAlreadyRegisteredLabel
-                            : l10n.tournamentRegisterButtonLabel),
+                            : (hasStarted
+                                ? l10n.tournamentStartDatePassed
+                                : l10n.tournamentRegisterButtonLabel)),
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
@@ -186,15 +198,14 @@ class _TournamentRegistrationButtonState
         ),
         if (userRole == TournamentUserRole.member && !_hasLeft) ...[
           SizedBox(height: 12.h),
-          SizedBox(
-            width: double.infinity,
+          Center(
             child: OutlinedButton(
               onPressed: () =>
                   _handleLeaveTournament(context, l10n, currentUser),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppTheme.error,
                 side: BorderSide(color: AppTheme.error),
-                padding: EdgeInsets.symmetric(vertical: 16.h),
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),
@@ -220,6 +231,20 @@ class _TournamentRegistrationButtonState
   ) async {
     if (currentUser == null) {
       debugPrint('_handleRegistration: currentUser is null');
+      return;
+    }
+
+    // Check if tournament has already started
+    final now = DateTime.now();
+    if (widget.tournament.startAt.isBefore(now) || 
+        widget.tournament.startAt.isAtSameMomentAs(now)) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.tournamentStartDatePassed),
+          backgroundColor: AppTheme.error,
+        ),
+      );
       return;
     }
 

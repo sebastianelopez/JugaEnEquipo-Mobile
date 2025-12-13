@@ -955,6 +955,12 @@ abstract class AppLocalizations {
   /// **'Register for Tournament'**
   String get tournamentRegisterButtonLabel;
 
+  /// No description provided for @tournamentStartDatePassed.
+  ///
+  /// In en, this message translates to:
+  /// **'The tournament has already started, you cannot register'**
+  String get tournamentStartDatePassed;
+
   /// No description provided for @tournamentAdditionalInfoLabel.
   ///
   /// In en, this message translates to:
