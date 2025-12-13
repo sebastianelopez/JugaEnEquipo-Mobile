@@ -56,16 +56,25 @@ class _ProfileContentState extends State<ProfileContent>
   }
 
   void _onPostsScroll() {
-    if (!mounted) return;
+    if (!mounted || !_postsScrollController.hasClients) return;
 
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
 
+    if (profileProvider.isLoadingMorePosts || !profileProvider.hasMorePosts) {
+      return;
+    }
+
+    final position = _postsScrollController.position;
+
+    if (!position.hasContentDimensions || position.maxScrollExtent <= 0) {
+      return;
+    }
+
+    final distanceFromBottom = position.maxScrollExtent - position.pixels;
+
     // Load more when user is 300px from the bottom
-    if (!profileProvider.isLoadingMorePosts &&
-        profileProvider.hasMorePosts &&
-        _postsScrollController.position.pixels >=
-            _postsScrollController.position.maxScrollExtent - 300) {
+    if (distanceFromBottom <= 300) {
       profileProvider.loadMorePosts();
     }
   }
