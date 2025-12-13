@@ -5,8 +5,8 @@ import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provid
 import 'package:jugaenequipo/theme/app_theme.dart';
 import 'package:jugaenequipo/presentation/home/widgets/widgets.dart';
 import 'package:jugaenequipo/global_widgets/widgets.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AnimatedPostCard extends StatelessWidget {
   final PostModel post;
@@ -50,65 +50,57 @@ class Posts extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeScreen = Provider.of<HomeScreenProvider>(context);
     final size = MediaQuery.of(context).size;
-
-    final posts = homeScreen.isLoading
-        ? List.filled(
-            7,
-            PostModel(
-              id: '',
-              copy: 'aaaaaaaaaaaaaaaaa',
-              likes: 1,
-              comments: 2,
-              createdAt: '2024-04-20 20:18:04Z',
-              updatedAt: '',
-              deletedAt: '',
-            ))
-        : homeScreen.posts;
+    final posts = homeScreen.posts;
+    final isLoading = homeScreen.isLoading && posts.isEmpty;
 
     return Stack(
       children: [
         RefreshIndicator(
           color: AppTheme.primary,
           onRefresh: homeScreen.onRefresh,
-          child: homeScreen.isLoading || posts.isNotEmpty
-              ? Skeletonizer(
-                  enabled: homeScreen.isLoading,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    controller: homeScreen.scrollController,
-                    itemCount:
-                        posts.length + (homeScreen.isLoadingMore ? 1 : 0),
-                    itemBuilder: (BuildContext context, int index) {
-                      // Show loading indicator at the end
-                      if (index == posts.length) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Center(
-                            child: SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppTheme.primary,
-                                ),
+          child: isLoading || posts.isNotEmpty
+              ? ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  controller: homeScreen.scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: isLoading
+                      ? 7
+                      : posts.length + (homeScreen.isLoadingMore ? 1 : 0),
+                  itemBuilder: (BuildContext context, int index) {
+                    // Show skeleton loaders during initial load
+                    if (isLoading) {
+                      return _PostCardSkeleton();
+                    }
+
+                    // Show loading indicator at the end
+                    if (index == posts.length) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Center(
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppTheme.primary,
                               ),
                             ),
                           ),
-                        );
-                      }
-
-                      return AnimatedPostCard(
-                        post: posts[index],
-                        index: index,
-                        isLoading: homeScreen.isLoading,
+                        ),
                       );
-                    },
-                  ),
+                    }
+
+                    return AnimatedPostCard(
+                      post: posts[index],
+                      index: index,
+                      isLoading: false,
+                    );
+                  },
                 )
               : _buildEmptyState(context),
         ),
-        if (homeScreen.isLoading)
+        if (isLoading)
           Positioned(
               bottom: 40,
               left: size.width * 0.5 - 30,
@@ -190,6 +182,221 @@ class Posts extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _PostCardSkeleton extends StatefulWidget {
+  const _PostCardSkeleton();
+
+  @override
+  State<_PostCardSkeleton> createState() => _PostCardSkeletonState();
+}
+
+class _PostCardSkeletonState extends State<_PostCardSkeleton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat();
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Card(
+          margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          elevation: 4,
+          shadowColor: Theme.of(context).shadowColor.withOpacity(0.1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+            side: BorderSide(
+              color: Theme.of(context).dividerColor.withOpacity(0.5),
+              width: 1,
+            ),
+          ),
+          child: _buildShimmerOverlay(context),
+        );
+      },
+    );
+  }
+
+  Widget _buildShimmerOverlay(BuildContext context) {
+    final shimmerColor = Colors.white.withOpacity(
+      0.1 + (_animation.value * 0.15),
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment(-1.0 + (_animation.value * 2), 0),
+          end: Alignment(1.0 + (_animation.value * 2), 0),
+          colors: [
+            Colors.transparent,
+            shimmerColor,
+            Colors.transparent,
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Header with avatar and username
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+            child: Row(
+              children: [
+                // Avatar skeleton
+                Container(
+                  width: 48.w,
+                  height: 48.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey.withOpacity(0.2),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                // Username and time skeleton
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 120.w,
+                        height: 16.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                      ),
+                      SizedBox(height: 6.h),
+                      Container(
+                        width: 80.w,
+                        height: 12.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Menu icon skeleton
+                Container(
+                  width: 24.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Post content skeleton
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text lines skeleton
+                Container(
+                  width: double.infinity,
+                  height: 14.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Container(
+                  width: double.infinity,
+                  height: 14.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Container(
+                  width: 200.w,
+                  height: 14.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                // Image skeleton (optional, sometimes posts have images)
+                Container(
+                  width: double.infinity,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Action buttons skeleton
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 60.w,
+                      height: 16.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    Container(
+                      width: 60.w,
+                      height: 16.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: 24.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -33,6 +33,7 @@ class TournamentsTable extends StatelessWidget {
     AppLocalizations l10n,
   ) {
     return RefreshIndicator(
+      color: AppTheme.primary,
       onRefresh: tournamentsScreen.onRefresh,
       child: _buildContent(context, tournamentsScreen, l10n),
     );
@@ -63,38 +64,13 @@ class TournamentsTable extends StatelessWidget {
     return ListView.builder(
       padding: EdgeInsets.all(16.w),
       physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: 3,
+      itemCount: 5,
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(bottom: 12.h),
-          child: _buildShimmerCard(),
+          child: _TournamentCardSkeleton(),
         );
       },
-    );
-  }
-
-  Widget _buildShimmerCard() {
-    return Container(
-      height: 240.h,
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.r),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.grey.withOpacity(0.1),
-                Colors.grey.withOpacity(0.05),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -857,5 +833,201 @@ class _TournamentCardState extends State<_TournamentCard> {
         }
       }
     }
+  }
+}
+
+class _TournamentCardSkeleton extends StatefulWidget {
+  const _TournamentCardSkeleton();
+
+  @override
+  State<_TournamentCardSkeleton> createState() =>
+      _TournamentCardSkeletonState();
+}
+
+class _TournamentCardSkeletonState extends State<_TournamentCardSkeleton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat();
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Card(
+          elevation: 0,
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            height: 240.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.r),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.grey.withOpacity(0.1),
+                  Colors.grey.withOpacity(0.05),
+                ],
+              ),
+            ),
+            child: _buildShimmerOverlay(context),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildShimmerOverlay(BuildContext context) {
+    final shimmerColor = Colors.white.withOpacity(
+      0.1 + (_animation.value * 0.15),
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment(-1.0 + (_animation.value * 2), 0),
+          end: Alignment(1.0 + (_animation.value * 2), 0),
+          colors: [
+            Colors.transparent,
+            shimmerColor,
+            Colors.transparent,
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Row Skeleton
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Tournament Title Skeleton
+                      Container(
+                        width: double.infinity,
+                        height: 24.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      // Status Badge Skeleton
+                      Container(
+                        width: 90.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                // Official Badge Skeleton (optional)
+                Container(
+                  width: 70.w,
+                  height: 24.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            // Game Info & Participants Skeleton
+            Row(
+              children: [
+                // Game Icon Skeleton
+                Container(
+                  width: 48.w,
+                  height: 48.w,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Game Name Skeleton
+                      Container(
+                        width: 120.w,
+                        height: 18.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      // Participants Count Skeleton
+                      Container(
+                        width: 100.w,
+                        height: 16.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Progress Indicator Skeleton
+                Container(
+                  width: 60.w,
+                  height: 60.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey.withOpacity(0.2),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            // Date Info Skeleton
+            Container(
+              width: 180.w,
+              height: 14.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(6.r),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
