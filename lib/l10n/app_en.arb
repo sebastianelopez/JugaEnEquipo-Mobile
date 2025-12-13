@@ -677,5 +677,28 @@
   "yearPlural": "years",
   "monthSingular": "month",
   "monthPlural": "months",
-  "newTeam": "New"
+  "newTeam": "New",
+  "closeButton": "Close",
+  "noNotifications": "You have no notifications",
+  "newNotificationFrom": "New notification from <b>{username}</b>.",
+  "@newNotificationFrom": {
+    "description": "Default notification message when type is unknown",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "viewProfileLabel": "View {username}'s profile",
+  "@viewProfileLabel": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "likePostLabel": "Like post",
+  "unlikePostLabel": "Unlike post",
+  "addCommentLabel": "Add comment",
+  "sharePostLabel": "Share post"
 }

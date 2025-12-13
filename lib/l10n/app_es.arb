@@ -677,5 +677,28 @@
   "yearPlural": "años",
   "monthSingular": "mes",
   "monthPlural": "meses",
-  "newTeam": "Nuevo"
+  "newTeam": "Nuevo",
+  "closeButton": "Cerrar",
+  "noNotifications": "No tienes notificaciones",
+  "newNotificationFrom": "Nueva notificación de <b>{username}</b>.",
+  "@newNotificationFrom": {
+    "description": "Mensaje de notificación por defecto cuando el tipo es desconocido",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "viewProfileLabel": "Ver perfil de {username}",
+  "@viewProfileLabel": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "likePostLabel": "Me gusta la publicación",
+  "unlikePostLabel": "No me gusta la publicación",
+  "addCommentLabel": "Agregar comentario",
+  "sharePostLabel": "Compartir publicación"
 }

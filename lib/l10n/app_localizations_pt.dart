@@ -1322,4 +1322,32 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newTeam => 'Novo';
+
+  @override
+  String get closeButton => 'Fechar';
+
+  @override
+  String get noNotifications => 'Você não tem notificações';
+
+  @override
+  String newNotificationFrom(String username) {
+    return 'Nova notificação de <b>$username</b>.';
+  }
+
+  @override
+  String viewProfileLabel(String username) {
+    return 'Ver perfil de $username';
+  }
+
+  @override
+  String get likePostLabel => 'Curtir publicação';
+
+  @override
+  String get unlikePostLabel => 'Descurtir publicação';
+
+  @override
+  String get addCommentLabel => 'Adicionar comentário';
+
+  @override
+  String get sharePostLabel => 'Compartilhar publicação';
 }

@@ -2610,6 +2610,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New'**
   String get newTeam;
+
+  /// No description provided for @closeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get closeButton;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no notifications'**
+  String get noNotifications;
+
+  /// Default notification message when type is unknown
+  ///
+  /// In en, this message translates to:
+  /// **'New notification from <b>{username}</b>.'**
+  String newNotificationFrom(String username);
+
+  /// No description provided for @viewProfileLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View {username}\'s profile'**
+  String viewProfileLabel(String username);
+
+  /// No description provided for @likePostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Like post'**
+  String get likePostLabel;
+
+  /// No description provided for @unlikePostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlike post'**
+  String get unlikePostLabel;
+
+  /// No description provided for @addCommentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add comment'**
+  String get addCommentLabel;
+
+  /// No description provided for @sharePostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Share post'**
+  String get sharePostLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

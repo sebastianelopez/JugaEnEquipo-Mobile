@@ -5,6 +5,7 @@ import 'package:jugaenequipo/global_widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -129,7 +130,8 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            'Crear una nueva cuenta',
+                            AppLocalizations.of(context)!
+                                .loginCreateAccountButton,
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,

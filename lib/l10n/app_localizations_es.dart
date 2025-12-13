@@ -1322,4 +1322,32 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get newTeam => 'Nuevo';
+
+  @override
+  String get closeButton => 'Cerrar';
+
+  @override
+  String get noNotifications => 'No tienes notificaciones';
+
+  @override
+  String newNotificationFrom(String username) {
+    return 'Nueva notificación de <b>$username</b>.';
+  }
+
+  @override
+  String viewProfileLabel(String username) {
+    return 'Ver perfil de $username';
+  }
+
+  @override
+  String get likePostLabel => 'Me gusta la publicación';
+
+  @override
+  String get unlikePostLabel => 'No me gusta la publicación';
+
+  @override
+  String get addCommentLabel => 'Agregar comentario';
+
+  @override
+  String get sharePostLabel => 'Compartir publicación';
 }

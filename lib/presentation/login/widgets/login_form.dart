@@ -294,7 +294,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
               TextButton(
                 onPressed: isLoading ? null : () => Navigator.of(context).pop(),
                 child: Text(
-                  'Cancelar',
+                  AppLocalizations.of(context)!.cancel,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
@@ -304,7 +304,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(
-                  'Cerrar',
+                  AppLocalizations.of(context)!.closeButton,
                   style: TextStyle(
                     color: AppTheme.primary,
                     fontWeight: FontWeight.bold,

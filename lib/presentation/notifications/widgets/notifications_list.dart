@@ -133,7 +133,7 @@ class NotificationsList extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  'No tienes notificaciones',
+                  AppLocalizations.of(context)!.noNotifications,
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: Theme.of(context)
@@ -188,7 +188,7 @@ class NotificationsList extends StatelessWidget {
       case 'post_moderated':
         return l10n.notificationPostModerated(notification.username);
       default:
-        return 'New notification from <b>${notification.username}</b>.';
+        return l10n.newNotificationFrom(notification.username);
     }
   }
 }

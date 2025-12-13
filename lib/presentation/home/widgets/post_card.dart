@@ -159,8 +159,8 @@ class _PostCardState extends State<PostCard>
                       child: Row(
                         children: [
                           Semantics(
-                            label:
-                                'View ${widget.post.user ?? 'user'}\'s profile',
+                            label: AppLocalizations.of(context)!
+                                .viewProfileLabel(widget.post.user ?? 'user'),
                             button: true,
                             child: GestureDetector(
                               onTapDown: (_) {
@@ -441,7 +441,9 @@ class _PostCardState extends State<PostCard>
                         children: <Widget>[
                           // Botón de Like Animado
                           Semantics(
-                            label: _isLiked ? 'Unlike post' : 'Like post',
+                            label: _isLiked
+                                ? AppLocalizations.of(context)!.unlikePostLabel
+                                : AppLocalizations.of(context)!.likePostLabel,
                             button: true,
                             child: AnimatedBuilder(
                               animation: _likeScaleAnimation,
@@ -489,7 +491,8 @@ class _PostCardState extends State<PostCard>
                           ),
                           // Botón de Comentarios Animado
                           Semantics(
-                            label: 'Add comment',
+                            label:
+                                AppLocalizations.of(context)!.addCommentLabel,
                             button: true,
                             child: GestureDetector(
                               onTapDown: (_) {
@@ -548,7 +551,7 @@ class _PostCardState extends State<PostCard>
                           ),
                           // Botón de Share Animado
                           Semantics(
-                            label: 'Share post',
+                            label: AppLocalizations.of(context)!.sharePostLabel,
                             button: true,
                             child: GestureDetector(
                               onTapDown: (_) {
