@@ -482,10 +482,14 @@ class _TournamentCardState extends State<_TournamentCard> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 8.w, vertical: 4.h),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: hasImage
+                                        ? Colors.white.withOpacity(0.2)
+                                        : AppTheme.primary.withOpacity(0.15),
                                     borderRadius: BorderRadius.circular(12.r),
                                     border: Border.all(
-                                      color: Colors.white.withOpacity(0.3),
+                                      color: hasImage
+                                          ? Colors.white.withOpacity(0.3)
+                                          : AppTheme.primary.withOpacity(0.4),
                                       width: 1,
                                     ),
                                   ),
@@ -494,7 +498,9 @@ class _TournamentCardState extends State<_TournamentCard> {
                                     children: [
                                       Icon(
                                         Icons.verified,
-                                        color: Colors.white,
+                                        color: hasImage
+                                            ? Colors.white
+                                            : AppTheme.primary,
                                         size: 14.w,
                                       ),
                                       SizedBox(width: 4.w),
@@ -503,7 +509,9 @@ class _TournamentCardState extends State<_TournamentCard> {
                                         style: TextStyle(
                                           fontSize: 10.sp,
                                           fontWeight: FontWeight.w700,
-                                          color: Colors.white,
+                                          color: hasImage
+                                              ? Colors.white
+                                              : AppTheme.primary,
                                         ),
                                       ),
                                     ],
