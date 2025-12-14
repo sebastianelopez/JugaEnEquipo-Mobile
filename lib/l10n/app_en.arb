@@ -503,6 +503,37 @@
   "tournamentErrorDecliningRequest": "Error declining request",
   "tournamentTabInfo": "Information",
   "tournamentTabRequests": "Requests",
+  "teamPendingRequests": "Pending Requests",
+  "teamRequestSingular": "request",
+  "teamRequestPlural": "requests",
+  "teamAcceptRequest": "Accept",
+  "teamDeclineRequest": "Decline",
+  "teamAcceptRequestTitle": "Accept Request",
+  "teamAcceptRequestMessage": "Are you sure you want to accept the request from {userName}?",
+  "@teamAcceptRequestMessage": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "teamDeclineRequestTitle": "Decline Request",
+  "teamDeclineRequestMessage": "Are you sure you want to decline the request from {userName}?",
+  "@teamDeclineRequestMessage": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "teamRequestAcceptedSuccess": "Request accepted successfully",
+  "teamErrorAcceptingRequest": "Error accepting request",
+  "teamRequestDeclinedSuccess": "Request declined successfully",
+  "teamErrorDecliningRequest": "Error declining request",
+  "teamNoPendingRequests": "No pending requests",
+  "teamTabInfo": "Information",
+  "teamTabRequests": "Requests",
+  "teamRequestRequested": "Requested",
   "optional": "Optional",
   "tournamentFormImage": "Tournament Image",
   "tournamentFormSelectImage": "Select Image",

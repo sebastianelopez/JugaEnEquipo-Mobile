@@ -1012,6 +1012,61 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tournamentTabRequests => 'Solicitações';
 
   @override
+  String get teamPendingRequests => 'Solicitações Pendentes';
+
+  @override
+  String get teamRequestSingular => 'solicitação';
+
+  @override
+  String get teamRequestPlural => 'solicitações';
+
+  @override
+  String get teamAcceptRequest => 'Aceitar';
+
+  @override
+  String get teamDeclineRequest => 'Recusar';
+
+  @override
+  String get teamAcceptRequestTitle => 'Aceitar Solicitação';
+
+  @override
+  String teamAcceptRequestMessage(String userName) {
+    return 'Tem certeza de que deseja aceitar a solicitação de $userName?';
+  }
+
+  @override
+  String get teamDeclineRequestTitle => 'Recusar Solicitação';
+
+  @override
+  String teamDeclineRequestMessage(String userName) {
+    return 'Tem certeza de que deseja recusar a solicitação de $userName?';
+  }
+
+  @override
+  String get teamRequestAcceptedSuccess => 'Solicitação aceita com sucesso';
+
+  @override
+  String get teamErrorAcceptingRequest => 'Erro ao aceitar solicitação';
+
+  @override
+  String get teamRequestDeclinedSuccess => 'Solicitação recusada com sucesso';
+
+  @override
+  String get teamErrorDecliningRequest => 'Erro ao recusar solicitação';
+
+  @override
+  String get teamNoPendingRequests => 'Não há solicitações pendentes';
+
+  @override
+  String get teamTabInfo => 'Informação';
+
+  @override
+  String get teamTabRequests => 'Solicitações';
+
+  @override
+  String get teamRequestRequested => 'Solicitado';
+
+  @override
   String get optional => 'Opcional';
 
   @override

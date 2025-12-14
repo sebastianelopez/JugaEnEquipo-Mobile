@@ -1012,6 +1012,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tournamentTabRequests => 'Requests';
 
   @override
+  String get teamPendingRequests => 'Pending Requests';
+
+  @override
+  String get teamRequestSingular => 'request';
+
+  @override
+  String get teamRequestPlural => 'requests';
+
+  @override
+  String get teamAcceptRequest => 'Accept';
+
+  @override
+  String get teamDeclineRequest => 'Decline';
+
+  @override
+  String get teamAcceptRequestTitle => 'Accept Request';
+
+  @override
+  String teamAcceptRequestMessage(String userName) {
+    return 'Are you sure you want to accept the request from $userName?';
+  }
+
+  @override
+  String get teamDeclineRequestTitle => 'Decline Request';
+
+  @override
+  String teamDeclineRequestMessage(String userName) {
+    return 'Are you sure you want to decline the request from $userName?';
+  }
+
+  @override
+  String get teamRequestAcceptedSuccess => 'Request accepted successfully';
+
+  @override
+  String get teamErrorAcceptingRequest => 'Error accepting request';
+
+  @override
+  String get teamRequestDeclinedSuccess => 'Request declined successfully';
+
+  @override
+  String get teamErrorDecliningRequest => 'Error declining request';
+
+  @override
+  String get teamNoPendingRequests => 'No pending requests';
+
+  @override
+  String get teamTabInfo => 'Information';
+
+  @override
+  String get teamTabRequests => 'Requests';
+
+  @override
+  String get teamRequestRequested => 'Requested';
+
+  @override
   String get optional => 'Optional';
 
   @override

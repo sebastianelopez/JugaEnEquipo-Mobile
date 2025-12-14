@@ -503,6 +503,37 @@
   "tournamentErrorDecliningRequest": "Erro ao recusar solicitação",
   "tournamentTabInfo": "Informação",
   "tournamentTabRequests": "Solicitações",
+  "teamPendingRequests": "Solicitações Pendentes",
+  "teamRequestSingular": "solicitação",
+  "teamRequestPlural": "solicitações",
+  "teamAcceptRequest": "Aceitar",
+  "teamDeclineRequest": "Recusar",
+  "teamAcceptRequestTitle": "Aceitar Solicitação",
+  "teamAcceptRequestMessage": "Tem certeza de que deseja aceitar a solicitação de {userName}?",
+  "@teamAcceptRequestMessage": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "teamDeclineRequestTitle": "Recusar Solicitação",
+  "teamDeclineRequestMessage": "Tem certeza de que deseja recusar a solicitação de {userName}?",
+  "@teamDeclineRequestMessage": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "teamRequestAcceptedSuccess": "Solicitação aceita com sucesso",
+  "teamErrorAcceptingRequest": "Erro ao aceitar solicitação",
+  "teamRequestDeclinedSuccess": "Solicitação recusada com sucesso",
+  "teamErrorDecliningRequest": "Erro ao recusar solicitação",
+  "teamNoPendingRequests": "Não há solicitações pendentes",
+  "teamTabInfo": "Informação",
+  "teamTabRequests": "Solicitações",
+  "teamRequestRequested": "Solicitado",
   "optional": "Opcional",
   "tournamentFormImage": "Imagem do Torneio",
   "tournamentFormSelectImage": "Selecionar Imagem",

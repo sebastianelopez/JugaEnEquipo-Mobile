@@ -2023,6 +2023,108 @@ abstract class AppLocalizations {
   /// **'Requests'**
   String get tournamentTabRequests;
 
+  /// No description provided for @teamPendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Requests'**
+  String get teamPendingRequests;
+
+  /// No description provided for @teamRequestSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'request'**
+  String get teamRequestSingular;
+
+  /// No description provided for @teamRequestPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'requests'**
+  String get teamRequestPlural;
+
+  /// No description provided for @teamAcceptRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get teamAcceptRequest;
+
+  /// No description provided for @teamDeclineRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get teamDeclineRequest;
+
+  /// No description provided for @teamAcceptRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Request'**
+  String get teamAcceptRequestTitle;
+
+  /// No description provided for @teamAcceptRequestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to accept the request from {userName}?'**
+  String teamAcceptRequestMessage(String userName);
+
+  /// No description provided for @teamDeclineRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline Request'**
+  String get teamDeclineRequestTitle;
+
+  /// No description provided for @teamDeclineRequestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to decline the request from {userName}?'**
+  String teamDeclineRequestMessage(String userName);
+
+  /// No description provided for @teamRequestAcceptedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Request accepted successfully'**
+  String get teamRequestAcceptedSuccess;
+
+  /// No description provided for @teamErrorAcceptingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Error accepting request'**
+  String get teamErrorAcceptingRequest;
+
+  /// No description provided for @teamRequestDeclinedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Request declined successfully'**
+  String get teamRequestDeclinedSuccess;
+
+  /// No description provided for @teamErrorDecliningRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Error declining request'**
+  String get teamErrorDecliningRequest;
+
+  /// No description provided for @teamNoPendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending requests'**
+  String get teamNoPendingRequests;
+
+  /// No description provided for @teamTabInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get teamTabInfo;
+
+  /// No description provided for @teamTabRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get teamTabRequests;
+
+  /// No description provided for @teamRequestRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested'**
+  String get teamRequestRequested;
+
   /// No description provided for @optional.
   ///
   /// In en, this message translates to:

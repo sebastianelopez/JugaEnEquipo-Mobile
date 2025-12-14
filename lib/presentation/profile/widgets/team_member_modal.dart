@@ -3,6 +3,7 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/presentation/profile/business_logic/team_profile_provider.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TeamMemberModal extends StatelessWidget {
@@ -88,7 +89,15 @@ class TeamMemberModal extends StatelessWidget {
   Widget _buildMemberTile(BuildContext context, UserModel member) {
     final isCreator = provider.teamProfile?.creatorId == member.id;
     final isLeader = provider.teamProfile?.leaderId == member.id;
-    final canRemove = canManageMembers && !isCreator && !isLeader;
+    final currentUserIsCreator = provider.getUserRole() == TeamUserRole.creator;
+    final currentUserIsLeader = provider.getUserRole() == TeamUserRole.leader;
+    final currentUserId = provider.currentUserId;
+    final isCurrentUser = currentUserId != null && member.id == currentUserId;
+
+    final canRemove = canManageMembers &&
+        !isCreator &&
+        !isCurrentUser &&
+        (currentUserIsCreator || (!isLeader && currentUserIsLeader));
 
     return ListTile(
       onTap: () {
@@ -161,10 +170,7 @@ class TeamMemberModal extends StatelessWidget {
         '@${member.userName}',
         style: TextStyle(
           fontSize: 14.h,
-          color: Theme.of(context)
-              .colorScheme
-              .onSurface
-              .withOpacity(0.7),
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
         ),
       ),
       trailing: canRemove
@@ -173,23 +179,26 @@ class TeamMemberModal extends StatelessWidget {
               onPressed: provider.isPerformingAction
                   ? null
                   : () async {
+                      final l10n = AppLocalizations.of(context)!;
+                      final memberName =
+                          '${member.firstName} ${member.lastName}';
                       final confirm = await showDialog<bool>(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text('Remove Member'),
-                          content: Text(
-                              'Are you sure you want to remove ${member.firstName} ${member.lastName} from the team?'),
+                          title: Text(l10n.removeMember),
+                          content:
+                              Text(l10n.areYouSureRemoveMember(memberName)),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text('Cancel'),
+                              child: Text(l10n.cancel),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
                               style: TextButton.styleFrom(
                                 foregroundColor: Colors.red,
                               ),
-                              child: const Text('Remove'),
+                              child: Text(l10n.removeMember),
                             ),
                           ],
                         ),
@@ -202,13 +211,15 @@ class TeamMemberModal extends StatelessWidget {
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text(
-                                      '${member.firstName} removed from team')),
+                                content: Text(
+                                    '$memberName ${l10n.memberRemovedFromTeam}'),
+                              ),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Error removing member')),
+                              SnackBar(
+                                content: Text(l10n.errorRemovingMember),
+                              ),
                             );
                           }
                         }
@@ -218,10 +229,7 @@ class TeamMemberModal extends StatelessWidget {
           : Icon(
               Icons.arrow_forward_ios,
               size: 16.h,
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withOpacity(0.5),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
     );
   }

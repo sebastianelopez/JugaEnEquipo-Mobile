@@ -8,7 +8,7 @@ import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class TeamProfileContent extends StatelessWidget {
+class TeamProfileContent extends StatefulWidget {
   final VoidCallback? onMembersPressed;
   final VoidCallback? onTournamentsPressed;
   final VoidCallback? onWinsPressed;
@@ -19,6 +19,44 @@ class TeamProfileContent extends StatelessWidget {
     this.onTournamentsPressed,
     this.onWinsPressed,
   });
+
+  @override
+  State<TeamProfileContent> createState() => _TeamProfileContentState();
+}
+
+class _TeamProfileContentState extends State<TeamProfileContent>
+    with TickerProviderStateMixin {
+  TabController? _tabController;
+  bool _showRequestsTab = false;
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
+  }
+
+  void _updateTabController(bool showRequestsTab) {
+    if (_showRequestsTab != showRequestsTab) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+
+        _tabController?.dispose();
+        _showRequestsTab = showRequestsTab;
+        _tabController = TabController(
+          length: showRequestsTab ? 2 : 1,
+          vsync: this,
+        );
+        _tabController?.addListener(() {
+          if (mounted) {
+            setState(() {});
+          }
+        });
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +89,23 @@ class TeamProfileContent extends StatelessWidget {
           );
         }
 
-        // Wrap content with ChangeNotifierProvider.value to ensure provider is available to all children including Slivers
+        final canManageRequests = teamProvider.canManageRequests();
+
+        if (_tabController == null) {
+          _tabController = TabController(
+            length: canManageRequests ? 2 : 1,
+            vsync: this,
+          );
+          _tabController?.addListener(() {
+            if (mounted) {
+              setState(() {});
+            }
+          });
+          _showRequestsTab = canManageRequests;
+        } else if (_showRequestsTab != canManageRequests) {
+          _updateTabController(canManageRequests);
+        }
+
         return ChangeNotifierProvider<TeamProfileProvider>.value(
           value: teamProvider,
           child: _buildContent(context, teamProfile, teamProvider),
@@ -71,7 +125,6 @@ class TeamProfileContent extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
         children: [
-          // Background Image
           if (bgImage != null && bgImage.isNotEmpty)
             Positioned(
               top: 0,
@@ -99,7 +152,6 @@ class TeamProfileContent extends StatelessWidget {
                 ),
               ),
             ),
-          // Content
           ChangeNotifierProvider<TeamProfileProvider>.value(
             value: provider,
             child: SingleChildScrollView(
@@ -116,8 +168,8 @@ class TeamProfileContent extends StatelessWidget {
                   ),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Avatar positioned at the top of scrollable content, partially overlapping background
                     Transform.translate(
                       offset: Offset(0, -45.h),
                       child: _buildTeamAvatar(context, teamProfile),
@@ -141,7 +193,6 @@ class TeamProfileContent extends StatelessWidget {
                           ),
                       ],
                     ),
-                    // Games section
                     if (teamProfile.games.isNotEmpty) ...[
                       SizedBox(height: 8.h),
                       Wrap(
@@ -183,80 +234,54 @@ class TeamProfileContent extends StatelessWidget {
                         }).toList(),
                       ),
                     ],
-                    if (teamProfile.description != null &&
-                        teamProfile.description!.isNotEmpty) ...[
-                      SizedBox(height: 16.h),
+                    if (_showRequestsTab && _tabController != null) ...[
+                      SizedBox(height: 24.h),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 20.w),
-                        padding: EdgeInsets.all(16.w),
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surface
-                              .withOpacity(0.5),
+                          color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .outline
+                                .withOpacity(0.1),
+                          ),
                         ),
-                        child: Text(
-                          teamProfile.description!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            height: 1.5,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.r),
+                          child: TabBar(
+                            controller: _tabController!,
+                            labelColor: AppTheme.primary,
+                            unselectedLabelColor: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
+                            indicatorColor: AppTheme.primary,
+                            indicatorWeight: 4,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            dividerColor: Colors.transparent,
+                            tabs: [
+                              Tab(
+                                icon: Icon(Icons.info_outline, size: 20.w),
+                                text: AppLocalizations.of(context)!.teamTabInfo,
+                              ),
+                              Tab(
+                                icon: Icon(Icons.pending_actions, size: 20.w),
+                                text: AppLocalizations.of(context)!
+                                    .teamTabRequests,
+                              ),
+                            ],
                           ),
                         ),
                       ),
+                      SizedBox(height: 24.h),
+                      _tabController!.index == 0
+                          ? _buildInfoTabContent(context, teamProfile, provider)
+                          : _buildRequestsTabContent(context, provider),
+                    ] else ...[
+                      _buildInfoTabContent(context, teamProfile, provider),
                     ],
-                    Builder(
-                      builder: (context) {
-                        final userRole = provider.getUserRole();
-                        final canEdit = provider.canEditTeam();
-                        final canManageMembers = provider.canManageMembers();
-                        final canManageRequests = provider.canManageRequests();
-                        final isMember = provider.isMember();
-
-                        return Container(
-                          margin: EdgeInsets.only(top: 15.h),
-                          child: _buildActionButtons(
-                            context,
-                            provider,
-                            userRole,
-                            canEdit,
-                            canManageMembers,
-                            canManageRequests,
-                            isMember,
-                          ),
-                        );
-                      },
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child: NumberAndLabel(
-                              label: AppLocalizations.of(context)!
-                                  .teamTournamentsTitle,
-                              number: teamProfile.totalTournaments,
-                              hasRightBorder: true,
-                              onTap: onTournamentsPressed,
-                            ),
-                          ),
-                          Expanded(
-                            child: NumberAndLabel(
-                              label: AppLocalizations.of(context)!.winsLabel,
-                              number: teamProfile.totalWins,
-                              onTap: onWinsPressed,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _buildMembersSection(
-                        context, teamProfile, onMembersPressed),
-                    _buildStatsSection(context, teamProfile),
-                    SizedBox(height: 24.h), // Bottom padding
                   ],
                 ),
               ),
@@ -426,7 +451,6 @@ class TeamProfileContent extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: team.members.length > 5 ? 6 : team.members.length,
                   itemBuilder: (context, index) {
-                    // Si hay más de 5 miembros y estamos en el último índice, mostrar indicador
                     if (team.members.length > 5 && index == 5) {
                       final remainingCount = team.members.length - 5;
                       return Container(
@@ -623,6 +647,112 @@ class TeamProfileContent extends StatelessWidget {
     );
   }
 
+  Widget _buildInfoTabContent(
+    BuildContext context,
+    TeamProfileModel teamProfile,
+    TeamProfileProvider provider,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (teamProfile.description != null &&
+            teamProfile.description!.isNotEmpty) ...[
+          SizedBox(height: 16.h),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Text(
+              teamProfile.description!,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Theme.of(context).colorScheme.onSurface,
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+        Builder(
+          builder: (context) {
+            final userRole = provider.getUserRole();
+            final canEdit = provider.canEditTeam();
+            final canManageMembers = provider.canManageMembers();
+            final canManageRequests = provider.canManageRequests();
+            final isMember = provider.isMember();
+
+            return Container(
+              margin: EdgeInsets.only(top: 15.h),
+              child: _buildActionButtons(
+                context,
+                provider,
+                userRole,
+                canEdit,
+                canManageMembers,
+                canManageRequests,
+                isMember,
+              ),
+            );
+          },
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 15.h, bottom: 15.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: NumberAndLabel(
+                  label: AppLocalizations.of(context)!.teamTournamentsTitle,
+                  number: teamProfile.totalTournaments,
+                  hasRightBorder: true,
+                  onTap: widget.onTournamentsPressed,
+                ),
+              ),
+              Expanded(
+                child: NumberAndLabel(
+                  label: AppLocalizations.of(context)!.winsLabel,
+                  number: teamProfile.totalWins,
+                  onTap: widget.onWinsPressed,
+                ),
+              ),
+            ],
+          ),
+        ),
+        _buildMembersSection(context, teamProfile, widget.onMembersPressed),
+        _buildStatsSection(context, teamProfile),
+        SizedBox(height: 24.h),
+      ],
+    );
+  }
+
+  Widget _buildRequestsTabContent(
+    BuildContext context,
+    TeamProfileProvider provider,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: TeamPendingRequestsSection(
+            requests: provider.teamRequests,
+            isLoading: provider.isLoadingRequests,
+            error: null,
+            onRefresh: () => provider.reloadRequests(),
+            onRequestProcessed: () {
+              provider.reloadRequests();
+              provider.refreshData();
+            },
+          ),
+        ),
+        SizedBox(height: 24.h),
+      ],
+    );
+  }
+
   Widget _buildActionButtons(
     BuildContext context,
     TeamProfileProvider provider,
@@ -632,41 +762,16 @@ class TeamProfileContent extends StatelessWidget {
     bool canManageRequests,
     bool isMember,
   ) {
-    // Creator/Leader actions - Only Edit Profile and Requests
     if (canEdit) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(right: 8.w),
-                child: ProfileElevatedButton(
-                  label: AppLocalizations.of(context)!.editProfile,
-                  onPressed: () =>
-                      _showEditTeamProfileDialog(context, provider),
-                ),
-              ),
-            ),
-            if (canManageRequests)
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 8.w),
-                  child: ProfileElevatedButton(
-                    label:
-                        '${AppLocalizations.of(context)!.requests} (${provider.teamRequests.length})',
-                    onPressed: () =>
-                        _showManageRequestsDialog(context, provider),
-                  ),
-                ),
-              ),
-          ],
+        child: ProfileElevatedButton(
+          label: AppLocalizations.of(context)!.editProfile,
+          onPressed: () => _showEditTeamProfileDialog(context, provider),
         ),
       );
     }
 
-    // Member actions
     if (isMember) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -677,14 +782,12 @@ class TeamProfileContent extends StatelessWidget {
       );
     }
 
-    // Non-member actions
-    // Wait for requests to load before checking
     if (provider.isLoadingRequests && provider.teamRequests.isEmpty) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: ProfileElevatedButton(
           label: AppLocalizations.of(context)!.requestAccess,
-          onPressed: null, // Disabled while loading
+          onPressed: null,
         ),
       );
     }
@@ -729,22 +832,6 @@ class TeamProfileContent extends StatelessWidget {
     });
   }
 
-  void _showManageRequestsDialog(
-      BuildContext context, TeamProfileProvider provider) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => ManageTeamRequestsDialog(
-        requests: provider.teamRequests,
-        provider: provider,
-      ),
-    ).then((_) {
-      // Refresh data after managing requests
-      if (context.mounted) {
-        provider.refreshData();
-      }
-    });
-  }
-
   void _showLeaveTeamDialog(
       BuildContext context, TeamProfileProvider provider) {
     final l10n = AppLocalizations.of(context)!;
@@ -764,10 +851,13 @@ class TeamProfileContent extends StatelessWidget {
               final success = await provider.leaveTeam();
               if (context.mounted) {
                 if (success) {
-                  Navigator.of(context).pop(); // Go back to previous screen
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l10n.leftTeamSuccessfully)),
-                  );
+                  await provider.refreshData();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(l10n.leftTeamSuccessfully)),
+                    );
+                  }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(l10n.errorLeavingTeam)),
@@ -788,8 +878,6 @@ class TeamProfileContent extends StatelessWidget {
     final success = await provider.requestAccess();
     if (context.mounted) {
       if (success) {
-        // The provider already reloads requests internally, but we can ensure it here too
-        // The Consumer will automatically rebuild when notifyListeners() is called
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppLocalizations.of(context)!.accessRequestSent),

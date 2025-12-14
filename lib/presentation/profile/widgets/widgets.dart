@@ -16,3 +16,4 @@ export 'package:jugaenequipo/presentation/profile/widgets/edit_team_dialog.dart'
 export 'package:jugaenequipo/presentation/profile/widgets/edit_team_profile_dialog.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/manage_team_games_dialog.dart';
 export 'package:jugaenequipo/presentation/profile/widgets/manage_team_requests_dialog.dart';
+export 'package:jugaenequipo/presentation/profile/widgets/team_pending_requests_section.dart';
