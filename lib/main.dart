@@ -13,6 +13,7 @@ import 'package:jugaenequipo/presentation/notifications/business_logic/notificat
 import 'package:jugaenequipo/services/deep_link_service.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/presentation/home/business_logic/home_screen_provider.dart';
+import 'package:jugaenequipo/presentation/hashtags/business_logic/hashtags_list_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +53,9 @@ Future<void> main() async {
             provider.initialize();
             return provider;
           },
+        ),
+        ChangeNotifierProvider(
+          create: (_) => HashtagsListProvider(),
         ),
       ],
       child: const MyApp(),
