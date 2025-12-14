@@ -12,6 +12,8 @@ import 'package:jugaenequipo/presentation/tabs/screens/tabs_screen.dart';
 import 'package:jugaenequipo/presentation/reset_password/screens/reset_password_screen.dart';
 import 'package:jugaenequipo/presentation/reset_password/business_logic/reset_password_provider.dart';
 import 'package:jugaenequipo/presentation/home/screens/post_detail_screen.dart';
+import 'package:jugaenequipo/presentation/hashtags/screens/hashtags_list_screen.dart';
+import 'package:jugaenequipo/presentation/hashtags/screens/hashtag_posts_screen.dart';
 import 'package:provider/provider.dart';
 
 class AppRoutes {
@@ -52,6 +54,12 @@ class AppRoutes {
               : '',
           screen: const ProfileScreen()),
       MenuOptionModel(
+          route: 'hashtags',
+          name: context != null
+              ? 'Hashtags'
+              : '',
+          screen: const HashtagsListScreen()),
+      MenuOptionModel(
           route: 'settings',
           name: context != null
               ? AppLocalizations.of(context)!.drawerSettingsLabel
@@ -79,6 +87,10 @@ class AppRoutes {
         route: 'team-profile',
         name: 'Team Profile Screen',
         screen: const ProfileScreen(profileType: ProfileType.team)),
+    MenuOptionModel(
+        route: 'hashtags',
+        name: 'Hashtags List Screen',
+        screen: const HashtagsListScreen()),
   ];
 
   static Map<String, Widget Function(BuildContext)> getAppRoutes() {
@@ -154,9 +166,19 @@ class AppRoutes {
           ),
         );
       }
-      // Si no hay token, redirigir al login
       return MaterialPageRoute(
         builder: (context) => const LoginScreen(),
+      );
+    } else if (settings.name == 'hashtag-posts') {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final hashtag = args?['hashtag'] as String?;
+      if (hashtag != null && hashtag.isNotEmpty) {
+        return MaterialPageRoute(
+          builder: (context) => HashtagPostsScreen(hashtag: hashtag),
+        );
+      }
+      return MaterialPageRoute(
+        builder: (context) => const TabsScreen(),
       );
     }
 

@@ -127,6 +127,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get drawerProfileLabel => 'Perfil';
 
   @override
+  String get drawerHashtagsLabel => 'Hashtags';
+
+  @override
   String get drawerSettingsLabel => 'Configurações';
 
   @override
@@ -1356,4 +1359,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get sharePostLabel => 'Compartilhar publicação';
+
+  @override
+  String get hashtagsLabel => 'Hashtags';
+
+  @override
+  String get noHashtagsLabel => 'Nenhum hashtag disponível';
+
+  @override
+  String get noPostsLabel => 'Nenhuma publicação encontrada';
 }

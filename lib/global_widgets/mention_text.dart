@@ -4,8 +4,20 @@ import 'package:jugaenequipo/datasources/user_use_cases/get_users_by_username_us
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
 
-/// Widget that displays text with mentions (@username) highlighted in bold and violet color
-/// Mentions are clickable and navigate to the user's profile if the user exists
+class _TextSegment {
+  final String text;
+  final bool isMention;
+  final bool isHashtag;
+  final String? value;
+
+  _TextSegment({
+    required this.text,
+    this.isMention = false,
+    this.isHashtag = false,
+    this.value,
+  });
+}
+
 class MentionText extends StatelessWidget {
   final String text;
   final TextStyle? style;
@@ -28,89 +40,58 @@ class MentionText extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    // Get default text style from context and ensure it has a color
     final baseStyle = style ?? DefaultTextStyle.of(context).style;
     final theme = Theme.of(context);
-    final defaultColor = baseStyle.color ?? 
-        theme.textTheme.bodyMedium?.color ?? 
+    final defaultColor = baseStyle.color ??
+        theme.textTheme.bodyMedium?.color ??
         theme.colorScheme.onSurface;
     final defaultStyle = baseStyle.copyWith(color: defaultColor);
 
-    // Parse the text to find mentions (words starting with @)
-    final List<TextSpan> spans = [];
-    final RegExp mentionRegex = RegExp(r'@(\S+)');
-    int lastIndex = 0;
-    bool hasMentions = false;
+    final segments = _parseText(text);
 
-    for (final match in mentionRegex.allMatches(text)) {
-      hasMentions = true;
-      // Add text before the mention
-      if (match.start > lastIndex) {
-        final beforeText = text.substring(lastIndex, match.start);
-        if (beforeText.isNotEmpty) {
-          spans.add(TextSpan(
-            text: beforeText,
-            style: defaultStyle.copyWith(
-              color: defaultColor, // Explicit color
-            ),
-          ));
-        }
-      }
-
-      // Add the mention with special styling and tap recognizer
-      final mentionText = match.group(0)!; // Includes the @ symbol
-      final username = match.group(1)!; // Username without @
-      
-      spans.add(TextSpan(
-        text: mentionText,
-        style: defaultStyle.copyWith(
-          fontWeight: FontWeight.bold,
-          color: AppTheme.primary,
-        ),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () => _handleMentionTap(context, username),
-      ));
-
-      lastIndex = match.end;
+    if (segments.length == 1 &&
+        !segments.first.isMention &&
+        !segments.first.isHashtag) {
+      return Text(
+        text,
+        style: defaultStyle,
+        textAlign: textAlign,
+        maxLines: maxLines,
+        overflow: overflow,
+      );
     }
 
-    // Add remaining text after the last mention
-    if (lastIndex < text.length) {
-      final afterText = text.substring(lastIndex);
-      if (afterText.isNotEmpty) {
+    final List<TextSpan> spans = [];
+
+    for (final segment in segments) {
+      if (segment.isMention) {
         spans.add(TextSpan(
-          text: afterText,
+          text: segment.text,
           style: defaultStyle.copyWith(
-            color: defaultColor, // Explicit color
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primary,
           ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => _handleMentionTap(context, segment.value!),
+        ));
+      } else if (segment.isHashtag) {
+        spans.add(TextSpan(
+          text: segment.text,
+          style: defaultStyle.copyWith(
+            fontWeight: FontWeight.bold,
+            color: AppTheme.primary,
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => _handleHashtagTap(context, segment.value!),
+        ));
+      } else {
+        spans.add(TextSpan(
+          text: segment.text,
+          style: defaultStyle.copyWith(color: defaultColor),
         ));
       }
     }
 
-    // If no mentions found, return simple text
-    if (!hasMentions) {
-      return Text(
-        text,
-        style: defaultStyle,
-        textAlign: textAlign,
-        maxLines: maxLines,
-        overflow: overflow,
-      );
-    }
-
-    // If we have mentions but no spans (shouldn't happen), return simple text
-    if (spans.isEmpty) {
-      return Text(
-        text,
-        style: defaultStyle,
-        textAlign: textAlign,
-        maxLines: maxLines,
-        overflow: overflow,
-      );
-    }
-
-    // Build the final text span with all parts
-    // Ensure the root TextSpan has explicit color for inheritance
     return RichText(
       text: TextSpan(
         style: defaultStyle,
@@ -122,7 +103,57 @@ class MentionText extends StatelessWidget {
     );
   }
 
-  /// Handles tap on a mention by searching for the user and navigating to their profile
+  List<_TextSegment> _parseText(String text) {
+    final List<_TextSegment> segments = [];
+    final RegExp mentionRegex = RegExp(r'@(\S+)');
+    final RegExp hashtagRegex = RegExp(r'#(\S+)');
+
+    final List<RegExpMatch> allMatches = [];
+    allMatches.addAll(mentionRegex.allMatches(text));
+    allMatches.addAll(hashtagRegex.allMatches(text));
+
+    allMatches.sort((a, b) => a.start.compareTo(b.start));
+
+    int lastIndex = 0;
+
+    for (final match in allMatches) {
+      if (match.start > lastIndex) {
+        final beforeText = text.substring(lastIndex, match.start);
+        if (beforeText.isNotEmpty) {
+          segments.add(_TextSegment(text: beforeText));
+        }
+      }
+
+      final matchText = match.group(0)!;
+      final value = match.group(1)!;
+
+      if (matchText.startsWith('@')) {
+        segments.add(_TextSegment(
+          text: matchText,
+          isMention: true,
+          value: value,
+        ));
+      } else if (matchText.startsWith('#')) {
+        segments.add(_TextSegment(
+          text: matchText,
+          isHashtag: true,
+          value: value,
+        ));
+      }
+
+      lastIndex = match.end;
+    }
+
+    if (lastIndex < text.length) {
+      final afterText = text.substring(lastIndex);
+      if (afterText.isNotEmpty) {
+        segments.add(_TextSegment(text: afterText));
+      }
+    }
+
+    return segments;
+  }
+
   Future<void> _handleMentionTap(BuildContext context, String username) async {
     final localizations = AppLocalizations.of(context);
     if (localizations == null) return;
@@ -139,11 +170,11 @@ class MentionText extends StatelessWidget {
           );
         }
       } else {
-        // User not found - show snackbar
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('@$username ${localizations.userNotFound.toLowerCase()}'),
+              content: Text(
+                  '@$username ${localizations.userNotFound.toLowerCase()}'),
               backgroundColor: Theme.of(context).colorScheme.error,
               duration: const Duration(seconds: 2),
             ),
@@ -151,7 +182,6 @@ class MentionText extends StatelessWidget {
         }
       }
     } catch (e) {
-      // Error loading user - show error message
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -163,5 +193,12 @@ class MentionText extends StatelessWidget {
       }
     }
   }
-}
 
+  void _handleHashtagTap(BuildContext context, String hashtag) {
+    Navigator.pushNamed(
+      context,
+      'hashtag-posts',
+      arguments: {'hashtag': hashtag},
+    );
+  }
+}

@@ -39,6 +39,7 @@
   "timeSecondsSuffixText": "seconds ago",
   "drawerlanguageLabel": "Language",
   "drawerProfileLabel": "Profile",
+  "drawerHashtagsLabel": "Hashtags",
   "drawerSettingsLabel": "Settings",
   "drawerLogoutLabel": "Sign out",
   "profilePageLabel": "Profile",
@@ -702,5 +703,8 @@
   "likePostLabel": "Like post",
   "unlikePostLabel": "Unlike post",
   "addCommentLabel": "Add comment",
-  "sharePostLabel": "Share post"
+  "sharePostLabel": "Share post",
+  "hashtagsLabel": "Hashtags",
+  "noHashtagsLabel": "No hashtags available",
+  "noPostsLabel": "No posts found"
 }

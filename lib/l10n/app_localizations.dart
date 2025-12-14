@@ -337,6 +337,12 @@ abstract class AppLocalizations {
   /// **'Profile'**
   String get drawerProfileLabel;
 
+  /// No description provided for @drawerHashtagsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hashtags'**
+  String get drawerHashtagsLabel;
+
   /// No description provided for @drawerSettingsLabel.
   ///
   /// In en, this message translates to:
@@ -2670,6 +2676,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share post'**
   String get sharePostLabel;
+
+  /// No description provided for @hashtagsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hashtags'**
+  String get hashtagsLabel;
+
+  /// No description provided for @noHashtagsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No hashtags available'**
+  String get noHashtagsLabel;
+
+  /// No description provided for @noPostsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts found'**
+  String get noPostsLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

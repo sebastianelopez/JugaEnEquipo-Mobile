@@ -39,6 +39,7 @@
   "timeSecondsSuffixText": "segundos",
   "drawerlanguageLabel": "Idioma",
   "drawerProfileLabel": "Perfil",
+  "drawerHashtagsLabel": "Hashtags",
   "drawerSettingsLabel": "Configuracion",
   "drawerLogoutLabel": "Cerrar sesion",
   "profilePageLabel": "Perfil",
@@ -702,5 +703,8 @@
   "likePostLabel": "Me gusta la publicación",
   "unlikePostLabel": "No me gusta la publicación",
   "addCommentLabel": "Agregar comentario",
-  "sharePostLabel": "Compartir publicación"
+  "sharePostLabel": "Compartir publicación",
+  "hashtagsLabel": "Hashtags",
+  "noHashtagsLabel": "No hay hashtags disponibles",
+  "noPostsLabel": "No se encontraron publicaciones"
 }
