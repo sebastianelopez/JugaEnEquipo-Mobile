@@ -352,68 +352,85 @@ class _PostCardState extends State<PostCard>
                               children: [
                                 if (widget.post.likes != null &&
                                     widget.post.likes! > 0)
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.favorite,
-                                        size: 16.sp,
-                                        color:
-                                            Theme.of(context).colorScheme.error,
-                                      ),
-                                      SizedBox(width: 6.w),
-                                      TweenAnimationBuilder<int>(
-                                        tween: IntTween(
-                                          begin: widget.post.likes ?? 0,
-                                          end: widget.post.likes ?? 0,
-                                        ),
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        builder: (context, value, child) {
-                                          return AnimatedSwitcher(
-                                            duration: const Duration(
-                                                milliseconds: 200),
-                                            child: Text(
-                                              value.toString(),
-                                              key: ValueKey(value),
-                                              style: TextStyle(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.color,
-                                              ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: IntrinsicWidth(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.favorite,
+                                            size: 16.sp,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .error,
+                                          ),
+                                          SizedBox(width: 6.w),
+                                          TweenAnimationBuilder<int>(
+                                            tween: IntTween(
+                                              begin: widget.post.likes ?? 0,
+                                              end: widget.post.likes ?? 0,
                                             ),
-                                          );
-                                        },
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            builder: (context, value, child) {
+                                              return AnimatedSwitcher(
+                                                duration: const Duration(
+                                                    milliseconds: 200),
+                                                child: Text(
+                                                  value.toString(),
+                                                  key: ValueKey(value),
+                                                  maxLines: 1,
+                                                  softWrap: false,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.color,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   )
                                 else
                                   const SizedBox.shrink(),
                                 if (commentsCount > 0)
-                                  TextButton(
-                                    onPressed: () {
-                                      provider.openCommentsModal(
-                                        context,
-                                        postId: widget.post.id,
-                                        onCommentAdded: () {
-                                          provider.refreshCommentsQuantity(
-                                              widget.post.id);
-                                        },
-                                      );
-                                    },
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 8.w,
-                                        vertical: 4.h,
+                                  Flexible(
+                                    flex: 1,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        provider.openCommentsModal(
+                                          context,
+                                          postId: widget.post.id,
+                                          onCommentAdded: () {
+                                            provider.refreshCommentsQuantity(
+                                                widget.post.id);
+                                          },
+                                        );
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8.w,
+                                          vertical: 4.h,
+                                        ),
                                       ),
-                                    ),
-                                    child: Text(
-                                      "$commentsCount ${AppLocalizations.of(context)!.commentsLabel}",
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w500,
+                                      child: Text(
+                                        "$commentsCount ${AppLocalizations.of(context)!.commentsLabel}",
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ),
