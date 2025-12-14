@@ -110,14 +110,35 @@ class NotificationsListItem extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     if (localizations == null) return;
 
-    if (notification.teamId != null && notification.teamId!.isNotEmpty) {
-      await _navigateToTeam(context, notification.teamId!);
+    // Check for tournament navigation first - prioritize tournament notifications
+    final tournamentId = notification.tournamentId;
+    final isTournamentNotification =
+        notification.type == 'tournament_request_received' ||
+            notification.type == 'tournament_request_accepted';
+
+    // For tournament notifications, prioritize tournament navigation
+    if (isTournamentNotification ||
+        (tournamentId != null && tournamentId.isNotEmpty)) {
+      // If tournamentId is not in notification, show error
+      if (tournamentId == null || tournamentId.isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('No se pudo encontrar la información del torneo'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+        return;
+      }
+      await _navigateToTournament(context, tournamentId);
       return;
     }
 
-    if (notification.tournamentId != null &&
-        notification.tournamentId!.isNotEmpty) {
-      await _navigateToTournament(context, notification.tournamentId!);
+    // Then check for team navigation
+    if (notification.teamId != null && notification.teamId!.isNotEmpty) {
+      await _navigateToTeam(context, notification.teamId!);
       return;
     }
 
@@ -157,8 +178,6 @@ class NotificationsListItem extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     try {
-      debugPrint('Navigating to tournament with ID: $tournamentId');
-
       // Show loading indicator
       showDialog(
         context: context,
@@ -173,16 +192,12 @@ class NotificationsListItem extends StatelessWidget {
       // Load tournament
       final tournament = await getTournamentById(tournamentId);
 
-      debugPrint(
-          'Tournament loaded: ${tournament != null ? tournament.name : 'null'}');
-
       // Remove loading indicator
       if (context.mounted) {
         Navigator.of(context).pop();
       }
 
       if (tournament != null && context.mounted) {
-        debugPrint('Navigating to TournamentDetailScreen');
         // Navigate to tournament detail
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -191,7 +206,6 @@ class NotificationsListItem extends StatelessWidget {
           ),
         );
       } else if (context.mounted) {
-        debugPrint('Tournament is null, showing error message');
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -237,34 +251,17 @@ class NotificationsListItem extends StatelessWidget {
       // Load team
       final team = await getTeamById(teamId);
 
-      if (kDebugMode) {
-        debugPrint('_navigateToTeam: team loaded = ${team != null}');
-        if (team != null) {
-          debugPrint('_navigateToTeam: team.id = ${team.id}');
-          debugPrint('_navigateToTeam: team.name = ${team.name}');
-          debugPrint('_navigateToTeam: team.image = ${team.image}');
-        }
-      }
-
       // Remove loading indicator
       if (context.mounted) {
         Navigator.of(context).pop();
       }
 
       if (team != null && context.mounted) {
-        if (kDebugMode) {
-          debugPrint('_navigateToTeam: Navigating with team object');
-        }
         // Navigate directly with MaterialPageRoute to pass team object
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) {
-              if (kDebugMode) {
-                debugPrint('ProfileScreen builder: team = ${team != null}');
-                debugPrint('ProfileScreen builder: team.name = ${team.name}');
-                debugPrint('ProfileScreen builder: team.image = ${team.image}');
-              }
               return ProfileScreen(
                 teamId: teamId,
                 team: team,
