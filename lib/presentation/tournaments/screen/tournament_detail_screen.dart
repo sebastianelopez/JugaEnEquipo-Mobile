@@ -408,6 +408,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen>
           error: _teamsError,
           onRetry: _loadParticipatingTeams,
           onShowAllTeams: () => _showAllTeamsModal(context),
+          tournament: widget.tournament,
+          currentUser: currentUser,
         ),
         SizedBox(height: 24.h),
         TournamentRegistrationButton(

@@ -261,6 +261,7 @@
   "tournamentParticipantsListLabel": "La lista de participantes registrados se mostrará aquí",
   "tournamentRegisteredTeamsLabel": "Equipos registrados",
   "tournamentNoParticipantsLabel": "Aún no hay participantes. ¡Sé el primero en unirte!",
+  "tournamentNoParticipantsLabelAdmin": "No hay participantes registrados",
   "tournamentRegistrationSuccess": "¡Te has registrado exitosamente para el torneo!",
   "tournamentAlreadyRegisteredLabel": "Ya Registrado",
   "tournamentRegisterButtonLabel": "Registrarse para el Torneo",

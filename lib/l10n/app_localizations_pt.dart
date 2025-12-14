@@ -457,6 +457,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get tournamentNoParticipantsLabel => 'Ainda não há participantes. Seja o primeiro a se juntar!';
 
   @override
+  String get tournamentNoParticipantsLabelAdmin => 'Não há participantes registrados';
+
+  @override
   String get tournamentRegistrationSuccess => 'Registrado com sucesso no torneio!';
 
   @override

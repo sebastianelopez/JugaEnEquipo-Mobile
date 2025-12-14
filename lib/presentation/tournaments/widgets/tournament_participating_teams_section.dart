@@ -3,6 +3,7 @@ import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/l10n/app_localizations.dart';
 import 'package:jugaenequipo/presentation/tournaments/widgets/participating_team_item.dart';
 import 'package:jugaenequipo/theme/app_theme.dart';
+import 'package:jugaenequipo/utils/tournament_role_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TournamentParticipatingTeamsSection extends StatelessWidget {
@@ -11,6 +12,8 @@ class TournamentParticipatingTeamsSection extends StatelessWidget {
   final String? error;
   final VoidCallback onRetry;
   final VoidCallback onShowAllTeams;
+  final TournamentModel tournament;
+  final UserModel? currentUser;
 
   const TournamentParticipatingTeamsSection({
     super.key,
@@ -19,6 +22,8 @@ class TournamentParticipatingTeamsSection extends StatelessWidget {
     this.error,
     required this.onRetry,
     required this.onShowAllTeams,
+    required this.tournament,
+    this.currentUser,
   });
 
   @override
@@ -98,6 +103,22 @@ class TournamentParticipatingTeamsSection extends StatelessWidget {
     }
 
     if (participatingTeams == null || participatingTeams!.isEmpty) {
+      // Check if user is creator or responsible
+      final userRole =
+          TournamentRoleHelper.getUserRole(tournament, currentUser);
+      bool isCreatorOrResponsible = false;
+
+      if (currentUser != null) {
+        final userId = currentUser!.id;
+        isCreatorOrResponsible = userRole == TournamentUserRole.creator ||
+            tournament.responsibleId == userId ||
+            tournament.creatorId == userId;
+      }
+
+      final message = isCreatorOrResponsible
+          ? l10n.tournamentNoParticipantsLabelAdmin
+          : l10n.tournamentNoParticipantsLabel;
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,7 +147,7 @@ class TournamentParticipatingTeamsSection extends StatelessWidget {
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
-                    l10n.tournamentNoParticipantsLabel,
+                    message,
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: AppTheme.warning,

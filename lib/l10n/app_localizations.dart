@@ -937,6 +937,12 @@ abstract class AppLocalizations {
   /// **'No participants yet. Be the first to join!'**
   String get tournamentNoParticipantsLabel;
 
+  /// No description provided for @tournamentNoParticipantsLabelAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'No registered participants'**
+  String get tournamentNoParticipantsLabelAdmin;
+
   /// No description provided for @tournamentRegistrationSuccess.
   ///
   /// In en, this message translates to:
