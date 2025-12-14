@@ -19,29 +19,35 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _newPasswordFocusNode = FocusNode();
   bool _isLoading = false;
   bool _obscureOldPassword = true;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
+  bool _showPasswordRequirements = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _newPasswordFocusNode.addListener(() {
+      setState(() {
+        _showPasswordRequirements = _newPasswordFocusNode.hasFocus ||
+            _newPasswordController.text.isNotEmpty;
+      });
+    });
+  }
 
   @override
   void dispose() {
     _oldPasswordController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
+    _newPasswordFocusNode.dispose();
     super.dispose();
   }
 
   Future<void> _changePassword() async {
     if (!_formKey.currentState!.validate()) return;
-
-    final l10n = AppLocalizations.of(context)!;
-    if (_newPasswordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.passwordsDoNotMatch)),
-      );
-      return;
-    }
 
     setState(() {
       _isLoading = true;
@@ -193,76 +199,100 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         },
                       ),
                       SizedBox(height: 20.h),
-                      TextFormField(
-                        controller: _newPasswordController,
-                        obscureText: _obscureNewPassword,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: l10n.newPassword,
-                          labelStyle: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.7),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                            borderSide: BorderSide(
-                              color: Theme.of(context)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: _newPasswordController,
+                            focusNode: _newPasswordFocusNode,
+                            obscureText: _obscureNewPassword,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            decoration: InputDecoration(
+                              labelText: l10n.newPassword,
+                              labelStyle: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withOpacity(0.7),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withOpacity(0.3),
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withOpacity(0.3),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                                borderSide: BorderSide(
+                                  color: AppTheme.primary,
+                                  width: 2,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Theme.of(context)
                                   .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.3),
+                                  .surface
+                                  .withOpacity(0.5),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureNewPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withOpacity(0.7),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureNewPassword = !_obscureNewPassword;
+                                  });
+                                },
+                              ),
                             ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                            borderSide: BorderSide(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.3),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                            borderSide: BorderSide(
-                              color: AppTheme.primary,
-                              width: 2,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: Theme.of(context)
-                              .colorScheme
-                              .surface
-                              .withOpacity(0.5),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureNewPassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.7),
-                            ),
-                            onPressed: () {
+                            validator: (value) {
+                              final error = Validators.password(
+                                value: value,
+                                context: context,
+                              );
+                              // Update requirements visibility based on error
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (mounted) {
+                                  setState(() {
+                                    _showPasswordRequirements =
+                                        _newPasswordController
+                                                .text.isNotEmpty ||
+                                            error != null;
+                                  });
+                                }
+                              });
+                              return error;
+                            },
+                            onChanged: (value) {
                               setState(() {
-                                _obscureNewPassword = !_obscureNewPassword;
+                                _showPasswordRequirements = value.isNotEmpty;
                               });
                             },
                           ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.pleaseEnterNewPassword;
-                          }
-                          if (value.length < 6) {
-                            return l10n.passwordMinLength;
-                          }
-                          return null;
-                        },
+                          PasswordRequirements(
+                            password: _newPasswordController.text,
+                            isVisible: _showPasswordRequirements,
+                          ),
+                        ],
                       ),
                       SizedBox(height: 20.h),
                       TextFormField(
@@ -327,15 +357,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             },
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.pleaseConfirmNewPassword;
-                          }
-                          if (value != _newPasswordController.text) {
-                            return l10n.passwordsDoNotMatchValidation;
-                          }
-                          return null;
-                        },
+                        validator: (value) => Validators.confirmPassword(
+                          value: value,
+                          passwordValue: _newPasswordController.text,
+                          context: context,
+                        ),
                       ),
                       SizedBox(height: 32.h),
                       ElevatedButton(
