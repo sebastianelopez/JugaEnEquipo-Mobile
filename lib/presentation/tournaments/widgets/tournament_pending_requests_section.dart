@@ -26,7 +26,8 @@ class TournamentPendingRequestsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final pendingRequests = requests.where((r) => r.status == 'pending').toList();
+    final pendingRequests =
+        requests.where((r) => r.status == 'pending').toList();
 
     if (isLoading) {
       return Container(
@@ -217,7 +218,8 @@ class TournamentPendingRequestsSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      request.teamName ?? 'Equipo ${request.teamId.substring(0, 8)}...',
+                      request.teamName ??
+                          'Equipo ${request.teamId.substring(0, 8)}...',
                       style: TextStyle(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w700,
@@ -251,7 +253,8 @@ class TournamentPendingRequestsSection extends StatelessWidget {
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppTheme.error,
                     side: BorderSide(color: AppTheme.error),
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),
@@ -267,7 +270,8 @@ class TournamentPendingRequestsSection extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.success,
                     foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),
@@ -291,7 +295,8 @@ class TournamentPendingRequestsSection extends StatelessWidget {
       builder: (context) => AlertDialog(
         title: Text(l10n.tournamentAcceptRequestTitle),
         content: Text(
-          l10n.tournamentAcceptRequestMessage(request.teamName ?? 'este equipo'),
+          l10n.tournamentAcceptRequestMessage(
+              request.teamName ?? 'este equipo'),
         ),
         actions: [
           TextButton(
@@ -312,7 +317,9 @@ class TournamentPendingRequestsSection extends StatelessWidget {
 
     if (confirmed != true) return;
 
-    final success = await acceptTournamentRequest(requestId: request.id);
+    final result = await acceptTournamentRequest(requestId: request.id);
+    final success = result['success'] as bool;
+    final errorMessage = result['errorMessage'] as String?;
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -320,9 +327,10 @@ class TournamentPendingRequestsSection extends StatelessWidget {
           content: Text(
             success
                 ? l10n.tournamentRequestAccepted
-                : l10n.tournamentErrorAcceptingRequest,
+                : (errorMessage ?? l10n.tournamentErrorAcceptingRequest),
           ),
           backgroundColor: success ? AppTheme.success : AppTheme.error,
+          duration: Duration(seconds: success ? 2 : 4),
         ),
       );
 
@@ -342,7 +350,8 @@ class TournamentPendingRequestsSection extends StatelessWidget {
       builder: (context) => AlertDialog(
         title: Text(l10n.tournamentDeclineRequestTitle),
         content: Text(
-          l10n.tournamentDeclineRequestMessage(request.teamName ?? 'este equipo'),
+          l10n.tournamentDeclineRequestMessage(
+              request.teamName ?? 'este equipo'),
         ),
         actions: [
           TextButton(
@@ -383,4 +392,3 @@ class TournamentPendingRequestsSection extends StatelessWidget {
     }
   }
 }
-

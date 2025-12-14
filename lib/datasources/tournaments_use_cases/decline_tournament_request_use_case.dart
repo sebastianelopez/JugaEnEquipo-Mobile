@@ -27,7 +27,6 @@ Future<bool> declineTournamentRequest({
     final response = await APIService.instance.request(
       '/api/tournament/request/$requestId/decline',
       DioMethod.put,
-      contentType: 'application/json',
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
@@ -36,9 +35,12 @@ Future<bool> declineTournamentRequest({
     if (kDebugMode) {
       debugPrint('declineTournamentRequest: Response received');
       debugPrint('  - Status code: ${response.statusCode}');
+      debugPrint('  - Response data: ${response.data}');
     }
 
-    return response.statusCode == 200 || response.statusCode == 201;
+    return response.statusCode == 200 || 
+           response.statusCode == 201 || 
+           response.statusCode == 204;
   } catch (e, stackTrace) {
     if (kDebugMode) {
       debugPrint('declineTournamentRequest: Error occurred: $e');
