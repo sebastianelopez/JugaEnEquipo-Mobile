@@ -496,8 +496,8 @@ abstract class AppLocalizations {
   /// Notification about a tournament registration request
   ///
   /// In en, this message translates to:
-  /// **'<b>{name}</b> sent a tournament registration request.'**
-  String notificationTournamentRequestReceived(String name);
+  /// **'{tournamentName, select, null {<b>{name}</b> sent a tournament registration request.} other {<b>{name}</b> sent a tournament registration request for <b>{tournamentName}</b>.}}'**
+  String notificationTournamentRequestReceived(String name, String tournamentName);
 
   /// Notification about being mentioned in a post
   ///
@@ -508,20 +508,20 @@ abstract class AppLocalizations {
   /// Notification about a team join request
   ///
   /// In en, this message translates to:
-  /// **'<b>{name}</b> sent a team join request.'**
-  String notificationTeamRequestReceived(String name);
+  /// **'{teamName, select, null {<b>{name}</b> sent a team join request.} other {<b>{name}</b> sent a team join request for <b>{teamName}</b>.}}'**
+  String notificationTeamRequestReceived(String name, String teamName);
 
   /// Notification about a team join request being accepted
   ///
   /// In en, this message translates to:
-  /// **'<b>{name}</b> accepted your team join request.'**
-  String notificationTeamRequestAccepted(String name);
+  /// **'{teamName, select, null {<b>{name}</b> accepted your team join request.} other {<b>{name}</b> accepted your team join request for <b>{teamName}</b>.}}'**
+  String notificationTeamRequestAccepted(String name, String teamName);
 
   /// Notification about a tournament registration request being accepted
   ///
   /// In en, this message translates to:
-  /// **'<b>{name}</b> accepted your tournament registration request.'**
-  String notificationTournamentRequestAccepted(String name);
+  /// **'{tournamentName, select, null {<b>{name}</b> accepted your tournament registration request.} other {<b>{name}</b> accepted your tournament registration request for <b>{tournamentName}</b>.}}'**
+  String notificationTournamentRequestAccepted(String name, String tournamentName);
 
   /// Notification about a post being moderated
   ///

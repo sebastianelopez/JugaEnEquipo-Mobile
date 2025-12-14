@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -217,8 +219,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String notificationTournamentRequestReceived(String name) {
-    return '<b>$name</b> envió una solicitud de inscripción al torneo.';
+  String notificationTournamentRequestReceived(String name, String tournamentName) {
+    String _temp0 = intl.Intl.selectLogic(
+      tournamentName,
+      {
+        'null': '<b>$name</b> envió una solicitud de inscripción al torneo.',
+        'other': '<b>$name</b> envió una solicitud de inscripción al torneo <b>$tournamentName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override
@@ -227,18 +236,39 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String notificationTeamRequestReceived(String name) {
-    return '<b>$name</b> envió una solicitud para unirse al equipo.';
+  String notificationTeamRequestReceived(String name, String teamName) {
+    String _temp0 = intl.Intl.selectLogic(
+      teamName,
+      {
+        'null': '<b>$name</b> envió una solicitud para unirse al equipo.',
+        'other': '<b>$name</b> envió una solicitud para unirse al equipo <b>$teamName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override
-  String notificationTeamRequestAccepted(String name) {
-    return '<b>$name</b> aceptó tu solicitud para unirte al equipo.';
+  String notificationTeamRequestAccepted(String name, String teamName) {
+    String _temp0 = intl.Intl.selectLogic(
+      teamName,
+      {
+        'null': '<b>$name</b> aceptó tu solicitud para unirte al equipo.',
+        'other': '<b>$name</b> aceptó tu solicitud para unirte al equipo <b>$teamName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override
-  String notificationTournamentRequestAccepted(String name) {
-    return '<b>$name</b> aceptó tu solicitud de inscripción al torneo.';
+  String notificationTournamentRequestAccepted(String name, String tournamentName) {
+    String _temp0 = intl.Intl.selectLogic(
+      tournamentName,
+      {
+        'null': '<b>$name</b> aceptó tu solicitud de inscripción al torneo.',
+        'other': '<b>$name</b> aceptó tu solicitud de inscripción al torneo <b>$tournamentName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override

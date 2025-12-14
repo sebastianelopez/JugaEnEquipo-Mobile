@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -217,8 +219,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String notificationTournamentRequestReceived(String name) {
-    return '<b>$name</b> sent a tournament registration request.';
+  String notificationTournamentRequestReceived(String name, String tournamentName) {
+    String _temp0 = intl.Intl.selectLogic(
+      tournamentName,
+      {
+        'null': '<b>$name</b> sent a tournament registration request.',
+        'other': '<b>$name</b> sent a tournament registration request for <b>$tournamentName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override
@@ -227,18 +236,39 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String notificationTeamRequestReceived(String name) {
-    return '<b>$name</b> sent a team join request.';
+  String notificationTeamRequestReceived(String name, String teamName) {
+    String _temp0 = intl.Intl.selectLogic(
+      teamName,
+      {
+        'null': '<b>$name</b> sent a team join request.',
+        'other': '<b>$name</b> sent a team join request for <b>$teamName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override
-  String notificationTeamRequestAccepted(String name) {
-    return '<b>$name</b> accepted your team join request.';
+  String notificationTeamRequestAccepted(String name, String teamName) {
+    String _temp0 = intl.Intl.selectLogic(
+      teamName,
+      {
+        'null': '<b>$name</b> accepted your team join request.',
+        'other': '<b>$name</b> accepted your team join request for <b>$teamName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override
-  String notificationTournamentRequestAccepted(String name) {
-    return '<b>$name</b> accepted your tournament registration request.';
+  String notificationTournamentRequestAccepted(String name, String tournamentName) {
+    String _temp0 = intl.Intl.selectLogic(
+      tournamentName,
+      {
+        'null': '<b>$name</b> accepted your tournament registration request.',
+        'other': '<b>$name</b> accepted your tournament registration request for <b>$tournamentName</b>.',
+      },
+    );
+    return '$_temp0';
   }
 
   @override

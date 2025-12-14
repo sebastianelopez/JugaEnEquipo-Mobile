@@ -163,7 +163,32 @@ class TeamProfileProvider extends ChangeNotifier {
       // If we already have team data, use it; otherwise fetch from API
       TeamModel? teamData = team;
 
+      if (kDebugMode) {
+        debugPrint(
+            'TeamProfileProvider._loadData: team provided = ${team != null}');
+        if (team != null) {
+          debugPrint('TeamProfileProvider._loadData: team.id = ${team!.id}');
+          debugPrint(
+              'TeamProfileProvider._loadData: team.name = ${team!.name}');
+          debugPrint(
+              'TeamProfileProvider._loadData: team.image = ${team!.image}');
+        }
+      }
+
       teamData ??= await getTeamById(teamId);
+
+      if (kDebugMode) {
+        debugPrint(
+            'TeamProfileProvider._loadData: teamData loaded = ${teamData != null}');
+        if (teamData != null) {
+          debugPrint(
+              'TeamProfileProvider._loadData: teamData.id = ${teamData.id}');
+          debugPrint(
+              'TeamProfileProvider._loadData: teamData.name = ${teamData.name}');
+          debugPrint(
+              'TeamProfileProvider._loadData: teamData.image = ${teamData.image}');
+        }
+      }
 
       if (teamData == null) {
         error = 'No se pudo cargar el equipo';

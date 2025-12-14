@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
 import 'package:jugaenequipo/datasources/teams_use_cases/get_team_by_id_use_case.dart';
 import 'package:jugaenequipo/datasources/tournaments_use_cases/get_tournament_by_id_use_case.dart';
 import 'package:jugaenequipo/presentation/tournaments/screen/tournament_detail_screen.dart';
+import 'package:jugaenequipo/presentation/profile/screens/profile_screen.dart';
 import 'package:jugaenequipo/share_preferences/preferences.dart';
 import 'package:jugaenequipo/utils/utils.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -56,21 +58,7 @@ class NotificationsListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage: (notification.user.profileImage != null &&
-                            notification.user.profileImage!.isNotEmpty &&
-                            (notification.user.profileImage!
-                                    .startsWith('http://') ||
-                                notification.user.profileImage!
-                                    .startsWith('https://')))
-                        ? Image.network(
-                            notification.user.profileImage!,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Image.asset(
-                              'assets/error.png',
-                            ),
-                          ).image
-                        : const AssetImage('assets/user_image.jpg')
-                            as ImageProvider,
+                    backgroundImage: _getProfileImage(),
                     maxRadius: 20.h,
                   ),
                   Expanded(
@@ -105,8 +93,8 @@ class NotificationsListItem extends StatelessWidget {
               style: TextStyle(
                   fontSize: 12.h,
                   fontWeight: notification.isNotificationRead
-                      ? FontWeight.bold
-                      : FontWeight.normal),
+                      ? FontWeight.normal
+                      : FontWeight.bold),
             ),
           ],
         ),
@@ -122,24 +110,18 @@ class NotificationsListItem extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     if (localizations == null) return;
 
+    if (notification.teamId != null && notification.teamId!.isNotEmpty) {
+      await _navigateToTeam(context, notification.teamId!);
+      return;
+    }
+
+    if (notification.tournamentId != null &&
+        notification.tournamentId!.isNotEmpty) {
+      await _navigateToTournament(context, notification.tournamentId!);
+      return;
+    }
+
     switch (notification.type) {
-      case 'tournament_request_received':
-      case 'tournament_request_accepted':
-        // Navigate to tournament detail
-        if (notification.tournamentId != null &&
-            notification.tournamentId!.isNotEmpty) {
-          await _navigateToTournament(context, notification.tournamentId!);
-        }
-        break;
-
-      case 'team_request_received':
-      case 'team_request_accepted':
-        // Navigate to team profile
-        if (notification.teamId != null && notification.teamId!.isNotEmpty) {
-          await _navigateToTeam(context, notification.teamId!);
-        }
-        break;
-
       case 'user_mentioned':
       case 'post_liked':
       case 'post_commented':
@@ -255,17 +237,41 @@ class NotificationsListItem extends StatelessWidget {
       // Load team
       final team = await getTeamById(teamId);
 
+      if (kDebugMode) {
+        debugPrint('_navigateToTeam: team loaded = ${team != null}');
+        if (team != null) {
+          debugPrint('_navigateToTeam: team.id = ${team.id}');
+          debugPrint('_navigateToTeam: team.name = ${team.name}');
+          debugPrint('_navigateToTeam: team.image = ${team.image}');
+        }
+      }
+
       // Remove loading indicator
       if (context.mounted) {
         Navigator.of(context).pop();
       }
 
       if (team != null && context.mounted) {
-        // Navigate to team profile using the profile route
-        Navigator.pushNamed(
+        if (kDebugMode) {
+          debugPrint('_navigateToTeam: Navigating with team object');
+        }
+        // Navigate directly with MaterialPageRoute to pass team object
+        Navigator.push(
           context,
-          'profile',
-          arguments: {'teamId': teamId},
+          MaterialPageRoute(
+            builder: (context) {
+              if (kDebugMode) {
+                debugPrint('ProfileScreen builder: team = ${team != null}');
+                debugPrint('ProfileScreen builder: team.name = ${team.name}');
+                debugPrint('ProfileScreen builder: team.image = ${team.image}');
+              }
+              return ProfileScreen(
+                teamId: teamId,
+                team: team,
+                profileType: ProfileType.team,
+              );
+            },
+          ),
         );
       } else if (context.mounted) {
         // Show error message
@@ -308,5 +314,39 @@ class NotificationsListItem extends StatelessWidget {
       'post-detail',
       arguments: {'postId': postId},
     );
+  }
+
+  ImageProvider _getProfileImage() {
+    if (notification.profileImage != null &&
+        notification.profileImage!.isNotEmpty &&
+        (notification.profileImage!.startsWith('http://') ||
+            notification.profileImage!.startsWith('https://'))) {
+      return Image.network(
+        notification.profileImage!,
+        errorBuilder: (context, error, stackTrace) => Image.asset(
+          'assets/error.png',
+        ),
+      ).image;
+    }
+
+    // Fallback to user profile image
+    if (notification.user.profileImage != null &&
+        notification.user.profileImage!.isNotEmpty &&
+        (notification.user.profileImage!.startsWith('http://') ||
+            notification.user.profileImage!.startsWith('https://'))) {
+      return Image.network(
+        notification.user.profileImage!,
+        errorBuilder: (context, error, stackTrace) => Image.asset(
+          'assets/error.png',
+        ),
+      ).image;
+    }
+
+    // Default image
+    if (notification.teamId != null || notification.tournamentId != null) {
+      // Use team image placeholder for team/tournament notifications
+      return const AssetImage('assets/team_image.jpg');
+    }
+    return const AssetImage('assets/user_image.jpg');
   }
 }

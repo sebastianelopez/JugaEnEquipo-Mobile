@@ -39,10 +39,39 @@ Future<TeamModel?> getTeamById(String teamId) async {
       }
 
       try {
-        return TeamModel.fromJson(response.data as Map<String, dynamic>);
-      } catch (e) {
+        // Handle response structure: {"data": {...}} or direct object
+        dynamic responseData = response.data;
+        Map<String, dynamic>? teamData;
+
+        if (responseData is Map<String, dynamic>) {
+          // Check if response has a "data" wrapper
+          if (responseData.containsKey('data')) {
+            teamData = responseData['data'] as Map<String, dynamic>?;
+          } else {
+            // Response is the team object directly
+            teamData = responseData;
+          }
+        }
+
+        if (teamData == null) {
+          if (kDebugMode) {
+            debugPrint(
+                'getTeamById: Could not extract team data from response');
+          }
+          return null;
+        }
+
+        if (kDebugMode) {
+          debugPrint(
+              'getTeamById: Parsing team data: id=${teamData['id']}, name=${teamData['name']}, image=${teamData['image']}');
+        }
+
+        return TeamModel.fromJson(teamData);
+      } catch (e, stackTrace) {
         if (kDebugMode) {
           debugPrint('getTeamById: Error parsing response: $e');
+          debugPrint('getTeamById: Stack trace: $stackTrace');
+          debugPrint('getTeamById: Response data: ${response.data}');
         }
         return null;
       }
@@ -74,4 +103,3 @@ Future<TeamModel?> getTeamById(String teamId) async {
     return null;
   }
 }
-

@@ -55,9 +55,7 @@ class AppRoutes {
           screen: const ProfileScreen()),
       MenuOptionModel(
           route: 'hashtags',
-          name: context != null
-              ? 'Hashtags'
-              : '',
+          name: context != null ? 'Hashtags' : '',
           screen: const HashtagsListScreen()),
       MenuOptionModel(
           route: 'settings',
@@ -128,6 +126,7 @@ class AppRoutes {
           return MaterialPageRoute(
             builder: (context) => ProfileScreen(
               teamId: args['teamId'],
+              team: args['team'] as TeamModel?,
               profileType: ProfileType.team,
             ),
           );

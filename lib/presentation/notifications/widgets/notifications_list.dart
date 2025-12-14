@@ -174,17 +174,37 @@ class NotificationsList extends StatelessWidget {
       case 'application_accepted':
         return l10n.notificationApplicationAccepted('role', 'team');
       case 'tournament_request_received':
-        return l10n
-            .notificationTournamentRequestReceived(notification.username);
+        return l10n.notificationTournamentRequestReceived(
+          notification.username,
+          (notification.tournamentName != null &&
+                  notification.tournamentName!.isNotEmpty)
+              ? notification.tournamentName!
+              : 'null',
+        );
       case 'user_mentioned':
         return l10n.notificationUserMentioned(notification.username);
       case 'team_request_received':
-        return l10n.notificationTeamRequestReceived(notification.username);
+        return l10n.notificationTeamRequestReceived(
+          notification.username,
+          (notification.teamName != null && notification.teamName!.isNotEmpty)
+              ? notification.teamName!
+              : 'null',
+        );
       case 'team_request_accepted':
-        return l10n.notificationTeamRequestAccepted(notification.username);
+        return l10n.notificationTeamRequestAccepted(
+          notification.username,
+          (notification.teamName != null && notification.teamName!.isNotEmpty)
+              ? notification.teamName!
+              : 'null',
+        );
       case 'tournament_request_accepted':
-        return l10n
-            .notificationTournamentRequestAccepted(notification.username);
+        return l10n.notificationTournamentRequestAccepted(
+          notification.username,
+          (notification.tournamentName != null &&
+                  notification.tournamentName!.isNotEmpty)
+              ? notification.tournamentName!
+              : 'null',
+        );
       case 'post_moderated':
         return l10n.notificationPostModerated(notification.username);
       default:

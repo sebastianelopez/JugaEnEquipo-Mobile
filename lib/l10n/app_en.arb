@@ -118,12 +118,16 @@
       }
     }
   },
-  "notificationTournamentRequestReceived": "<b>{name}</b> sent a tournament registration request.",
+  "notificationTournamentRequestReceived": "{tournamentName, select, null {<b>{name}</b> sent a tournament registration request.} other {<b>{name}</b> sent a tournament registration request for <b>{tournamentName}</b>.}}",
   "@notificationTournamentRequestReceived": {
     "description": "Notification about a tournament registration request",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "tournamentName": {
+        "type": "String",
+        "optional": true
       }
     }
   },
@@ -136,30 +140,42 @@
       }
     }
   },
-  "notificationTeamRequestReceived": "<b>{name}</b> sent a team join request.",
+  "notificationTeamRequestReceived": "{teamName, select, null {<b>{name}</b> sent a team join request.} other {<b>{name}</b> sent a team join request for <b>{teamName}</b>.}}",
   "@notificationTeamRequestReceived": {
     "description": "Notification about a team join request",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "teamName": {
+        "type": "String",
+        "optional": true
       }
     }
   },
-  "notificationTeamRequestAccepted": "<b>{name}</b> accepted your team join request.",
+  "notificationTeamRequestAccepted": "{teamName, select, null {<b>{name}</b> accepted your team join request.} other {<b>{name}</b> accepted your team join request for <b>{teamName}</b>.}}",
   "@notificationTeamRequestAccepted": {
     "description": "Notification about a team join request being accepted",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "teamName": {
+        "type": "String",
+        "optional": true
       }
     }
   },
-  "notificationTournamentRequestAccepted": "<b>{name}</b> accepted your tournament registration request.",
+  "notificationTournamentRequestAccepted": "{tournamentName, select, null {<b>{name}</b> accepted your tournament registration request.} other {<b>{name}</b> accepted your tournament registration request for <b>{tournamentName}</b>.}}",
   "@notificationTournamentRequestAccepted": {
     "description": "Notification about a tournament registration request being accepted",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "tournamentName": {
+        "type": "String",
+        "optional": true
       }
     }
   },

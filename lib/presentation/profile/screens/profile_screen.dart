@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jugaenequipo/datasources/models/follow/follow_user_model.dart';
 import 'package:jugaenequipo/datasources/models/models.dart';
@@ -107,11 +108,26 @@ class ProfileScreen extends StatelessWidget {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return ChangeNotifierProvider(
-      create: (context) => TeamProfileProvider(
-        teamId: teamId!,
-        team: team, // Pass the team data
-        currentUserId: userProvider.user?.id,
-      ),
+      create: (context) {
+        if (kDebugMode) {
+          debugPrint(
+              'ProfileScreen._buildTeamProfile: Creating TeamProfileProvider');
+          debugPrint('ProfileScreen._buildTeamProfile: team = ${team != null}');
+          if (team != null) {
+            debugPrint(
+                'ProfileScreen._buildTeamProfile: team.id = ${team!.id}');
+            debugPrint(
+                'ProfileScreen._buildTeamProfile: team.name = ${team!.name}');
+            debugPrint(
+                'ProfileScreen._buildTeamProfile: team.image = ${team!.image}');
+          }
+        }
+        return TeamProfileProvider(
+          teamId: teamId!,
+          team: team, // Pass the team data
+          currentUserId: userProvider.user?.id,
+        );
+      },
       child: Consumer<TeamProfileProvider>(
         builder: (context, provider, _) {
           if (provider.isLoading) {

@@ -118,12 +118,16 @@
       }
     }
   },
-  "notificationTournamentRequestReceived": "<b>{name}</b> envió una solicitud de inscripción al torneo.",
+  "notificationTournamentRequestReceived": "{tournamentName, select, null {<b>{name}</b> envió una solicitud de inscripción al torneo.} other {<b>{name}</b> envió una solicitud de inscripción al torneo <b>{tournamentName}</b>.}}",
   "@notificationTournamentRequestReceived": {
     "description": "Notification about a tournament registration request",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "tournamentName": {
+        "type": "String",
+        "optional": true
       }
     }
   },
@@ -136,30 +140,42 @@
       }
     }
   },
-  "notificationTeamRequestReceived": "<b>{name}</b> envió una solicitud para unirse al equipo.",
+  "notificationTeamRequestReceived": "{teamName, select, null {<b>{name}</b> envió una solicitud para unirse al equipo.} other {<b>{name}</b> envió una solicitud para unirse al equipo <b>{teamName}</b>.}}",
   "@notificationTeamRequestReceived": {
     "description": "Notification about a team join request",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "teamName": {
+        "type": "String",
+        "optional": true
       }
     }
   },
-  "notificationTeamRequestAccepted": "<b>{name}</b> aceptó tu solicitud para unirte al equipo.",
+  "notificationTeamRequestAccepted": "{teamName, select, null {<b>{name}</b> aceptó tu solicitud para unirte al equipo.} other {<b>{name}</b> aceptó tu solicitud para unirte al equipo <b>{teamName}</b>.}}",
   "@notificationTeamRequestAccepted": {
     "description": "Notification about a team join request being accepted",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "teamName": {
+        "type": "String",
+        "optional": true
       }
     }
   },
-  "notificationTournamentRequestAccepted": "<b>{name}</b> aceptó tu solicitud de inscripción al torneo.",
+  "notificationTournamentRequestAccepted": "{tournamentName, select, null {<b>{name}</b> aceptó tu solicitud de inscripción al torneo.} other {<b>{name}</b> aceptó tu solicitud de inscripción al torneo <b>{tournamentName}</b>.}}",
   "@notificationTournamentRequestAccepted": {
     "description": "Notification about a tournament registration request being accepted",
     "placeholders": {
       "name": {
         "type": "String"
+      },
+      "tournamentName": {
+        "type": "String",
+        "optional": true
       }
     }
   },

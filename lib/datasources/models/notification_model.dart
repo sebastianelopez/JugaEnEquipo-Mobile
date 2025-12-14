@@ -8,7 +8,9 @@ class NotificationModel {
   final String? profileImage;
   final String? postId;
   final String? tournamentId;
+  final String? tournamentName;
   final String? teamId;
+  final String? teamName;
   final String? message;
   final String date;
   final bool isNotificationRead;
@@ -21,7 +23,9 @@ class NotificationModel {
     this.profileImage,
     this.postId,
     this.tournamentId,
+    this.tournamentName,
     this.teamId,
+    this.teamName,
     this.message,
     required this.date,
     this.isNotificationRead = false,
@@ -54,7 +58,9 @@ class NotificationModel {
       profileImage: json['profileImage'] as String?,
       postId: json['postId'] as String?,
       tournamentId: json['tournamentId'] as String?,
+      tournamentName: json['tournamentName'] as String?,
       teamId: json['teamId'] as String?,
+      teamName: json['teamName'] as String?,
       message: json['message'] as String?,
       date: json['date'] as String? ?? '',
       isNotificationRead: json['read'] as bool? ??
@@ -72,7 +78,9 @@ class NotificationModel {
     String? profileImage,
     String? postId,
     String? tournamentId,
+    String? tournamentName,
     String? teamId,
+    String? teamName,
     String? message,
     String? date,
     bool? isNotificationRead,
@@ -85,7 +93,9 @@ class NotificationModel {
       profileImage: profileImage ?? this.profileImage,
       postId: postId ?? this.postId,
       tournamentId: tournamentId ?? this.tournamentId,
+      tournamentName: tournamentName ?? this.tournamentName,
       teamId: teamId ?? this.teamId,
+      teamName: teamName ?? this.teamName,
       message: message ?? this.message,
       date: date ?? this.date,
       isNotificationRead: isNotificationRead ?? this.isNotificationRead,
@@ -101,7 +111,9 @@ class NotificationModel {
       'profileImage': profileImage,
       'postId': postId,
       'tournamentId': tournamentId,
+      'tournamentName': tournamentName,
       'teamId': teamId,
+      'teamName': teamName,
       'message': message,
       'date': date,
       'isNotificationRead': isNotificationRead,
